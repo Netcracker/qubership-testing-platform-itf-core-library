@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.jpa.step.Step" table="mb_steps" optimistic-lock="version"
+           lazy="false">
+        <cache usage="read-write" region="stepsCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <discriminator column="type" type="string"/>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+
+        <!--Immutable section ends-->
+        <property name="delay" type="long"/>
+        <property name="unit" type="string"/>
+        <property name="enabled" type="java.lang.Boolean"/>
+        <property name="manual" type="java.lang.Boolean"/>
+        <property name="order" type="integer" column="order_number"/>
+        <many-to-one name="parent" class="org.qubership.automation.itf.core.model.container.StepContainer"
+                     cascade="save-update" lazy="proxy">
+            <column name="parent_id" sql-type="bigint"/>
+        </many-to-one>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.step.SituationStep"
+                  discriminator-value="situation" lazy="false">
+            <many-to-one name="situation" class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation" lazy="proxy">
+                <column name="situation_id" sql-type="bigint"/>
+            </many-to-one>
+            <!--<many-to-one name="endSituation" class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation"
+                         lazy="proxy">
+                <column name="end_situation_id" sql-type="bigint"/>
+            </many-to-one>-->
+            <property name="waitAllEndSituations" type="java.lang.Boolean" column="wait_all_end_situations"/>
+            <set name="endSituations" table="mb_end_situations" lazy="false">
+                <cache usage="read-write" region="endSituationsCache"/>
+                <key>
+                    <column name="step_id" sql-type="bigint"/>
+                </key>
+                <many-to-many class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation">
+                    <column name="situation_id" sql-type="bigint"/>
+                </many-to-many>
+            </set>
+            <!--TODO
+            org.qubership.automation.itf.core.instance.step.SituationStepExecutor.execute(org.qubership.automation.itf.core.model.jpa.instance.AbstractInstance)
+            was LazyException  so I delete lazy here
+            It's need fix for execution-->
+            <set name="exceptionalSituations" table="mb_exceptional_situation" lazy="false">
+                <cache usage="read-write" region="exceptionalSituationCache"/>
+                <key>
+                    <column name="step_id" sql-type="bigint"/>
+                </key>
+                <many-to-many class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation">
+                    <column name="situation_id" sql-type="bigint"/>
+                </many-to-many>
+            </set>
+            <map name="keysToRegenerate" lazy="false" table="mb_steps_keys_to_regenerate">
+                <cache usage="read-write" region="keysToRegenerateCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <map-key column="key" type="string"/>
+                <element column="script" type="text"/>
+            </map>
+            <property name="retryOnFail" type="java.lang.Boolean" column="retry_on_fail"/>
+            <property name="retryTimeoutUnit" type="string" column="retry_timeout_unit"/>
+            <property name="retryTimeout" type="long"  column="retry_timeout"/>
+            <property name="validationMaxAttempts" type="int" column="validation_max_attempts"/>
+            <property name="validationMaxTime" type="long" column="validation_max_time"/>
+            <property name="validationUnitMaxTime" type="string" column="validation_unit_max_time"/>
+            <property name="conditionMaxAttempts" type="int" column="condition_max_attempts"/>
+            <property name="conditionMaxTime" type="long" column="condition_max_time"/>
+            <property name="conditionUnitMaxTime" type="string" column="condition_unit_max_time"/>
+            <property name="conditionRetry" type="java.lang.Boolean" column="condition_retry"/>
+            <property name="preScript" type="text" column="pre_script"/>
+            <property name="conditionParameters">
+                <column name="condition_parameters" sql-type="text"/>
+                <type name="converted::org.qubership.automation.itf.core.hibernate.spring.converters.ConditionParametersConverter"/>
+            </property>
+        </subclass>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.step.EmbeddedStep"
+                  discriminator-value="embedded" lazy="false">
+            <many-to-one name="chain" class="org.qubership.automation.itf.core.model.jpa.callchain.CallChain"
+                         lazy="proxy">
+                <column name="chain_id" sql-type="bigint"/>
+            </many-to-one>
+            <map name="keysToRegenerate" lazy="false" table="mb_steps_keys_to_regenerate">
+                <cache usage="read-write" region="keysToRegenerateCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <map-key column="key" type="string"/>
+                <element column="script" type="text"/>
+            </map>
+            <property name="conditionMaxAttempts" type="int" column="condition_max_attempts"/>
+            <property name="conditionMaxTime" type="long" column="condition_max_time"/>
+            <property name="conditionUnitMaxTime" type="string" column="condition_unit_max_time"/>
+            <property name="conditionRetry" type="java.lang.Boolean" column="condition_retry"/>
+            <property name="preScript" type="text" column="pre_script"/>
+            <property name="conditionParameters">
+                <column name="condition_parameters" sql-type="text"/>
+                <type name="converted::org.qubership.automation.itf.core.hibernate.spring.converters.ConditionParametersConverter"/>
+            </property>
+        </subclass>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.step.IntegrationStep"
+                  discriminator-value="integrating" lazy="false">
+            <many-to-one name="sender" class="org.qubership.automation.itf.core.model.jpa.system.System" lazy="proxy">
+                <column name="sender_id" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="receiver" class="org.qubership.automation.itf.core.model.jpa.system.System" lazy="proxy">
+                <column name="receiver_id" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="operation" class="org.qubership.automation.itf.core.model.jpa.system.operation.Operation"
+                         lazy="proxy">
+                <column name="operation_id" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="systemTemplate" class="org.qubership.automation.itf.core.model.jpa.message.template.SystemTemplate" lazy="proxy">
+                <column name="sys_template_id" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="operationTemplate" class="org.qubership.automation.itf.core.model.jpa.message.template.OperationTemplate" lazy="proxy">
+                <column name="op_template_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+    </class>
+
+</hibernate-mapping>

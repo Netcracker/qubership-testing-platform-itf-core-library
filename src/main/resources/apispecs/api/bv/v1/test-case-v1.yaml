@@ -1,0 +1,1657 @@
+openapi: 3.0.3
+info:
+  title: Api Documentation
+  description: Api Documentation
+  version: '1.0'
+servers:
+  - url: 'http://localhost:8080'
+    description: Inferred Url
+tags:
+  - name: test-case-resource
+    description: Test Case Resource
+paths:
+  '/api/bvtool/project/{projectId}/testcases/v1/attachValidationObject':
+    put:
+      tags:
+        - test-case-resource
+      summary: attachValidationObject
+      operationId: attachValidationObject
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/attachValidationObjectToTop':
+    put:
+      tags:
+        - test-case-resource
+      summary: attachValidationObjectToTop
+      operationId: attachValidationObjectToTop
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/attachValidationObjectWithoutER':
+    put:
+      tags:
+        - test-case-resource
+      summary: attachValidationObjectWithoutER
+      operationId: attachValidationObjectWithoutER
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/browseTestCases':
+    put:
+      tags:
+        - test-case-resource
+      summary: browseTestCases
+      operationId: browseTestCases
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/bulkUpdate':
+    put:
+      tags:
+        - test-case-resource
+      summary: bulkUpdate
+      operationId: bulkUpdate
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/checkExistingTestCaseName':
+    put:
+      tags:
+        - test-case-resource
+      summary: checkExistingTestCaseName
+      operationId: checkExistingTestCaseName
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/checkName':
+    put:
+      tags:
+        - test-case-resource
+      summary: checkName
+      operationId: checkName
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/clearEr':
+    put:
+      tags:
+        - test-case-resource
+      summary: clearEr
+      operationId: clearEr
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/cloneVObjectValue':
+    put:
+      tags:
+        - test-case-resource
+      summary: cloneVObjectValue
+      operationId: cloneVObjectValue
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/copyTestRun':
+    put:
+      tags:
+        - test-case-resource
+      summary: copyTestRun
+      operationId: copyTestRun
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/copyValObjs':
+    put:
+      tags:
+        - test-case-resource
+      summary: copyValObjects
+      operationId: copyValObjects
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/copyWithName':
+    put:
+      tags:
+        - test-case-resource
+      summary: copyWithName
+      operationId: copyWithName
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CopyWithNameRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/create':
+    put:
+      tags:
+        - test-case-resource
+      summary: create
+      operationId: create
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/createInputParameter':
+    put:
+      tags:
+        - test-case-resource
+      summary: createInputParameter
+      operationId: createInputParameter
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/detachAllValidationObject':
+    put:
+      tags:
+        - test-case-resource
+      summary: detachAllValidationObject
+      operationId: detachAllValidationObject
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/detachValidationObject':
+    put:
+      tags:
+        - test-case-resource
+      summary: detachValidationObject
+      operationId: detachValidationObject
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/export':
+    put:
+      tags:
+        - test-case-resource
+      summary: export
+      operationId: export
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getParameterValue':
+    put:
+      tags:
+        - test-case-resource
+      summary: getParameterValue
+      operationId: getParameterValue
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getParameters':
+    put:
+      tags:
+        - test-case-resource
+      summary: getParameters
+      operationId: getParameters
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getSimpleTestCasesByIds':
+    put:
+      tags:
+        - test-case-resource
+      summary: getSimpleTestCasesByIds
+      operationId: getSimpleTestCasesByIds
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCase':
+    put:
+      tags:
+        - test-case-resource
+      summary: getTestCase
+      operationId: getTestCase
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTestcaseRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCaseRun':
+    put:
+      tags:
+        - test-case-resource
+      summary: getTestRun
+      operationId: getTestRun
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCaseRuns':
+    put:
+      tags:
+        - test-case-resource
+      summary: getTestCaseRuns
+      operationId: getTestCaseRuns
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCaseStatus':
+    put:
+      tags:
+        - test-case-resource
+      summary: getTestCaseStatus
+      operationId: getTestCaseStatus
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCases':
+    put:
+      tags:
+        - test-case-resource
+      summary: getTestCases
+      operationId: getTestCasesUsingPUT
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCasesByIds':
+    put:
+      tags:
+        - test-case-resource
+      summary: getTestCasesByIds
+      operationId: getTestCasesByIds
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCasesByScopes':
+    get:
+      tags:
+        - test-case-resource
+      summary: getTestCasesByScopes
+      operationId: getTestCasesByScopes
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCasesForExport':
+    put:
+      tags:
+        - test-case-resource
+      summary: getTestCasesForExport
+      operationId: getTestCasesForExport
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TestCaseForExport'
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCasesRunsByFilter':
+    put:
+      tags:
+        - test-case-resource
+      summary: getTestCasesRunsByFilter
+      operationId: getTestCasesRunsByFilter
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestCasesScopes':
+    get:
+      tags:
+        - test-case-resource
+      summary: getTestCasesScopes
+      operationId: getTestCasesScopes
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/getTestRuns':
+    put:
+      tags:
+        - test-case-resource
+      summary: getTestRuns
+      operationId: getTestRuns
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/moveParameterItem':
+    put:
+      tags:
+        - test-case-resource
+      summary: moveParameterItem
+      operationId: moveParameterItem
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/remove':
+    put:
+      tags:
+        - test-case-resource
+      summary: remove
+      operationId: remove
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/removeInputParameter':
+    put:
+      tags:
+        - test-case-resource
+      summary: removeInputParameter
+      operationId: removeInputParameter
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/removeOldTestRuns':
+    put:
+      tags:
+        - test-case-resource
+      summary: removeOldTestRuns
+      operationId: removeOldTestRuns
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/removeTestRuns':
+    put:
+      tags:
+        - test-case-resource
+      summary: removeTestRun
+      operationId: removeTestRun
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/update':
+    put:
+      tags:
+        - test-case-resource
+      summary: update
+      operationId: update
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/updateContent':
+    put:
+      tags:
+        - test-case-resource
+      summary: updateContent
+      operationId: updateContent
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/updateInputParameter':
+    put:
+      tags:
+        - test-case-resource
+      summary: updateInputParameter
+      operationId: updateInputParameter
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestCaseParameter'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/updateLockedStatus':
+    put:
+      tags:
+        - test-case-resource
+      summary: updateTestCaseParameter
+      operationId: updateTestCaseParameter
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/updateStatusCommentInTestRun':
+    put:
+      tags:
+        - test-case-resource
+      summary: updateStatusCommentInTestRun
+      operationId: updateStatusCommentInTestRun
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/updateStatusInTestRun':
+    put:
+      tags:
+        - test-case-resource
+      summary: updateStatusInTestRun
+      operationId: updateStatusInTestRun
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/updateTestRunParameterValue':
+    put:
+      tags:
+        - test-case-resource
+      summary: updateTestRunParameterValue
+      operationId: updateTestRunParameterValue
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/updateVObject':
+    put:
+      tags:
+        - test-case-resource
+      summary: updateEthalonValue
+      operationId: updateEthalonValue
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/updateVObjectValue':
+    put:
+      tags:
+        - test-case-resource
+      summary: updateVObjectValue
+      operationId: updateVObjectValue
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: string
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  '/api/bvtool/project/{projectId}/testcases/v1/{testCaseId}/toggleValidationObjectImportance':
+    put:
+      tags:
+        - test-case-resource
+      summary: setValidationObjectsImportance
+      operationId: setValidationObjectsImportance
+      parameters:
+        - name: projectId
+          in: path
+          description: projectId
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+        - name: testCaseId
+          in: path
+          description: testCaseId
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+components:
+  schemas:
+    CopyWithNameRequest:
+      title: CopyWithNameRequest
+      type: object
+      properties:
+        newName:
+          type: string
+        sourceTcId:
+          type: string
+    GetTestcaseRequest:
+      title: GetTestcaseRequest
+      type: object
+      properties:
+        loadDataSources:
+          type: boolean
+        loadInputParameters:
+          type: boolean
+        loadValidationObjects:
+          type: boolean
+        tcId:
+          type: string
+    TestCaseForExport:
+      title: TestCaseForExport
+      type: object
+      properties:
+        name:
+          type: string
+        tcId:
+          type: string
+          format: uuid
+    TestCaseParameter:
+      title: TestCaseParameter
+      type: object
+      properties:
+        name:
+          type: string
+        orderNum:
+          type: integer
+          format: int32
+        parameterId:
+          type: string
+        tcId:
+          type: string
+        value:
+          type: string

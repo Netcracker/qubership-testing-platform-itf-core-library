@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.interceptor.Interceptor" table="mb_interceptors" optimistic-lock="version" lazy="false">
+        <!--Immutable section starts-->
+        <cache usage="read-write" region="interceptorsCache"/>
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+
+        <discriminator column="type" type="string"/>
+
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="typeName" type="string" column="type_name"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="description" type="string" column="description"/>
+        <property name="transportName" type="string" column="transport_name"/>
+        <property name="active" type="java.lang.Boolean" column="active"/>
+        <property name="order" type="integer" column="order_number"/>
+
+        <bag name="interceptorParams" cascade="all-delete-orphan" lazy="false" inverse="true">
+            <cache usage="read-write" region="configurationsCache"/>
+            <key>
+                <column name="interceptor_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.interceptor.InterceptorParams"/>
+        </bag>
+
+        <bag name="applicabilityParams" cascade="all-delete-orphan" lazy="false" inverse="true">
+            <key>
+                <column name="applicability_params_interceptor_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.interceptor.ApplicabilityParams"/>
+        </bag>
+
+        <property name="interceptorGroup" type="string" column="interceptor_group"/>
+        <!--Immutable section ends-->
+        <subclass name="org.qubership.automation.itf.core.model.jpa.interceptor.TransportConfigurationInterceptor"
+                  discriminator-value="transport_interceptor">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.transport.TransportConfiguration" lazy="false">
+                <column name="parent_transport_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.interceptor.TemplateInterceptor"
+                  discriminator-value="template_interceptor">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.message.template.Template" lazy="false">
+                <column name="parent_template_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+
+    </class>
+
+</hibernate-mapping>

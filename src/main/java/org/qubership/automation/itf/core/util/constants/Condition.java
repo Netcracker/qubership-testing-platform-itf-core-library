@@ -1,0 +1,38 @@
+/*
+ *  Copyright 2024-2025 NetCracker Technology Corporation
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+package org.qubership.automation.itf.core.util.constants;
+
+public enum Condition {
+    MATCHES("MATCHES"),
+    NOTMATCHES("NOTMATCHES"),
+    EXISTS("EXISTS"),
+    NOTEXISTS("NOTEXISTS"),
+    EQUALS("EQUALS"),
+    NOTEQUALS("NOTEQUALS"),
+    LESS("LESS"),       // Compare not as Strings but as Float numbers, NITP-4950
+    GREATER("GREATER"); // Compare not as Strings but as Float numbers, NITP-4950
+    private final String name;
+
+    Condition(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.jpa.message.parser.MessageParameter" table="mb_message_param">
+        <cache usage="read-write" region="messageParamCache"/>
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="paramName" type="string" column="param_name"/>
+        <property name="multiple" type="boolean"/>
+        <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.context.SpContext" lazy="proxy">
+            <column name="context_id" sql-type="bigint"/>
+        </many-to-one>
+        <bag name="multipleValue" cascade="all-delete-orphan" lazy="true" table="mb_message_param_multiple_value">
+            <key>
+                <column name="message_param_id" sql-type="bigint"/>
+            </key>
+            <element column="value" type="text"/>
+        </bag>
+    </class>
+</hibernate-mapping>

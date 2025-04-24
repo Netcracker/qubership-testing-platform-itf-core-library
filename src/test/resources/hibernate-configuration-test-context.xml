@@ -1,0 +1,51 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource"
+          class="org.h2.jdbcx.JdbcDataSource">
+        <property name="URL" value="jdbc:h2:./data/mb_test;MV_STORE=FALSE;MVCC=FALSE"/>
+        <property name="user" value="sa"/>
+        <property name="password" value=""/>
+    </bean>
+
+    <bean id="mb_jpaProperties"
+          class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.max_fetch_depth">3</prop>
+                <prop key="hibernate.jdbc.fetch_size">50</prop>
+                <prop key="hibernate.jdbc.batch_size">10</prop>
+                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+                <prop key="hibernate.globally_quoted_identifiers">true</prop>
+                <prop key="hibernate.connection.CharSet">utf8</prop>
+                <prop key="hibernate.connection.characterEncoding">utf8</prop>
+                <prop key="hibernate.connection.useUnicode">true</prop>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="org.hibernate.cache.ehcache.configurationResourceName">ehcache.xml</prop>
+                <!--<prop key="hibernate.cache.provider_class">org.hibernate.cache.ehcache..EhCacheProvider</prop>-->
+                <prop key="javax.persistence.sharedCache.mode">ALL</prop>
+                <prop key="hibernate.show_sql" >true</prop>
+                <prop key="hibernate.format_sql" >true</prop>
+                <prop key="hibernate.generate_statistics">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="executionProvider" class="org.qubership.automation.itf.core.execution.DefaultExecutorServiceProvider">
+        <constructor-arg index="0" value="20" type="int"/>
+        <constructor-arg index="1" value="10" type="int"/>
+    </bean>
+    <bean id="ExecutorServiceProviderFactory"
+          class="org.qubership.automation.itf.core.execution.ExecutorServiceProviderFactory">
+        <constructor-arg ref="executionProvider"/>
+    </bean>
+
+    <import resource="classpath*:*/hibernate-configuration-inner-context.xml"/>
+
+</beans>

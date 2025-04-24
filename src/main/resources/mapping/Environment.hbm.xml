@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.jpa.environment.Environment" table="mb_env" optimistic-lock="version"
+           lazy="false">
+        <cache usage="read-write" region="environmentCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+
+        <property name="naturalId" type="string" column="natural_id"/>
+
+        <property name="ecId" type="string" column="ec_id"/>
+        <property name="ecProjectId" type="string" column="ec_project_id"/>
+        <!--Immutable section ends-->
+        <map name="outbound" table="mb_env_outbound" lazy="true">
+            <key>
+                <column name="environment_id" sql-type="bigint"/>
+            </key>
+            <map-key-many-to-many class="org.qubership.automation.itf.core.model.jpa.system.System">
+                <column name="systems" sql-type="bigint"/>
+            </map-key-many-to-many>
+            <many-to-many class="org.qubership.automation.itf.core.model.jpa.server.ServerHB" lazy="proxy">
+                <column name="servers" sql-type="bigint"/>
+            </many-to-many>
+        </map>
+        <map name="inbound" table="mb_env_inbound" lazy="true">
+            <key>
+                <column name="environment_id" sql-type="bigint"/>
+            </key>
+            <map-key-many-to-many class="org.qubership.automation.itf.core.model.jpa.system.System">
+                <column name="systems" sql-type="bigint"/>
+            </map-key-many-to-many>
+            <many-to-many class="org.qubership.automation.itf.core.model.jpa.server.ServerHB" lazy="proxy">
+                <column name="servers" sql-type="bigint"/>
+            </many-to-many>
+        </map>
+        <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.folder.Folder"
+                     cascade="save-update" lazy="proxy">
+            <column name="parent_id" sql-type="bigint"/>
+        </many-to-one>
+        <set name="reportCollectors" table="mb_configuration" cascade="all-delete-orphan" lazy="true" inverse="true">
+            <cache usage="read-write" region="configurationsCache"/>
+            <key>
+                <column name="parent_env_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.report.LinkCollectorConfiguration"/>
+        </set>
+        <property name="environmentState" column="state">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.qubership.automation.itf.core.util.constants.TriggerState</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property name="projectId" type="java.math.BigInteger">
+            <column name="project_id" sql-type="bigint"/>
+        </property>
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.container.StepContainer" table="mb_step_container"
+           optimistic-lock="version" lazy="false">
+        <cache usage="read-write" region="stepContainersCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+
+        <joined-subclass name="org.qubership.automation.itf.core.model.jpa.callchain.CallChain" table="mb_chain"
+                         lazy="false">
+            <key>
+                <column name="id" sql-type="bigint"/>
+            </key>
+
+            <property name="datasetId" type="string" column="dataset_id"/>
+
+            <bag name="labels" cascade="all-delete-orphan" lazy="true" table="mb_chain_labels">
+                <cache usage="read-write" region="stepContainersCache"/>
+                <key>
+                    <column name="id" sql-type="bigint"/>
+                </key>
+                <element column="labels" type="string"/>
+            </bag>
+
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.folder.Folder"
+                         cascade="save-update" lazy="proxy">
+                <column name="parent_id" sql-type="bigint"/>
+            </many-to-one>
+            <set name="compatibleDataSetListIds" cascade="save-update" lazy="true" table="mb_compatible_ds_lists">
+                <cache usage="read-write" region="compatibleDsListsCache"/>
+                <key>
+                    <column name="callchain_id" sql-type="bigint" not-null="true"/>
+                </key>
+                <element column="datasetlist_id" type="string"/>
+            </set>
+            <map name="bvCases" cascade="save-update" lazy="true" table="mb_bv_cases">
+                <cache usage="read-write" region="bvCasesCache"/>
+                <key>
+                    <column name="callchain_id" sql-type="bigint"/>
+                </key>
+                <map-key column="ds_name" type="string"/>
+                <element column="bv_tcid" type="string"/>
+            </map>
+            <set name="keys" table="mb_chain_keys" cascade="all-delete-orphan" lazy="true">
+                <cache usage="read-write" region="chainKeysCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <element column="key" type="string"/>
+            </set>
+            <list name="steps" table="mb_steps" cascade="all-delete-orphan" inverse="true" lazy="true">
+                <cache usage="read-write" region="stepsCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <index>
+                    <column name="order_number" sql-type="integer"/>
+                </index>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.step.Step"/>
+            </list>
+            <property name="projectId" type="java.math.BigInteger">
+                <column name="project_id" sql-type="bigint"/>
+            </property>
+        </joined-subclass>
+        <joined-subclass name="org.qubership.automation.itf.core.model.jpa.system.stub.Situation" table="mb_situation"
+                         lazy="false">
+            <key>
+                <column name="id" sql-type="bigint"/>
+            </key>
+
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.system.operation.Operation"
+                         cascade="save-update" lazy="proxy">
+                <column name="parent_id" sql-type="bigint"/>
+            </many-to-one>
+
+            <bag name="labels" cascade="all-delete-orphan" lazy="true" table="mb_situation_labels">
+                <cache usage="read-write" region="stepContainersCache"/>
+                <key>
+                    <column name="id" sql-type="bigint"/>
+                </key>
+                <element column="labels" type="string"/>
+            </bag>
+
+            <set name="situationEventTriggers" cascade="all-delete-orphan" inverse="true" lazy="true">
+                <key>
+                    <column name="set_parent_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.system.stub.SituationEventTrigger"/>
+            </set>
+            <set name="operationEventTriggers" cascade="all-delete-orphan" inverse="true" lazy="true">
+                <key>
+                    <column name="oet_parent_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.system.stub.OperationEventTrigger"/>
+            </set>
+            <list name="steps" table="mb_steps" cascade="all-delete-orphan" inverse="true" lazy="true">
+                <cache usage="read-write" region="stepsCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <index>
+                    <column name="order_number" sql-type="integer"/>
+                </index>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.step.Step"/>
+            </list>
+            <map name="keysToRegenerate" lazy="true" table="mb_situation_keys_to_regenerate">
+                <cache usage="read-write" region="keysToRegenerateCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <map-key column="key" type="string"/>
+                <element column="script" type="text"/>
+            </map>
+            <property name="validateIncoming" column="validate_incoming">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">org.qubership.automation.itf.core.util.constants.SituationLevelValidation</param>
+                    <param name="useNamed">true</param>
+                </type>
+            </property>
+            <set name="parsingRules" table="mb_situations_parsingrules" cascade="save-update" lazy="true">
+                <cache usage="read-write" region="parsingRulesCache"/>
+                <key>
+                    <column name="situation_id" sql-type="bigint"/>
+                </key>
+                <many-to-many class="org.qubership.automation.itf.core.model.jpa.message.parser.OperationParsingRule" lazy="proxy">
+                    <column name="parsingrule_id" sql-type="bigint"/>
+                </many-to-many>
+            </set>
+            <property name="bvTestcase" type="string" column="bv_tcid"/>
+            <property name="preScript" type="text" column="pre_script"/>
+            <property name="postScript" type="text" column="post_script"/>
+            <property name="preValidationScript" type="text" column="pre_validation_script"/>
+            <property name="ignoreErrors" type="java.lang.Boolean" column="ignore_errors"/>
+        </joined-subclass>
+    </class>
+
+</hibernate-mapping>

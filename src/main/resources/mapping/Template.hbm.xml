@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.jpa.message.template.Template" table="mb_templates" optimistic-lock="version"
+           lazy="false">
+        <cache usage="read-write" region="templateCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <discriminator column="type" type="string" force="true"/>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+
+        <bag name="labels" cascade="all-delete-orphan" lazy="true" table="mb_templates_labels">
+            <cache usage="read-write" region="templateCache"/>
+            <key>
+                <column name="id" sql-type="bigint"/>
+            </key>
+            <element column="labels" type="string"/>
+        </bag>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="projectId" type="java.math.BigInteger">
+            <column name="project_id" sql-type="bigint"/>
+        </property>
+        <!--Immutable section ends-->
+        <property name="text" type="text"/>
+        <map name="headers" table="mb_headers" lazy="true">
+            <cache usage="read-write" region="templateCache"/>
+            <key>
+                <column name="parent_id" sql-type="bigint"/>
+            </key>
+            <map-key column="prop_short_name" type="string"/>
+            <element column="prop_value" type="text"/>
+        </map>
+        <bag name="transportProperties" cascade="all-delete-orphan" lazy="true" inverse="true">
+            <cache usage="read-write" region="configurationsCache"/>
+            <key>
+                <column name="parent_template_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.template.OutboundTemplateTransportConfiguration"/>
+        </bag>
+        <set name="compatibleWithTransports" table="mb_compatible_with_transports" cascade="all" lazy="true">
+            <key>
+                <column name="parent_id" sql-type="bigint"/>
+            </key>
+            <element column="key" type="string"/>
+        </set>
+        <bag name="interceptors" cascade="all-delete-orphan" lazy="false" inverse="true">
+            <cache usage="read-write" region="interceptorsCache"/>
+            <key>
+                <column name="parent_template_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.interceptor.TemplateInterceptor"/>
+        </bag>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.message.template.SystemTemplate"
+                  discriminator-value="system">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.system.System" lazy="proxy">
+                <column name="parent_system_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.message.template.OperationTemplate"
+                  discriminator-value="operation">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.system.operation.Operation" lazy="proxy">
+                <column name="parent_operation_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+    </class>
+
+</hibernate-mapping>

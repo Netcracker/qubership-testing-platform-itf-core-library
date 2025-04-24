@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.jpa.server.ServerHB" table="mb_servers"
+           optimistic-lock="version"
+           lazy="false">
+        <cache usage="read-write" region="serversCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+
+        <property name="naturalId" type="string" column="natural_id"/>
+
+        <property name="ecId" type="string" column="ec_id"/>
+        <property name="ecProjectId" type="string" column="ec_project_id"/>
+        <!--Immutable section ends-->
+        <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.folder.Folder" lazy="proxy">
+            <column name="parent_id" sql-type="bigint"/>
+        </many-to-one>
+
+        <bag name="inbounds" cascade="all-delete-orphan" lazy="true" inverse="true">
+            <cache usage="read-write" region="configurationsCache"/>
+            <key>
+                <column name="parent_in_server_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.environment.InboundTransportConfiguration"/>
+        </bag>
+
+        <bag name="outbounds" cascade="all-delete-orphan" lazy="true" inverse="true">
+            <cache usage="read-write" region="configurationsCache"/>
+            <key>
+                <column name="parent_out_server_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.environment.OutboundTransportConfiguration"/>
+        </bag>
+
+        <property name="url" type="string" column="url"/>
+        <property name="projectId" type="java.math.BigInteger">
+            <column name="project_id" sql-type="bigint"/>
+        </property>
+    </class>
+
+
+</hibernate-mapping>

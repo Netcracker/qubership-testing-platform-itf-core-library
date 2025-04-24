@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.qubership.automation.itf.core.model.jpa.folder.Folder" table="mb_folders" optimistic-lock="version"
+           discriminator-value="base" lazy="false">
+        <cache usage="read-write" region="folderCache"/>
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <discriminator column="type" type="string"/>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="typeName" type="string" column="type_name"/>
+
+        <bag name="labels" cascade="all-delete-orphan" lazy="true" table="mb_folders_labels">
+            <cache usage="read-write" region="folderCache"/>
+            <key>
+                <column name="id" sql-type="bigint"/>
+            </key>
+            <element column="labels" type="string"/>
+        </bag>
+
+        <many-to-one name="project" class="org.qubership.automation.itf.core.model.jpa.project.StubProject" cascade="save-update"
+                     lazy="proxy">
+            <column name="project_id" sql-type="bigint"/>
+        </many-to-one>
+
+        <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.folder.Folder" cascade="save-update"
+                     lazy="proxy">
+            <column name="parent_id" sql-type="bigint"/>
+        </many-to-one>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.folder.SystemFolder" discriminator-value="systems"
+                  lazy="true">
+            <bag name="objects" cascade="all-delete-orphan" lazy="true" inverse="true">
+                <cache usage="read-write" region="systemCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.system.System"/>
+            </bag>
+            <bag name="subFolders" cascade="all-delete-orphan" lazy="true" inverse="true">
+                <cache usage="read-write" region="folderCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.folder.SystemFolder"/>
+            </bag>
+        </subclass>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.folder.ChainFolder" discriminator-value="chains"
+                  lazy="true">
+            <bag name="objects" cascade="all-delete-orphan" lazy="true" inverse="true">
+                <cache usage="read-write" region="callchainCache"/>
+                <key column="parent_id"/>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.callchain.CallChain"/>
+            </bag>
+            <bag name="subFolders" cascade="all-delete-orphan" lazy="true" inverse="true">
+                <cache usage="read-write" region="folderCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.folder.ChainFolder"/>
+            </bag>
+        </subclass>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.folder.EnvFolder" discriminator-value="envs"
+                  lazy="true">
+            <bag name="objects" cascade="all-delete-orphan" lazy="true" inverse="true">
+                <cache usage="read-write" region="environmentCache"/>
+                <key column="parent_id"/>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.environment.Environment"/>
+            </bag>
+            <bag name="subFolders" cascade="all-delete-orphan" lazy="true" inverse="true">
+                <cache usage="read-write" region="folderCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.folder.EnvFolder"/>
+            </bag>
+        </subclass>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.folder.ServerFolder" discriminator-value="servers"
+                  lazy="true">
+            <bag name="objects" cascade="all-delete-orphan" lazy="true" inverse="true">
+                <key column="parent_id"/>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.server.ServerHB"/>
+            </bag>
+            <bag name="subFolders" cascade="all-delete-orphan" lazy="true" inverse="true">
+                <key column="parent_id"/>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.folder.ServerFolder"/>
+            </bag>
+        </subclass>
+    </class>
+</hibernate-mapping>

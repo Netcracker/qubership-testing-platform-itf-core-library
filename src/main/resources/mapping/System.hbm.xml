@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.qubership.automation.itf.core.model.jpa.system.System" table="mb_systems" optimistic-lock="version"
+           lazy="false">
+        <cache usage="read-write" region="systemCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="projectId" type="java.math.BigInteger">
+            <column name="project_id" sql-type="bigint"/>
+        </property>
+        <!--Immutable section ends-->
+        <bag name="labels" cascade="all-delete-orphan" lazy="true" table="mb_systems_labels">
+            <cache usage="read-write" region="systemCache"/>
+            <key>
+                <column name="id" sql-type="bigint"/>
+            </key>
+            <element column="labels" type="string"/>
+        </bag>
+
+        <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.folder.Folder" lazy="proxy">
+            <column name="parent_id" sql-type="bigint"/>
+        </many-to-one>
+
+        <property name="incomingContextKeyDefinition" type="text" column="incoming_text_context_key_definition"/>
+        <property name="outgoingContextKeyDefinition" type="text" column="outgoing_text_context_key_definition"/>
+        <property name="operationKeyDefinition" type="text" column="operation_text_key_definition"/>
+
+        <set name="transports" table="mb_transports" cascade="all" lazy="true" inverse="true">
+            <cache usage="read-write" region="systemTransportsCollectionCache"/>
+            <key>
+                <column name="parent_system_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.transport.TransportConfiguration"/>
+        </set>
+
+        <set name="systemTemplates" table="mb_templates" cascade="all" lazy="true" inverse="true">
+            <!-- <cache usage="read-write" region="templateCache"/> -->
+            <key>
+                <column name="parent_system_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.message.template.SystemTemplate"/>
+        </set>
+
+        <set name="operations" table="mb_operations" cascade="all" lazy="true" inverse="true">
+            <cache usage="read-write" region="operationCache"/>
+            <key>
+                <column name="parent_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.system.operation.Operation"/>
+        </set>
+
+        <set name="systemParsingRules" table="mb_parsing_rules" cascade="all" lazy="true" inverse="true">
+            <cache usage="read-write" region="systemParsingRulesCollectionCache"/>
+            <key>
+                <column name="parent_system_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.message.parser.SystemParsingRule"/>
+        </set>
+
+        <property name="ecId" type="string" column="ec_id"/>
+        <property name="ecLabel" type="string" column="ec_label"/>
+        <property name="ecProjectId" type="string" column="ec_project_id"/>
+    </class>
+</hibernate-mapping>

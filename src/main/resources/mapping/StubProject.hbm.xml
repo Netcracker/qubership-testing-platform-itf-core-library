@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.jpa.project.StubProject" table="mb_projects" optimistic-lock="version"
+           lazy="true">
+        <cache usage="read-write" region="projectsCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+
+        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="uuid" type="pg-uuid" column="uuid"/>
+
+        <!--Immutable section ends-->
+        <many-to-one name="systems" class="org.qubership.automation.itf.core.model.jpa.folder.SystemFolder"
+                     cascade="all" lazy="proxy">
+            <column name="systems_folder" sql-type="bigint"/>
+        </many-to-one>
+        <many-to-one name="callchains" class="org.qubership.automation.itf.core.model.jpa.folder.ChainFolder"
+                     cascade="all" lazy="proxy">
+            <column name="chains_folder" sql-type="bigint"/>
+        </many-to-one>
+        <many-to-one name="environments" class="org.qubership.automation.itf.core.model.jpa.folder.EnvFolder"
+                     cascade="all" lazy="proxy">
+            <column name="envs_folder" sql-type="bigint"/>
+        </many-to-one>
+        <many-to-one name="servers" class="org.qubership.automation.itf.core.model.jpa.folder.ServerFolder"
+                     cascade="all" lazy="proxy">
+            <column name="servers_folder" sql-type="bigint"/>
+        </many-to-one>
+        <set name="integrationConfs" table="mb_configuration" cascade="all" lazy="true" inverse="true">
+            <cache usage="read-write" region="configurationsCache"/>
+            <key>
+                <column name="parent_project_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.project.IntegrationConfig"/>
+        </set>
+        <map name="storableProp" table="mb_project_settings" lazy="true">
+            <cache usage="read-write" region="projectSettingsCache"/>
+            <key>
+                <column name="project_id" sql-type="bigint"/>
+            </key>
+            <map-key column="prop_short_name" type="string"/>
+            <element column="prop_value" type="text"/>
+        </map>
+    </class>
+
+</hibernate-mapping>

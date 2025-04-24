@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.qubership.automation.itf.core.model.jpa.transport.Configuration" table="mb_configuration"
+           optimistic-lock="version" lazy="false">
+        <cache usage="read-write" region="configurationsCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <discriminator column="type" type="string"/>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+
+        <property name="naturalId" type="string" column="natural_id"/>
+        <!--Immutable section ends-->
+        <property name="configuration"
+                  type="converted::org.qubership.automation.itf.core.hibernate.spring.converters.MapConverter"
+                  column="params"/>
+
+        <property name="typeName" type="string" column="type_name"/>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.transport.TransportConfiguration"
+                  discriminator-value="transport">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.system.System" lazy="proxy">
+                <column name="parent_system_id" sql-type="bigint"/>
+            </many-to-one>
+            <property name="ecId" type="string" column="ec_id"/>
+            <property name="ecProjectId" type="string" column="ec_project_id"/>
+            <property name="mepIfNotDeployed" column="mep">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">org.qubership.automation.itf.core.util.constants.Mep</param>
+                    <param name="useNamed">true</param>
+                </type>
+            </property>
+            <bag name="interceptors" cascade="all-delete-orphan" lazy="true" inverse="true">
+                <cache usage="read-write" region="interceptorsCache"/>
+                <key>
+                    <column name="parent_transport_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.interceptor.TransportConfigurationInterceptor"/>
+            </bag>
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.environment.InboundTransportConfiguration"
+                  discriminator-value="inbound">
+            <property name="ecId" type="string" column="ec_id"/>
+            <property name="ecProjectId" type="string" column="ec_project_id"/>
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.server.ServerHB"
+                         lazy="proxy">
+                <column name="parent_in_server_id" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="referencedConfiguration"
+                         class="org.qubership.automation.itf.core.model.jpa.transport.TransportConfiguration">
+                <column name="transport_id" sql-type="bigint"/>
+            </many-to-one>
+            <set name="triggerConfigurations" cascade="all" lazy="true" inverse="true">
+                <cache usage="read-write" region="configurationsCache"/>
+                <key>
+                    <column name="parent_conf_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.environment.TriggerConfiguration"/>
+            </set>
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.environment.OutboundTransportConfiguration"
+                  discriminator-value="outbound">
+            <property name="ecId" type="string" column="ec_id"/>
+            <property name="ecProjectId" type="string" column="ec_project_id"/>
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.server.ServerHB"
+                         lazy="proxy">
+                <column name="parent_out_server_id" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="system" class="org.qubership.automation.itf.core.model.jpa.system.System" lazy="proxy">
+                <column name="system_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.environment.TriggerConfiguration"
+                  discriminator-value="trigger">
+
+            <many-to-one name="parent"
+                         class="org.qubership.automation.itf.core.model.jpa.environment.InboundTransportConfiguration"
+                         lazy="proxy">
+                <column name="parent_conf_id" sql-type="bigint"/>
+            </many-to-one>
+
+            <property name="state" column="trigger_state">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">org.qubership.automation.itf.core.util.constants.TriggerState</param>
+                    <param name="useNamed">true</param>
+                </type>
+            </property>
+            <property name="activationErrorMessage" column="activation_error_message" type="java.lang.String"/>
+
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.project.IntegrationConfig"
+                  discriminator-value="integration">
+
+            <many-to-one name="parent"
+                         class="org.qubership.automation.itf.core.model.jpa.project.StubProject"
+                         lazy="proxy">
+                <column name="parent_project_id" sql-type="bigint"/>
+            </many-to-one>
+
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.report.LinkCollectorConfiguration"
+                  discriminator-value="linkCollector">
+
+            <many-to-one name="parent"
+                         class="org.qubership.automation.itf.core.model.jpa.environment.Environment"
+                         lazy="proxy">
+                <column name="parent_env_id" sql-type="bigint"/>
+            </many-to-one>
+
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.template.OutboundTemplateTransportConfiguration"
+                  discriminator-value="template">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.message.template.Template"
+                         lazy="proxy">
+                <column name="parent_template_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.interceptor.InterceptorParams"
+                  discriminator-value="interceptor_params">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.interceptor.Interceptor"
+                         lazy="proxy">
+                <column name="interceptor_id" sql-type="bigint"/>
+            </many-to-one>
+
+            <property name="transportName" type="string" column="interceptor_transport"/>
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.interceptor.ApplicabilityParams"
+                  discriminator-value="applicability_params">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.interceptor.Interceptor"
+                         lazy="proxy">
+                <column name="applicability_params_interceptor_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+
+    </class>
+
+</hibernate-mapping>

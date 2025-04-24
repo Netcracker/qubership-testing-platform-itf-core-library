@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.qubership.automation.itf.core.model.jpa.versions.UpgradeHistory" table="mb_upgrade_history"
+           optimistic-lock="version" lazy="false">
+        <cache usage="read-write" region="upgradeHistoryCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <!--Immutable section ends-->
+        <property name="upgradeDatetime" type="timestamp" column="upgrade_datetime"/>
+
+        <property name="name" type="string" column="build_number"/>
+
+        <property name="naturalId" type="string" column="natural_id"/>
+
+    </class>
+
+</hibernate-mapping>

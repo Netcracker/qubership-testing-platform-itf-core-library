@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.jpa.system.stub.EventTrigger" table="mb_triggers"
+           optimistic-lock="version" lazy="false">
+        <cache usage="read-write" region="eventTriggerCache"/>
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <discriminator column="parent_type" type="string" force="true"/>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+
+        <property name="conditionParameters">
+            <column name="condition_parameters" sql-type="text"/>
+            <type name="converted::org.qubership.automation.itf.core.hibernate.spring.converters.ConditionParametersConverter"/>
+        </property>
+
+        <property name="state" column="state">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.qubership.automation.itf.core.util.constants.TriggerState</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.system.stub.OperationEventTrigger"
+                  discriminator-value="operation">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation"
+                         cascade="save-update" lazy="proxy">
+                <column name="oet_parent_id" sql-type="bigint"/>
+            </many-to-one>
+            <property name="priority" type="integer" column="priority"/>
+        </subclass>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.system.stub.SituationEventTrigger"
+                  discriminator-value="situation">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation"
+                         cascade="save-update" lazy="proxy">
+                <column name="set_parent_id" sql-type="bigint"/>
+            </many-to-one>
+            <property name="on" column="trigger_on">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">org.qubership.automation.itf.core.model.jpa.system.stub.SituationEventTrigger$On</param>
+                    <param name="useNamed">true</param>
+                </type>
+            </property>
+            <many-to-one name="situation" class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation"
+                         cascade="save-update" lazy="proxy">
+                <column name="situation_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+    </class>
+
+</hibernate-mapping>

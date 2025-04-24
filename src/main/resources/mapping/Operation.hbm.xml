@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.qubership.automation.itf.core.model.jpa.system.operation.Operation" table="mb_operations" optimistic-lock="version"
+           lazy="false">
+        <cache usage="read-write" region="operationCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <version name="version" type="integer" column="version"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="projectId" type="java.math.BigInteger">
+            <column name="project_id" sql-type="bigint"/>
+        </property>
+        <!--Immutable section ends-->
+
+        <property name="incomingContextKeyDefinition" type="text" column="incoming_text_context_key_definition"/>
+        <property name="outgoingContextKeyDefinition" type="text" column="outgoing_text_context_key_definition"/>
+        <property name="operationDefinitionKey" type="string" column="definition_key"/>
+
+        <many-to-one name="transport" class="org.qubership.automation.itf.core.model.jpa.transport.TransportConfiguration"
+                     lazy="false">
+            <column name="transport_id" sql-type="bigint"/>
+        </many-to-one>
+
+        <set name="operationParsingRules" table="mb_parsing_rules" cascade="all" inverse="true" lazy="true">
+            <cache usage="read-write" region="operationParsingRulesCollectionCache"/>
+            <key>
+                <column name="parent_operation_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.message.parser.OperationParsingRule"/>
+        </set>
+
+        <set name="operationTemplates" table="mb_templates" cascade="all" lazy="true" inverse="true">
+            <!-- <cache usage="read-write" region="templateCache"/> -->
+            <key>
+                <column name="parent_operation_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.message.template.OperationTemplate"/>
+        </set>
+        <set name="situations" table="mb_situation" cascade="all-delete-orphan" inverse="true" lazy="true">
+            <cache usage="read-write" region="operationSituationsCollectionCache"/>
+            <key>
+                <column name="parent_id" sql-type="bigint"/>
+            </key>
+            <one-to-many class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation"/>
+        </set>
+
+        <many-to-one name="defaultInboundSituation"
+                     class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation" cascade="all" lazy="proxy">
+            <column name="default_inbound_situation" sql-type="bigint"/>
+        </many-to-one>
+
+        <many-to-one name="errorInboundSituation"
+                     class="org.qubership.automation.itf.core.model.jpa.system.stub.Situation" cascade="all" lazy="proxy">
+            <column name="error_inbound_situation" sql-type="bigint"/>
+        </many-to-one>
+
+        <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.system.System" lazy="proxy" cascade="save-update">
+            <column name="parent_id" sql-type="bigint"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <!--TODO optimistic-lock="version"-->
+    <class name="org.qubership.automation.itf.core.model.jpa.context.JsonStorable" table="mb_context"
+           lazy="true">
+        <cache usage="read-write" region="contextCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <discriminator column="type" type="string"/>
+        <!--<version name="version" type="integer" column="version"/>-->
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+
+        <property name="naturalId" type="string" column="natural_id"/>
+
+        <!--Immutable section ends-->
+        <property name="prefix" type="string"/>
+        <property name="extensionsJson" type="text" column="extensions"/>
+        <property name="jsonString" type="text" column="json_string" lazy="true"/>
+        <property name="startTime" type="timestamp" column="start_time"/>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.context.TcContext" discriminator-value="TcContext">
+            <bag name="instances" table="mb_instance" cascade="delete-orphan" lazy="true">
+                <key>
+                    <column name="context_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.instance.AbstractContainerInstance"/>
+            </bag>
+            <many-to-one name="initiator" class="org.qubership.automation.itf.core.model.jpa.instance.AbstractContainerInstance" lazy="false">
+                <column name="initiator_id" sql-type="bigint"/>
+            </many-to-one>
+            <property name="projectId" type="java.math.BigInteger">
+                <column name="project_id" sql-type="bigint"/>
+            </property>
+            <property name="environmentId" type="java.math.BigInteger">
+                <column name="environment_id" sql-type="bigint"/>
+            </property>
+            <property name="environmentName" type="string" column="environment_name"/>
+            <property name="status" column="status">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">org.qubership.automation.itf.core.util.constants.Status</param>
+                    <param name="useNamed">true</param>
+                </type>
+            </property>
+            <property name="endTime" type="timestamp" column="end_time"/>
+            <property name="client" type="string" column="client"/>
+
+            <property name="lastUpdateTime" type="java.lang.Long" column="last_update_time"/>
+            <property name="timeToLive" type="java.lang.Long" column="time_to_live"/>
+            <property name="podName" type="string" column="pod_name"/>
+
+            <set name="bindingKeys" lazy="false" cascade="all-delete-orphan" table="mb_context_binding_keys">
+                <key>
+                    <column name="id" sql-type="bigint"/>
+                </key>
+                <element type="string" column="key"/>
+            </set>
+            <map name="reportLinks" lazy="false" cascade="all-delete-orphan" table="mb_context_report_links">
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <map-key column="key" type="text"/>
+                <element column="value" type="text"/>
+            </map>
+        </subclass>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.context.SpContext" discriminator-value="SpContext">
+            <many-to-one name="step" class="org.qubership.automation.itf.core.model.jpa.instance.step.StepInstance" lazy="proxy">
+                <column name="step_id" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="incomingMessage" class="org.qubership.automation.itf.core.model.jpa.message.Message" cascade="all" lazy="proxy">
+                <column name="incoming_message_id" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="outgoingMessage" class="org.qubership.automation.itf.core.model.jpa.message.Message" cascade="all" lazy="proxy">
+                <column name="outgoing_message_id" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.context.InstanceContext">
+                <column name="parent_ctx_id" sql-type="bigint"/>
+            </many-to-one>
+            <bag name="messageParameters" table="mb_message_param" cascade="all" lazy="true">
+                <key>
+                    <column name="context_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.message.parser.MessageParameter"/>
+            </bag>
+            <property name="validationResults" type="text" column="validation_results"/>
+        </subclass>
+        <subclass name="org.qubership.automation.itf.core.model.jpa.context.InstanceContext" discriminator-value="InstanceContext">
+            <property name="sessionId" type="string" column="session_id"/>
+            <many-to-one name="instance" class="org.qubership.automation.itf.core.model.jpa.instance.AbstractInstance">
+                <column name="instance" sql-type="bigint"/>
+            </many-to-one>
+            <many-to-one name="TC" class="org.qubership.automation.itf.core.model.jpa.context.TcContext">
+                <column name="tc_id" sql-type="bigint"/>
+            </many-to-one>
+            <one-to-one name="SP" class="org.qubership.automation.itf.core.model.jpa.context.SpContext" cascade="all-delete-orphan" property-ref="parent"/>
+        </subclass>
+    </class>
+    <class name="org.qubership.automation.itf.core.model.jpa.context.TcContextBriefInfo" table="mb_tccontext" mutable="false">
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+        </id>
+        <property name="name"/>
+        <property name="environment" type="java.math.BigInteger">
+            <column name="environment_id" sql-type="bigint"/>
+        </property>
+        <property name="envname" type="string" column="environment_name"/>
+        <property name="operationName" type="string" column="operation_name"/>
+        <property name="systemName" type="string" column="system_name"/>
+        <property name="systemId" type="java.math.BigInteger">
+            <column name="system_id" sql-type="bigint"/>
+        </property>
+        <property name="ininame" type="string" column="initiator_name"/>
+        <property name="initiator" type="java.math.BigInteger">
+            <column name="initiator_id" sql-type="bigint"/>
+        </property>
+        <property name="status" column="status">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.qubership.automation.itf.core.util.constants.Status</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property name="startTime" type="timestamp" column="start_time"/>
+        <property name="endTime" type="timestamp" column="end_time"/>
+        <property name="initiatortype" type="string" column="initiator_type"/>
+        <property name="situationId" type="java.math.BigInteger">
+            <column name="situation_id" sql-type="bigint"/>
+        </property>
+        <property name="chainId" type="java.math.BigInteger">
+            <column name="chain_id" sql-type="bigint"/>
+        </property>
+        <property name="projectId" type="java.math.BigInteger">
+            <column name="project_id" sql-type="bigint"/>
+        </property>
+        <property name="duration" type="java.lang.Long" column="duration"/>
+        <property name="client" type="string" column="client"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="partNum" type="java.lang.Integer" column="part_num"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.jpa.message.Message" table="mb_message" lazy="true">
+        <cache usage="read-write" region="messageCache"/>
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <property name="naturalId" type="string" column="natural_id" lazy="true"/>
+        <property name="text" type="text" lazy="true"/>
+        <map name="headers" lazy="false" table="mb_message_headers">
+            <key>
+                <column name="parent_id" sql-type="bigint"/>
+            </key>
+            <map-key column="key" type="string"/>
+            <element column="value" type="text"/>
+        </map>
+        <map name="connectionProperties" lazy="false" table="mb_message_connection_properties">
+            <key>
+                <column name="parent_id" sql-type="bigint"/>
+            </key>
+            <map-key column="key" type="string"/>
+            <element column="value" type="string"/>
+        </map>
+
+    </class>
+
+</hibernate-mapping>

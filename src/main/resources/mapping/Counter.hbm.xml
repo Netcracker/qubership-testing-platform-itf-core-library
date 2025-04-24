@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="org.qubership.automation.itf.core.model.counter.Counter" table="mb_counter" optimistic-lock="version"
+           lazy="false">
+        <cache usage="read-write" region="counterCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <discriminator column="type" type="string"/>
+        <property name="name" type="string" column="name"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <!--Immutable section ends-->
+
+        <property name="date" type="date" column="data"/>
+        <property name="index" type="integer" column="index"/>
+        <property name="format" type="string" column="format"/>
+
+        <set name="owners" cascade="all-delete-orphan" lazy="false" table="mb_counter_owners">
+            <key>
+                <column name="counter_id" sql-type="bigint"/>
+            </key>
+            <element column="owner" type="java.math.BigInteger"/>
+        </set>
+
+        <subclass name="org.qubership.automation.itf.core.model.counter.CounterImpl"
+                  discriminator-value="counter-impl">
+        </subclass>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <!--TODO optimistic-lock="version"-->
+    <class name="org.qubership.automation.itf.core.model.jpa.instance.AbstractInstance" table="mb_instance"
+           lazy="true">
+        <cache usage="read-write" region="instanceCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <discriminator column="type" type="string"/>
+        <!--TODO <version name="version" type="integer" column="version"/>-->
+        <property name="name" type="string" column="name"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <!--Immutable section ends-->
+
+        <property name="status" column="status">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.qubership.automation.itf.core.util.constants.Status</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property name="startTime" type="timestamp" column="start_time"/>
+        <property name="endTime" type="timestamp" column="end_time"/>
+
+        <property name="errorName" type="text" column="error_name"/>
+        <property name="errorMessage" type="text" column="error_message"/>
+        <property name="extensionsJson" type="text" column="extensions"/>
+        <property name="partNum" type="java.lang.Integer" column="part_num"/>
+
+        <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.instance.AbstractInstance">
+            <column name="parent_id" sql-type="bigint"/>
+        </many-to-one>
+
+        <one-to-one name="context" class="org.qubership.automation.itf.core.model.jpa.context.InstanceContext"
+                    cascade="all-delete-orphan" property-ref="instance">
+        </one-to-one>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.instance.step.StepInstance"
+                  discriminator-value="StepInstance">
+            <property name="stepId" type="java.math.BigInteger">
+                <column name="step_id" sql-type="bigint"/>
+            </property>
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.instance.AbstractContainerInstance"
+                  discriminator-value="AbstractContainerInstance">
+
+            <many-to-one name="parentContext" class="org.qubership.automation.itf.core.model.jpa.context.TcContext">
+                <column name="context_id" sql-type="bigint"/>
+            </many-to-one>
+
+            <bag name="stepInstances" table="mb_instance" inverse="true"
+                 cascade="delete-orphan" lazy="true">
+                <cache usage="read-write" region="containerStepInstanceCache"/>
+                <key>
+                    <column name="parent_id" sql-type="bigint"/>
+                </key>
+                <one-to-many class="org.qubership.automation.itf.core.model.jpa.instance.step.StepInstance"/>
+            </bag>
+
+            <subclass name="org.qubership.automation.itf.core.model.jpa.instance.SituationInstance"
+                      discriminator-value="SituationInstance">
+                <property name="situationId" type="java.math.BigInteger">
+                    <column name="situation_id" sql-type="bigint"/>
+                </property>
+                <property name="operationName" type="string" column="operation_name"/>
+                <property name="systemName" type="string" column="system_name"/>
+                <property name="systemId" type="java.math.BigInteger">
+                    <column name="system_id" sql-type="bigint"/>
+                </property>
+            </subclass>
+
+            <subclass name="org.qubership.automation.itf.core.model.jpa.instance.chain.CallChainInstance"
+                      discriminator-value="CallChainInstance">
+                <property name="testCaseId" type="java.math.BigInteger">
+                    <column name="chain_id" sql-type="bigint"/>
+                </property>
+                <property name="datasetName" type="text" column="dataset_name"/>
+                <property name="callchainExecutionData" type="text" column="callchain_execution_data"/>
+            </subclass>
+
+        </subclass>
+
+    </class>
+
+</hibernate-mapping>

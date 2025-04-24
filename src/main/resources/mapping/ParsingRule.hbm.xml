@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="org.qubership.automation.itf.core.model.jpa.message.parser.ParsingRule" table="mb_parsing_rules"
+           optimistic-lock="version" lazy="false">
+        <cache usage="read-write" region="parsingRulesCache"/>
+        <!--Immutable section starts-->
+        <id name="ID" type="java.math.BigInteger">
+            <column name="id" sql-type="bigint"/>
+            <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
+        </id>
+        <discriminator column="type" type="string" force="true"/>
+        <version name="version" type="integer" column="version"/>
+        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="name" type="string" column="name"/>
+        <property name="description" type="string" column="description"/>
+        <property name="projectId" type="java.math.BigInteger">
+            <column name="project_id" sql-type="bigint"/>
+        </property>
+        <!--Immutable section ends-->
+        <property name="multiple" type="java.lang.Boolean" column="multiple"/>
+        <property name="paramName" type="string" column="param_name"/>
+        <property name="expression" type="text" column="expression"/>
+        <property name="autosave" type="java.lang.Boolean" column="autosave"/>
+        <property name="parsingType" column="rule_type">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.qubership.automation.itf.core.util.parser.ParsingRuleType</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.message.parser.SystemParsingRule"
+                  discriminator-value="system">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.system.System" cascade="save-update" lazy="proxy">
+                <column name="parent_system_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+
+        <subclass name="org.qubership.automation.itf.core.model.jpa.message.parser.OperationParsingRule"
+                  discriminator-value="operation">
+            <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.system.operation.Operation" cascade="save-update" lazy="proxy">
+                <column name="parent_operation_id" sql-type="bigint"/>
+            </many-to-one>
+        </subclass>
+    </class>
+
+</hibernate-mapping>
