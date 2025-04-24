@@ -2,15 +2,15 @@ openapi: 3.0.3
 info:
   title: Api Documentation
   description: Api Documentation
-  version: '1.0'
+  version: "1.0"
 servers:
-  - url: 'http://localhost:8080'
+  - url: "http://localhost:8080"
     description: Inferred Url
 tags:
   - name: api-resource
     description: Api Resource
 paths:
-  '/api/bvtool/project/{projectId}/api/v1/compare':
+  "/api/bvtool/project/{projectId}/api/v1/compare":
     put:
       tags:
         - api-resource
@@ -32,21 +32,21 @@ paths:
             schema:
               type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: string
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/api/bvtool/project/{projectId}/api/v1/read':
+  "/api/bvtool/project/{projectId}/api/v1/read":
     put:
       tags:
         - api-resource
@@ -67,21 +67,21 @@ paths:
             schema:
               type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: string
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/api/bvtool/project/{projectId}/api/v1/readAndCompare':
+  "/api/bvtool/project/{projectId}/api/v1/readAndCompare":
     put:
       tags:
         - api-resource
@@ -102,17 +102,17 @@ paths:
             schema:
               type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: string
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
