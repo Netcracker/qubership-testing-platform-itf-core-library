@@ -74,7 +74,7 @@ public class TcContextTest {
         renameStoreValidate(tcContext);
     }
 
-    @Test //NITP-3919
+    @Test
     public void testContextSaveOrder() throws Exception {
         TcContext context = new TcContext();
         context.put("portnumber[0]", 23);
@@ -85,7 +85,7 @@ public class TcContextTest {
         assertTrue(portnumber instanceof JSONArray); //JSONArray is order safe
     }
 
-    @Test //NITP-4147
+    @Test
     public void testIsContextContainsKey() throws Exception {
         TcContext context = new TcContext();
         context.put("group", new JsonContext());

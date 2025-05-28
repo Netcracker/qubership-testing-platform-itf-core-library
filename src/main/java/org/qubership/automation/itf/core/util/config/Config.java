@@ -171,8 +171,7 @@ public class Config extends AbstractConfig {
         try {
             /* Getting short name of the ITF running machine.
                 If we need full domain name - we must change the line below to  Inet4Address.getLocalHost()
-                .getCanonicalHostName().
-                    (it's not good in the OpenShift - NITP-4894)
+                .getCanonicalHostName(). (it's not good in the OpenShift or kubernetes)
 
                 If both variants are not suitable for ITF running in the OpenShift container
                     - the last variant is to set url explicitly in the config.properties

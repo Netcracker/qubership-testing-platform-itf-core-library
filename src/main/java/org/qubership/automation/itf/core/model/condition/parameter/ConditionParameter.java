@@ -39,8 +39,7 @@ import lombok.Setter;
 public class ConditionParameter implements Serializable {
     private static final long serialVersionUID = 20250303L;
 
-    /* NITP-5825, TASUP-9946:
-        if variable is absent in the context, then:
+    /* If variable is absent in the context, then:
             1. EXISTS returns false,
             2. NOTEXISTS returns true,
             3. All rest conditions:

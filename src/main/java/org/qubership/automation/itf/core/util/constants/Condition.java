@@ -23,8 +23,8 @@ public enum Condition {
     NOTEXISTS("NOTEXISTS"),
     EQUALS("EQUALS"),
     NOTEQUALS("NOTEQUALS"),
-    LESS("LESS"),       // Compare not as Strings but as Float numbers, NITP-4950
-    GREATER("GREATER"); // Compare not as Strings but as Float numbers, NITP-4950
+    LESS("LESS"),       // Compare not as Strings but as Float numbers
+    GREATER("GREATER"); // Compare not as Strings but as Float numbers
     private final String name;
 
     Condition(String name) {

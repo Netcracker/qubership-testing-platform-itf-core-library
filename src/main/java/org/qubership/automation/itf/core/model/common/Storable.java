@@ -65,8 +65,13 @@ public interface Storable extends Named, Identified<Object>, Prefixed, Optimisti
 
     void setNaturalId(Object id);
 
-    void performPostCopyActions(boolean statusOff); // While copying some types of objects we should set their statuses
-    // to InActive (or Off) regardless of status of source object (NITP-4139)
+    /**
+     * While copying some types of objects we should set their statuses
+     * to InActive (or Off) regardless of status of source object.
+     *
+     * @param statusOff boolean value to set.
+     */
+    void performPostCopyActions(boolean statusOff);
 
     void performPostImportActions(BigInteger projectId, BigInteger sessionId);
 

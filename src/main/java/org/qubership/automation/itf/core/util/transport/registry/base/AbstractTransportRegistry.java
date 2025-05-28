@@ -43,8 +43,8 @@ public abstract class AbstractTransportRegistry implements TransportRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTransportRegistry.class);
 
-    /*  Solution for NITP-4887
-            - activate triggers not while deploying transports but later
+    /*  Solution to speed up deployment of the service:
+            - activate triggers not while deploying transports but later.
      */
     private static final boolean deferredActivation = true;
     private static boolean triggersActivationCompleted;

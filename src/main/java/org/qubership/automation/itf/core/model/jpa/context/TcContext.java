@@ -69,25 +69,46 @@ public class TcContext extends JsonStorable {
     @Getter
     @Setter
     private String environmentName;
+
     private List<AbstractContainerInstance> instances = Lists.newArrayListWithExpectedSize(20);
     private AbstractContainerInstance initiator;
+
+    @Setter
+    @Getter
     private BigInteger projectId;
+
+    @Setter
+    @Getter
     private UUID projectUuid;
+
+    @Setter
+    @Getter
     private Status status = Status.NOT_STARTED;
+
+    @Setter(lombok.AccessLevel.PROTECTED)
+    @Getter
     private Set<String> bindingKeys = Sets.newHashSet();
+
+    @Setter(lombok.AccessLevel.PROTECTED)
+    @Getter
     private Map<String, String> reportLinks = Maps.newHashMapWithExpectedSize(5);
+
     private boolean startedByAtp;
     private boolean needToReportToAtp;
     private boolean needToReportToItf;
     private boolean startValidation;
     private StartedFrom startedFrom;
     private boolean runStepByStep;
+
+    @Setter
+    @Getter
     private String client;
+
     private boolean validationFailed;
 
+    @Setter
+    @Getter
     private Date endTime;
-    //TODO: isFailEventSent, isFinishEventSent and isNotified shouldn't be here (in model).
-    // Its auxiliary fields for TcContext. Created ticket to fix it NITP-6536
     private transient boolean isFailEventSent;
     private transient boolean isFinishEventSent;
     private transient boolean isNotified;
@@ -130,44 +151,12 @@ public class TcContext extends JsonStorable {
         this();
     }
 
-    public Set<String> getBindingKeys() {
-        return bindingKeys;
-    }
-
-    protected void setBindingKeys(Set<String> bindingKeys) {
-        this.bindingKeys = bindingKeys;
-    }
-
     public void fillBindingKeys(Set<String> renderendContextKeys) {
         StorableUtils.fillCollection(getBindingKeys(), renderendContextKeys);
     }
 
-    public Map<String, String> getReportLinks() {
-        return reportLinks;
-    }
-
-    protected void setReportLinks(Map<String, String> reportLinks) {
-        this.reportLinks = reportLinks;
-    }
-
     public void fillReportLinks(Map<String, String> reportLinks) {
         StorableUtils.fillMap(getReportLinks(), reportLinks);
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public String getClient() {
-        return client;
-    }
-
-    public void setClient(String client) {
-        this.client = client;
     }
 
     public boolean isRunning() {
@@ -211,14 +200,6 @@ public class TcContext extends JsonStorable {
 
     public void setInitiator(AbstractContainerInstance initiator) {
         this.initiator = initiator;
-    }
-
-    public Date getEndTime() {
-        return this.endTime;
-    }
-
-    public void setEndTime(Date value) {
-        this.endTime = value;
     }
 
     /**
@@ -332,22 +313,6 @@ public class TcContext extends JsonStorable {
 
     public void setStartedFrom(StartedFrom startedFrom) {
         this.startedFrom = startedFrom;
-    }
-
-    public BigInteger getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(BigInteger projectId) {
-        this.projectId = projectId;
-    }
-
-    public UUID getProjectUuid() {
-        return projectUuid;
-    }
-
-    public void setProjectUuid(UUID projectUuid) {
-        this.projectUuid = projectUuid;
     }
 
     @Transient

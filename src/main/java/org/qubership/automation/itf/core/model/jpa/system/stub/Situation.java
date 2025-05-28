@@ -197,9 +197,13 @@ public class Situation extends LabeledStorable implements StepContainer, Trigger
         this.keysToRegenerate.remove(key);
     }
 
+    /**
+     * Initial value of Trigger state for copied situation should be set to InActive.
+     * A user should properly configure new situation and then activate it manually.
+     *
+     * @param statusOff boolean value to set.
+     */
     @Override
-    // NITP-4139 Initial value of Trigger state for copied situation should be set to InActive.
-    //     A user should properly configure new situation and then activate it manually.
     public void performPostCopyActions(boolean statusOff) {
         if (statusOff) {
             setStateForTriggers(getSituationEventTriggers());
