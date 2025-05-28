@@ -2,15 +2,15 @@ openapi: 3.0.3
 info:
   title: Api Documentation
   description: Api Documentation
-  version: '1.0'
+  version: "1.0"
 servers:
-  - url: 'http://localhost:8080'
+  - url: "http://localhost:8080"
     description: Inferred Url
 tags:
   - name: attribute-controller
     description: Attribute Controller
 paths:
-  '/attribute/dsl/{dataSetListId}':
+  "/attribute/dsl/{dataSetListId}":
     get:
       tags:
         - attribute-controller
@@ -26,19 +26,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Attribute'
-        '401':
+                  $ref: "#/components/schemas/Attribute"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     put:
       tags:
@@ -75,7 +75,7 @@ paths:
           required: true
           style: form
           schema:
-            $ref: '#/components/schemas/AttributeType'
+            $ref: "#/components/schemas/AttributeType"
         - name: typeDataSetListId
           in: query
           description: typeDataSetListId
@@ -100,21 +100,21 @@ paths:
               items:
                 type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/AttributeCreateResponse'
-        '201':
+                $ref: "#/components/schemas/AttributeCreateResponse"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/attribute/dsl/{dataSetListId}/all':
+  "/attribute/dsl/{dataSetListId}/all":
     delete:
       tags:
         - attribute-controller
@@ -138,17 +138,17 @@ paths:
             type: integer
             format: int64
       responses:
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-  '/attribute/dsl/{dataSetListId}/itf':
+  "/attribute/dsl/{dataSetListId}/itf":
     get:
       tags:
         - attribute-controller
-      summary: 'Returns all attributes by dataSetList id in itf format: [attr1.attr2, attr1].'
+      summary: "Returns all attributes by dataSetList id in itf format: [attr1.attr2, attr1]."
       operationId: getAttributesInItfFormat
       parameters:
         - name: dataSetListId
@@ -160,17 +160,17 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: object
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /attribute/updateOrdering:
     put:
@@ -184,19 +184,19 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/PairOfUUidAndInt'
+                $ref: "#/components/schemas/PairOfUUidAndInt"
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/attribute/{attributeId}':
+  "/attribute/{attributeId}":
     get:
       tags:
         - attribute-controller
@@ -212,17 +212,17 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/Attribute'
-        '401':
+                $ref: "#/components/schemas/Attribute"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     post:
       tags:
@@ -262,19 +262,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: boolean
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     delete:
       tags:
@@ -307,17 +307,17 @@ paths:
             type: integer
             format: int64
       responses:
-        '204':
+        "204":
           description: No Content
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: boolean
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-  '/attribute/{attributeId}/bulk':
+  "/attribute/{attributeId}/bulk":
     delete:
       tags:
         - attribute-controller
@@ -358,13 +358,13 @@ paths:
             type: integer
             format: int64
       responses:
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-  '/attribute/{attributeId}/listValues':
+  "/attribute/{attributeId}/listValues":
     put:
       tags:
         - attribute-controller
@@ -403,19 +403,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/ListValue'
-        '201':
+                $ref: "#/components/schemas/ListValue"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     post:
       tags:
@@ -455,24 +455,24 @@ paths:
               items:
                 type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
                   type: string
                   format: uuid
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/attribute/{attributeId}/listValues/{listValueId}':
+  "/attribute/{attributeId}/listValues/{listValueId}":
     delete:
       tags:
         - attribute-controller
@@ -512,13 +512,13 @@ paths:
             type: integer
             format: int64
       responses:
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-  '/attribute/{attributeId}/options':
+  "/attribute/{attributeId}/options":
     get:
       tags:
         - attribute-controller
@@ -534,19 +534,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: object
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/attribute/{attributeId}/position':
+  "/attribute/{attributeId}/position":
     post:
       tags:
         - attribute-controller
@@ -568,17 +568,17 @@ paths:
               type: integer
               format: int32
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/attribute/{attributeId}/dataSetListReference':
+  "/attribute/{attributeId}/dataSetListReference":
     post:
       tags:
         - attribute-controller
@@ -602,21 +602,21 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: boolean
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/attribute/{dataSetListId}/existedValues':
+  "/attribute/{dataSetListId}/existedValues":
     post:
       tags:
         - attribute-controller
@@ -651,22 +651,22 @@ paths:
                   type: string
                   format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: object
                 items:
                   type: string
                   format: array
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
 components:
   schemas:
@@ -681,10 +681,10 @@ components:
       properties:
         dataSetList:
           description: parent
-          $ref: '#/components/schemas/DataSetList'
+          $ref: "#/components/schemas/DataSetList"
         dataSetListReference:
           description: for dsl type
-          $ref: '#/components/schemas/DataSetList'
+          $ref: "#/components/schemas/DataSetList"
         id:
           type: string
           format: uuid
@@ -692,15 +692,15 @@ components:
           type: array
           description: for list type
           items:
-            $ref: '#/components/schemas/ListValue'
+            $ref: "#/components/schemas/ListValue"
         name:
           type: string
         parameters:
           type: array
           items:
-            $ref: '#/components/schemas/Parameter'
+            $ref: "#/components/schemas/Parameter"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
     AttributeCreateResponse:
       title: AttributeCreateResponse
       type: object
@@ -717,11 +717,11 @@ components:
         listValues:
           type: array
           items:
-            $ref: '#/components/schemas/ListValueResponse'
+            $ref: "#/components/schemas/ListValueResponse"
         name:
           type: string
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
     DataSet:
       title: DataSet
       type: object
@@ -736,7 +736,7 @@ components:
         attributes:
           type: array
           items:
-            $ref: '#/components/schemas/Attribute'
+            $ref: "#/components/schemas/Attribute"
         createdBy:
           type: string
           format: uuid
@@ -746,14 +746,14 @@ components:
         dataSets:
           type: array
           items:
-            $ref: '#/components/schemas/DataSet'
+            $ref: "#/components/schemas/DataSet"
         id:
           type: string
           format: uuid
         labels:
           type: array
           items:
-            $ref: '#/components/schemas/Label'
+            $ref: "#/components/schemas/Label"
         modifiedBy:
           type: string
           format: uuid
@@ -763,10 +763,10 @@ components:
         name:
           type: string
         testPlan:
-          $ref: '#/components/schemas/TestPlan'
+          $ref: "#/components/schemas/TestPlan"
         visibilityArea:
           description: parent
-          $ref: '#/components/schemas/VisibilityArea'
+          $ref: "#/components/schemas/VisibilityArea"
     FileData:
       title: FileData
       type: object
@@ -804,7 +804,7 @@ components:
       properties:
         attribute:
           description: parent
-          $ref: '#/components/schemas/Attribute'
+          $ref: "#/components/schemas/Attribute"
         id:
           type: string
           format: uuid
@@ -843,21 +843,21 @@ components:
       properties:
         attribute:
           description: parent
-          $ref: '#/components/schemas/Attribute'
+          $ref: "#/components/schemas/Attribute"
         dataSet:
           description: parent
-          $ref: '#/components/schemas/DataSet'
+          $ref: "#/components/schemas/DataSet"
         dataSetReference:
           description: for attribute with dsl type
-          $ref: '#/components/schemas/DataSet'
+          $ref: "#/components/schemas/DataSet"
         fileData:
-          $ref: '#/components/schemas/FileData'
+          $ref: "#/components/schemas/FileData"
         id:
           type: string
           format: uuid
         listValue:
           description: for attribute with list type
-          $ref: '#/components/schemas/ListValue'
+          $ref: "#/components/schemas/ListValue"
         text:
           type: string
           description: for attribute with text type
@@ -875,7 +875,7 @@ components:
         name:
           type: string
         visibilityArea:
-          $ref: '#/components/schemas/VisibilityArea'
+          $ref: "#/components/schemas/VisibilityArea"
     VisibilityArea:
       title: VisibilityArea
       required:
@@ -886,7 +886,7 @@ components:
         dataSetLists:
           type: array
           items:
-            $ref: '#/components/schemas/DataSetList'
+            $ref: "#/components/schemas/DataSetList"
         id:
           type: string
           format: uuid

@@ -2,9 +2,9 @@ openapi: 3.0.3
 info:
   title: Api Documentation
   description: Api Documentation
-  version: '1.0'
+  version: "1.0"
 servers:
-  - url: 'http://localhost:8080'
+  - url: "http://localhost:8080"
     description: Inferred Url
 tags:
   - name: data-set-controller
@@ -17,19 +17,19 @@ paths:
       summary: Returns all dataSets.
       operationId: getDataSets
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DataSet'
-        '401':
+                  $ref: "#/components/schemas/DataSet"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /ds/affected/by:
     get:
@@ -62,19 +62,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
                   type: object
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /ds/dsReferenceId/affected/by:
     get:
@@ -99,19 +99,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
                   type: object
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /ds/find-name-pagination:
     get:
@@ -181,17 +181,17 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/PageAbstractEntityResponse'
-        '401':
+                $ref: "#/components/schemas/PageAbstractEntityResponse"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /ds/parent/path:
     get:
@@ -209,23 +209,23 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/PairOfUUidAndInt'
-        '401':
+                $ref: "#/components/schemas/PairOfUUidAndInt"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /ds/reset/affected/by:
     post:
       tags:
         - data-set-controller
-      summary: 'Reset all selected datasets, at changed attribute'
+      summary: "Reset all selected datasets, at changed attribute"
       operationId: restAffectedDatasetsByChangesAttribute
       parameters:
         - name: attributeId
@@ -261,21 +261,21 @@ paths:
                 type: string
                 format: uuid
       responses:
-        '201':
+        "201":
           description: Created
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /ds/reset/by:
     post:
       tags:
         - data-set-controller
-      summary: 'Reset all selected datasets, at changed attribute. dataSetIds is ids of datasets in which we want to reset overridden parameters with attributeId provided'
+      summary: "Reset all selected datasets, at changed attribute. dataSetIds is ids of datasets in which we want to reset overridden parameters with attributeId provided"
       operationId: resetOverriddenParameter
       parameters:
         - name: dataSetId
@@ -319,19 +319,19 @@ paths:
                 type: string
                 format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/Parameter'
-        '201':
+                $ref: "#/components/schemas/Parameter"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /ds/restore:
     post:
@@ -360,23 +360,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JsonNode'
+              $ref: "#/components/schemas/JsonNode"
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: boolean
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}':
+  "/ds/{dataSetId}":
     get:
       tags:
         - data-set-controller
@@ -392,17 +392,17 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: object
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     post:
       tags:
@@ -442,15 +442,15 @@ paths:
             type: integer
             format: int64
       responses:
-        '201':
+        "201":
           description: Created
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     delete:
       tags:
@@ -483,13 +483,13 @@ paths:
             type: integer
             format: int64
       responses:
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-  '/ds/{dataSetId}/atp':
+  "/ds/{dataSetId}/atp":
     post:
       tags:
         - data-set-controller
@@ -517,21 +517,21 @@ paths:
             schema:
               type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/DataSetTree'
-        '201':
+                $ref: "#/components/schemas/DataSetTree"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/atp/bulk':
+  "/ds/{dataSetId}/atp/bulk":
     post:
       tags:
         - data-set-controller
@@ -569,23 +569,23 @@ paths:
               additionalProperties:
                 type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
                   type: object
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/atp/object':
+  "/ds/{dataSetId}/atp/object":
     post:
       tags:
         - data-set-controller
@@ -613,21 +613,21 @@ paths:
             schema:
               type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/DataSetTree'
-        '201':
+                $ref: "#/components/schemas/DataSetTree"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/atp/object/bulk':
+  "/ds/{dataSetId}/atp/object/bulk":
     post:
       tags:
         - data-set-controller
@@ -665,23 +665,23 @@ paths:
               additionalProperties:
                 type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
                   type: object
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/atp/objectExtended':
+  "/ds/{dataSetId}/atp/objectExtended":
     post:
       tags:
         - data-set-controller
@@ -709,21 +709,21 @@ paths:
             schema:
               type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/DataSetTree'
-        '201':
+                $ref: "#/components/schemas/DataSetTree"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/atp/optimized':
+  "/ds/{dataSetId}/atp/optimized":
     post:
       tags:
         - data-set-controller
@@ -751,21 +751,21 @@ paths:
             schema:
               type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/DataSetTree'
-        '201':
+                $ref: "#/components/schemas/DataSetTree"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/atp/optimized/bulk':
+  "/ds/{dataSetId}/atp/optimized/bulk":
     post:
       tags:
         - data-set-controller
@@ -803,23 +803,23 @@ paths:
               additionalProperties:
                 type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
                   type: object
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/copy':
+  "/ds/{dataSetId}/copy":
     put:
       tags:
         - data-set-controller
@@ -842,22 +842,22 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: string
                 format: uuid
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/itf':
+  "/ds/{dataSetId}/itf":
     get:
       tags:
         - data-set-controller
@@ -873,19 +873,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: string
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/label':
+  "/ds/{dataSetId}/label":
     get:
       tags:
         - data-set-controller
@@ -901,19 +901,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Label'
-        '401':
+                  $ref: "#/components/schemas/Label"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     put:
       tags:
@@ -953,21 +953,21 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/Label'
-        '201':
+                $ref: "#/components/schemas/Label"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/label/{labelId}':
+  "/ds/{dataSetId}/label/{labelId}":
     delete:
       tags:
         - data-set-controller
@@ -1007,19 +1007,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: boolean
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-  '/ds/{dataSetId}/legacy/atp':
+  "/ds/{dataSetId}/legacy/atp":
     post:
       tags:
         - data-set-controller
@@ -1046,25 +1046,25 @@ paths:
             schema:
               type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/StreamingResponseBody'
-        '201':
+                $ref: "#/components/schemas/StreamingResponseBody"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/legacy/itf':
+  "/ds/{dataSetId}/legacy/itf":
     get:
       tags:
         - data-set-controller
-      summary: 'Returns dataSet by id in ITF format: {attribute = parameter, attribute2 : {attribute = parameter2}}.'
+      summary: "Returns dataSet by id in ITF format: {attribute = parameter, attribute2 : {attribute = parameter2}}."
       operationId: getInItfFormat
       parameters:
         - name: dataSetId
@@ -1075,19 +1075,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: object
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/parameters':
+  "/ds/{dataSetId}/parameters":
     post:
       tags:
         - data-set-controller
@@ -1118,21 +1118,21 @@ paths:
                 type: string
                 format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/UiManAttribute'
-        '201':
+                $ref: "#/components/schemas/UiManAttribute"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/position':
+  "/ds/{dataSetId}/position":
     post:
       tags:
         - data-set-controller
@@ -1154,17 +1154,17 @@ paths:
               type: integer
               format: int32
       responses:
-        '200':
+        "200":
           description: OK
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetListId}/ds':
+  "/ds/{dataSetListId}/ds":
     put:
       tags:
         - data-set-controller
@@ -1195,22 +1195,22 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: string
                 format: uuid
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetListId}/short':
+  "/ds/{dataSetListId}/short":
     get:
       tags:
         - data-set-controller
@@ -1226,21 +1226,21 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ObjectShortResponse'
-        '401':
+                  $ref: "#/components/schemas/ObjectShortResponse"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/affectedDatasets':
+  "/ds/{dataSetId}/affectedDatasets":
     get:
       tags:
         - data-set-controller
@@ -1256,21 +1256,21 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TableResponse'
-        '401':
+                  $ref: "#/components/schemas/TableResponse"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/{dataSetId}/affectedDatasetsCount':
+  "/ds/{dataSetId}/affectedDatasetsCount":
     get:
       tags:
         - data-set-controller
@@ -1286,19 +1286,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: number
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/ds/lock/update':
+  "/ds/lock/update":
     post:
       tags:
         - data-set-controller
@@ -1338,15 +1338,15 @@ paths:
                 type: string
                 format: uuid
       responses:
-        '201':
+        "201":
           description: Created
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
 
 components:
@@ -1365,7 +1365,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         value:
           type: string
     AttributeType:
@@ -1388,10 +1388,10 @@ components:
       properties:
         dataSetList:
           description: parent
-          $ref: '#/components/schemas/DataSetList'
+          $ref: "#/components/schemas/DataSetList"
         dataSetListReference:
           description: for dsl type
-          $ref: '#/components/schemas/DataSetList'
+          $ref: "#/components/schemas/DataSetList"
         id:
           type: string
           format: uuid
@@ -1399,15 +1399,15 @@ components:
           type: array
           description: for list type
           items:
-            $ref: '#/components/schemas/ListValue'
+            $ref: "#/components/schemas/ListValue"
         name:
           type: string
         parameters:
           type: array
           items:
-            $ref: '#/components/schemas/Parameter'
+            $ref: "#/components/schemas/Parameter"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
     DataSet:
       title: DataSet
       type: object
@@ -1423,13 +1423,13 @@ components:
         groups:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/DataSetGroup'
+            $ref: "#/components/schemas/DataSetGroup"
         parameters:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/AbstractParameter'
+            $ref: "#/components/schemas/AbstractParameter"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
         value:
           type: string
     DataSetList:
@@ -1443,7 +1443,7 @@ components:
         attributes:
           type: array
           items:
-            $ref: '#/components/schemas/Attribute'
+            $ref: "#/components/schemas/Attribute"
         createdBy:
           type: string
           format: uuid
@@ -1453,14 +1453,14 @@ components:
         dataSets:
           type: array
           items:
-            $ref: '#/components/schemas/DataSet'
+            $ref: "#/components/schemas/DataSet"
         id:
           type: string
           format: uuid
         labels:
           type: array
           items:
-            $ref: '#/components/schemas/Label'
+            $ref: "#/components/schemas/Label"
         modifiedBy:
           type: string
           format: uuid
@@ -1470,10 +1470,10 @@ components:
         name:
           type: string
         testPlan:
-          $ref: '#/components/schemas/TestPlan'
+          $ref: "#/components/schemas/TestPlan"
         visibilityArea:
           description: parent
-          $ref: '#/components/schemas/VisibilityArea'
+          $ref: "#/components/schemas/VisibilityArea"
     DataSetTree:
       title: DataSetTree
       type: object
@@ -1481,11 +1481,11 @@ components:
         groups:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/DataSetGroup'
+            $ref: "#/components/schemas/DataSetGroup"
         parameters:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/AbstractParameter'
+            $ref: "#/components/schemas/AbstractParameter"
     FileData:
       title: FileData
       type: object
@@ -1526,7 +1526,7 @@ components:
       properties:
         attribute:
           description: parent
-          $ref: '#/components/schemas/Attribute'
+          $ref: "#/components/schemas/Attribute"
         id:
           type: string
           format: uuid
@@ -1560,7 +1560,7 @@ components:
         paged:
           type: boolean
         sort:
-          $ref: '#/components/schemas/Sort'
+          $ref: "#/components/schemas/Sort"
         unpaged:
           type: boolean
     PageAbstractEntityResponse:
@@ -1570,7 +1570,7 @@ components:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/AbstractEntityResponse'
+            $ref: "#/components/schemas/AbstractEntityResponse"
         empty:
           type: boolean
         first:
@@ -1584,12 +1584,12 @@ components:
           type: integer
           format: int32
         pageable:
-          $ref: '#/components/schemas/Pageable'
+          $ref: "#/components/schemas/Pageable"
         size:
           type: integer
           format: int32
         sort:
-          $ref: '#/components/schemas/Sort'
+          $ref: "#/components/schemas/Sort"
         totalElements:
           type: integer
           format: int64
@@ -1616,21 +1616,21 @@ components:
       properties:
         attribute:
           description: parent
-          $ref: '#/components/schemas/Attribute'
+          $ref: "#/components/schemas/Attribute"
         dataSet:
           description: parent
-          $ref: '#/components/schemas/DataSet'
+          $ref: "#/components/schemas/DataSet"
         dataSetReference:
           description: for attribute with dsl type
-          $ref: '#/components/schemas/DataSet'
+          $ref: "#/components/schemas/DataSet"
         fileData:
-          $ref: '#/components/schemas/FileData'
+          $ref: "#/components/schemas/FileData"
         id:
           type: string
           format: uuid
         listValue:
           description: for attribute with list type
-          $ref: '#/components/schemas/ListValue'
+          $ref: "#/components/schemas/ListValue"
         text:
           type: string
           description: for attribute with text type
@@ -1661,7 +1661,7 @@ components:
         name:
           type: string
         visibilityArea:
-          $ref: '#/components/schemas/VisibilityArea'
+          $ref: "#/components/schemas/VisibilityArea"
     UiManAttribute:
       title: UiManAttribute
       type: object
@@ -1669,7 +1669,7 @@ components:
         attributes:
           type: array
           items:
-            $ref: '#/components/schemas/UiManAttribute'
+            $ref: "#/components/schemas/UiManAttribute"
         dataSetListReference:
           type: string
           format: uuid
@@ -1681,9 +1681,9 @@ components:
         parameters:
           type: array
           items:
-            $ref: '#/components/schemas/UiManParameter'
+            $ref: "#/components/schemas/UiManParameter"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
     UiManParameter:
       title: UiManParameter
       type: object
@@ -1707,7 +1707,7 @@ components:
         dataSetLists:
           type: array
           items:
-            $ref: '#/components/schemas/DataSetList'
+            $ref: "#/components/schemas/DataSetList"
         id:
           type: string
           format: uuid
