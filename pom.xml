@@ -43,7 +43,7 @@
     </properties>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>ATP Auth Spring Boot Starter</description>
+    <description>ATP ITF Core Library</description>
     <url>https://github.com/Netcracker/qubership-testing-platform-itf-core-library</url>
     <licenses>
         <license>
