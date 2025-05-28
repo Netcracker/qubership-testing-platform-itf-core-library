@@ -2,9 +2,9 @@ openapi: 3.0.3
 info:
   title: Api Documentation
   description: Api Documentation
-  version: '1.0'
+  version: "1.0"
 servers:
-  - url: 'http://localhost:8080'
+  - url: "http://localhost:8080"
     description: Inferred Url
 tags:
   - name: data-set-list-controller
@@ -19,19 +19,19 @@ paths:
       summary: Returns all dataSetLists.
       operationId: getDataSetLists
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DataSetListCreatedModifiedView'
-        '401':
+                  $ref: "#/components/schemas/DataSetListCreatedModifiedView"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /dsl/copy:
     post:
@@ -43,23 +43,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CopyDataSetListsRequest'
+              $ref: "#/components/schemas/CopyDataSetListsRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CopyDataSetListsResponse'
-        '201':
+                  $ref: "#/components/schemas/CopyDataSetListsResponse"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /dsl/cyclesCheck:
     get:
@@ -68,17 +68,17 @@ paths:
       summary: Get affected attribute by deleting dsl( data set storage).
       operationId: getCyclesCheck
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/CyclesCheckResult'
-        '401':
+                $ref: "#/components/schemas/CyclesCheckResult"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /dsl/dependencies:
     post:
@@ -95,21 +95,21 @@ paths:
                 type: string
                 format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DataSetListDependencyNode'
-        '201':
+                  $ref: "#/components/schemas/DataSetListDependencyNode"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /dsl/dependenciesRecursive:
     post:
@@ -126,21 +126,21 @@ paths:
                 type: string
                 format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DataSetListDependencyNode'
-        '201':
+                  $ref: "#/components/schemas/DataSetListDependencyNode"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /dsl/ds/all:
     post:
@@ -157,21 +157,21 @@ paths:
                 type: string
                 format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DatasetResponse'
-        '201':
+                  $ref: "#/components/schemas/DatasetResponse"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
   /dsl/ds/clone/bulk:
     post:
@@ -199,23 +199,23 @@ paths:
                   type: string
                   format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: object
                 additionalProperties:
-                  $ref: '#/components/schemas/Pair'
-        '201':
+                  $ref: "#/components/schemas/Pair"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/va/{vaId}':
+  "/dsl/va/{vaId}":
     get:
       tags:
         - data-set-list-controller
@@ -238,19 +238,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DataSetListCreatedModifiedView'
-        '401':
+                  $ref: "#/components/schemas/DataSetListCreatedModifiedView"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     put:
       tags:
@@ -282,22 +282,22 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: string
                 format: uuid
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/va/{vaId}/dsl/{dataSetListId}/copy':
+  "/dsl/va/{vaId}/dsl/{dataSetListId}/copy":
     put:
       tags:
         - data-set-list-controller
@@ -343,22 +343,22 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: string
                 format: uuid
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}':
+  "/dsl/{dataSetListId}":
     get:
       tags:
         - data-set-list-controller
@@ -409,17 +409,17 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: object
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     post:
       tags:
@@ -466,19 +466,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: boolean
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     delete:
       tags:
@@ -495,13 +495,13 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-  '/dsl/{dataSetListId}/ds':
+  "/dsl/{dataSetListId}/ds":
     get:
       tags:
         - data-set-list-controller
@@ -531,21 +531,21 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DataSet'
-        '401':
+                  $ref: "#/components/schemas/DataSet"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/ds/{ds}':
+  "/dsl/{dataSetListId}/ds/{ds}":
     get:
       tags:
         - data-set-list-controller
@@ -569,19 +569,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: object
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/exists':
+  "/dsl/{dataSetListId}/exists":
     get:
       tags:
         - data-set-list-controller
@@ -597,15 +597,15 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/export/excel':
+  "/dsl/{dataSetListId}/export/excel":
     post:
       tags:
         - data-set-list-controller
@@ -621,20 +621,20 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
               schema:
                 type: string
                 format: binary
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/filters':
+  "/dsl/{dataSetListId}/filters":
     post:
       tags:
         - data-set-list-controller
@@ -683,23 +683,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DataSetsAndAttributesFilterPair'
+              $ref: "#/components/schemas/DataSetsAndAttributesFilterPair"
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: object
-        '201':
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/full':
+  "/dsl/{dataSetListId}/full":
     get:
       tags:
         - data-set-list-controller
@@ -715,21 +715,21 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DataSet'
-        '401':
+                  $ref: "#/components/schemas/DataSet"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/getAffected':
+  "/dsl/{dataSetListId}/getAffected":
     get:
       tags:
         - data-set-list-controller
@@ -745,21 +745,21 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TableResponse'
-        '401':
+                  $ref: "#/components/schemas/TableResponse"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/getAffectedDSL':
+  "/dsl/{dataSetListId}/getAffectedDSL":
     get:
       tags:
         - data-set-list-controller
@@ -791,23 +791,23 @@ paths:
             type: integer
             format: int32
       responses:
-        '200':
+        "200":
           description: OK
-        '206':
+        "206":
           description: Partial Content
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AffectedDataSetList'
-        '401':
+                  $ref: "#/components/schemas/AffectedDataSetList"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/label':
+  "/dsl/{dataSetListId}/label":
     get:
       tags:
         - data-set-list-controller
@@ -823,19 +823,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Label'
-        '401':
+                  $ref: "#/components/schemas/Label"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
     put:
       tags:
@@ -867,21 +867,21 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/Label'
-        '201':
+                $ref: "#/components/schemas/Label"
+        "201":
           description: Created
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/label/{labelId}':
+  "/dsl/{dataSetListId}/label/{labelId}":
     delete:
       tags:
         - data-set-list-controller
@@ -913,19 +913,19 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: boolean
-        '204':
+        "204":
           description: No Content
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-  '/dsl/{dataSetListId}/modifiedWhen':
+  "/dsl/{dataSetListId}/modifiedWhen":
     get:
       tags:
         - data-set-list-controller
@@ -941,20 +941,20 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: string
                 format: date-time
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/lazy/{dataSetListId}':
+  "/dsl/lazy/{dataSetListId}":
     get:
       tags:
         - data-set-list-lazy-loading-controller
@@ -970,19 +970,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/DataSetListFlat'
-        '401':
+                $ref: "#/components/schemas/DataSetListFlat"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/lazy/{dataSetListId}/ReferenceByPath/{attributePath}':
+  "/dsl/lazy/{dataSetListId}/ReferenceByPath/{attributePath}":
     get:
       tags:
         - data-set-list-lazy-loading-controller
@@ -1005,19 +1005,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/RefDataSetListFlat'
-        '401':
+                $ref: "#/components/schemas/RefDataSetListFlat"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/getAffectedCount':
+  "/dsl/{dataSetListId}/getAffectedCount":
     get:
       tags:
         - data-set-list-controller
@@ -1033,19 +1033,19 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
                 type: number
-        '401':
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
-  '/dsl/{dataSetListId}/import/excel':
+  "/dsl/{dataSetListId}/import/excel":
     post:
       tags:
         - data-set-list-controller
@@ -1076,17 +1076,17 @@ paths:
           schema:
             type: boolean
       responses:
-        '200':
+        "200":
           description: OK
           content:
-            'application/json':
+            "application/json":
               schema:
-                $ref: '#/components/schemas/DatasetListImportResponse'
-        '401':
+                $ref: "#/components/schemas/DatasetListImportResponse"
+        "401":
           description: Unauthorized
-        '403':
+        "403":
           description: Forbidden
-        '404':
+        "404":
           description: Not Found
 components:
   schemas:
@@ -1110,10 +1110,10 @@ components:
       properties:
         dataSetList:
           description: parent
-          $ref: '#/components/schemas/DataSetList'
+          $ref: "#/components/schemas/DataSetList"
         dataSetListReference:
           description: for dsl type
-          $ref: '#/components/schemas/DataSetList'
+          $ref: "#/components/schemas/DataSetList"
         id:
           type: string
           format: uuid
@@ -1121,15 +1121,15 @@ components:
           type: array
           description: for list type
           items:
-            $ref: '#/components/schemas/ListValue'
+            $ref: "#/components/schemas/ListValue"
         name:
           type: string
         parameters:
           type: array
           items:
-            $ref: '#/components/schemas/Parameter'
+            $ref: "#/components/schemas/Parameter"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
     AttributeFlat:
       title: AttributeFlat
       type: object
@@ -1144,9 +1144,9 @@ components:
         parameters:
           type: array
           items:
-            $ref: '#/components/schemas/ParameterFlat'
+            $ref: "#/components/schemas/ParameterFlat"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
     CopyDataSetListsRequest:
       title: CopyDataSetListsRequest
       type: object
@@ -1209,7 +1209,7 @@ components:
         labels:
           type: array
           items:
-            $ref: '#/components/schemas/LabelFlat'
+            $ref: "#/components/schemas/LabelFlat"
         name:
           type: string
     DataSetList:
@@ -1223,7 +1223,7 @@ components:
         attributes:
           type: array
           items:
-            $ref: '#/components/schemas/Attribute'
+            $ref: "#/components/schemas/Attribute"
         createdBy:
           type: string
           format: uuid
@@ -1233,14 +1233,14 @@ components:
         dataSets:
           type: array
           items:
-            $ref: '#/components/schemas/DataSet'
+            $ref: "#/components/schemas/DataSet"
         id:
           type: string
           format: uuid
         labels:
           type: array
           items:
-            $ref: '#/components/schemas/Label'
+            $ref: "#/components/schemas/Label"
         modifiedBy:
           type: string
           format: uuid
@@ -1250,10 +1250,10 @@ components:
         name:
           type: string
         testPlan:
-          $ref: '#/components/schemas/TestPlan'
+          $ref: "#/components/schemas/TestPlan"
         visibilityArea:
           description: parent
-          $ref: '#/components/schemas/VisibilityArea'
+          $ref: "#/components/schemas/VisibilityArea"
     DataSetListCreatedModifiedView:
       title: DataSetListCreatedModifiedView
       required:
@@ -1273,7 +1273,7 @@ components:
         labels:
           type: array
           items:
-            $ref: '#/components/schemas/LabelCreatedModifiedView'
+            $ref: "#/components/schemas/LabelCreatedModifiedView"
         modifiedBy:
           type: string
           format: uuid
@@ -1283,7 +1283,7 @@ components:
         name:
           type: string
         testPlan:
-          $ref: '#/components/schemas/TestPlanCreatedModifiedView'
+          $ref: "#/components/schemas/TestPlanCreatedModifiedView"
     DataSetListDependencyNode:
       title: DataSetListDependencyNode
       type: object
@@ -1291,7 +1291,7 @@ components:
         dependencies:
           type: array
           items:
-            $ref: '#/components/schemas/DataSetListDependencyNode'
+            $ref: "#/components/schemas/DataSetListDependencyNode"
         id:
           type: string
           format: uuid
@@ -1304,11 +1304,11 @@ components:
         attributes:
           type: array
           items:
-            $ref: '#/components/schemas/AttributeFlat'
+            $ref: "#/components/schemas/AttributeFlat"
         dataSets:
           type: array
           items:
-            $ref: '#/components/schemas/DataSetFlat'
+            $ref: "#/components/schemas/DataSetFlat"
         id:
           type: string
           format: uuid
@@ -1355,7 +1355,7 @@ components:
         datasets:
           type: array
           items:
-            $ref: '#/components/schemas/DataSet'
+            $ref: "#/components/schemas/DataSet"
     Label:
       title: Label
       required:
@@ -1399,7 +1399,7 @@ components:
       properties:
         attribute:
           description: parent
-          $ref: '#/components/schemas/Attribute'
+          $ref: "#/components/schemas/Attribute"
         id:
           type: string
           format: uuid
@@ -1425,21 +1425,21 @@ components:
       properties:
         attribute:
           description: parent
-          $ref: '#/components/schemas/Attribute'
+          $ref: "#/components/schemas/Attribute"
         dataSet:
           description: parent
-          $ref: '#/components/schemas/DataSet'
+          $ref: "#/components/schemas/DataSet"
         dataSetReference:
           description: for attribute with dsl type
-          $ref: '#/components/schemas/DataSet'
+          $ref: "#/components/schemas/DataSet"
         fileData:
-          $ref: '#/components/schemas/FileData'
+          $ref: "#/components/schemas/FileData"
         id:
           type: string
           format: uuid
         listValue:
           description: for attribute with list type
-          $ref: '#/components/schemas/ListValue'
+          $ref: "#/components/schemas/ListValue"
         text:
           type: string
           description: for attribute with text type
@@ -1470,9 +1470,9 @@ components:
         parameters:
           type: array
           items:
-            $ref: '#/components/schemas/RefParameter'
+            $ref: "#/components/schemas/RefParameter"
         type:
-          $ref: '#/components/schemas/AttributeType'
+          $ref: "#/components/schemas/AttributeType"
     RefDataSetListFlat:
       title: RefDataSetListFlat
       type: object
@@ -1480,7 +1480,7 @@ components:
         attributes:
           type: array
           items:
-            $ref: '#/components/schemas/RefDataSetListAttribute'
+            $ref: "#/components/schemas/RefDataSetListAttribute"
     RefParameter:
       title: RefParameter
       type: object
@@ -1536,7 +1536,7 @@ components:
         name:
           type: string
         visibilityArea:
-          $ref: '#/components/schemas/VisibilityArea'
+          $ref: "#/components/schemas/VisibilityArea"
     TestPlanCreatedModifiedView:
       title: TestPlanCreatedModifiedView
       required:
@@ -1559,7 +1559,7 @@ components:
         dataSetLists:
           type: array
           items:
-            $ref: '#/components/schemas/DataSetList'
+            $ref: "#/components/schemas/DataSetList"
         id:
           type: string
           format: uuid
@@ -1581,7 +1581,7 @@ components:
         attributes:
           type: array
           items:
-            $ref: '#/components/schemas/AttributeImportResponse'
+            $ref: "#/components/schemas/AttributeImportResponse"
     AttributeImportResponse:
       title: AttributeImportResponse
       type: object
@@ -1594,11 +1594,11 @@ components:
         success:
           type: array
           items:
-            $ref: '#/components/schemas/ParameterImportResponse'
+            $ref: "#/components/schemas/ParameterImportResponse"
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/ParameterImportResponse'
+            $ref: "#/components/schemas/ParameterImportResponse"
     ParameterImportResponse:
       title: ParameterImportResponse
       type: object
