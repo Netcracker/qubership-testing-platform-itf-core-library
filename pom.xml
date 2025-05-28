@@ -24,7 +24,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <revision>.4.106.5-SNAPSHOT</revision>
+        <revision>4.106.5-SNAPSHOT</revision>
         <spring.boot.version>2.7.18</spring.boot.version>
         <org.springframework.version>5.3.21</org.springframework.version>
         <org.springframework.security.version>5.2.0.RELEASE</org.springframework.security.version>
@@ -39,7 +39,7 @@
 
         <atp.common.version>0.0.42</atp.common.version>
         <atp.auth.version>1.2.59</atp.auth.version>
-        <atp.integration.version>0.2.38</atp.integration.version>
+        <atp.integration.version>0.2.38-SNAPSHOT</atp.integration.version>
         <javers.version>6.6.4</javers.version>
     </properties>
 
