@@ -2,24 +2,28 @@
 
 **Qubership ATP-ITF-CORE** (QS-ATP-ITF-CORE) is a core library `Integrations Testing Framework`
 
-## Core Library used in ITF services: 
-* atp-itf-executor
-* atp-itf-stubs
-* atp-itf-reporting
+## Core Library used in ITF services:
+
+- atp-itf-executor
+- atp-itf-stubs
+- atp-itf-reporting
 
 ## User Guide
 
-#### Connecting in Spring Boot application: #####
-##### 1. Add dependency: #####
+#### Connecting in Spring Boot application:
 
-```    
+##### 1. Add dependency:
+
+```
 <dependency>
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
-##### 2. Specify the required parameters in application.properties #####
+
+##### 2. Specify the required parameters in application.properties
+
 ```properties
 ##======================DataBase configurations=======================
 spring.datasource.url=${SPRING_DATASOURCE_URL}
