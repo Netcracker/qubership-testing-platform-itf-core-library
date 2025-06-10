@@ -39,7 +39,7 @@
         <hazelcast.version>4.2.6</hazelcast.version>
         <querydsl.version>4.0.0</querydsl.version>
 
-        <atp.common.version>0.0.42</atp.common.version>
+        <atp.common.version>0.0.43</atp.common.version>
         <atp.auth.version>1.2.60</atp.auth.version>
         <atp.integration.version>0.2.38</atp.integration.version>
         <javers.version>6.6.4</javers.version>
