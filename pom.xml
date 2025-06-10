@@ -24,6 +24,10 @@
     <packaging>jar</packaging>
 
     <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <targetJdk>1.8</targetJdk>
         <spring.boot.version>2.7.18</spring.boot.version>
         <org.springframework.version>5.3.21</org.springframework.version>
         <org.springframework.security.version>5.2.0.RELEASE</org.springframework.security.version>
@@ -32,18 +36,17 @@
         <net.javacrumbs.shedlock.version>4.14.0</net.javacrumbs.shedlock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <hazelcast.version>4.2.6</hazelcast.version>
         <querydsl.version>4.0.0</querydsl.version>
 
-        <atp.common.version>0.0.43-SNAPSHOT</atp.common.version>
-        <atp.auth.version>1.2.59-SNAPSHOT</atp.auth.version>
-        <atp.integration.version>0.2.38-SNAPSHOT</atp.integration.version>
+        <atp.common.version>0.0.42</atp.common.version>
+        <atp.auth.version>1.2.60</atp.auth.version>
+        <atp.integration.version>0.2.38</atp.integration.version>
         <javers.version>6.6.4</javers.version>
     </properties>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>ITF Core Library</description>
+    <description>Qubership Testing Platform ITF Core Library</description>
     <url>https://github.com/Netcracker/qubership-testing-platform-itf-core-library</url>
     <licenses>
         <license>

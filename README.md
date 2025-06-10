@@ -1,25 +1,52 @@
-# ATP-ITF-CORE
+# Qubership Testing Platform ITF Core Library
 
-**Qubership Testing Platform ITF-CORE** (QSTP-ITF-CORE) is a core library for `Integrations Testing Framework` services
+- **Qubership Testing Platform ITF Core Library** (QSTP ITF CORE) is a core library for `Integrations Testing Framework` services
+- ITF Core Library is used in the following services: 
+  - itf-executor
+  - itf-stubs
+  - itf-reporting
 
-## Core Library is used in ITF services 
-* itf-executor
-* itf-stubs
-* itf-reporting
+## Functionality Description
 
-## User Guide
+ITF Core Library contains packages:
+- org.qubership.automation.itf.core.model
+  - The package implements the whole object model for ITF Services: configuration objects, execution/reporting objects and javers object changes history objects
+- org.qubership.automation.itf.core.hibernate
+  - Classes of Hibernate Object Managers, Spring Repositories, Types Converters
+- org.qubership.automation.itf.core.config
+  - Spring Beans Config Classes
+- org.qubership.automation.itf.core.template.velocity.directives
+  - Apache Velocity Directives developed by ITF and included in ITF-Executor and in ITF-Stubs Services in-the-box
+- org.qubership.automation.itf.core.message.parser
+  - Parse messages by means of so-called 'Parsing Rules' of various types
+- org.qubership.automation.itf.core.stub.fast
+  - Fast Stubs implementation classes
+- org.qubership.automation.itf.core.util
+  - Various Utility classes for above functionality and other applications.
 
-#### Connecting in Spring Boot application #####
-##### 1. Add dependency #####
+## Local build
+
+In IntelliJ IDEA, one can select 'github' Profile in Maven Settings menu on the right, then expand Lifecycle dropdown 
+of atp-itf-core module, then select 'clean' and 'install' options and click 'Run Maven Build' green arrow button on the top.
+
+Or, one can execute the command:
+```bash
+mvn -P github clean install
+```
+
+## Usage
+
+### Connecting in Spring Boot application ###
+#### 1. Add dependency into a service ####
 
 ```xml
 <dependency>
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>4.4.106-SNAPSHOT</version>
 </dependency>
 ```
-##### 2. Specify the required parameters in application.properties #####
+#### 2. Specify the required parameters in application.properties ####
 ```properties
 ##======================DataBase configurations=======================
 spring.datasource.url=${SPRING_DATASOURCE_URL}
