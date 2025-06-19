@@ -77,4 +77,9 @@ public interface InboundTransportConfigurationRepository extends StorableReposit
             + "and tr_conf.parent_system_id = :systemId", nativeQuery = true)
     Iterable<InboundTransportConfiguration> findAll(@Param("serverId") BigInteger serverId,
                                                     @Param("systemId") BigInteger systemId);
+
+    @Query(value = "select itc from InboundTransportConfiguration itc "
+            + "where itc.referencedConfiguration.id = :transportId")
+    Collection<InboundTransportConfiguration> getConfigurationsByTransportId(
+            @Param("transportId") BigInteger transportId);
 }

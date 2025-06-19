@@ -88,4 +88,9 @@ public class InboundTransportConfigurationObjectManager extends AbstractObjectMa
     public InboundTransportConfiguration findByEcLabel(String ecLabel, BigInteger projectId) {
         return null;
     }
+
+    public Collection<InboundTransportConfiguration> getConfigurationsByTransportId(BigInteger transportId) {
+        return ((InboundTransportConfigurationRepository) repository)
+                .getConfigurationsByTransportId(transportId);
+    }
 }
