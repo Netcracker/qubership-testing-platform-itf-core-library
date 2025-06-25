@@ -407,4 +407,12 @@ public class ProjectSettingsConstants {
     public static final String ENABLE_FAST_STUBS_DESCRIPTION = "Enable Fast Stubs. Default: true.";
     public static final String ENABLE_FAST_STUBS_DEFAULT_VALUE = "true";
 
+    public static final String ENABLE_EVENT_TRIGGERS_ACTIVATION_AFTER_IMPORT
+            = "enable.event.triggers.activation.after.import";
+    public static final String ENABLE_EVENT_TRIGGERS_ACTIVATION_AFTER_IMPORT_LONG_NAME
+            = "Enable event triggers activation after import";
+    public static final String ENABLE_EVENT_TRIGGERS_ACTIVATION_AFTER_IMPORT_DESCRIPTION
+            = "Enable event triggers activation after import. Default: true";
+    public static final String ENABLE_EVENT_TRIGGERS_ACTIVATION_AFTER_IMPORT_DEFAULT_VALUE = "true";
+
 }

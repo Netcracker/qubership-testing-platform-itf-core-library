@@ -490,6 +490,14 @@ public class ProjectSettingsDescriptor implements PropertyProvider {
     @DefaultValue(value = ProjectSettingsConstants.ENABLE_FAST_STUBS_DEFAULT_VALUE)
     String enableFastStubs;
 
+    @Parameter(shortName = ProjectSettingsConstants.ENABLE_EVENT_TRIGGERS_ACTIVATION_AFTER_IMPORT,
+            longName = ProjectSettingsConstants.ENABLE_EVENT_TRIGGERS_ACTIVATION_AFTER_IMPORT_LONG_NAME,
+            description = ProjectSettingsConstants.ENABLE_EVENT_TRIGGERS_ACTIVATION_AFTER_IMPORT_DESCRIPTION,
+            uiCategory = ProjectSettingsCategory.EXECUTION_SETTINGS)
+    @Options({"true", "false"})
+    @DefaultValue(value = ProjectSettingsConstants.ENABLE_EVENT_TRIGGERS_ACTIVATION_AFTER_IMPORT_DEFAULT_VALUE)
+    String enableEventTriggersActivationAfterImport;
+
     /**
      * Make a Map of properties with default values (if any).
      *
