@@ -39,7 +39,7 @@
         <querydsl.version>4.0.0</querydsl.version>
 
         <atp.common.version>0.0.43</atp.common.version>
-        <atp.auth.version>1.2.68</atp.auth.version>
+        <atp.auth.version>1.2.67</atp.auth.version>
         <atp.integration.version>0.2.38</atp.integration.version>
         <javers.version>6.6.4</javers.version>
     </properties>
@@ -648,7 +648,7 @@
         </dependency>
         <dependency>
             <groupId>org.qubership.atp.auth</groupId>
-            <artifactId>atp-auth-spring-boot-starter</artifactId>
+            <artifactId>atp-auth-models</artifactId>
             <version>${atp.auth.version}</version>
             <exclusions>
                 <exclusion>
