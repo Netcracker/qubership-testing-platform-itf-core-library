@@ -39,7 +39,7 @@
         <querydsl.version>4.0.0</querydsl.version>
 
         <atp.common.version>0.0.43</atp.common.version>
-        <atp.auth.version>1.2.64</atp.auth.version>
+        <atp.auth.version>1.2.68</atp.auth.version>
         <atp.integration.version>0.2.38</atp.integration.version>
         <javers.version>6.6.4</javers.version>
     </properties>
@@ -64,7 +64,7 @@
     <scm>
         <connection>scm:git:https//github.com/Netcracker/qubership-testing-platform-itf-core-library.git</connection>
         <developerConnection>scm:git:https://github.com/Netcracker/qubership-testing-platform-itf-core-library.git</developerConnection>
-        <url>scm:git:https://github.com/Netcracker/qubership-testing-platform-itf-core-library/tree/main</url>
+        <url>scm:git:https://github.com/Netcracker/qubership-testing-platform-itf-core-library.git</url>
         <tag>HEAD</tag>
     </scm>
     <build>
@@ -648,7 +648,7 @@
         </dependency>
         <dependency>
             <groupId>org.qubership.atp.auth</groupId>
-            <artifactId>atp-auth-models</artifactId>
+            <artifactId>atp-auth-spring-boot-starter</artifactId>
             <version>${atp.auth.version}</version>
             <exclusions>
                 <exclusion>
