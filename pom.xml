@@ -19,7 +19,7 @@
 
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>4.4.111-SNAPSHOT</version>
+    <version>4.4.112-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -29,7 +29,6 @@
         <targetJdk>1.8</targetJdk>
         <spring.boot.version>2.7.18</spring.boot.version>
         <org.springframework.version>5.3.21</org.springframework.version>
-        <org.springframework.security.version>5.2.0.RELEASE</org.springframework.security.version>
         <spring.cloud.version>2021.0.8</spring.cloud.version>
         <keycloak.version>22.0.1</keycloak.version>
         <net.javacrumbs.shedlock.version>4.14.0</net.javacrumbs.shedlock.version>
@@ -37,9 +36,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <hazelcast.version>4.2.6</hazelcast.version>
         <querydsl.version>4.0.0</querydsl.version>
+        <io.undertow.undertow-core.version>2.2.36.Final</io.undertow.undertow-core.version>
+        <tomcat.embed.version>9.0.108</tomcat.embed.version>
+        <org.bouncycastle.version>1.70</org.bouncycastle.version>
 
         <atp.common.version>0.0.43</atp.common.version>
-        <atp.auth.version>1.2.68</atp.auth.version>
+        <atp.auth.version>1.2.73</atp.auth.version>
         <atp.integration.version>0.2.38</atp.integration.version>
         <javers.version>6.6.4</javers.version>
     </properties>
@@ -358,12 +360,12 @@
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>tomcat-embed-core</artifactId>
                     <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-core</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>tomcat-embed-websocket</artifactId>
                     <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-websocket</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -597,7 +599,7 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>6.0.20.Final</version>
             <exclusions>
@@ -648,7 +650,7 @@
         </dependency>
         <dependency>
             <groupId>org.qubership.atp.auth</groupId>
-            <artifactId>atp-auth-spring-boot-starter</artifactId>
+            <artifactId>atp-auth-models</artifactId>
             <version>${atp.auth.version}</version>
             <exclusions>
                 <exclusion>
@@ -764,7 +766,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.4</version>
+            <version>1.18.30</version>
         </dependency>
         <!--Code style and code checkers end-->
 
@@ -878,7 +880,7 @@
             <dependency>
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
-                <version>8.20.1</version>
+                <version>9.37.4</version>
                 <exclusions>
                     <exclusion>
                         <groupId>net.minidev</groupId>
@@ -901,6 +903,46 @@
                 <groupId>org.qubership.atp.common</groupId>
                 <artifactId>qubership-atp-common-probes</artifactId>
                 <version>${atp.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.undertow</groupId>
+                <artifactId>undertow-core</artifactId>
+                <version>${io.undertow.undertow-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.undertow</groupId>
+                <artifactId>undertow-servlet</artifactId>
+                <version>${io.undertow.undertow-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.undertow</groupId>
+                <artifactId>undertow-websockets-jsr</artifactId>
+                <version>${io.undertow.undertow-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat.embed.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-websocket</artifactId>
+                <version>${tomcat.embed.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-el</artifactId>
+                <version>${tomcat.embed.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${org.bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>${org.bouncycastle.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
