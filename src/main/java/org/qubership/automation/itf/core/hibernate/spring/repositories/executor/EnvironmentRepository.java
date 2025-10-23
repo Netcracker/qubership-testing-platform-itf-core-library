@@ -157,4 +157,21 @@ public interface EnvironmentRepository
 
     @Query(value = "select env.reportCollectors from Environment env where env.id = :envId")
     Set<LinkCollectorConfiguration> getLinkCollectorsByEnvId(@Param("envId") BigInteger envId);
+
+    @Query(value = "select " +
+            "mb_env_inbound.environment_id as environment_id, mb_env.name as environment_name, " +
+            "mb_systems.id as system_id, mb_systems.name as system_name, " +
+            "mb_servers.id as server_id, mb_servers.name as server_name " +
+            "from mb_env_inbound " +
+            "join mb_env on mb_env.id = mb_env_inbound.environment_id " +
+            "join mb_servers on mb_env_inbound.servers = mb_servers.id " +
+            "join mb_systems on mb_env_inbound.systems = mb_systems.id " +
+            "where (mb_env_inbound.systems, mb_env_inbound.servers) in ( " +
+            "select systems, servers from mb_env_inbound) " +
+            "and mb_env.project_id = :projectId " +
+            "group by mb_env_inbound.environment_id,  mb_env.name, mb_systems.id, mb_systems.name, " +
+            "mb_servers.id, mb_servers.name " +
+            "having count(environment_id) > 1", nativeQuery = true)
+    List<Object[]> findDuplicateConfigurationBySystemServer(@Param("projectId") BigInteger projectId);
+
 }
