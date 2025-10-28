@@ -41,7 +41,7 @@
         <org.bouncycastle.version>1.70</org.bouncycastle.version>
 
         <atp.common.version>0.0.43</atp.common.version>
-        <atp.auth.version>1.2.73</atp.auth.version>
+        <atp.auth.version>1.2.75</atp.auth.version>
         <atp.integration.version>0.2.38</atp.integration.version>
         <javers.version>6.6.4</javers.version>
     </properties>
@@ -409,13 +409,6 @@
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-spring-boot-starter</artifactId>
             <version>${keycloak.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-dependencies</artifactId>
-            <type>pom</type>
-            <scope>import</scope>
-            <version>${spring.cloud.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
