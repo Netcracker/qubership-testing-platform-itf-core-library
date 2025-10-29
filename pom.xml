@@ -19,7 +19,7 @@
 
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>4.4.113-SNAPSHOT</version>
+    <version>4.4.113</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -67,7 +67,7 @@
         <connection>scm:git:https//github.com/Netcracker/qubership-testing-platform-itf-core-library.git</connection>
         <developerConnection>scm:git:https://github.com/Netcracker/qubership-testing-platform-itf-core-library.git</developerConnection>
         <url>scm:git:https://github.com/Netcracker/qubership-testing-platform-itf-core-library.git</url>
-        <tag>HEAD</tag>
+        <tag>v4.4.113</tag>
     </scm>
     <build>
         <plugins>
