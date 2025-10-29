@@ -176,6 +176,11 @@ public class EnvironmentObjectManager extends AbstractObjectManager<Environment,
     }
 
     @Override
+    public List<Object[]> findDuplicateConfigurationBySystemServer(BigInteger projectId) {
+        return environmentRepository.findDuplicateConfigurationBySystemServer(projectId);
+    }
+
+    @Override
     public void afterDelete(Storable object) {
         afterDeleteFromFolder(object);
     }

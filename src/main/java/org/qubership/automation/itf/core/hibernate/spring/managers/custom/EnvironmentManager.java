@@ -35,4 +35,6 @@ public interface EnvironmentManager extends ObjectManager<Environment> {
     Environment findByServerAndSystems(BigInteger serverId, Collection<BigInteger> systemIds);
 
     List<String> getInboundInfo(BigInteger envId);
+
+    List<Object[]> findDuplicateConfigurationBySystemServer(BigInteger projectId);
 }
