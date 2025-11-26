@@ -51,11 +51,11 @@ public interface SystemTemplateRepository
     List<SystemTemplate> findByParentID(@Param("parentId") Object parentId);
 
     @Query(value = "select "
-            + "new org.qubership.automation.itf.core.model.jpa.message.template.SystemTemplate"
+            + "new org.qubership.automation.itf.core.model.IdNamePair"
             + "(systemTemplate.id, systemTemplate.name) "
             + "from SystemTemplate as systemTemplate "
             + "where systemTemplate.parent.id = :parentId")
-    List<SystemTemplate> findSimpleSystemTemplatesByParentId(@Param("parentId") BigInteger parentId);
+    List<IdNamePair> findSimpleSystemTemplatesByParentId(@Param("parentId") BigInteger parentId);
 
     @Override
     @Query(value = "select systemTemplate from SystemTemplate as systemTemplate "

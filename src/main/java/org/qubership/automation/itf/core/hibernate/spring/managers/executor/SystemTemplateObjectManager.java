@@ -62,7 +62,7 @@ public class SystemTemplateObjectManager extends TemplateObjectManager<System, S
         return ((SystemTemplateRepository)repository).findByIdOnly(id);
     }
 
-    public List<SystemTemplate> getSimpleSystemTemplatesByParentId(BigInteger parentId) {
+    public List<IdNamePair> getSimpleSystemTemplatesByParentId(BigInteger parentId) {
         return systemTemplateRepository.findSimpleSystemTemplatesByParentId(parentId);
     }
 }
