@@ -51,7 +51,7 @@ public interface SystemTemplateRepository
     List<SystemTemplate> findByParentID(@Param("parentId") Object parentId);
 
     @Query(value = "select "
-            + "new org.qubership.automation.itf.core.model.IdNamePair"
+            + " new org.qubership.automation.itf.core.model.IdNamePair"
             + "(systemTemplate.id, systemTemplate.name) "
             + "from SystemTemplate as systemTemplate "
             + "where systemTemplate.parent.id = :parentId")
