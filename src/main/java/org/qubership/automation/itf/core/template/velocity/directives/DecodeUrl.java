@@ -47,9 +47,12 @@ public class DecodeUrl extends Directive {
     public boolean render(InternalContextAdapter internalContextAdapter, Writer writer, Node node) throws IOException,
             ResourceNotFoundException, ParseErrorException, MethodInvocationException {
         if (node.jjtGetNumChildren() != 2) {
-            rsvc.getLog().error("Incorrect #decodeUrl directive format. Check directive parameters: "
-                    + "(Parameter#1 - content, Parameter#2 - encoding name, i.e. \"UTF-8\", \"SHIFT-JIS\")");
-            writer.append("#err");
+            String errorMessage = "Incorrect decodeUrl directive format. Please check directive parameters: "
+                    + "(Parameter#1 - content, Parameter#2 - encoding name, i.e. \"UTF-8\", \"SHIFT-JIS\", "
+                    + "as listed in IANA Charset Registry "
+                    + "https://www.iana.org/assignments/character-sets/character-sets.xhtml)";
+            rsvc.getLog().error(errorMessage);
+            writer.append(errorMessage);
             return true;
         }
         String content = String.valueOf(node.jjtGetChild(0).value(internalContextAdapter));
@@ -58,22 +61,35 @@ public class DecodeUrl extends Directive {
         return true;
     }
 
-
-    private String decodeUrl(String content, String enc) {
+    /**
+     * Decode String from URL-encoded String using specified Encoding.
+     *
+     * @param content URL-encoded String to be decoded
+     * @param encoding String Encoding name according IANA Charset Registry
+     * @return String decoded result.
+     */
+    public String decodeUrl(String content, String encoding) {
         if (StringUtils.isBlank(content)) {
             return StringUtils.EMPTY;
         }
         try {
-            if (!StringUtils.containsIgnoreCase(enc.trim(), JIS)) {
-                return URLDecoder.decode(content, enc);
+            if (!StringUtils.containsIgnoreCase(encoding.trim(), JIS)) {
+                return URLDecoder.decode(content, encoding);
             }
-            // below decoding using ISO_8859_1 is needed when we decoding to Japanese charset
+            // below decoding using ISO_8859_1 is needed when we're decoding to Japanese charset
             String decoded = URLDecoder.decode(content, StandardCharsets.ISO_8859_1.name());
-            byte[] decodedBytes = decoded.getBytes(StandardCharsets.ISO_8859_1.name());
-            return new String(decodedBytes, enc);
-        } catch (UnsupportedEncodingException e) {
-            rsvc.getLog().error("Unsupported encoding [" + enc + "] for #decodeUrl directive");
+            byte[] decodedBytes = decoded.getBytes(StandardCharsets.ISO_8859_1);
+            return new String(decodedBytes, encoding);
+        } catch (UnsupportedEncodingException ex) {
+            String errorMessage = "Unsupported encoding [" + encoding + "] for decodeUrl directive";
+            /*
+                In case this method is invoked outside Velocity Runtime Services,
+                exception won't be logged.
+             */
+            if (rsvc != null) {
+                rsvc.getLog().error(errorMessage);
+            }
+            return errorMessage;
         }
-        return "#err";
     }
 }

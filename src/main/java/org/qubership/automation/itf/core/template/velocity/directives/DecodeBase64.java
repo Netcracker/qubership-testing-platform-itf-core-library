@@ -53,7 +53,10 @@ public class DecodeBase64 extends Directive {
     }
 
     /**
-     * Decode content String to base64 using UTF_8 charset.
+     * Decode content String from base64-encoded String using UTF_8 charset.
+     *
+     * @param content base64-encoded String to be decoded
+     * @return decoded String.
      */
     public String decodeContent(String content) {
         if (StringUtils.isBlank(content)) {

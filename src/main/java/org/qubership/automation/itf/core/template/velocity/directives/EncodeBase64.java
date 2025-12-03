@@ -53,7 +53,10 @@ public class EncodeBase64 extends Directive {
     }
 
     /**
-     * Encode content String from base64 using UTF_8 charset.
+     * Encode content String into base64-encoded String using UTF_8 charset.
+     *
+     * @param content String to be encoded
+     * @return encoded String.
      */
     public String encodeContent(String content) {
         if (StringUtils.isBlank(content)) {
