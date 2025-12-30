@@ -10,3 +10,5 @@ updates:
       - "/.github/workflows"
     schedule:
       interval: "weekly"
+    exclude-paths:
+      - ".github/workflows/maven-central-snapshot-deploy.yaml"

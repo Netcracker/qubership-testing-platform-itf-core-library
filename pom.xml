@@ -36,7 +36,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <hazelcast.version>4.2.6</hazelcast.version>
         <querydsl.version>4.0.0</querydsl.version>
-        <io.undertow.undertow-core.version>2.2.36.Final</io.undertow.undertow-core.version>
+        <io.undertow.undertow-core.version>2.2.38.Final</io.undertow.undertow-core.version>
         <tomcat.embed.version>9.0.108</tomcat.embed.version>
         <org.bouncycastle.version>1.70</org.bouncycastle.version>
 
