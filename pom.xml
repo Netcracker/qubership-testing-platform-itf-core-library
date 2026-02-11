@@ -34,15 +34,15 @@
         <net.javacrumbs.shedlock.version>4.14.0</net.javacrumbs.shedlock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <hazelcast.version>4.2.6</hazelcast.version>
+        <hazelcast.version>4.2.8</hazelcast.version>
         <querydsl.version>4.0.0</querydsl.version>
-        <io.undertow.undertow-core.version>2.2.38.Final</io.undertow.undertow-core.version>
-        <tomcat.embed.version>9.0.108</tomcat.embed.version>
+        <io.undertow.undertow-core.version>2.2.39.Final</io.undertow.undertow-core.version>
+        <tomcat.embed.version>9.0.110</tomcat.embed.version>
         <org.bouncycastle.version>1.70</org.bouncycastle.version>
 
-        <atp.common.version>0.0.43</atp.common.version>
+        <atp.common.version>0.0.47</atp.common.version>
         <atp.auth.version>1.2.75</atp.auth.version>
-        <atp.integration.version>0.2.38</atp.integration.version>
+        <atp.integration.version>0.2.42</atp.integration.version>
         <javers.version>6.6.4</javers.version>
     </properties>
 
@@ -515,7 +515,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>32.0.0-jre</version>
+            <version>32.0.1-jre</version>
         </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
@@ -936,6 +936,11 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcpkix-jdk15on</artifactId>
                 <version>${org.bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.18.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

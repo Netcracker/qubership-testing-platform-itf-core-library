@@ -48,7 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ReportLinkCollector {
 
-    private Map<String, LinkCollector> collectors = Maps.newConcurrentMap();
+    private final Map<String, LinkCollector> collectors = Maps.newConcurrentMap();
     private org.springframework.core.env.Environment env;
     private final LoadingCache<String, String> urls = CacheBuilder.newBuilder()
             .build(new CacheLoader<String, String>() {
