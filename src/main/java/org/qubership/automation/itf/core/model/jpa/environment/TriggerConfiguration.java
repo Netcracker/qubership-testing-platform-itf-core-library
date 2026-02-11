@@ -20,7 +20,7 @@ import java.math.BigInteger;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.transport.Configuration;

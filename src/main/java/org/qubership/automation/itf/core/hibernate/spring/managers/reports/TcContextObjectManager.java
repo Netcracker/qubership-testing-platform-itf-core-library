@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;

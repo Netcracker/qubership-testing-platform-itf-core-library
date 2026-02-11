@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.jpa.instance.step.StepInstance;
 import org.qubership.automation.itf.core.model.jpa.message.Message;

@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.model.jpa.versions;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.jpa.storage.AbstractStorable;
 

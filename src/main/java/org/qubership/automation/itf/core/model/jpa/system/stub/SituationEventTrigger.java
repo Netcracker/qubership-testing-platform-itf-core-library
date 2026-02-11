@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.model.jpa.system.stub;
 
 import java.math.BigInteger;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.util.annotation.RefCopy;
 import org.qubership.automation.itf.core.util.annotation.UserName;

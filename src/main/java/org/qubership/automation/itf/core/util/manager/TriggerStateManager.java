@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.qubership.automation.itf.core.model.jpa.environment.Environment;
 import org.qubership.automation.itf.core.model.jpa.environment.InboundTransportConfiguration;

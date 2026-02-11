@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.model.jpa.instance;
 
 import java.util.List;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.container.StepContainer;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;

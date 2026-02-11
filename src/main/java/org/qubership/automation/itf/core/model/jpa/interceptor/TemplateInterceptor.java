@@ -16,7 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.interceptor;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.interceptor.CommonInterceptor;
 import org.qubership.automation.itf.core.model.jpa.message.template.Template;

@@ -21,8 +21,8 @@ import java.math.BigInteger;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 public class StorableDescriptor implements Serializable {
     private static final long serialVersionUID = 20240812L;

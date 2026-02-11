@@ -21,7 +21,7 @@ import java.math.BigInteger;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.container.StepContainer;

@@ -19,8 +19,8 @@ package org.qubership.automation.itf.core.util.db;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;

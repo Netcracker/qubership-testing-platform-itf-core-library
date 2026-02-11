@@ -20,7 +20,7 @@ import java.math.BigInteger;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.IDataSetListManager;
 import org.qubership.automation.itf.core.model.common.Storable;

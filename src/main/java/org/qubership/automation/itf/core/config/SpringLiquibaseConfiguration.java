@@ -18,13 +18,11 @@ package org.qubership.automation.itf.core.config;
 
 import javax.sql.DataSource;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ResourceLoader;
 
 import liquibase.integration.spring.SpringLiquibase;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +32,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SpringLiquibaseConfiguration {
 
-    private final ResourceLoader resourceLoader;
-
-    @Bean
-    @ConditionalOnMissingBean
-    public LiquibaseProperties liquibaseProperties() {
-        return new LiquibaseProperties();
-    }
 
     /**
      * Liquibase config in case MultiTenancy is disabled.
@@ -50,13 +41,12 @@ public class SpringLiquibaseConfiguration {
     public SpringLiquibase springLiquibaseWithDisabledMultiTenancy(DataSource dataSource,
                                                                    LiquibaseProperties liquibaseProperties) {
         SpringLiquibase springLiquibase = new BeanAwareSpringLiquibase();
-        springLiquibase.setResourceLoader(resourceLoader);
         springLiquibase.setChangeLog(liquibaseProperties.getChangeLog());
         springLiquibase.setContexts(liquibaseProperties.getContexts());
         springLiquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
         springLiquibase.setDropFirst(liquibaseProperties.isDropFirst());
         springLiquibase.setShouldRun(liquibaseProperties.isEnabled());
-        springLiquibase.setLabels(liquibaseProperties.getLabels());
+        springLiquibase.setLabels(liquibaseProperties.getLabelFilter());
         springLiquibase.setChangeLogParameters(liquibaseProperties.getParameters());
         springLiquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
         springLiquibase.setDataSource(dataSource);
@@ -70,7 +60,6 @@ public class SpringLiquibaseConfiguration {
     @ConditionalOnProperty(name = "atp.multi-tenancy.enabled", havingValue = "true")
     public SpringLiquibase springLiquibaseWithEnabledMultiTenancy(LiquibaseProperties liquibaseProperties) {
         SpringLiquibase springLiquibase = new BeanAwareSpringLiquibase();
-        springLiquibase.setResourceLoader(resourceLoader);
         springLiquibase.setChangeLogParameters(liquibaseProperties.getParameters());
         springLiquibase.setShouldRun(false);
         return springLiquibase;

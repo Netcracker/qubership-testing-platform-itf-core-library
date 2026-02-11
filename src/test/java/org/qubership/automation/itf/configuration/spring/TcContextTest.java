@@ -27,7 +27,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import static org.qubership.automation.itf.configuration.spring.ObjectManagerUtils.create;
 import static org.qubership.automation.itf.configuration.spring.ObjectManagerUtils.renameStoreValidate;
