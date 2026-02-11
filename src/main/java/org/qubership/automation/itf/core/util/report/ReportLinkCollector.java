@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 import org.qubership.automation.itf.core.hibernate.spring.managers.executor.EnvironmentObjectManager;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
 import org.qubership.automation.itf.core.model.jpa.environment.Environment;
@@ -54,7 +53,7 @@ public class ReportLinkCollector {
     private final LoadingCache<String, String> urls = CacheBuilder.newBuilder()
             .build(new CacheLoader<String, String>() {
                 @Override
-                public String load(@NotNull String key) {
+                public String load(@Nonnull String key) {
                     return env.getProperty(key);
                 }
             });

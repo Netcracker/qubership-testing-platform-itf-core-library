@@ -23,7 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.EventTriggerManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.SearchByProjectIdManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.SituationEventTriggerRepository;
@@ -48,16 +49,16 @@ public class SituationEventTriggerObjectManager extends EventTriggerObjectManage
     }
 
     @Override
-    public List<SituationEventTrigger> getAllActive(@NotNull Operation operation) {
+    public List<SituationEventTrigger> getAllActive(@Nonnull Operation operation) {
         return new ArrayList<>(); // no use case to retrieve it currently, so no repository method
     }
 
     @Override
-    public List<SituationEventTrigger> getActiveByProject(@NotNull BigInteger projectId) {
+    public List<SituationEventTrigger> getActiveByProject(@Nonnull BigInteger projectId) {
         return ((SituationEventTriggerRepository) repository).getActiveTriggersByProject(projectId);
     }
 
-    public List<SituationEventTrigger> getTriggersBySystem(@NotNull BigInteger systemId) {
+    public List<SituationEventTrigger> getTriggersBySystem(@Nonnull BigInteger systemId) {
         return ((SituationEventTriggerRepository) repository).getTriggersBySystemId(systemId);
     }
 
@@ -67,7 +68,7 @@ public class SituationEventTriggerObjectManager extends EventTriggerObjectManage
      * @param systemId System Id,
      * @return map of EventTriggerBriefInfo.
      */
-    public Map<String, List<EventTriggerBriefInfo>> getTriggersBriefInfoBySystem(@NotNull BigInteger systemId) {
+    public Map<String, List<EventTriggerBriefInfo>> getTriggersBriefInfoBySystem(@Nonnull BigInteger systemId) {
         List<Object[]> objs = ((SituationEventTriggerRepository) repository).getTriggersBriefInfoBySystemId(systemId);
         List<EventTriggerBriefInfo> triggersToDeactivate = new ArrayList<>();
         List<EventTriggerBriefInfo> triggersToReactivate = new ArrayList<>();

@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.jetbrains.annotations.NotNull;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.EventTriggerManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.SearchByProjectIdManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.OperationEventTriggerRepository;
@@ -53,7 +52,7 @@ public class OperationEventTriggerObjectManager extends EventTriggerObjectManage
     }
 
     @Override
-    public List<OperationEventTrigger> getActiveByProject(@NotNull BigInteger projectId) {
+    public List<OperationEventTrigger> getActiveByProject(@Nonnull BigInteger projectId) {
         return ((OperationEventTriggerRepository) repository).getActiveTriggersByProject(projectId);
     }
 
