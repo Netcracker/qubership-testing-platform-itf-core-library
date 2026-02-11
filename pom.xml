@@ -19,30 +19,28 @@
 
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>4.4.115-SNAPSHOT</version>
+    <version>4.4.16-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <targetJdk>1.8</targetJdk>
-        <spring.boot.version>2.7.18</spring.boot.version>
-        <org.springframework.version>5.3.21</org.springframework.version>
-        <spring.cloud.version>2021.0.8</spring.cloud.version>
-        <keycloak.version>22.0.1</keycloak.version>
+        <java.version>21</java.version>
+        <spring.boot.version>3.3.11</spring.boot.version>
+        <spring.cloud.version>2023.0.3</spring.cloud.version>
+        <keycloak.version>25.0.3</keycloak.version>
         <net.javacrumbs.shedlock.version>4.14.0</net.javacrumbs.shedlock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <hazelcast.version>4.2.6</hazelcast.version>
-        <querydsl.version>4.0.0</querydsl.version>
+        <querydsl.version>5.0.0</querydsl.version>
+        <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
         <io.undertow.undertow-core.version>2.2.38.Final</io.undertow.undertow-core.version>
         <tomcat.embed.version>9.0.108</tomcat.embed.version>
         <org.bouncycastle.version>1.70</org.bouncycastle.version>
+        <lombok.version>1.18.32</lombok.version>
 
-        <atp.common.version>0.0.43</atp.common.version>
-        <atp.auth.version>1.2.75</atp.auth.version>
-        <atp.integration.version>0.2.38</atp.integration.version>
+        <atp.common.version>1.0.0-SNAPSHOT</atp.common.version>
+        <atp.auth.version>2.0.0-SNAPSHOT</atp.auth.version>
+        <atp.integration.version>0.2.41</atp.integration.version>
         <javers.version>6.6.4</javers.version>
     </properties>
 
@@ -74,7 +72,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.15</version>
+                <version>3.2.5</version>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
                 </configuration>
@@ -82,52 +80,29 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-                <version>3.1</version>
-            </plugin>
-            <plugin>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.querydsl</groupId>
-                        <artifactId>querydsl-apt</artifactId>
-                        <version>${querydsl.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.querydsl</groupId>
-                        <artifactId>querydsl-core</artifactId>
-                        <version>${querydsl.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.hibernate.javax.persistence</groupId>
-                        <artifactId>hibernate-jpa-2.1-api</artifactId>
-                        <version>1.0.0.Final</version>
-                    </dependency>
-                </dependencies>
-                <groupId>com.mysema.maven</groupId>
-                <artifactId>apt-maven-plugin</artifactId>
-                <version>1.1.3</version>
-                <executions>
-                    <execution>
-                        <id>process-common-model</id>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <outputDirectory>target/generated-sources/querydsl</outputDirectory>
-                    <processors>
-                        <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-                    </processors>
-                    <options>
-                        <querydsl.entityAccessors>true</querydsl.entityAccessors>
-                        <querydsl.createDefaultVariable>true</querydsl.createDefaultVariable>
-                        <!--<querydsl.packageSuffix>.qdsl</querydsl.packageSuffix>-->
-                    </options>
+                    <release>21</release>
+                    <parameters>true</parameters>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.querydsl</groupId>
+                            <artifactId>querydsl-apt</artifactId>
+                            <version>${querydsl.version}</version>
+                            <classifier>jakarta</classifier>
+                        </path>
+                        <path>
+                            <groupId>jakarta.persistence</groupId>
+                            <artifactId>jakarta.persistence-api</artifactId>
+                            <version>${jakarta-persistence.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <generatedSourcesDirectory>${project.build.directory}/generated-sources/querydsl</generatedSourcesDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -166,7 +141,7 @@
                 <!-- Generates models and controllers based on api-contract.yaml -->
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>6.2.1</version>
+                <version>7.6.0</version>
                 <executions>
                     <execution>
                         <id>attachment-controller-v1.yaml</id>
@@ -183,7 +158,8 @@
                             <skipOverwrite>false</skipOverwrite>
                             <generateModelTests>false</generateModelTests>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <jakarta>true</jakarta>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useTags>true</useTags>
                                 <skipDefaultInterface>true</skipDefaultInterface>
@@ -205,7 +181,8 @@
                             <skipOverwrite>false</skipOverwrite>
                             <generateModelTests>false</generateModelTests>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <jakarta>true</jakarta>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useTags>true</useTags>
                                 <skipDefaultInterface>true</skipDefaultInterface>
@@ -227,7 +204,8 @@
                             <skipOverwrite>false</skipOverwrite>
                             <generateModelTests>false</generateModelTests>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <jakarta>true</jakarta>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useTags>true</useTags>
                                 <skipDefaultInterface>true</skipDefaultInterface>
@@ -249,7 +227,8 @@
                             <skipOverwrite>false</skipOverwrite>
                             <generateModelTests>false</generateModelTests>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <jakarta>true</jakarta>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useTags>true</useTags>
                                 <skipDefaultInterface>true</skipDefaultInterface>
@@ -271,7 +250,8 @@
                             <skipOverwrite>false</skipOverwrite>
                             <generateModelTests>false</generateModelTests>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <jakarta>true</jakarta>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useTags>true</useTags>
                                 <skipDefaultInterface>true</skipDefaultInterface>
@@ -293,7 +273,8 @@
                             <skipOverwrite>false</skipOverwrite>
                             <generateModelTests>false</generateModelTests>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <jakarta>true</jakarta>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useTags>true</useTags>
                                 <skipDefaultInterface>true</skipDefaultInterface>
@@ -315,7 +296,8 @@
                             <skipOverwrite>false</skipOverwrite>
                             <generateModelTests>false</generateModelTests>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <jakarta>true</jakarta>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useTags>true</useTags>
                                 <skipDefaultInterface>true</skipDefaultInterface>
@@ -337,7 +319,8 @@
                             <skipOverwrite>false</skipOverwrite>
                             <generateModelTests>false</generateModelTests>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <jakarta>true</jakarta>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useTags>true</useTags>
                                 <skipDefaultInterface>true</skipDefaultInterface>
@@ -350,6 +333,18 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>${querydsl.version}</version>
+            <classifier>jakarta</classifier>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>${jakarta-persistence.version}</version>
+        </dependency>
+
         <!--Spring-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -405,11 +400,11 @@
             <artifactId>keycloak-core</artifactId>
             <version>${keycloak.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.keycloak</groupId>
-            <artifactId>keycloak-spring-boot-starter</artifactId>
-            <version>${keycloak.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.keycloak</groupId>-->
+<!--            <artifactId>keycloak-spring-boot-starter</artifactId>-->
+<!--            <version>${keycloak.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-openfeign-core</artifactId>
@@ -439,15 +434,15 @@
         <!-- Spring-end -->
         <!--Hibernate-->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.4.27.Final</version>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.6.42.Final</version>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
-            <version>5.4.27.Final</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.hibernate</groupId>-->
+<!--            <artifactId>hibernate-ehcache</artifactId>-->
+<!--            <version>5.4.27.Final</version>-->
+<!--        </dependency>-->
         <!--Hibernate-end-->
         <dependency>
             <groupId>com.netflix.archaius</groupId>
@@ -518,9 +513,9 @@
             <version>32.0.0-jre</version>
         </dependency>
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+            <version>2.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -533,9 +528,9 @@
             <version>0.9.10</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -572,12 +567,12 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-okhttp</artifactId>
         </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <scope>provided</scope>
-            <version>6.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>javax</groupId>-->
+<!--            <artifactId>javaee-api</artifactId>-->
+<!--            <scope>provided</scope>-->
+<!--            <version>6.0</version>-->
+<!--        </dependency>-->
         <!--Feign end-->
 
         <!--Consul start-->
@@ -594,7 +589,7 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.0.20.Final</version>
+            <version>8.0.1.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.fasterxml</groupId>
@@ -728,7 +723,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${org.springframework.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -759,7 +753,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!--Code style and code checkers end-->
 
