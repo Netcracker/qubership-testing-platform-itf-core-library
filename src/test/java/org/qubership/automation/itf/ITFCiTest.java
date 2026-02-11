@@ -29,8 +29,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StopWatch;
 
-import javax.persistence.EntityManagerFactory;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -29,7 +29,7 @@
                 <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
                 <prop key="org.hibernate.cache.ehcache.configurationResourceName">ehcache.xml</prop>
                 <!--<prop key="hibernate.cache.provider_class">org.hibernate.cache.ehcache..EhCacheProvider</prop>-->
-                <prop key="javax.persistence.sharedCache.mode">ALL</prop>
+                <prop key="jakarta.persistence.sharedCache.mode">ALL</prop>
                 <prop key="hibernate.show_sql" >true</prop>
                 <prop key="hibernate.format_sql" >true</prop>
                 <prop key="hibernate.generate_statistics">true</prop>

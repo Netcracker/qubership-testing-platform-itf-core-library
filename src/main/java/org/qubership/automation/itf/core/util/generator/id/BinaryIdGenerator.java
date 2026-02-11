@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.util.generator.id;
 
 import java.nio.charset.StandardCharsets;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 

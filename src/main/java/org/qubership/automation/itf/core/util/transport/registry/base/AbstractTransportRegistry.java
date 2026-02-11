@@ -22,7 +22,7 @@ import java.rmi.RemoteException;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.qubership.automation.itf.core.model.jpa.message.Message;

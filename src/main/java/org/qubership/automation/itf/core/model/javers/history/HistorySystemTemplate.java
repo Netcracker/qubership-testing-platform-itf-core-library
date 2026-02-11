@@ -16,7 +16,7 @@
 
 package org.qubership.automation.itf.core.model.javers.history;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class HistorySystemTemplate extends HistoryAbstractTemplate{

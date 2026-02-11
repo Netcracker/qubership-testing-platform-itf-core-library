@@ -16,8 +16,8 @@
 
 package org.qubership.automation.itf.core.util.generator.id;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 

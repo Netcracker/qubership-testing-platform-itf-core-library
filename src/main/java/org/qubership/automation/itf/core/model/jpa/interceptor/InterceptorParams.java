@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.model.jpa.interceptor;
 
 import java.util.Map;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.interceptor.Interceptor;
 import org.qubership.automation.itf.core.model.jpa.transport.Configuration;

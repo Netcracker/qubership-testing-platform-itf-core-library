@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.AttributeConverter;
+import jakarta.persistence.AttributeConverter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.qubership.automation.itf.core.model.condition.parameter.ConditionParameter;

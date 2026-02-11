@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.util.converter;
 
 import java.math.BigInteger;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
 

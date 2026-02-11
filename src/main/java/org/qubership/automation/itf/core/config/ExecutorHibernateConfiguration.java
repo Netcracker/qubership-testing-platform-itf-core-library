@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.config;
 import java.util.Objects;
 import java.util.Properties;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.qubership.automation.itf.core.util.db.TxExecutor;

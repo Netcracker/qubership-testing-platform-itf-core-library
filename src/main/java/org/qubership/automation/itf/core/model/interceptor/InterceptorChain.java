@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.model.interceptor;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.qubership.automation.itf.core.model.jpa.interceptor.InterceptorParams;
 import org.qubership.automation.itf.core.model.jpa.message.Message;

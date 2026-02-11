@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.model.dataset;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.qubership.automation.itf.core.model.common.Named;
 import org.qubership.automation.itf.core.model.jpa.context.JsonContext;

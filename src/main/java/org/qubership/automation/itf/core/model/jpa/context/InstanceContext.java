@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;

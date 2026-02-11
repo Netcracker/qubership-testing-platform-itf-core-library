@@ -23,7 +23,7 @@ import static org.qubership.automation.itf.configuration.spring.ObjectManagerUti
 
 import java.util.Map;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -101,9 +101,9 @@ public class FoldersTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Assert.notNull(id);
+        Assert.notNull(id, "id must not be empty");
         managerFor(Folder.class).getById(id).remove();
-        Assert.isNull(managerFor(Folder.class).getById(id));
+        Assert.isNull(managerFor(Folder.class).getById(id), "object by id must be null");
     }
 
     private <T extends Storable> Folder<T> oldStyleCreate(Class<T> clazz) {

@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.model.javers.history;
 
 import java.math.BigInteger;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.javers.core.metamodel.annotation.Id;
 

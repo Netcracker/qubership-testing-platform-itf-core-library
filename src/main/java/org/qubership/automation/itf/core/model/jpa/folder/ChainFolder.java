@@ -16,7 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.folder;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.callchain.CallChain;
