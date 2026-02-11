@@ -22,9 +22,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
-import javax.persistence.PreRemove;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PostUpdate;
+import jakarta.persistence.PreRemove;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
@@ -58,7 +58,7 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
 
     private String prefix;
     private String description;
-    private Object naturalId;
+    private BigInteger naturalId;
     private Map<String, String> storableProp;
 
     @Override
@@ -173,22 +173,22 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
 
     @NoCopy
     @Override
-    public Object getID() {
-        return storeInformationDelegate.getID();
+    public BigInteger getID() {
+        return (BigInteger) storeInformationDelegate.getID();
     }
 
     @Override
-    public void setID(Object id) {
+    public void setID(BigInteger id) {
         storeInformationDelegate.setID(id);
     }
 
     @Override
-    public Object getNaturalId() {
+    public BigInteger getNaturalId() {
         return naturalId;
     }
 
     @Override
-    public void setNaturalId(Object id) {
+    public void setNaturalId(BigInteger id) {
         this.naturalId = id;
     }
 

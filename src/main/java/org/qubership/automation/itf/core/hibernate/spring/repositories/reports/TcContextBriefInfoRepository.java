@@ -40,7 +40,7 @@ public interface TcContextBriefInfoRepository extends RootRepository<TcContextBr
     @Query(value = "delete from mb_tccontext where mb_tccontext.id= :contextId", nativeQuery = true)
     void deleteFromUIWithoutPartNum(@Param("contextId") BigInteger contextId);
 
-    TcContextBriefInfo findByIDAndPartNum(Object id, Integer partNum);
+    TcContextBriefInfo findByIDAndPartNum(BigInteger id, Integer partNum);
 
     @Query(value = "select current_partition_number() as current_part_num", nativeQuery = true)
     int getCurrentPartitionNumber();

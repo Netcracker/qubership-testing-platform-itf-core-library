@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.EnvConfigurationManager;
@@ -79,7 +79,7 @@ public class TransportConfigurationObjectManager extends AbstractObjectManager<T
     public Collection<UsageInfo> findUsages(Storable storable) {
         Collection<UsageInfo> result = Sets.newHashSet();
         addToUsages(result, "transport",
-                operationRepository.findAll(QOperation.operation.transport().eq((TransportConfiguration) storable)));
+                operationRepository.findAll(QOperation.operation.transport.eq((TransportConfiguration) storable)));
         return result;
     }
 
@@ -154,7 +154,7 @@ public class TransportConfigurationObjectManager extends AbstractObjectManager<T
     }
 
     /**
-     * Find usages of storable (template) by Id in diamerer transport configurations under Systems.
+     * Find usages of storable (template) by id in diameter transport configurations under Systems.
      * Please note: the search is without project condition. Execution plan uses special index.
      */
     public Collection<TransportConfiguration> findUsagesTemplateOnTransport(BigInteger templateId) {

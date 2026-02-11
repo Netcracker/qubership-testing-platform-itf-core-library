@@ -16,6 +16,8 @@
 
 package org.qubership.automation.itf.core.model.key;
 
+import java.math.BigInteger;
+
 import org.qubership.automation.itf.core.model.common.Identified;
 import org.qubership.automation.itf.core.model.common.Named;
 import org.qubership.automation.itf.core.model.common.OptimisticLockable;
@@ -23,7 +25,7 @@ import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.util.exception.KeyDefinitionException;
 
-public interface KeyDefinition extends Storable, Named, Identified<Object>, OptimisticLockable<Object> {
+public interface KeyDefinition extends Storable, Named, Identified<BigInteger>, OptimisticLockable<Object> {
 
     String defineKey(InstanceContext context) throws KeyDefinitionException;
 

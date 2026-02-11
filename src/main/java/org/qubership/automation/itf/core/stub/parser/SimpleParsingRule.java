@@ -81,7 +81,7 @@ public class SimpleParsingRule extends AbstractParsingRule {
 
     @JsonIgnore
     @Override
-    public Object getID() {
+    public BigInteger getID() {
         return super.getNaturalId();
     }
 

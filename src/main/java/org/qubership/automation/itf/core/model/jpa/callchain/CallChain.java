@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.folder.ChainFolder;
@@ -161,7 +161,7 @@ public class CallChain extends AbstractTestCase {
 
     @ProduceNewObject
     @Override
-    public Object getNaturalId() {
+    public BigInteger getNaturalId() {
         return super.getNaturalId();
     }
 

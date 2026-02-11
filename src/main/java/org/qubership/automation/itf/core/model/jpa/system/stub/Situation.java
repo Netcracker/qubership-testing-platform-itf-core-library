@@ -24,8 +24,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nonnull;
-import javax.persistence.Entity;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.LabeledStorable;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -249,7 +249,7 @@ public class Situation extends LabeledStorable implements StepContainer, Trigger
 
     @ProduceNewObject
     @Override
-    public Object getNaturalId() {
+    public BigInteger getNaturalId() {
         return super.getNaturalId();
     }
 

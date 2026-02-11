@@ -16,6 +16,8 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.reports;
 
+import java.math.BigInteger;
+
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.StorableRepository;
 import org.qubership.automation.itf.core.model.jpa.instance.AbstractInstance;
 import org.springframework.stereotype.Repository;
@@ -23,5 +25,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AbstractInstanceRepository<T extends AbstractInstance> extends StorableRepository<AbstractInstance> {
 
-    T findByIDAndPartNum(Object id, Integer partNum);
+    T findByIDAndPartNum(BigInteger id, Integer partNum);
 }

@@ -22,10 +22,10 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-public class DelegateImpl implements StoreInformationDelegate<Object, Integer>, Serializable {
+public class DelegateImpl implements StoreInformationDelegate<BigInteger, Integer>, Serializable {
     private static final long serialVersionUID = 20240812L;
 
-    private Object ID;
+    private BigInteger ID;
     private Integer version;
     private Map<Class, Object> additionalInformation;
 
@@ -33,23 +33,13 @@ public class DelegateImpl implements StoreInformationDelegate<Object, Integer>, 
     }
 
     @Override
-    public Object getID() {
+    public BigInteger getID() {
         return ID;
     }
 
     @Override
-    public void setID(Object id) {
-        if (id instanceof String) {
-            try {
-                this.ID = new BigInteger((String) id);
-            } catch (NumberFormatException e) {
-                this.ID = id;
-            }
-        } else if (id instanceof Long) {
-            this.ID = BigInteger.valueOf((long) id);
-        } else {
+    public void setID(BigInteger id) {
             this.ID = id;
-        }
     }
 
     @Override

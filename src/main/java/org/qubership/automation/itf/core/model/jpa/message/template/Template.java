@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.persistence.Entity;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Identified;
 import org.qubership.automation.itf.core.model.common.Labeled;
@@ -35,7 +35,7 @@ import org.qubership.automation.itf.core.util.provider.TemplateProvider;
 
 @Entity
 public interface Template<T extends TemplateProvider>
-        extends Labeled, Named, Identified<Object>, OptimisticLockable<Object> {
+        extends Labeled, Named, Identified<BigInteger>, OptimisticLockable<Object> {
     OutboundTemplateTransportConfiguration getTransportProperties(@Nonnull String typeName);
 
     Collection<OutboundTemplateTransportConfiguration> getTransportProperties();

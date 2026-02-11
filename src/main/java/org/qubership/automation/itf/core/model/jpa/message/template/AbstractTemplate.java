@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.qubership.automation.itf.core.model.common.LabeledStorable;
@@ -108,7 +108,7 @@ public abstract class AbstractTemplate<T extends TemplateProvider>
 
     @Override
     @ProduceNewObject
-    public Object getNaturalId() {
+    public BigInteger getNaturalId() {
         return super.getNaturalId();
     }
 

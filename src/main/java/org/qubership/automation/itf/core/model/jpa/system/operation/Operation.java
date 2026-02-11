@@ -24,7 +24,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.message.parser.OperationParsingRule;
@@ -122,7 +122,7 @@ public class Operation extends AbstractStorable
 
     @Override
     @ProduceNewObject
-    public Object getNaturalId() {
+    public BigInteger getNaturalId() {
         return super.getNaturalId();
     }
 

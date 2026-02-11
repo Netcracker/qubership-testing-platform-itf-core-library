@@ -23,7 +23,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.QueryHint;
+import jakarta.persistence.QueryHint;
 
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.IdNamePair;
@@ -43,13 +43,13 @@ public interface OperationTemplateRepository
     @Query(value = "select operationTemplate from OperationTemplate as operationTemplate "
             + "inner join Operation as operation on operation = operationTemplate.parent "
             + "where operationTemplate.name = :name and operation.ID = :parentId")
-    List<OperationTemplate> findByParentIDAndName(@Param("parentId") Object parentId, @Param("name") String name);
+    List<OperationTemplate> findByParentIDAndName(@Param("parentId") BigInteger parentId, @Param("name") String name);
 
     @Override
     @Query(value = "select template.* from mb_templates template "
             + "where template.type = 'operation' and template.parent_operation_id = :parentId",
             nativeQuery = true)
-    List<OperationTemplate> findByParentID(@Param("parentId") Object parentId);
+    List<OperationTemplate> findByParentID(@Param("parentId") BigInteger parentId);
 
     @Override
     @Query(value = "select operationTemplate from OperationTemplate as operationTemplate "

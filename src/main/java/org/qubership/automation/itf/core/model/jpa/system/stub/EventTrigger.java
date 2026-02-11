@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.system.stub;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.qubership.automation.itf.core.model.common.Identified;
@@ -25,7 +26,7 @@ import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.condition.parameter.ConditionParameter;
 import org.qubership.automation.itf.core.util.constants.TriggerState;
 
-public interface EventTrigger extends Storable, Named, Identified<Object>, OptimisticLockable<Object> {
+public interface EventTrigger extends Storable, Named, Identified<BigInteger>, OptimisticLockable<Object> {
 
     TriggerState getState();
 

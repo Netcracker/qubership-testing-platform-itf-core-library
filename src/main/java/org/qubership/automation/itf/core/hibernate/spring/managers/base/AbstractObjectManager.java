@@ -29,9 +29,9 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Triple;
@@ -323,7 +323,7 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
     public void update(Storable object) {
         try {
             TxExecutor.execute(() -> {
-                ((Session)entityManager.getDelegate()).update(object);
+                ((Session)entityManager.getDelegate()).merge(object);
                 return null;
             } , TxExecutor.defaultWritableTransaction());
         } catch (Exception e) {
@@ -564,12 +564,12 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
         }
 
         @Override
-        public List<T> findByParentIDAndName(Object parentId, String name) {
+        public List<T> findByParentIDAndName(BigInteger parentId, String name) {
             return Collections.emptyList();
         }
 
         @Override
-        public List<T> findByParentID(Object parentId) {
+        public List<T> findByParentID(BigInteger parentId) {
             return Collections.emptyList();
         }
 

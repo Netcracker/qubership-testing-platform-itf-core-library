@@ -22,7 +22,7 @@ import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
 import java.math.BigInteger;
 import java.util.List;
 
-import javax.persistence.QueryHint;
+import jakarta.persistence.QueryHint;
 
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.jpa.message.parser.OperationParsingRule;
@@ -41,13 +41,13 @@ public interface OperationParsingRuleRepository
     @Query(value = "select parsingRule from OperationParsingRule as parsingRule "
         + "inner join Operation as operation on operation = parsingRule.parent "
         + "where parsingRule.name = :name and operation.ID = :parentId")
-    List<OperationParsingRule> findByParentIDAndName(@Param("parentId") Object parentId, @Param("name") String name);
+    List<OperationParsingRule> findByParentIDAndName(@Param("parentId") BigInteger parentId, @Param("name") String name);
 
     @Override
     @Query(value = "select parsingRule.* from mb_parsing_rules parsingRule "
             + "where parsingRule.type = 'operation' and parsingRule.parent_operation_id = :parentId",
             nativeQuery = true)
-    List<OperationParsingRule> findByParentID(@Param("parentId") Object parentId);
+    List<OperationParsingRule> findByParentID(@Param("parentId") BigInteger parentId);
 
     @Override
     @Query(value = "select parsingRule from OperationParsingRule as parsingRule "

@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.NativeManager;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -218,7 +218,7 @@ public class System extends AbstractEciConfigurable
 
     @Override
     @ProduceNewObject
-    public Object getNaturalId() {
+    public BigInteger getNaturalId() {
         return super.getNaturalId();
     }
 

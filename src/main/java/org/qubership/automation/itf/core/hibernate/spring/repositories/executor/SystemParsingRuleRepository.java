@@ -22,7 +22,7 @@ import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
 import java.math.BigInteger;
 import java.util.List;
 
-import javax.persistence.QueryHint;
+import jakarta.persistence.QueryHint;
 
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.jpa.message.parser.SystemParsingRule;
@@ -41,13 +41,13 @@ public interface SystemParsingRuleRepository
     @Query(value = "select parsingRule from SystemParsingRule as parsingRule "
             + "inner join System as system on system = parsingRule.parent "
             + "where parsingRule.name = :name and system.ID = :parentId")
-    List<SystemParsingRule> findByParentIDAndName(@Param("parentId") Object parentId, @Param("name") String name);
+    List<SystemParsingRule> findByParentIDAndName(@Param("parentId") BigInteger parentId, @Param("name") String name);
 
     @Override
     @Query(value = "select parsingRule.* from mb_parsing_rules parsingRule "
             + "where parsingRule.type = 'system' and parsingRule.parent_system_id = :parentId",
             nativeQuery = true)
-    List<SystemParsingRule> findByParentID(@Param("parentId") Object parentId);
+    List<SystemParsingRule> findByParentID(@Param("parentId") BigInteger parentId);
 
     @Override
     @Query(value = "select parsingRule from SystemParsingRule as parsingRule "

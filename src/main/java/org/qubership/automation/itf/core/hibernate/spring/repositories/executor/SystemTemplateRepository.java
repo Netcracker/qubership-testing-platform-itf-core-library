@@ -23,7 +23,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.QueryHint;
+import jakarta.persistence.QueryHint;
 
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.IdNamePair;
@@ -42,13 +42,13 @@ public interface SystemTemplateRepository
     @Query(value = "select systemTemplate from SystemTemplate as systemTemplate "
             + "inner join System as system on system = systemTemplate.parent "
             + "where systemTemplate.name = :name and system.ID = :parentId")
-    List<SystemTemplate> findByParentIDAndName(@Param("parentId") Object parentId, @Param("name") String name);
+    List<SystemTemplate> findByParentIDAndName(@Param("parentId") BigInteger parentId, @Param("name") String name);
 
     @Override
     @Query(value = "select template.* from mb_templates template "
             + "where template.type = 'system' and template.parent_system_id = :parentId",
             nativeQuery = true)
-    List<SystemTemplate> findByParentID(@Param("parentId") Object parentId);
+    List<SystemTemplate> findByParentID(@Param("parentId") BigInteger parentId);
 
     @Query(value = "select "
             + " new org.qubership.automation.itf.core.model.IdNamePair"

@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.model.jpa.context;
 import java.math.BigInteger;
 import java.util.Date;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.jpa.instance.SituationInstance;
 import org.qubership.automation.itf.core.model.jpa.instance.chain.CallChainInstance;
@@ -106,7 +106,7 @@ public class TcContextBriefInfo extends AbstractStorable {
             throw new IllegalArgumentException("Object isn't correct. Object has " + object.length
                     + " elements (required: 14).");
         }
-        this.setID(object[0]);
+        this.setID((BigInteger) object[0]);
         if (object[1] != null) {
             this.setName(object[1].toString());
         }
@@ -142,7 +142,7 @@ public class TcContextBriefInfo extends AbstractStorable {
 
     @ProduceNewObject
     @Override
-    public Object getNaturalId() {
+    public BigInteger getNaturalId() {
         return super.getNaturalId();
     }
 }

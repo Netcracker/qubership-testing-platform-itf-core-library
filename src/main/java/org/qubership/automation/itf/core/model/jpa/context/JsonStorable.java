@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -134,21 +134,21 @@ public class JsonStorable extends JsonContext implements Storable {
     }
 
     @Override
-    public Object getNaturalId() {
+    public BigInteger getNaturalId() {
         return null;
     }
 
     @Override
-    public void setNaturalId(Object id) {
+    public void setNaturalId(BigInteger id) {
     }
 
     @Override
-    public Object getID() {
-        return delegate.getID();
+    public BigInteger getID() {
+        return (BigInteger) delegate.getID();
     }
 
     @Override
-    public void setID(Object id) {
+    public void setID(BigInteger id) {
         delegate.setID(id);
     }
 

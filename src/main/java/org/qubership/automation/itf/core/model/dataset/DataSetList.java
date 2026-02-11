@@ -16,10 +16,11 @@
 
 package org.qubership.automation.itf.core.model.dataset;
 
+import java.math.BigInteger;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import org.qubership.automation.itf.core.model.common.Identified;
 import org.qubership.automation.itf.core.model.common.Named;
@@ -27,7 +28,7 @@ import org.qubership.automation.itf.core.model.common.OptimisticLockable;
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.context.JsonContext;
 
-public interface DataSetList extends Storable, Named, Identified<Object>, OptimisticLockable<Object> {
+public interface DataSetList extends Storable, Named, Identified<BigInteger>, OptimisticLockable<Object> {
 
     @Override
     DataSetListsSource getParent();

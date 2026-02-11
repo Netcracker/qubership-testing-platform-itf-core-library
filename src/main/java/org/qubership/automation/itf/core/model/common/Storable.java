@@ -32,7 +32,7 @@ import org.qubership.automation.itf.core.util.storage.StoreInformationDelegate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public interface Storable extends Named, Identified<Object>, Prefixed, OptimisticLockable<Object>, Serializable {
+public interface Storable extends Named, Identified<BigInteger>, Prefixed, OptimisticLockable<Object>, Serializable {
 
     void store() throws StorageException;
 
@@ -61,9 +61,9 @@ public interface Storable extends Named, Identified<Object>, Prefixed, Optimisti
     void setDescription(String description);
 
     @JsonIgnore
-    Object getNaturalId();
+    BigInteger getNaturalId();
 
-    void setNaturalId(Object id);
+    void setNaturalId(BigInteger id);
 
     /**
      * While copying some types of objects we should set their statuses

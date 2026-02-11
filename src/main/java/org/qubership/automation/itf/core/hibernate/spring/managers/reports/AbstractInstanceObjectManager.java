@@ -20,7 +20,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.InstanceManager;
@@ -70,7 +70,7 @@ public class AbstractInstanceObjectManager<T extends AbstractInstance> extends A
         try {
             result = instanceClass.newInstance();
             if (setId) {
-                result.setID(UniqueIdGenerator.generate());
+                result.setID((BigInteger) UniqueIdGenerator.generate());
             }
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Cannot create instance of type " + type + " with class "
