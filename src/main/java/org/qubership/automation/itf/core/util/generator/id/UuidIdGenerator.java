@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.util.generator.id;
 
 import java.util.UUID;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.util.generator.prefix.PrefixGenerator;

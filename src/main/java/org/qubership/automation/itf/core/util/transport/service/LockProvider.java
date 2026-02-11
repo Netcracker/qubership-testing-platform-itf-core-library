@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.util.transport.service;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.qubership.automation.itf.core.util.constants.InstanceSettingsConstants.LOCK_PROVIDER_PROCESS_TIMEOUT;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.qubership.automation.itf.core.model.jpa.message.Message;
 import org.qubership.automation.itf.core.util.config.ApplicationConfig;

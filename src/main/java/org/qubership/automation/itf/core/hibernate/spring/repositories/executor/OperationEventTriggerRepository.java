@@ -23,7 +23,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.QueryHint;
+import jakarta.persistence.QueryHint;
 
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;

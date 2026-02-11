@@ -16,7 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.system.stub;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.util.annotation.RefCopy;
 import org.qubership.automation.itf.core.util.ei.serialize.IdSerializer;

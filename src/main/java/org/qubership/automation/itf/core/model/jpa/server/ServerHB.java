@@ -23,8 +23,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import javax.annotation.Nonnull;
-import javax.persistence.Entity;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.executor.ServerObjectManager;

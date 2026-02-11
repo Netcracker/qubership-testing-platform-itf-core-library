@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.model.jpa.report;
 
 import java.util.Map;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.environment.Environment;

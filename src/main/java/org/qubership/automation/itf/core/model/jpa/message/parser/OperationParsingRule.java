@@ -16,7 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.message.parser;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;

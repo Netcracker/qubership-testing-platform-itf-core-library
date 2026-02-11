@@ -22,7 +22,7 @@ import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
 import java.math.BigInteger;
 import java.util.Collection;
 
-import javax.persistence.QueryHint;
+import jakarta.persistence.QueryHint;
 
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.StorableRepository;
 import org.qubership.automation.itf.core.model.jpa.environment.OutboundTransportConfiguration;

@@ -26,8 +26,8 @@ import static org.qubership.automation.itf.configuration.spring.ObjectManagerUti
 import java.math.BigInteger;
 import java.util.Collection;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import org.junit.Assert;
 import org.junit.FixMethodOrder;

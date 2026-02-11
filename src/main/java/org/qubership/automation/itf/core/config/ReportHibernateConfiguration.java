@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.config;
 import java.util.Objects;
 import java.util.Properties;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.FactoryBean;
@@ -42,6 +42,11 @@ public class ReportHibernateConfiguration {
     getCustomLocalContainerEntityManagerFactoryBean(DataSource dataSource, Properties jpaProperties) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setPackagesToScan("org.qubership.automation.itf.core.model.jpa");
+        emf.setPersistenceUnitPostProcessors(pui -> {
+            pui.getManagedClassNames()
+                    .removeIf(className ->
+                            className.startsWith("org.qubership.automation.itf.core.model.jpa.history"));
+        });
         emf.setDataSource(dataSource);
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         emf.setMappingResources(

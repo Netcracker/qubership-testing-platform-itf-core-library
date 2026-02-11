@@ -22,7 +22,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.jetbrains.annotations.NotNull;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.EventTriggerManager;
