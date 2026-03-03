@@ -19,7 +19,7 @@
 
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>4.4.116-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -33,7 +33,7 @@
         <hazelcast.version>4.2.6</hazelcast.version>
         <querydsl.version>5.0.0</querydsl.version>
         <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
-        <io.undertow.undertow-core.version>2.2.38.Final</io.undertow.undertow-core.version>
+        <io.undertow.undertow-core.version>2.3.21.Final</io.undertow.undertow-core.version>
         <tomcat.embed.version>9.0.108</tomcat.embed.version>
         <org.bouncycastle.version>1.70</org.bouncycastle.version>
         <lombok.version>1.18.32</lombok.version>
