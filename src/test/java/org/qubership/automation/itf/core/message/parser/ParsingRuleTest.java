@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.hamcrest.core.StringStartsWith;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -155,7 +156,7 @@ public class ParsingRuleTest {
     @Test
     public void testThrowingExceptionIfIllegalXpath() throws ContentException {
         expectedEx.expect(IllegalArgumentException.class);
-        expectedEx.expectMessage(new StartsWith("Failed applying xpath. Probably xPaths is incorrect"));
+        expectedEx.expectMessage(StringStartsWith.startsWith("Failed applying xpath. Probably xPaths is incorrect"));
         ParsingRule parsingRule = createXpathParsingRule(".//com:characteristic[com:characteristicID = \"Line_ID\"]//com:characteristicValue/text()");
         Message message = createMessage();
         setParents(parsingRule);
