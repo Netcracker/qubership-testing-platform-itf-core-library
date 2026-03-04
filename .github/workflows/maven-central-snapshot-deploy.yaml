@@ -26,7 +26,7 @@ permissions:
   packages: write
 
 env:
-  additional-mvn-args: "-DskipTests=true"
+  additional-mvn-args: ""
 
 jobs:
   mvn-snapshot-deploy:
