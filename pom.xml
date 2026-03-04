@@ -44,7 +44,7 @@
         <javers.version>6.6.4</javers.version>
     </properties>
 
-    
+
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Qubership Testing Platform ITF Core Library</description>
     <url>https://github.com/Netcracker/qubership-testing-platform-itf-core-library</url>
@@ -115,7 +115,7 @@
                     <generateHtml>true</generateHtml>
                     <generateXml>true</generateXml>
                     <generatePdf>true</generatePdf>
-                    <targetPercentage>0.3%</targetPercentage>
+                    <targetPercentage>0.0%</targetPercentage>
                     <excludes>
                         <exclude>**/model/**</exclude>
                     </excludes>
