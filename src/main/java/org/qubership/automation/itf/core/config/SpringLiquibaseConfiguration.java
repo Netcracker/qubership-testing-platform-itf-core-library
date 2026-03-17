@@ -32,7 +32,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SpringLiquibaseConfiguration {
 
-
     /**
      * Liquibase config in case MultiTenancy is disabled.
      */
@@ -42,11 +41,12 @@ public class SpringLiquibaseConfiguration {
                                                                    LiquibaseProperties liquibaseProperties) {
         SpringLiquibase springLiquibase = new BeanAwareSpringLiquibase();
         springLiquibase.setChangeLog(liquibaseProperties.getChangeLog());
-        springLiquibase.setContexts(liquibaseProperties.getContexts());
+        if (liquibaseProperties.getContexts() != null && !liquibaseProperties.getContexts().isEmpty()) {
+            springLiquibase.setContexts(String.join(",", liquibaseProperties.getContexts()));
+        }
         springLiquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
         springLiquibase.setDropFirst(liquibaseProperties.isDropFirst());
         springLiquibase.setShouldRun(liquibaseProperties.isEnabled());
-        springLiquibase.setLabels(liquibaseProperties.getLabelFilter());
         springLiquibase.setChangeLogParameters(liquibaseProperties.getParameters());
         springLiquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
         springLiquibase.setDataSource(dataSource);
