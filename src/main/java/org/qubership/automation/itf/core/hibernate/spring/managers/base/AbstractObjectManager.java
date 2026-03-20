@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2026-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,10 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Function;
-
-import jakarta.annotation.Nonnull;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Triple;
@@ -74,6 +70,9 @@ import org.springframework.data.repository.query.FluentQuery;
 
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Striped;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.Getter;
 
 public abstract class AbstractObjectManager<T extends Storable, V extends T> implements ObjectManager<T> {
@@ -467,7 +466,7 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
                 CoreObjectManager.getInstance().getManager(obj.getClass()).additionalMoveActions(obj, sessionId);
                 store(obj);
             } else {
-                throw new IllegalArgumentException(String.format("Destination %s cannot accept object %s",
+                throw new IllegalArgumentException("Destination %s cannot accept object %s".formatted(
                         dst.getName(), obj.getName()));
             }
         }

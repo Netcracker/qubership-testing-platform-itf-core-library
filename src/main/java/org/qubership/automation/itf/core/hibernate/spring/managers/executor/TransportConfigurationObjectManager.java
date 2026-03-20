@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.annotation.Nonnull;
-
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.EnvConfigurationManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.ObjectCreationByTypeManager;
@@ -39,11 +37,11 @@ import org.qubership.automation.itf.core.model.jpa.system.operation.QOperation;
 import org.qubership.automation.itf.core.model.jpa.transport.TransportConfiguration;
 import org.qubership.automation.itf.core.model.usage.UsageInfo;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
 
 @Service
 public class TransportConfigurationObjectManager extends AbstractObjectManager<TransportConfiguration,
@@ -57,7 +55,6 @@ public class TransportConfigurationObjectManager extends AbstractObjectManager<T
     /**
      * Constructor.
      */
-    @Autowired
     public TransportConfigurationObjectManager(TransportConfigurationRepository repository,
                                                OperationRepository operationRepository,
                                                InboundTransportConfigurationRepository

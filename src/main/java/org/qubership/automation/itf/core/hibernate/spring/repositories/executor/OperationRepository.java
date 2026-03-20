@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.base.Stor
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.model.jpa.transport.TransportConfiguration;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
@@ -56,9 +57,8 @@ public interface OperationRepository extends StorableRepository<Operation>, Quer
             + "and operation.projectId = :projectId")
     List<Operation> findByNameAndProjectId(@Param("name") String name, @Param("projectId") BigInteger projectId);
 
-    @Query(value = "select id from mb_triggers where set_parent_id in "
-            + "(select id from mb_situation where parent_id = :operationId)",
-            nativeQuery = true)
+    @NativeQuery("select id from mb_triggers where set_parent_id in "
+            + "(select id from mb_situation where parent_id = :operationId)")
     List<BigInteger> getSituationEventTriggersByOperationId(@Param("operationId") BigInteger operationId);
 
 }

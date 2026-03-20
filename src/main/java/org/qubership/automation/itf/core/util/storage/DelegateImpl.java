@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.util.storage;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Map;
@@ -23,6 +24,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 public class DelegateImpl implements StoreInformationDelegate<BigInteger, Integer>, Serializable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private BigInteger ID;

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,10 +22,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import jakarta.persistence.PostPersist;
-import jakarta.persistence.PostUpdate;
-import jakarta.persistence.PreRemove;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -47,6 +43,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PostUpdate;
+import jakarta.persistence.PreRemove;
 
 public abstract class AbstractStorable extends AbstractNamedImpl implements Storable {
     protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractStorable.class);
@@ -211,10 +210,10 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
     @Override
     public void setVersion(Object version) {
         Integer intVersion = null;
-        if (version instanceof Integer) {
-            intVersion = (Integer) version;
-        } else if (version instanceof String) {
-            intVersion = Integer.parseInt((String) version);
+        if (version instanceof Integer integer) {
+            intVersion = integer;
+        } else if (version instanceof String string) {
+            intVersion = Integer.parseInt(string);
         }
         storeInformationDelegate.setVersion(intVersion);
     }

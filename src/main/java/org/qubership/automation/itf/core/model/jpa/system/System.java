@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.system;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +24,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.NativeManager;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -61,6 +60,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -71,6 +71,7 @@ import lombok.Setter;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = System.class)
 public class System extends AbstractEciConfigurable
         implements ParsingRuleProvider, KeyDefinitionProvider, TemplateProvider {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private Set<TransportConfiguration> transports = Sets.newHashSetWithExpectedSize(10);
@@ -131,8 +132,8 @@ public class System extends AbstractEciConfigurable
 
     @Override
     public void addParsingRule(ParsingRule parsingRule) {
-        if (parsingRule instanceof SystemParsingRule) {
-            systemParsingRules.add((SystemParsingRule) parsingRule);
+        if (parsingRule instanceof SystemParsingRule rule) {
+            systemParsingRules.add(rule);
         }
     }
 
@@ -153,8 +154,8 @@ public class System extends AbstractEciConfigurable
 
     private Folder<System> determineActualParent(Storable parent) {
         Folder<System> actualParent = null;
-        if (parent instanceof StubContainer) {
-            actualParent = ((StubContainer) parent).getSystems();
+        if (parent instanceof StubContainer container) {
+            actualParent = container.getSystems();
         } else if (parent instanceof Folder) {
             Optional<Folder<System>> systemFolder = ((Folder<? extends Storable>) parent).of(System.class);
             if (systemFolder.isPresent()) {
@@ -210,7 +211,7 @@ public class System extends AbstractEciConfigurable
             if (!Objects.isNull(operation)) {
                 return operation;
             }
-            throw new OperationDefinitionException(String.format("No operation definition found for key [%s]", key));
+            throw new OperationDefinitionException("No operation definition found for key [%s]".formatted(key));
         } catch (Exception e) {
             throw new OperationDefinitionException("Cannot process operation definition", e);
         }

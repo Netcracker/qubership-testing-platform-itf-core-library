@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,20 +26,10 @@ import static org.qubership.automation.itf.configuration.spring.ObjectManagerUti
 import java.math.BigInteger;
 import java.util.Collection;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.Lists;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.NativeManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.executor.SituationObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.executor.TemplateObjectManager;
@@ -65,12 +55,18 @@ import org.qubership.automation.itf.core.model.jpa.system.stub.EventTrigger;
 import org.qubership.automation.itf.core.model.jpa.system.stub.Situation;
 import org.qubership.automation.itf.core.model.jpa.system.stub.SituationEventTrigger;
 import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Transactional
 @Commit
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath*:hibernate-configuration-test-context.xml"})
+@SpringJUnitConfig(locations = {"classpath*:hibernate-configuration-test-context.xml"})
 public class ProjectTest {
 
     @PersistenceContext

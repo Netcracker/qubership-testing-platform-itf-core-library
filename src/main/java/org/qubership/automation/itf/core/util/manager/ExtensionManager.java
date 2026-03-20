@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.util.manager;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
@@ -33,6 +34,7 @@ import net.sf.cglib.proxy.MethodProxy;
 
 @SuppressWarnings("unchecked")
 public class ExtensionManager implements Serializable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionManager.class);
@@ -54,7 +56,7 @@ public class ExtensionManager implements Serializable {
             try {
                 return (T) enhanceObject(object);
             } catch (Exception e) {
-                throw new ExtensionException(String.format("Error creating extension for object %s", object), e);
+                throw new ExtensionException("Error creating extension for object %s".formatted(object), e);
             }
         } else {
             return object;
@@ -69,14 +71,14 @@ public class ExtensionManager implements Serializable {
             try {
                 return (T) enhanceClass(clazz);
             } catch (Throwable e) {
-                throw new ExtensionException(String.format("Error creating extension for class %s",
+                throw new ExtensionException("Error creating extension for class %s".formatted(
                         clazz.getName()), e);
             }
         } else {
             try {
-                return clazz.newInstance();
+                return clazz.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
-                throw new ExtensionException(String.format("Error creating instance of class %s", clazz.getName()), e);
+                throw new ExtensionException("Error creating instance of class %s".formatted(clazz.getName()), e);
             }
         }
     }
@@ -88,8 +90,8 @@ public class ExtensionManager implements Serializable {
     public void extend(Object object, Extension extension) {
         if (extension != null && object != null) {
             Extendable extendable;
-            if (object instanceof Extendable) {
-                extendable = (Extendable) object;
+            if (object instanceof Extendable extendable1) {
+                extendable = extendable1;
                 extendable.extend(extension);
             } else {
                 LOGGER.warn("Cannot extend unextendable object {}", object);
@@ -101,12 +103,12 @@ public class ExtensionManager implements Serializable {
      * TODO: Add JavaDoc.
      */
     public <T extends Extension> T getExtension(Object object, Class<T> extensionClass) {
-        if (object instanceof Extendable) {
-            T extension = ((Extendable) object).getExtension(extensionClass);
+        if (object instanceof Extendable extendable) {
+            T extension = extendable.getExtension(extensionClass);
             if (extension == null) {
                 try {
                     extension = extensionClass.newInstance();
-                    ((Extendable) object).extend(extension);
+                    extendable.extend(extension);
                 } catch (InstantiationException | IllegalAccessException e) {
                     LOGGER.warn("Error creating extension instance", e);
                     return null;
@@ -151,6 +153,7 @@ public class ExtensionManager implements Serializable {
     }
 
     private static class ExtendedSelfMethodInterceptor implements MethodInterceptor, Serializable {
+        @Serial
         private static final long serialVersionUID = 20240812L;
 
         private final ExtendableImpl extendable = new ExtendableImpl();

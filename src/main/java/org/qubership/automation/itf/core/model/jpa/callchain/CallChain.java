@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 
 package org.qubership.automation.itf.core.model.jpa.callchain;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.folder.ChainFolder;
@@ -47,11 +46,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = CallChain.class)
 public class CallChain extends AbstractTestCase {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private Set<String> keys = Sets.newHashSet();
@@ -68,8 +69,8 @@ public class CallChain extends AbstractTestCase {
     public CallChain(Storable parent) {
         this();
         Folder<CallChain> actualParent = null;
-        if (parent instanceof StubContainer) {
-            actualParent = ((StubContainer) parent).getCallchains();
+        if (parent instanceof StubContainer container) {
+            actualParent = container.getCallchains();
         } else if (parent instanceof Folder) {
             Optional<Folder<CallChain>> callChainFolder = ((Folder<? extends Storable>) parent).of(CallChain.class);
             if (callChainFolder.isPresent()) {

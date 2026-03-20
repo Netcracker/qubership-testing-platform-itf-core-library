@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package org.qubership.automation.itf.core.model.jpa.project;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Set;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.IDataSetListManager;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -51,6 +50,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -61,6 +61,7 @@ import lombok.Setter;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id", scope = StubProject.class)
 public class StubProject extends AbstractStorable implements StubContainer {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private SystemFolder systems;

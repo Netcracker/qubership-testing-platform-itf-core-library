@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.stub.fast;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +29,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FastConfigurationRequest implements Serializable {
+    @Serial
     private static final long serialVersionUID = 20250303L;
 
     private List<FastTransportConfig> transportConfigs;
@@ -36,6 +38,7 @@ public class FastConfigurationRequest implements Serializable {
     @Getter
     @Setter
     public static class FastTransportConfig implements Serializable {
+        @Serial
         private static final long serialVersionUID = 20250303L;
 
         private StubEndpointConfig.TransportTypes transportType;
@@ -45,6 +48,7 @@ public class FastConfigurationRequest implements Serializable {
     @Getter
     @Setter
     public static class FastSystem implements Serializable {
+        @Serial
         private static final long serialVersionUID = 20250303L;
 
         private String id;
@@ -55,6 +59,7 @@ public class FastConfigurationRequest implements Serializable {
     @Getter
     @Setter
     public static class FastOperation implements Serializable {
+        @Serial
         private static final long serialVersionUID = 20250303L;
 
         private String id;
@@ -64,6 +69,7 @@ public class FastConfigurationRequest implements Serializable {
     @Getter
     @Setter
     public static class FastSituation implements Serializable {
+        @Serial
         private static final long serialVersionUID = 20250303L;
 
         private String id;

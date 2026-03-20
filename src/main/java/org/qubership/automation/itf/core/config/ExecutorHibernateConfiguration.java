@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@ package org.qubership.automation.itf.core.config;
 import java.util.Objects;
 import java.util.Properties;
 
-import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -34,6 +34,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import com.hazelcast.core.HazelcastInstance;
+import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 @Import(CommonHibernateConfiguration.class)
@@ -86,6 +87,7 @@ public class ExecutorHibernateConfiguration {
      * TODO: Add JavaDoc.
      */
     @Bean(name = "transactionManager")
+    @DependsOnDatabaseInitialization
     public JpaTransactionManager getJpaTransactionManager(FactoryBean<EntityManagerFactory> entityManagerFactory)
             throws Exception {
         JpaTransactionManager transactionManager = new JpaTransactionManager();

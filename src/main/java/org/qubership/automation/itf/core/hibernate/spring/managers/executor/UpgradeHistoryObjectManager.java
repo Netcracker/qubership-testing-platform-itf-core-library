@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package org.qubership.automation.itf.core.hibernate.spring.managers.executor;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.UpgradeHistoryRepository;
 import org.qubership.automation.itf.core.model.jpa.versions.UpgradeHistory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,7 +26,6 @@ public class UpgradeHistoryObjectManager extends AbstractObjectManager<UpgradeHi
 
     private final UpgradeHistoryRepository upgradeHistoryRepository;
 
-    @Autowired
     public UpgradeHistoryObjectManager(UpgradeHistoryRepository upgradeHistoryRepository,
                                        UpgradeHistoryRepository upgradeHistoryRepository1) {
         super(UpgradeHistory.class, upgradeHistoryRepository);

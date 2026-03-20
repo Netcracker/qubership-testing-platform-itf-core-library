@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.persistence.Entity;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.extension.ExtendableImpl;
@@ -34,6 +32,7 @@ import org.qubership.automation.itf.core.util.constants.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -93,7 +92,7 @@ public abstract class AbstractInstance extends ExtendableImpl {
 
     @Override
     public String toString() {
-        return String.format("Instance{%s}", getSource());
+        return "Instance{%s}".formatted(getSource());
     }
 
     public void destroy() {

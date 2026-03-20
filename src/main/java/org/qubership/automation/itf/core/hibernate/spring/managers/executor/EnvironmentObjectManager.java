@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.annotation.Nonnull;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.StorableInFolderObjectManager;
@@ -39,8 +37,9 @@ import org.qubership.automation.itf.core.model.jpa.report.LinkCollectorConfigura
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.annotation.Nonnull;
 
 @Service
 public class EnvironmentObjectManager extends AbstractObjectManager<Environment, Environment>
@@ -50,7 +49,6 @@ public class EnvironmentObjectManager extends AbstractObjectManager<Environment,
     private static final Logger LOGGER = LoggerFactory.getLogger(EnvironmentObjectManager.class);
     private final EnvironmentRepository environmentRepository;
 
-    @Autowired
     public EnvironmentObjectManager(EnvironmentRepository repository) {
         super(Environment.class, repository);
         this.environmentRepository = repository;
@@ -61,11 +59,6 @@ public class EnvironmentObjectManager extends AbstractObjectManager<Environment,
      */
     public void updateInitialEnvState() {
         LOGGER.info("Triggers' and Environments' statuses initial setup is started.");
-        /*
-                setInitialEnvStateInactiveOrEmpty() method commented after discussion.
-                It looks unneeded in the new ITF architecture.
-             */
-        // environmentRepository.setInitialEnvStateInactiveOrEmpty();
         TxExecutor.executeUnchecked(environmentRepository::turnOffLostTriggers,
                 TxExecutor.defaultWritableTransaction());
         LOGGER.info("Triggers' and Environments' statuses initial setup is done.");

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,15 +16,12 @@
 
 package org.qubership.automation.itf.core.model.jpa.folder;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import jakarta.annotation.Nonnull;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
 import org.qubership.automation.itf.core.model.common.AbstractConfiguration;
@@ -42,9 +39,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 @Entity
 public class Folder<T extends Storable> extends AbstractConfiguration<String, String> {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private final Class<T> genericType;
@@ -199,12 +200,12 @@ public class Folder<T extends Storable> extends AbstractConfiguration<String, St
     @Override
     public void performPostImportActions(BigInteger projectId, BigInteger sessionId) {
         super.performPostImportActions(projectId, sessionId);
-        if (this instanceof ChainFolder) {
-            for (CallChain callChain : ((ChainFolder)this).getObjects()) {
+        if (this instanceof ChainFolder folder1) {
+            for (CallChain callChain : folder1.getObjects()) {
                 callChain.performPostImportActions(projectId, sessionId);
             }
-        } else if (this instanceof EnvFolder) {
-            for (Environment env : ((EnvFolder)this).getObjects()) {
+        } else if (this instanceof EnvFolder folder) {
+            for (Environment env : folder.getObjects()) {
                 env.performPostImportActions(projectId, sessionId);
             }
         }

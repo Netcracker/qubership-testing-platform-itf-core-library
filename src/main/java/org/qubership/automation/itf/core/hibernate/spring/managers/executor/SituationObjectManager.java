@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -59,7 +59,6 @@ import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.qubership.automation.itf.core.util.exception.CopyException;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
 import org.qubership.automation.itf.core.util.provider.TemplateProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -78,7 +77,6 @@ public class SituationObjectManager extends AbstractObjectManager<Situation, Sit
     /**
      * Constructor.
      */
-    @Autowired
     public SituationObjectManager(SituationRepository repository, StepRepository stepRepository,
                                   SituationEventTriggerRepository situationEventTriggerRepository) {
         super(Situation.class, repository);

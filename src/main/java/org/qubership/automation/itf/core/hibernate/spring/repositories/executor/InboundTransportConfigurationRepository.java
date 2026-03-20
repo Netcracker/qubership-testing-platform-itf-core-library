@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.base.Stor
 import org.qubership.automation.itf.core.model.jpa.environment.InboundTransportConfiguration;
 import org.qubership.automation.itf.core.model.jpa.transport.TransportConfiguration;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
@@ -40,41 +41,40 @@ public interface InboundTransportConfigurationRepository extends StorableReposit
     TransportConfiguration findFirstTransport(@Param("id") BigInteger id);
 
     // TODO: query text and method name contradict each other. Need to check what is wrong, and fix.
-    @Query(value = "select i.transport_id from mb_configuration i where i.id =  :parent",
-            nativeQuery = true)
+    @NativeQuery("select i.transport_id from mb_configuration i where i.id =  :parent")
     Object getIdByTransport(@Param("parent") BigInteger parent);
 
     @Query(value = "select itc from InboundTransportConfiguration itc where itc.ecId = :ecId")
     InboundTransportConfiguration findByEcId(@Param("ecId") String ecId);
 
-    @Query(value = "select ec_project_id from mb_configuration "
+    @NativeQuery("select ec_project_id from mb_configuration "
             + "where type='inbound' and ec_project_id is not null "
             + "and parent_in_server_id in (select id from mb_servers where project_id = :projectId) "
-            + "group by ec_project_id", nativeQuery = true)
+            + "group by ec_project_id")
     Collection<String> getEcProjectIds(@Param("projectId") BigInteger projectId);
 
     @Query(value = "select itc from InboundTransportConfiguration itc where itc.ecProjectId = :ecProjectId")
     Collection<InboundTransportConfiguration> getByEcProject(@Param("ecProjectId") String ecProjectId);
 
     @Modifying
-    @Query(value = "update mb_configuration "
+    @NativeQuery("update mb_configuration "
             + "set ec_project_id = null, ec_id = null "
-            + "where ec_project_id = :ecProjectId and type='inbound'", nativeQuery = true)
+            + "where ec_project_id = :ecProjectId and type='inbound'")
     void unbindByEcProject(@Param("ecProjectId") String ecProjectId);
 
-    @Query(value = "select inb_conf.*  from mb_configuration inb_conf "
+    @NativeQuery("select inb_conf.*  from mb_configuration inb_conf "
             + "where inb_conf.type = 'inbound' "
             + "and inb_conf.parent_in_server_id = :serverId "
-            + "and inb_conf.transport_id = :transportId", nativeQuery = true)
+            + "and inb_conf.transport_id = :transportId")
     InboundTransportConfiguration findOne(@Param("serverId") BigInteger serverId,
                                           @Param("transportId") BigInteger transportId);
 
-    @Query(value = "select inb_conf.*  "
+    @NativeQuery("select inb_conf.*  "
             + "from mb_configuration inb_conf, mb_configuration tr_conf "
             + "where inb_conf.type = 'inbound' "
             + "and inb_conf.parent_in_server_id = :serverId "
             + "and tr_conf.id = inb_conf.transport_id "
-            + "and tr_conf.parent_system_id = :systemId", nativeQuery = true)
+            + "and tr_conf.parent_system_id = :systemId")
     Iterable<InboundTransportConfiguration> findAll(@Param("serverId") BigInteger serverId,
                                                     @Param("systemId") BigInteger systemId);
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.context;
 
+import java.io.Serial;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,7 @@ import com.google.common.collect.Maps;
 @SuppressWarnings("unchecked")
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class JsonContext extends JSONObject implements IJsonContext, Extendable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private static final Splitter SPLITTER = Splitter.on('.');
@@ -74,8 +76,8 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
 
     @Override
     public Object get(Object key) {
-        if (key instanceof String) {
-            return iterateForGet((String) key, false, true);
+        if (key instanceof String string) {
+            return iterateForGet(string, false, true);
         } else {
             return super.get(key);
         }
@@ -107,7 +109,7 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
 
     @Override
     public Object put(Object key, Object value) {
-        Object obj = key instanceof String ? iterateForPut((String) key, value) : super.put(key, value);
+        Object obj = key instanceof String s ? iterateForPut(s, value) : super.put(key, value);
         if (collectHistory) {
             history.put(key, ImmutablePair.of(obj, value));
         }
@@ -128,8 +130,8 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
 
     @Override
     public boolean containsKey(Object key) {
-        return key instanceof String
-                ? iterateForGet((String) key, false, false) != null
+        return key instanceof String s
+                ? iterateForGet(s, false, false) != null
                 : super.containsKey(key);
     }
 
@@ -159,14 +161,14 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
                 } else {
                     return null;
                 }
-            } else if (tmpObject instanceof Map) {
+            } else if (tmpObject instanceof Map map1) {
                 if (arrayMatcher.reset(keyPart).matches()) {
                     String varName = arrayMatcher.group(1);
                     int index = Integer.parseInt(arrayMatcher.group(2));
-                    Object o = ((Map) tmpObject).get(varName);
-                    if (o instanceof List) {
-                        if (((List) o).size() > index) {
-                            tmpObject = ((List) o).get(index);
+                    Object o = map1.get(varName);
+                    if (o instanceof List list) {
+                        if (list.size() > index) {
+                            tmpObject = list.get(index);
                         } else {
                             return null;
                         }
@@ -182,9 +184,9 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
                 } else if (mapMatcher.reset(keyPart).matches()) {
                     String varName = mapMatcher.group(1);
                     String subVarName = mapMatcher.group(3);
-                    Object o = ((Map) tmpObject).get(varName);
-                    if (o instanceof Map) {
-                        tmpObject = ((Map) o).get(subVarName);
+                    Object o = map1.get(varName);
+                    if (o instanceof Map map) {
+                        tmpObject = map.get(subVarName);
                     } else {
                         if (doThrow) {
                             throw new IllegalStateException(String.format("Cannot take property \"%s\" from "
@@ -195,7 +197,7 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
                         }
                     }
                 } else {
-                    tmpObject = (tmpObject == this) ? super.get(keyPart) : ((Map) tmpObject).get(keyPart);
+                    tmpObject = (tmpObject == this) ? super.get(keyPart) : map1.get(keyPart);
                 }
             } else {
                 if (doThrow) {
@@ -223,14 +225,13 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
         if (arrayMatcher.matches()) {
             String varName = arrayMatcher.group(1);
             int index = Integer.parseInt(arrayMatcher.group(2));
-            if (tmpObject instanceof Map) {
-                Object o = ((Map) tmpObject).get(varName);
+            if (tmpObject instanceof Map map) {
+                Object o = map.get(varName);
                 if (o == null) {
                     o = new JSONArray();
-                    ((Map) tmpObject).put(varName, o);
+                    map.put(varName, o);
                 }
-                if (o instanceof List) {
-                    List list = (List) o;
+                if (o instanceof List list) {
                     if (index == list.size()) {
                         list.add(value);
                         return null;
@@ -258,14 +259,14 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
         } else if (mapMatcher.matches()) {
             String varName = mapMatcher.group(1);
             String subVarName = mapMatcher.group(3);
-            if (tmpObject instanceof Map) {
-                Object o = ((Map) tmpObject).get(varName);
+            if (tmpObject instanceof Map map1) {
+                Object o = map1.get(varName);
                 if (o == null) {
                     o = new JsonContext();
-                    ((Map) tmpObject).put(varName, o);
+                    map1.put(varName, o);
                 }
-                if (o instanceof Map) {
-                    return ((Map) o).put(subVarName, value);
+                if (o instanceof Map map) {
+                    return map.put(subVarName, value);
                 } else {
                     throw new IllegalStateException(String.format("Cannot set property \"%s\" to object [%s], "
                                     + "class is [%s]. Object is not map. Full key is '%s'", subVarName, o,
@@ -276,8 +277,8 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
                         + "class is [%s]. Object is not map. Full key is '%s'", varName, tmpObject, simpleName, key));
             }
         } else {
-            if (tmpObject instanceof Map) {
-                return (tmpObject == this) ? super.put(lastKey, value) : ((Map) tmpObject).put(lastKey, value);
+            if (tmpObject instanceof Map map) {
+                return (tmpObject == this) ? super.put(lastKey, value) : map.put(lastKey, value);
             } else {
                 throw new IllegalStateException(String.format("Cannot set property \"%s\" to object [%s], "
                         + "class is [%s]. Object is not map. Full key is '%s'", lastKey, tmpObject, simpleName, key));
@@ -302,10 +303,10 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
 
     private void merge(Map to, Object fromKey, Object fromValue, boolean addNewOnly) {
         Object toValue = to.get(fromKey);
-        if (toValue instanceof Map && fromValue instanceof Map) {
-            mergeMap((Map) toValue, (Map) fromValue, addNewOnly);
-        } else if (toValue instanceof List && fromValue instanceof List) {
-            mergeList((List) toValue, (List) fromValue, addNewOnly);
+        if (toValue instanceof Map map && fromValue instanceof Map map1) {
+            mergeMap(map, map1, addNewOnly);
+        } else if (toValue instanceof List list && fromValue instanceof List list1) {
+            mergeList(list, list1, addNewOnly);
         } else {
             put(to, fromKey, fromValue, addNewOnly);
         }
@@ -353,14 +354,14 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
         if (!to.containsKey(group)) {
             to.put(group, new JSONObject());
         }
-        if (fromValue instanceof Map) {
+        if (fromValue instanceof Map map) {
             JSONObject toChild = new JsonContext();
-            for (Object val : ((Map) fromValue).entrySet()) {
+            for (Object val : map.entrySet()) {
                 Entry valEntry = (Entry) val;
                 Object valValue = valEntry.getValue();
                 Object valKey = valEntry.getKey();
-                if (valKey instanceof String && ((String) valKey).contains(".")) {
-                    checkOrCreateParents(toChild, (String) valKey, valValue);
+                if (valKey instanceof String string && string.contains(".")) {
+                    checkOrCreateParents(toChild, string, valValue);
                 } else {
                     toChild.put(valKey, valValue);
                 }
@@ -403,10 +404,10 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
     private void mergeListElement(List to, List from, boolean addNewOnly, int elementIndex) {
         Object toValue = to.get(elementIndex);
         Object fromValue = from.get(elementIndex);
-        if (toValue instanceof Map && fromValue instanceof Map) {
-            mergeMap((Map) toValue, (Map) fromValue, addNewOnly);
-        } else if (toValue instanceof List && fromValue instanceof List) {
-            mergeList((List) toValue, (List) fromValue, addNewOnly);
+        if (toValue instanceof Map map && fromValue instanceof Map map1) {
+            mergeMap(map, map1, addNewOnly);
+        } else if (toValue instanceof List list && fromValue instanceof List list1) {
+            mergeList(list, list1, addNewOnly);
         } else {
             if (!addNewOnly) {
                 to.set(elementIndex, fromValue);
@@ -470,8 +471,8 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
             return;
         }
         Object parse = parser.parse(jsonString);
-        if (parse instanceof Map) {
-            putAll((Map) parse);
+        if (parse instanceof Map map) {
+            putAll(map);
         } else {
             put("parsed", parse);
         }

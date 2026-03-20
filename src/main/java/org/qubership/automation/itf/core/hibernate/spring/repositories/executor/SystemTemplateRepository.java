@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,21 +23,21 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.persistence.QueryHint;
-
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.IdNamePair;
 import org.qubership.automation.itf.core.model.jpa.message.template.SystemTemplate;
 import org.qubership.automation.itf.core.model.jpa.system.System;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import jakarta.persistence.QueryHint;
+
 @Repository
 @JaversSpringDataAuditable
-public interface SystemTemplateRepository
-        extends TemplateRepository<System, SystemTemplate> {
+public interface SystemTemplateRepository extends TemplateRepository<System, SystemTemplate> {
     @Override
     @Query(value = "select systemTemplate from SystemTemplate as systemTemplate "
             + "inner join System as system on system = systemTemplate.parent "
@@ -45,9 +45,8 @@ public interface SystemTemplateRepository
     List<SystemTemplate> findByParentIDAndName(@Param("parentId") BigInteger parentId, @Param("name") String name);
 
     @Override
-    @Query(value = "select template.* from mb_templates template "
-            + "where template.type = 'system' and template.parent_system_id = :parentId",
-            nativeQuery = true)
+    @NativeQuery("select template.* from mb_templates template "
+            + "where template.type = 'system' and template.parent_system_id = :parentId")
     List<SystemTemplate> findByParentID(@Param("parentId") BigInteger parentId);
 
     @Query(value = "select "
@@ -83,8 +82,7 @@ public interface SystemTemplateRepository
     Collection<SystemTemplate> findByParentNameAndProject(@Param("name") String name,
                                                           @Param("projectId") BigInteger projectId);
 
-    @Query(value = "select t from SystemTemplate  as t "
-            + "where id = :id")
+    @Query(value = "select t from SystemTemplate  as t where id = :id")
     @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "systemTemplateCache")})
     SystemTemplate findByIdOnly(@Param("id") BigInteger id);

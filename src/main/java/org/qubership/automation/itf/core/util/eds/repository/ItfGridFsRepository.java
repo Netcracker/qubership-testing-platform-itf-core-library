@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import java.util.Map;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.qubership.automation.itf.core.util.eds.configuration.ItfGridFsConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -40,7 +39,6 @@ import com.mongodb.client.gridfs.model.GridFSFile;
 public class ItfGridFsRepository {
     private final GridFsTemplate gridFsTemplate;
 
-    @Autowired
     public ItfGridFsRepository(GridFsTemplate gridFsTemplate) {
         this.gridFsTemplate = gridFsTemplate;
     }

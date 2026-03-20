@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,13 +26,14 @@ public class EncodeDecodeBase64Test {
     private static final DecodeBase64 decoder = new DecodeBase64();
     private static final EncodeBase64 encoder = new EncodeBase64();
 
-    private static final String expectedContent = "Test content to encode base64.\n"
-            + "ABCDEF GHIJKL MNOPQR STUVWX YZ\n"
-            + "abcdef ghijkl mnopqr stuvwx yz\n"
-            + "АБВГДЕ ЁЖЗИЙК ЛМНОПР СТУФХЦ ЧШЩЪЫЬ ЭЮЯ\n"
-            + "абвгде ёжзийк лмнопр стуфхц чшщъыь эюя\n"
-            + "`1234567890-=[];'\\,./\n"
-            + "~!@#$%^&*()_+{}:\"|<>?";
+    private static final String expectedContent = """
+            Test content to encode base64.
+            ABCDEF GHIJKL MNOPQR STUVWX YZ
+            abcdef ghijkl mnopqr stuvwx yz
+            АБВГДЕ ЁЖЗИЙК ЛМНОПР СТУФХЦ ЧШЩЪЫЬ ЭЮЯ
+            абвгде ёжзийк лмнопр стуфхц чшщъыь эюя
+            `1234567890-=[];'\\,./
+            ~!@#$%^&*()_+{}:"|<>?""";
     private static final String expectedEncodedContent = "VGVzdCBjb250ZW50IHRvIGVuY29kZSBiYXNlNjQuCkFCQ0RFRiBHSElKS0wg"
             + "TU5PUFFSIFNUVVZXWCBZWgphYmNkZWYgZ2hpamtsIG1ub3BxciBzdHV2d3gg"
             + "eXoK0JDQkdCS0JPQlNCVINCB0JbQl9CY0JnQmiDQm9Cc0J3QntCf0KAg0KHQ"

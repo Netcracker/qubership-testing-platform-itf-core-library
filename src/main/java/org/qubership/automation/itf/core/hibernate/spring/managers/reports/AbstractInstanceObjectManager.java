@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,8 +20,6 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.annotation.PostConstruct;
-
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.InstanceManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.reports.AbstractInstanceRepository;
@@ -32,9 +30,9 @@ import org.qubership.automation.itf.core.model.jpa.instance.chain.CallChainInsta
 import org.qubership.automation.itf.core.model.jpa.instance.step.StepInstance;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class AbstractInstanceObjectManager<T extends AbstractInstance> extends AbstractObjectManager<AbstractInstance,
@@ -42,7 +40,6 @@ public class AbstractInstanceObjectManager<T extends AbstractInstance> extends A
 
     private Map<String, Class<? extends AbstractInstance>> subclasses;
 
-    @Autowired
     public AbstractInstanceObjectManager(AbstractInstanceRepository repository) {
         super(AbstractInstance.class, repository);
     }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.base.Sear
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.StorableRepository;
 import org.qubership.automation.itf.core.model.jpa.message.template.Template;
 import org.qubership.automation.itf.core.util.provider.TemplateProvider;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
@@ -34,14 +34,13 @@ import org.springframework.data.repository.query.Param;
 public interface TemplateRepository<K extends TemplateProvider, T extends Template<K>>
         extends StorableRepository<T>, QuerydslPredicateExecutor<T>, SearchRepository<T> {
 
-    @Query(value = "select distinct templ_labels.labels "
+    @NativeQuery("select distinct templ_labels.labels "
                  + "from mb_templates as templates "
                  + "inner join mb_templates_labels as templ_labels on templ_labels.id = templates.id "
-                 + "where templates.project_id = :projectId",
-           nativeQuery = true)
+                 + "where templates.project_id = :projectId")
     Set<String> getAllLabels(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select sys.name as system_name, ser.name as server_name, env.id as env_id, env.name as env_name "
+    @NativeQuery("select sys.name as system_name, ser.name as server_name, env.id as env_id, env.name as env_name "
             + "from mb_configuration conf "
             + "inner join mb_systems sys on sys.id = conf.system_id "
             + "inner join mb_servers ser on ser.id = conf.parent_out_server_id "
@@ -54,8 +53,7 @@ public interface TemplateRepository<K extends TemplateProvider, T extends Templa
             + "and ((cast(conf.params as jsonb) @> (cast((concat('{\"DPR\":\"', :templateId, '\"}')) as jsonb))) "
             + "or (cast(conf.params as jsonb) @> (cast((concat('{\"dwa\":\"', :templateId, '\"}')) as jsonb))) "
             + "or (cast(conf.params as jsonb) @> (cast((concat('{\"CER\":\"', :templateId, '\"}')) as jsonb))) "
-            + "or (cast(conf.params as jsonb) @> (cast((concat('{\"DPA\":\"', :templateId, '\"}')) as jsonb))))",
-            nativeQuery = true)
+            + "or (cast(conf.params as jsonb) @> (cast((concat('{\"DPA\":\"', :templateId, '\"}')) as jsonb))))")
     List<Map<String, Object>> findUsagesOnOutboundDiameterConfiguration(@Param("templateId") BigInteger templateId,
                                                                         @Param("projectId") BigInteger projectId);
 }

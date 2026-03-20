@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,11 +22,9 @@ import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.util.StopWatch;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -36,8 +34,7 @@ import java.util.Map;
 
 @Transactional
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath*:ta-prod-hibernate-configuration-context.xml"})
+@SpringJUnitConfig(locations = {"classpath*:ta-prod-hibernate-configuration-context.xml"})
 public class ITFCiTest {
     @Autowired
     private EntityManagerFactory emf;

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 package org.qubership.automation.itf.core.model.jpa.context;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Date;
-
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.jpa.instance.SituationInstance;
 import org.qubership.automation.itf.core.model.jpa.instance.chain.CallChainInstance;
@@ -27,6 +26,7 @@ import org.qubership.automation.itf.core.model.jpa.storage.AbstractStorable;
 import org.qubership.automation.itf.core.util.annotation.ProduceNewObject;
 import org.qubership.automation.itf.core.util.constants.Status;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +34,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TcContextBriefInfo extends AbstractStorable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     Object id;

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,15 +16,13 @@
 
 package org.qubership.automation.itf.core.model.jpa.server;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-
-import jakarta.annotation.Nonnull;
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.executor.ServerObjectManager;
@@ -53,12 +51,15 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = ServerHB.class)
 public class ServerHB extends AbstractEciConfigurable implements Server {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private String url;
@@ -108,7 +109,7 @@ public class ServerHB extends AbstractEciConfigurable implements Server {
                     }
                     return result;
                 }, TxExecutor.readOnlyTransaction()),
-                String.format("No OutboundTransportConfiguration for system [%s] and type [%s] found", system, type));
+                "No OutboundTransportConfiguration for system [%s] and type [%s] found".formatted(system, type));
     }
 
     @Override

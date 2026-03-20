@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import jakarta.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.SearchByProjectIdManager;
@@ -30,7 +28,6 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.reports.T
 import org.qubership.automation.itf.core.model.jpa.context.QTcContextBriefInfo;
 import org.qubership.automation.itf.core.model.jpa.context.TcContextBriefInfo;
 import org.qubership.automation.itf.core.util.constants.Status;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -40,6 +37,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringPath;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class TcContextBriefInfoObjectManager extends AbstractObjectManager<TcContextBriefInfo, TcContextBriefInfo>
@@ -49,7 +47,6 @@ public class TcContextBriefInfoObjectManager extends AbstractObjectManager<TcCon
 
     private static TcContextBriefInfoRepository tcContextBriefInfoRepository;
 
-    @Autowired
     protected TcContextBriefInfoObjectManager(TcContextBriefInfoRepository repository) {
         super(TcContextBriefInfo.class, repository);
         tcContextBriefInfoRepository = repository;

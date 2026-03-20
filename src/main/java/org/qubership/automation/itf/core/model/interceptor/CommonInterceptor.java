@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.interceptor;
 
+import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.List;
@@ -41,6 +42,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CommonInterceptor extends AbstractStorable implements Storable, Interceptor {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private List<InterceptorParams> interceptorParams = Lists.newArrayList();

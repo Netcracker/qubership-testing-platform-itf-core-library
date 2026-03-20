@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,16 +16,18 @@
 
 package org.qubership.automation.itf.core.model.jpa.folder;
 
-import jakarta.persistence.Entity;
+import java.io.Serial;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.server.Server;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ServerFolder extends Folder<Server> {
+    @Serial
     private static final long serialVersionUID = 20240812L;
     public static final Class<Server> TYPE = Server.class;
 

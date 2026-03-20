@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -233,13 +233,15 @@ public class ComputeHash extends Directive {
     }
 
     private static String getExceptionMessage() {
-        return "Directive '#hashsum': 1st argument is $algorithm \n('SHA-1', 'SHA-256', "
-                + "'SHA-384', 'SHA-512', 'MD2', 'MD5', 'CRC-32', 'HMAC-xxx', 'AES-256', 'RS256', 'RS512'), \n"
-                + "2nd argument is $content, \n"
-                + "3rd argument is $encoding (this argument can be empty - UTF-8 by default), \n"
-                + "4th argument is $key (key is needed for 'HMAC-xxx', 'AES-256', 'RS256' and 'RS512'),\n"
-                + "5th argument = \"true\" (encode digest via Base64) or \"false\" (encode digest via "
-                + "Hex.encodeHexString) (default is false) (only for 'HMAC-xxx' currently),\n"
-                + " where 'HMAC-xxx' are: HMAC-SHA256, HMAC-SHA1, HMAC-SHA384 and so on.";
+        return """
+                Directive '#hashsum': 1st argument is $algorithm\s
+                ('SHA-1', 'SHA-256', \
+                'SHA-384', 'SHA-512', 'MD2', 'MD5', 'CRC-32', 'HMAC-xxx', 'AES-256', 'RS256', 'RS512'),\s
+                2nd argument is $content,\s
+                3rd argument is $encoding (this argument can be empty - UTF-8 by default),\s
+                4th argument is $key (key is needed for 'HMAC-xxx', 'AES-256', 'RS256' and 'RS512'),
+                5th argument = "true" (encode digest via Base64) or "false" (encode digest via \
+                Hex.encodeHexString) (default is false) (only for 'HMAC-xxx' currently),
+                 where 'HMAC-xxx' are: HMAC-SHA256, HMAC-SHA1, HMAC-SHA384 and so on.""";
     }
 }

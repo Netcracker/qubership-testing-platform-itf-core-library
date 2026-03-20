@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,28 +16,24 @@
 
 package org.qubership.automation.itf.configuration.spring;
 
-import org.qubership.automation.itf.core.model.jpa.context.JsonContext;
-import org.qubership.automation.itf.core.model.jpa.context.TcContext;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+import static org.qubership.automation.itf.configuration.spring.ObjectManagerUtils.create;
+import static org.qubership.automation.itf.configuration.spring.ObjectManagerUtils.renameStoreValidate;
 
 import org.json.simple.JSONArray;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.qubership.automation.itf.core.model.jpa.context.JsonContext;
+import org.qubership.automation.itf.core.model.jpa.context.TcContext;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import jakarta.transaction.Transactional;
 
-import static org.qubership.automation.itf.configuration.spring.ObjectManagerUtils.create;
-import static org.qubership.automation.itf.configuration.spring.ObjectManagerUtils.renameStoreValidate;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-
 @Transactional
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath*:hibernate-configuration-test-context.xml"})
+@SpringJUnitConfig(locations = {"classpath*:hibernate-configuration-test-context.xml"})
 public class TcContextTest {
 
 //    @Autowired

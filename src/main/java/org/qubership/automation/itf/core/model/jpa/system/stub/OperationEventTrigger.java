@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.system.stub;
 
-import jakarta.persistence.Entity;
+import java.io.Serial;
 
 import org.qubership.automation.itf.core.util.annotation.RefCopy;
 import org.qubership.automation.itf.core.util.ei.serialize.IdSerializer;
@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,6 +39,7 @@ import lombok.Setter;
         property = "id", scope = OperationEventTrigger.class)
 public class OperationEventTrigger extends EventTriggerImpl {
 
+    @Serial
     private static final long serialVersionUID = 20241125L;
 
     public static final String TYPE = "Operation Event Trigger";

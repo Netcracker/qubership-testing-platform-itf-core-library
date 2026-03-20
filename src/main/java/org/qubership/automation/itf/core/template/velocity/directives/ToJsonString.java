@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ public class ToJsonString extends Directive {
                     + "The 2nd (optional) argument is true/false; if true, json is pretty-printed.");
         } else if (count >= 2) {
             Object prettyPrintParameter = node.jjtGetChild(1).value(internalContextAdapter);
-            if (prettyPrintParameter instanceof Boolean) {
-                prettyPrint = (Boolean)prettyPrintParameter;
+            if (prettyPrintParameter instanceof Boolean boolean1) {
+                prettyPrint = boolean1;
             } else {
                 prettyPrint = Boolean.parseBoolean(prettyPrintParameter.toString());
             }
@@ -64,8 +64,8 @@ public class ToJsonString extends Directive {
         if (obj == null) {
             return true;
         }
-        if (obj instanceof JsonContext) {
-            writer.append(((JsonContext)obj).getJsonString());
+        if (obj instanceof JsonContext context) {
+            writer.append(context.getJsonString());
         } else if (obj instanceof Map || obj instanceof List) {
             ObjectMapper mapper = new ObjectMapper();
             if (prettyPrint) {

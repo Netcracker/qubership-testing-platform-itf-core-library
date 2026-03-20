@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,21 +16,6 @@
 
 package org.qubership.automation.itf.configuration.spring;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.google.common.collect.Lists;
-import org.qubership.automation.itf.core.hibernate.ObjectManagerFactoryHB;
-import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
-import org.qubership.automation.itf.core.model.common.LabeledStorable;
-import org.qubership.automation.itf.core.model.common.Storable;
-import org.qubership.automation.itf.core.model.jpa.project.StubProject;
-import org.junit.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
-
-import jakarta.annotation.Nonnull;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -39,6 +24,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Assert;
+import org.qubership.automation.itf.core.hibernate.ObjectManagerFactoryHB;
+import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
+import org.qubership.automation.itf.core.model.common.LabeledStorable;
+import org.qubership.automation.itf.core.model.common.Storable;
+import org.qubership.automation.itf.core.model.jpa.project.StubProject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import com.google.common.collect.Lists;
+import jakarta.annotation.Nonnull;
 
 public class ObjectManagerUtils extends ObjectManagerFactoryHB {
 
@@ -170,32 +171,31 @@ public class ObjectManagerUtils extends ObjectManagerFactoryHB {
                                                                             @Nonnull T stored) {
         String storedName = stored.getName();
         if (storedName != null) {
-            Assert.assertTrue(String.format("No [%s] with name [%s] found by name", stored, storedName),
+            Assert.assertTrue("No [%s] with name [%s] found by name".formatted(stored, storedName),
                     om.getByName(storedName).contains(stored));
         }
         Storable parent = stored.getParent();
         if (parent != null) {
             BigInteger parentId = (BigInteger) parent.getID();
-            Assert.assertTrue(String.format("No [%s] with parent [%s] found by parentId", stored, parent),
+            Assert.assertTrue("No [%s] with parent [%s] found by parentId".formatted(stored, parent),
                     om.getAllByParentId(parentId).contains(stored));
             if (storedName != null) {
-                Assert.assertTrue(String.format("No [%s] with parent [%s] and name [%s] found by parent and name",
+                Assert.assertTrue("No [%s] with parent [%s] and name [%s] found by parent and name".formatted(
                         stored, parent, storedName), om.getByParentAndName(parent, storedName).contains(stored));
             }
             String parentName = parent.getName();
             if (parentName != null) {
-                Assert.assertTrue(String.format("No [%s] with parent [%s] found by parent name", stored, parent),
+                Assert.assertTrue("No [%s] with parent [%s] found by parent name".formatted(stored, parent),
                         om.getAllByParentName(parentName).contains(stored));
             }
         }
-        Assert.assertTrue(String.format("No [%s] found by [getAll] call", stored), om.getAll().contains(stored));
+        Assert.assertTrue("No [%s] found by [getAll] call".formatted(stored), om.getAll().contains(stored));
     }
 
     private static void fillNameDescrLabels(Storable storable) {
         setName(storable);
         storable.setDescription("Created " + LocalDateTime.now().format(dateTimeFormatter));
-        if (storable instanceof LabeledStorable) {
-            LabeledStorable labeledStorable = (LabeledStorable) storable;
+        if (storable instanceof LabeledStorable labeledStorable) {
             labeledStorable.fillLabels(LABELS);
         }
     }

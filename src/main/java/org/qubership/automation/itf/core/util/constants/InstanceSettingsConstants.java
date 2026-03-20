@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,8 +27,9 @@ public class InstanceSettingsConstants {
     public static final String BV_SERVICE_URL = "bv.service.url";
     public static final String BV_SERVICE_URL_LONG_NAME = "BV service URL";
     public static final String BV_SERVICE_URL_DESCRIPTION =
-            "BV service URL.\n"
-                    + " Example value: https://bv.atp-cloud.our-company.com/";
+            """
+            BV service URL.
+             Example value: https://bv.atp-cloud.our-company.com/""";
 
     public static final String LOG_LEVEL = "log.level";
     public static final String LOG_APPENDER_DATE_FORMAT = "log.appender.date.format";

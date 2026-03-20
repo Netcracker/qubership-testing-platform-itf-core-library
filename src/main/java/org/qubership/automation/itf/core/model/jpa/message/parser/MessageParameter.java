@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
 
 package org.qubership.automation.itf.core.model.jpa.message.parser;
 
+import java.io.Serial;
 import java.util.List;
-
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.storage.AbstractStorable;
@@ -26,10 +25,12 @@ import org.qubership.automation.itf.core.model.jpa.storage.AbstractStorable;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonFilter("reportWorkerFilter_MessageParameter")
 public class MessageParameter extends AbstractStorable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     @JsonIgnore
@@ -90,8 +91,7 @@ public class MessageParameter extends AbstractStorable {
 
     @Override
     public String toString() {
-        return String.format("%s / %s [id: %s]", this.getParent().getClass().getSimpleName(),
-                this.paramName, this.getID());
+        return "%s / %s [id: %s]".formatted(this.getParent().getClass().getSimpleName(), this.paramName, this.getID());
     }
 
     public static class Builder {

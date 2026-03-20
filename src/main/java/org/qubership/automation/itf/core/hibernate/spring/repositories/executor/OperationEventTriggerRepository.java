@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import jakarta.persistence.QueryHint;
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.model.jpa.system.stub.OperationEventTrigger;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
@@ -49,26 +50,23 @@ public interface OperationEventTriggerRepository extends EventTriggerRepository<
             + "where operation.projectId = :projectId")
     Collection<OperationEventTrigger> findByProject(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select trg.* from mb_triggers trg "
+    @NativeQuery("select trg.* from mb_triggers trg "
             + "inner join mb_situation sit on sit.id = trg.oet_parent_id "
             + "inner join mb_operations op on op.id = sit.parent_id "
-            + "where trg.parent_type = 'operation' and trg.state = 'ACTIVE' and op.project_id = :projectId",
-            nativeQuery = true)
+            + "where trg.parent_type = 'operation' and trg.state = 'ACTIVE' and op.project_id = :projectId")
     List<OperationEventTrigger> getActiveTriggersByProject(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select trg.* from mb_triggers trg "
+    @NativeQuery("select trg.* from mb_triggers trg "
             + "where trg.oet_parent_id in ("
             + "    select id from mb_situation where parent_id = :operationId"
-            + ") and trg.parent_type = 'operation' and trg.state = 'ACTIVE' order by trg.priority asc",
-            nativeQuery = true)
+            + ") and trg.parent_type = 'operation' and trg.state = 'ACTIVE' order by trg.priority asc")
     @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "activeOperationEventTriggersCache")})
     List<OperationEventTrigger> getActiveTriggersByOperationNative(@Param("operationId") BigInteger operationId);
 
-    @Query(value = "select trg.id from mb_triggers trg "
+    @NativeQuery("select trg.id from mb_triggers trg "
             + "where trg.oet_parent_id in (:situationIds) "
-            + "and trg.parent_type = 'operation' and trg.state = 'ACTIVE'",
-            nativeQuery = true)
+            + "and trg.parent_type = 'operation' and trg.state = 'ACTIVE'")
     List<BigInteger> getActiveTriggersBySituationIdsNative(@Param("situationIds") List<BigInteger> situationIds);
 
     @Query(value = "select trigger from OperationEventTrigger trigger "

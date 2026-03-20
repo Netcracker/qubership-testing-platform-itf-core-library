@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,17 +22,18 @@ import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
 import java.math.BigInteger;
 import java.util.Collection;
 
-import jakarta.persistence.QueryHint;
-
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.StorableRepository;
 import org.qubership.automation.itf.core.model.jpa.environment.OutboundTransportConfiguration;
 import org.qubership.automation.itf.core.model.jpa.template.OutboundTemplateTransportConfiguration;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import jakarta.persistence.QueryHint;
 
 @Repository
 public interface OutboundTransportConfigurationRepository extends StorableRepository<OutboundTransportConfiguration>,
@@ -41,19 +42,19 @@ public interface OutboundTransportConfigurationRepository extends StorableReposi
     @Query(value = "select otc from OutboundTransportConfiguration otc where otc.ecId = :ecId")
     OutboundTransportConfiguration findByEcId(@Param("ecId") String ecId);
 
-    @Query(value = "select ec_project_id from mb_configuration "
+    @NativeQuery("select ec_project_id from mb_configuration "
             + "where type='outbound' and ec_project_id is not null "
             + "and parent_out_server_id in (select id from mb_servers where project_id = :projectId) "
-            + "group by ec_project_id", nativeQuery = true)
+            + "group by ec_project_id")
     Collection<String> getEcProjectIds(@Param("projectId") BigInteger projectId);
 
     @Query(value = "select otc from OutboundTransportConfiguration otc where otc.ecProjectId = :ecProjectId")
     Collection<OutboundTransportConfiguration> getByEcProject(@Param("ecProjectId") String ecProjectId);
 
     @Modifying
-    @Query(value = "update mb_configuration "
+    @NativeQuery("update mb_configuration "
             + "set ec_project_id = null, ec_id = null "
-            + "where ec_project_id = :ecProjectId and type='outbound'", nativeQuery = true)
+            + "where ec_project_id = :ecProjectId and type='outbound'")
     void unbindByEcProject(@Param("ecProjectId") String ecProjectId);
 
     @Query(value = "select conf from OutboundTemplateTransportConfiguration conf "
@@ -67,19 +68,19 @@ public interface OutboundTransportConfigurationRepository extends StorableReposi
     Collection<OutboundTemplateTransportConfiguration> findCfgByTemplateAndType(
             @Param("templateId") BigInteger templateId, @Param("typeName") String typeName);
 
-    @Query(value = "select otc.* from mb_configuration otc "
+    @NativeQuery("select otc.* from mb_configuration otc "
             + "where otc.parent_out_server_id = :serverId "
             + "and otc.system_id = :systemId "
-            + "and otc.type_name = :typeName", nativeQuery = true)
+            + "and otc.type_name = :typeName")
     @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "outboundTransportConfigurationCache")})
     OutboundTransportConfiguration findOne(@Param("systemId") BigInteger systemId,
                                            @Param("serverId") BigInteger serverId,
                                            @Param("typeName") String typeName);
 
-    @Query(value = "select otc.* from mb_configuration otc "
+    @NativeQuery("select otc.* from mb_configuration otc "
             + "where otc.parent_out_server_id = :serverId "
-            + "and otc.system_id = :systemId", nativeQuery = true)
+            + "and otc.system_id = :systemId")
     @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "outboundTransportConfigurationsCollectionCache")})
     Iterable<OutboundTransportConfiguration> findAll(@Param("systemId") BigInteger systemId,

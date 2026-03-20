@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 
 package org.qubership.automation.itf.core.model.jpa.context;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -32,10 +31,12 @@ import org.qubership.automation.itf.core.util.annotation.JsonRef;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.google.common.base.Strings;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonFilter("reportWorkerFilter_InstanceContext")
 public class InstanceContext extends JsonStorable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private BigInteger projectId;
@@ -158,10 +159,10 @@ public class InstanceContext extends JsonStorable {
             return;
         }
         Object parse = parser.parse(jsonString);
-        if (parse instanceof Map) {
-            ((Map) parse).remove(TcContext.TC);
-            ((Map) parse).remove(SpContext.SP);
-            putAll((Map) parse);
+        if (parse instanceof Map map) {
+            map.remove(TcContext.TC);
+            map.remove(SpContext.SP);
+            putAll(map);
         } else {
             put("parsed", parse);
         }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.StorableRepository;
 import org.qubership.automation.itf.core.model.jpa.transport.TransportConfiguration;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -35,15 +36,15 @@ public interface TransportConfigurationRepository extends StorableRepository<Tra
     @Query(value = "select transport from TransportConfiguration transport where transport.ecId = :ecId")
     TransportConfiguration findTransportByEcId(@Param("ecId") String ecId);
 
-    @Query(value = "select conf.ec_project_id from mb_configuration as conf "
+    @NativeQuery("select conf.ec_project_id from mb_configuration as conf "
             + "inner join mb_systems as sys on sys.id = conf.parent_system_id "
             + "where conf.ec_project_id is not null and type = 'transport' AND sys.project_id = :projectId "
-            + "group by conf.ec_project_id", nativeQuery = true)
+            + "group by conf.ec_project_id")
     Collection<String> getEcProjectIds(@Param("projectId") BigInteger projectId);
 
     @Modifying
-    @Query(value = "update mb_configuration set ec_project_id = null, ec_id = null where ec_project_id = :ecProjectId "
-            + "and type = 'transport'", nativeQuery = true)
+    @NativeQuery("update mb_configuration set ec_project_id = null, ec_id = null where ec_project_id = :ecProjectId "
+            + "and type = 'transport'")
     void unbindByEcProject(@Param("ecProjectId") String ecProjectId);
 
     @Query(value = "select transport from TransportConfiguration transport where transport.ecProjectId = :ecProjectId")
@@ -54,19 +55,17 @@ public interface TransportConfigurationRepository extends StorableRepository<Tra
             + "where system.projectId = :projectId")
     Collection<TransportConfiguration> findByProjectId(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select id from mb_configuration where parent_conf_id in "
-            + "(select id from mb_configuration where transport_id = :transportId)",
-            nativeQuery = true)
+    @NativeQuery("select id from mb_configuration where parent_conf_id in "
+            + "(select id from mb_configuration where transport_id = :transportId)")
     List<BigInteger> getTransportTriggersByTransportConfigurationId(@Param("transportId") BigInteger transportId);
 
-    @Query(value = "select conf.* from mb_configuration conf "
+    @NativeQuery("select conf.* from mb_configuration conf "
             + "where type_name = 'org.qubership.automation.itf.transport.diameter.outbound.DiameterOutbound' "
             + "and type = 'transport' "
             + "and ((cast(conf.params as jsonb) @> (cast((concat('{\"DPR\":\"', :templateId, '\"}')) as jsonb))) "
             + "or (cast(conf.params as jsonb) @> (cast((concat('{\"dwa\":\"', :templateId, '\"}')) as jsonb))) "
             + "or (cast(conf.params as jsonb) @> (cast((concat('{\"CER\":\"', :templateId, '\"}')) as jsonb))) "
-            + "or (cast(conf.params as jsonb) @> (cast((concat('{\"DPA\":\"', :templateId, '\"}')) as jsonb))))",
-            nativeQuery = true)
+            + "or (cast(conf.params as jsonb) @> (cast((concat('{\"DPA\":\"', :templateId, '\"}')) as jsonb))))")
     Collection<TransportConfiguration> findUsagesTemplateOnTransport(@Param("templateId") BigInteger templateId);
 
 }

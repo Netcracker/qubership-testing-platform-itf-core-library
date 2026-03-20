@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package org.qubership.automation.itf.core.model.jpa.environment;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Map;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.eci.EciConfigurable;
 import org.qubership.automation.itf.core.model.jpa.server.Server;
@@ -36,12 +35,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",
                   scope = OutboundTransportConfiguration.class)
 public class OutboundTransportConfiguration extends EciConfiguration implements EciConfigurable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private System system;

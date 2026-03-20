@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,10 +16,8 @@
 
 package org.qubership.automation.itf.core.model.jpa.instance.chain;
 
+import java.io.Serial;
 import java.math.BigInteger;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.container.StepContainer;
@@ -32,10 +30,13 @@ import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 @Entity
 @JsonFilter("reportWorkerFilter_CallChainInstance")
 public class CallChainInstance extends AbstractContainerInstance {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private BigInteger testCaseId;

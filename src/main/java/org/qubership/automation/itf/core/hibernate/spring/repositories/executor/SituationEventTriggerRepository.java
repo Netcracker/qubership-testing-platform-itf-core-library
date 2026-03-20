@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,16 +23,17 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.persistence.QueryHint;
-
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.jpa.system.stub.Situation;
 import org.qubership.automation.itf.core.model.jpa.system.stub.SituationEventTrigger;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import jakarta.persistence.QueryHint;
 
 @Repository
 @JaversSpringDataAuditable
@@ -51,25 +52,24 @@ public interface SituationEventTriggerRepository extends EventTriggerRepository<
             + "where operation.projectId = :projectId")
     Collection<SituationEventTrigger> findByProject(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select trg.* from mb_triggers trg "
+    @NativeQuery("select trg.* from mb_triggers trg "
             + "inner join mb_situation sit on sit.id = trg.set_parent_id "
             + "inner join mb_operations op on op.id = sit.parent_id "
-            + "where trg.parent_type = 'situation' and trg.state = 'ACTIVE' and op.project_id = :projectId",
-            nativeQuery = true)
+            + "where trg.parent_type = 'situation' and trg.state = 'ACTIVE' and op.project_id = :projectId")
     List<SituationEventTrigger> getActiveTriggersByProject(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select trg.* from mb_triggers trg \n"
-            + "inner join mb_situation sit on sit.id = trg.set_parent_id \n"
-            + "inner join mb_operations op on op.id = sit.parent_id \n"
-            + "where trg.parent_type = 'situation' and op.parent_id = :systemId",
-            nativeQuery = true)
+    @NativeQuery("""
+            select trg.* from mb_triggers trg\s
+            inner join mb_situation sit on sit.id = trg.set_parent_id\s
+            inner join mb_operations op on op.id = sit.parent_id\s
+            where trg.parent_type = 'situation' and op.parent_id = :systemId""")
     List<SituationEventTrigger> getTriggersBySystemId(@Param("systemId") BigInteger systemId);
 
-    @Query(value = "select trg.id, trg.state from mb_triggers trg \n"
-            + "inner join mb_situation sit on sit.id = trg.set_parent_id \n"
-            + "inner join mb_operations op on op.id = sit.parent_id \n"
-            + "where op.parent_id = :systemId",
-            nativeQuery = true)
+    @NativeQuery("""
+            select trg.id, trg.state from mb_triggers trg\s
+            inner join mb_situation sit on sit.id = trg.set_parent_id\s
+            inner join mb_operations op on op.id = sit.parent_id\s
+            where op.parent_id = :systemId""")
     List<Object[]> getTriggersBriefInfoBySystemId(@Param("systemId") BigInteger systemId);
 
     @Query(value = "select trigger from SituationEventTrigger as trigger "

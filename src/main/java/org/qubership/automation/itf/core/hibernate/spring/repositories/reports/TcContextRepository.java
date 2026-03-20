@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.hibernate.spring.repositories.reports;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.SearchRepository;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -27,20 +27,19 @@ import org.springframework.stereotype.Repository;
 public interface TcContextRepository extends SearchRepository<TcContext> {
 
     @Modifying
-    @Query(value = "truncate mb_context cascade", nativeQuery = true)
+    @NativeQuery("truncate mb_context cascade")
     void truncateContexts();
 
-    @Query(value = "select clear_monitoring_data_func(:clear_hours)", nativeQuery = true)
+    @NativeQuery("select clear_monitoring_data_func(:clear_hours)")
     String clearMonitoringData(@Param("clear_hours") int clearHours);
 
     @Modifying
-    @Query(value = "update mb_context "
+    @NativeQuery("update mb_context "
             + "set status = 'STOPPED', "
             + "end_time = LOCALTIMESTAMP(3) "
             + "where \"type\" = 'TcContext' "
             + "  and status = 'IN_PROGRESS' "
-            + "  and (EXTRACT(epoch from LOCALTIMESTAMP(0)) * 1000 - last_update_time > time_to_live)",
-            nativeQuery = true)
+            + "  and (EXTRACT(epoch from LOCALTIMESTAMP(0)) * 1000 - last_update_time > time_to_live)")
     int updateStatusContextWithStatusInProgress();
 }
 
