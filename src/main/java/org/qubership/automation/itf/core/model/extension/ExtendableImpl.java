@@ -33,7 +33,8 @@ import com.google.gson.JsonParser;
 public class ExtendableImpl extends AbstractStorable implements Extendable, Serializable {
     @Serial
     private static final long serialVersionUID = 20240812L;
-    private Set<Extension> extensions = Sets.newHashSetWithExpectedSize(5);
+    private static final Gson GSON = new Gson();
+    private final Set<Extension> extensions = Sets.newHashSetWithExpectedSize(5);
 
     @Override
     public boolean extend(Extension extension) {
@@ -53,32 +54,29 @@ public class ExtendableImpl extends AbstractStorable implements Extendable, Seri
 
     @Override
     public String getExtensionsJson() {
-        Gson gson = new Gson();
         JsonObject result = new JsonObject();
         for (Extension extension : extensions) {
-            result.add(extension.getClass().getName(), gson.toJsonTree(extension));
+            result.add(extension.getClass().getName(), GSON.toJsonTree(extension));
         }
-        return gson.toJson(result);
+        return GSON.toJson(result);
     }
 
     @Override
     public void setExtensionsJson(String extensionsJson) {
         if (extensionsJson != null) {
-            JsonParser parser = new JsonParser();
-            JsonObject jsonObject = parser.parse(extensionsJson).getAsJsonObject();
-            Gson gson = new Gson();
+            JsonObject jsonObject = JsonParser.parseString(extensionsJson).getAsJsonObject();
             extensions.clear();
             for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
                 int idx = entry.getKey().indexOf("$$");
                 String className = idx > 1 ? entry.getKey().substring(0, idx) : entry.getKey();
                 try {
                     Class<? extends Extension> clazz = Class.forName(className).asSubclass(Extension.class);
-                    Extension extension = gson.fromJson(entry.getValue(), clazz);
+                    Extension extension = GSON.fromJson(entry.getValue(), clazz);
                     extensions.add(extension);
                 } catch (ClassNotFoundException e) {
                     LOGGER.warn("Cannot read extension - class not found {}", className);
                 } catch (Exception e) {
-                    LOGGER.error("Cannot read extension - {}; runtime exception: {}", className, e);
+                    LOGGER.error("Cannot read extension - {}; runtime exception:", className, e);
                 }
             }
         }
