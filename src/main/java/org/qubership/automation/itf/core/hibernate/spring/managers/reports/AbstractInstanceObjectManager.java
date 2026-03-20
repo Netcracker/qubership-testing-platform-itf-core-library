@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.managers.reports;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,11 +66,12 @@ public class AbstractInstanceObjectManager<T extends AbstractInstance> extends A
         }
         AbstractInstance result;
         try {
-            result = instanceClass.newInstance();
+            result = instanceClass.getDeclaredConstructor().newInstance();
             if (setId) {
                 result.setID((BigInteger) UniqueIdGenerator.generate());
             }
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
             throw new RuntimeException("Cannot create instance of type " + type + " with class "
                     + instanceClass.getCanonicalName(), e);
         }
@@ -79,7 +81,7 @@ public class AbstractInstanceObjectManager<T extends AbstractInstance> extends A
 
     @PostConstruct
     protected void init() {
-        subclasses = new HashMap<String, Class<? extends AbstractInstance>>() {
+        subclasses = new HashMap<>() {
             {
                 put(CallChainInstance.class.getSimpleName(), CallChainInstance.class);
                 put(SituationInstance.class.getSimpleName(), SituationInstance.class);

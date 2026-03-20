@@ -119,8 +119,9 @@ public class StorableCopier {
     private static Map produceNewMap(Map ethalon) {
         if (ethalon.getClass().getName().contains("java.util")) {
             try {
-                return ethalon.getClass().newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
+                return ethalon.getClass().getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                     | InvocationTargetException e) {
                 return produceBasicMap(ethalon);
             }
         } else {
@@ -135,8 +136,9 @@ public class StorableCopier {
     private static Collection produceNewCollection(Collection ethalon) {
         if (ethalon.getClass().getName().contains("java.util")) {
             try {
-                return ethalon.getClass().newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
+                return ethalon.getClass().getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                     | InvocationTargetException e) {
                 return produceBasicCollection(ethalon);
             }
         } else {
@@ -225,14 +227,11 @@ public class StorableCopier {
             OriginalCopyMap.getInstance().clear(sessionId);
             throw new CopyException("Parent %s cannot accept %s".formatted(destination, storable));
         }
-        if (newStorable instanceof Template template) {
-            template.setParent((TemplateProvider) destination);
-        } else if (newStorable instanceof ParsingRule rule) {
-            rule.setParent((ParsingRuleProvider) destination);
-        } else if (newStorable instanceof TransportConfiguration configuration) {
-            configuration.setParent((System) destination);
-        } else {
-            newStorable.setParent(destination);
+        switch (newStorable) {
+            case Template template -> template.setParent((TemplateProvider) destination);
+            case ParsingRule rule -> rule.setParent((ParsingRuleProvider) destination);
+            case TransportConfiguration configuration -> configuration.setParent((System) destination);
+            default -> newStorable.setParent(destination);
         }
         if (prefix.equals("copy") && !useCaseForTemplate.isEmpty()) {
             // Execute these extra actions only for USECASE1-USECASE6
@@ -252,11 +251,13 @@ public class StorableCopier {
             if (Iterables.tryFind(Arrays.asList(storable.getClass().getInterfaces()),
                             (Predicate<Class>) input -> input.getName().equals("org.hibernate.proxy.HibernateProxy"))
                     .isPresent()) {
-                newStorable = storable.getClass().getSuperclass().asSubclass(Storable.class).newInstance();
+                newStorable = storable.getClass().getSuperclass()
+                        .asSubclass(Storable.class).getDeclaredConstructor().newInstance();
             } else {
-                newStorable = storable.getClass().newInstance();
+                newStorable = storable.getClass().getDeclaredConstructor().newInstance();
             }
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
             throw new CopyException("Error creating copy of %s".formatted(storable));
         }
         PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(newStorable.getClass());

@@ -17,6 +17,7 @@
 package org.qubership.automation.itf.core.model.jpa.context;
 
 import java.io.Serial;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -53,10 +54,10 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
 
     private Object version;
 
-    private List<String> labels = Lists.newArrayListWithExpectedSize(10);
-    private ExtendableImpl extendable = new ExtendableImpl();
+    private final List<String> labels = Lists.newArrayListWithExpectedSize(10);
+    private final ExtendableImpl extendable = new ExtendableImpl();
 
-    private transient WeakHashMap<Object, Pair<Object, Object>> history;
+    private final transient WeakHashMap<Object, Pair<Object, Object>> history;
     private boolean collectHistory = false;
 
     public JsonContext() {
@@ -68,8 +69,9 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
      * TODO: Add JavaDoc.
      */
     public static <T extends JsonStorable> T fromJson(String jsonString, Class<T> clazz)
-            throws ParseException, IllegalAccessException, InstantiationException {
-        T instance = clazz.newInstance();
+            throws ParseException, IllegalAccessException, InstantiationException, NoSuchMethodException,
+            InvocationTargetException {
+        T instance = clazz.getDeclaredConstructor().newInstance();
         instance.setJsonString(jsonString);
         return instance;
     }

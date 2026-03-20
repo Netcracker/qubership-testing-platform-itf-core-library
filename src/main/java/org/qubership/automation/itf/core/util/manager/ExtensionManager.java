@@ -18,6 +18,7 @@ package org.qubership.automation.itf.core.util.manager;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.qubership.automation.itf.core.model.extension.Extendable;
@@ -39,7 +40,7 @@ public class ExtensionManager implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionManager.class);
 
-    private static ExtensionManager ourInstance = new ExtensionManager();
+    private static final ExtensionManager ourInstance = new ExtensionManager();
 
     private ExtensionManager() {
     }
@@ -107,9 +108,10 @@ public class ExtensionManager implements Serializable {
             T extension = extendable.getExtension(extensionClass);
             if (extension == null) {
                 try {
-                    extension = extensionClass.newInstance();
+                    extension = extensionClass.getDeclaredConstructor().newInstance();
                     extendable.extend(extension);
-                } catch (InstantiationException | IllegalAccessException e) {
+                } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
+                         InvocationTargetException e) {
                     LOGGER.warn("Error creating extension instance", e);
                     return null;
                 }

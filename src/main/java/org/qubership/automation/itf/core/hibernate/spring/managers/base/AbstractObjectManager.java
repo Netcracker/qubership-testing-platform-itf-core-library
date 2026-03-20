@@ -362,8 +362,9 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
     @Override
     public T create() {
         try {
-            return repository.save((V) myType.newInstance());
-        } catch (InstantiationException | IllegalAccessException e) {
+            return repository.save((V) myType.getDeclaredConstructor().newInstance());
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
             LOGGER.error("Error while creating the storable: ", e);
         }
         return null;

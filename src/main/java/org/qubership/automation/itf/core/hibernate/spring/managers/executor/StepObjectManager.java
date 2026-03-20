@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.managers.executor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,8 +57,9 @@ public class StepObjectManager extends AbstractObjectManager<Step, Step> {
         }
         Step result;
         try {
-            result = stepClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            result = stepClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
             throw new RuntimeException("Cannot create step of type " + type + " with class "
                     + stepClass.getCanonicalName(), e);
         }
@@ -79,7 +81,7 @@ public class StepObjectManager extends AbstractObjectManager<Step, Step> {
 
     @PostConstruct
     protected void init() {
-        subclasses = new HashMap<String, Class<? extends Step>>() {
+        subclasses = new HashMap<>() {
             {
                 put(EmbeddedStep.TYPE, EmbeddedStep.class);
                 put(IntegrationStep.TYPE, IntegrationStep.class);

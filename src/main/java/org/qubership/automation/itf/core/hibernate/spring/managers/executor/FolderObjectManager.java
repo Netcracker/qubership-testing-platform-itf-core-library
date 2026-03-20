@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.managers.executor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,8 +60,9 @@ public class FolderObjectManager extends AbstractObjectManager<Folder, Folder> i
         }
         Folder result;
         try {
-            result = folderClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            result = folderClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
             throw new RuntimeException("Cannot create folder of type " + type + " with class "
                     + folderClass.getCanonicalName(), e);
         }
@@ -85,7 +87,7 @@ public class FolderObjectManager extends AbstractObjectManager<Folder, Folder> i
 
     @PostConstruct
     protected void init() {
-        subclasses = new HashMap<String, Class<? extends Folder>>() {
+        subclasses = new HashMap<>() {
             {
                 put(EnvFolder.TYPE.getSimpleName(), EnvFolder.class);
                 put(ChainFolder.TYPE.getSimpleName(), ChainFolder.class);

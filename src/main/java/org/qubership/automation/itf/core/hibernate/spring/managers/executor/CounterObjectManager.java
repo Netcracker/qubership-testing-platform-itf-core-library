@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.managers.executor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,8 +46,9 @@ public class CounterObjectManager extends AbstractObjectManager<Counter, Counter
         }
         Counter result;
         try {
-            result = counterClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            result = counterClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
             throw new RuntimeException("Cannot create counter of type " + type + " with class "
                     + counterClass.getCanonicalName(), e);
         }
@@ -62,7 +64,7 @@ public class CounterObjectManager extends AbstractObjectManager<Counter, Counter
 
     @PostConstruct
     protected void init() {
-        subclasses = new HashMap<String, Class<? extends Counter>>() {
+        subclasses = new HashMap<>() {
             {
                 put(CounterImpl.class.getName(), CounterImpl.class);
             }

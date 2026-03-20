@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.storage;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Map;
@@ -142,7 +143,7 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
     public Storable returnSimpleParent() {
         if (parent != null) {
             try {
-                Storable simpleStorable = parent.getClass().newInstance();
+                Storable simpleStorable = parent.getClass().getDeclaredConstructor().newInstance();
                 simpleStorable.setID(parent.getID());
                 simpleStorable.setName(parent.getName());
                 simpleStorable.setDescription(SIMPLE_PARENT_MARKER);
@@ -150,7 +151,8 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
                 simpleStorable.setNaturalId(parent.getNaturalId());
                 simpleStorable.setParent(parent.returnSimpleParent());
                 return simpleStorable;
-            } catch (IllegalAccessException | InstantiationException e) {
+            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException
+                     | InvocationTargetException e) {
                 LOGGER.error("Can't create the object of {}. Null is returned.", parent.getClass().getName(), e);
                 return null;
             }
