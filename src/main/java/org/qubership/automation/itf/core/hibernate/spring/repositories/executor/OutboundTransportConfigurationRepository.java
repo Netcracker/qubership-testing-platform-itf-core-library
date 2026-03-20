@@ -16,8 +16,8 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.executor;
 
-import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
-import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHEABLE;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHE_REGION;
 
 import java.math.BigInteger;
 import java.util.Collection;
