@@ -96,7 +96,7 @@ public class MessageParameter extends AbstractStorable {
 
     public static class Builder {
         private String paramName;
-        private List<String> multipleValue = Lists.newArrayListWithExpectedSize(10);
+        private final List<String> multipleValue = Lists.newArrayListWithExpectedSize(10);
         private boolean multiple = false;
         private boolean autosave = false;
 

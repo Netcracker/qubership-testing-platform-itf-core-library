@@ -104,8 +104,7 @@ public class CommonInterceptor extends AbstractStorable implements Storable, Int
     /**
      * TODO: Add JavaDoc.
      */
-    public String validate() throws NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException, InstantiationException {
+    public String validate() throws InvocationTargetException {
         try {
             return InterceptorClassLoader.getInstance().getInstanceClass(getTypeName(), this).validate();
         } catch (ClassNotFoundException e) {

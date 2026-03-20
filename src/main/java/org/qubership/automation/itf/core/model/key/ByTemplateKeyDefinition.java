@@ -22,7 +22,6 @@ import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.storage.AbstractStorable;
 import org.qubership.automation.itf.core.util.engine.TemplateEngineFactory;
-import org.qubership.automation.itf.core.util.exception.KeyDefinitionException;
 
 public class ByTemplateKeyDefinition extends AbstractStorable implements KeyDefinition {
     @Serial
@@ -38,7 +37,7 @@ public class ByTemplateKeyDefinition extends AbstractStorable implements KeyDefi
     }
 
     @Override
-    public String defineKey(InstanceContext context) throws KeyDefinitionException {
+    public String defineKey(InstanceContext context) {
         Storable parent = getParent();
         if (parent != null) {
             return TemplateEngineFactory.process(parent, macro, context).trim();

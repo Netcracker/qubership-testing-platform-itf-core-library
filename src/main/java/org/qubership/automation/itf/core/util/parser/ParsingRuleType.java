@@ -104,15 +104,14 @@ public enum ParsingRuleType {
             try {
                 evaluate = xpathExpr.evaluate(element);
                 for (Object o : evaluate) {
-                    if (o instanceof Element element1) {
-                        xmlOutputter.get().setFormat(Format.getPrettyFormat());
-                        builder.multipleValue(xmlOutputter.get().outputString(element1));
-                    } else if (o instanceof Text) {
-                        builder.multipleValue(((org.jdom2.Content) o).getValue());
-                    } else if (o instanceof Attribute attribute) {
-                        builder.multipleValue(attribute.getValue());
-                    } else {
-                        builder.multipleValue(o.toString());
+                    switch (o) {
+                        case Element element1 -> {
+                            xmlOutputter.get().setFormat(Format.getPrettyFormat());
+                            builder.multipleValue(xmlOutputter.get().outputString(element1));
+                        }
+                        case Text text -> builder.multipleValue(((org.jdom2.Content) o).getValue());
+                        case Attribute attribute -> builder.multipleValue(attribute.getValue());
+                        default -> builder.multipleValue(o.toString());
                     }
                     if (!parsingRule.getMultiple()) {
                         break;

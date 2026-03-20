@@ -143,7 +143,9 @@ public class System extends AbstractEciConfigurable
 
     @Override
     public void removeParsingRule(ParsingRule parsingRule) {
-        systemParsingRules.remove(parsingRule);
+        if (parsingRule instanceof SystemParsingRule rule) {
+            systemParsingRules.remove(rule);
+        }
     }
 
     @Override

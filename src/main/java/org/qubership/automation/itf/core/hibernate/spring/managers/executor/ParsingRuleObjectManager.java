@@ -78,7 +78,7 @@ public abstract class ParsingRuleObjectManager<K extends ParsingRuleProvider, T 
 
     @Override
     public Collection<T> getByProperties(BigInteger projectId, Triple<String, Match, ?>... properties) {
-        Collection<T> toReturn = new LinkedList<T>() {
+        Collection<T> toReturn = new LinkedList<>() {
         };
         Collection<T> all = getByProjectId(projectId);
         for (T rule : all) {

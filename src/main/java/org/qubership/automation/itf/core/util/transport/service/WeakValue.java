@@ -17,7 +17,7 @@
 package org.qubership.automation.itf.core.util.transport.service;
 
 public class WeakValue {
-    private Long dateCreation;
+    private final Long dateCreation;
 
     public WeakValue() {
         dateCreation = System.nanoTime();

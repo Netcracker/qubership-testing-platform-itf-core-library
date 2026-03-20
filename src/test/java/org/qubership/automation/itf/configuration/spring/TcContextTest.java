@@ -71,7 +71,7 @@ public class TcContextTest {
     }
 
     @Test
-    public void testContextSaveOrder() throws Exception {
+    public void testContextSaveOrder() {
         TcContext context = new TcContext();
         context.put("portnumber[0]", 23);
         context.put("portnumber[1]", 24);
@@ -82,7 +82,7 @@ public class TcContextTest {
     }
 
     @Test
-    public void testIsContextContainsKey() throws Exception {
+    public void testIsContextContainsKey() {
         TcContext context = new TcContext();
         context.put("group", new JsonContext());
         String value = "value";

@@ -26,7 +26,7 @@ public class PropertyDescriptor implements Serializable {
     @Serial
     private static final long serialVersionUID = -1115137482811099873L;
     private final boolean loadTemplate;
-    private boolean userSettings;
+    private final boolean userSettings;
     private final String shortName;
     private final String longName;
     private final String typeName;

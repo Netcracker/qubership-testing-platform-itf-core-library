@@ -20,7 +20,6 @@ import java.io.Serial;
 
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.storage.AbstractStorable;
-import org.qubership.automation.itf.core.util.exception.KeyDefinitionException;
 
 public class ByConstantKeyDefinition extends AbstractStorable implements KeyDefinition {
     @Serial
@@ -44,7 +43,7 @@ public class ByConstantKeyDefinition extends AbstractStorable implements KeyDefi
         this.expression = expression;
     }
 
-    public String defineKey(InstanceContext context) throws KeyDefinitionException {
+    public String defineKey(InstanceContext context) {
         return expression.trim();
     }
 }

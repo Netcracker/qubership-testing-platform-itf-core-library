@@ -42,7 +42,7 @@ public class ITFCiTest {
     private MonitoringManager manager;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         manager = CoreObjectManager.getInstance()
                 .getSpecialManager(InstanceContext.class, MonitoringManager.class);
     }

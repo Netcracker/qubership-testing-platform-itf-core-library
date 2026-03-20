@@ -231,16 +231,12 @@ public class Folder<T extends Storable> extends AbstractConfiguration<String, St
     public Storable findRootObject(BigInteger projectId) {
         StubProject project = CoreObjectManager.getInstance().getManager(StubProject.class).getById(projectId);
         ObjectManager<Folder> folderManager = CoreObjectManager.getInstance().getManager(Folder.class);
-        if (this instanceof ChainFolder) {
-            return folderManager.getById(project.getCallchains().getID());
-        } else if (this instanceof EnvFolder) {
-            return folderManager.getById(project.getEnvironments().getID());
-        } else if (this instanceof SystemFolder) {
-            return folderManager.getById(project.getSystems().getID());
-        } else if (this instanceof ServerFolder) {
-            return project.getServers();
-        } else {
-            return null;
-        }
+        return switch (this) {
+            case ChainFolder chainFolder -> folderManager.getById(project.getCallchains().getID());
+            case EnvFolder envFolder -> folderManager.getById(project.getEnvironments().getID());
+            case SystemFolder systemFolder -> folderManager.getById(project.getSystems().getID());
+            case ServerFolder serverFolder -> project.getServers();
+            default -> null;
+        };
     }
 }

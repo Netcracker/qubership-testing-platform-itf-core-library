@@ -165,20 +165,19 @@ public class Message extends AbstractStorable implements Serializable {
     }
 
     private void convertAndAddHeader(String key, Object value) {
-        if (value instanceof byte[] bytes1) {
-            headers.put(key, new String(bytes1, StandardCharsets.UTF_8)
+        switch (value) {
+            case byte[] bytes1 -> headers.put(key, new String(bytes1, StandardCharsets.UTF_8)
                     .replace((char) 0, (char) 32));
-        } else if (value instanceof ByteArrayInputStream bais) {
-            int n = bais.available();
-            if (n > 0) {
-                byte[] bytes = new byte[n];
-                int cnt = bais.read(bytes, 0, n);
-                headers.put(key, new String(bytes, 0, cnt, StandardCharsets.UTF_8));
+            case ByteArrayInputStream bais -> {
+                int n = bais.available();
+                if (n > 0) {
+                    byte[] bytes = new byte[n];
+                    int cnt = bais.read(bytes, 0, n);
+                    headers.put(key, new String(bytes, 0, cnt, StandardCharsets.UTF_8));
+                }
             }
-        } else if (value instanceof List) {
-            headers.put(key, value);
-        } else {
-            headers.put(key, Objects.toString(value, "")
+            case List list -> headers.put(key, value);
+            case null, default -> headers.put(key, Objects.toString(value, "")
                     .replace((char) 0, (char) 32)/*TODO it's WA for postgres DB*/);
         }
     }

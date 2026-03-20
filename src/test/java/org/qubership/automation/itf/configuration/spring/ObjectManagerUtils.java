@@ -44,9 +44,9 @@ import jakarta.annotation.Nonnull;
 public class ObjectManagerUtils extends ObjectManagerFactoryHB {
 
     private static final DateTimeFormatter dateTimeFormatter =
-            DateTimeFormatter.ofPattern("dd/MM/YY 'in' HH:mm:ss").withZone(ZoneId.systemDefault());
+            DateTimeFormatter.ofPattern("dd/MM/yy 'in' HH:mm:ss").withZone(ZoneId.systemDefault());
     private static final List<String> LABELS = Lists.newArrayList("TEST_PURPOSES", "TOTALLY_BROKEN", "NICE_TO_HAVE");
-    private static Supplier<ObjectManagerUtils> INSTANCE = new Supplier<ObjectManagerUtils>() {
+    private static Supplier<ObjectManagerUtils> INSTANCE = new Supplier<>() {
         @Override
         public ObjectManagerUtils get() {
             throw new IllegalStateException("This class should be initialized by spring" + " thru package scanning, "

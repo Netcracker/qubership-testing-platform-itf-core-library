@@ -151,10 +151,10 @@ public class Parser {
                 log.error("""
                                 Message parsing is failed (probably incorrect message format).  \
                                 Rule '{}' (expression: '{}') at {}
-                                Exception: """, parsingRule.getParamName(),
+                                Exception:""", parsingRule.getParamName(),
                         parsingRule.getParsedExpression(), parsingRule.getParsingRulePath(), ex);
             } catch (Throwable ex) {
-                log.error("Applying rule '{}' (expression: '{}') at {} failed with exception ",
+                log.error("Applying rule '{}' (expression: '{}') at {} failed with exception",
                         parsingRule.getParamName(), parsingRule.getParsedExpression(), parsingRule.getParsingRulePath(),
                         ex);
             }

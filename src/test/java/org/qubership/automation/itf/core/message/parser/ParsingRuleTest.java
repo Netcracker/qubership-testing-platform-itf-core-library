@@ -45,7 +45,7 @@ public class ParsingRuleTest {
     public ExpectedException expectedEx = ExpectedException.none();
 
 
-    private String text = """
+    private final String text = """
             <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             <starterchain>
                 <name>Bereitstellung TriplePlay BNG Starter chain 17.2</name>
@@ -75,7 +75,7 @@ public class ParsingRuleTest {
             </starterchain>
             """;
 
-    private String textUmlaut = """
+    private final String textUmlaut = """
             <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
             						<businessInteractionItem>
             							<entityKey>
@@ -187,7 +187,7 @@ public class ParsingRuleTest {
 
 
     @Test
-    public void testJSONParsedSingleValue() throws Exception {
+    public void testJSONParsedSingleValue() {
         ParsingRule jsonPathParsingRule = new SystemParsingRule();
         jsonPathParsingRule.setParsingType(ParsingRuleType.JSON_PATH);
         jsonPathParsingRule.setExpression("$.string");
@@ -200,7 +200,7 @@ public class ParsingRuleTest {
     }
 
     @Test
-    public void testJSONParsedMultipleValue() throws Exception {
+    public void testJSONParsedMultipleValue() {
         ParsingRule jsonPathParsingRule = new SystemParsingRule();
         jsonPathParsingRule.setParsingType(ParsingRuleType.JSON_PATH);
         jsonPathParsingRule.setExpression("$.array");

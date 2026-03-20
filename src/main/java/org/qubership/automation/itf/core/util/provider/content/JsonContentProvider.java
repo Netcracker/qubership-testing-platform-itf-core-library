@@ -53,7 +53,7 @@ public class JsonContentProvider implements MessageContentProvider<JSONObject> {
 
     private static class JsonContent implements Content<JSONObject> {
 
-        private JSONObject object;
+        private final JSONObject object;
 
         private JsonContent(JSONAware object) throws ContentException {
             if (object instanceof JSONArray) {

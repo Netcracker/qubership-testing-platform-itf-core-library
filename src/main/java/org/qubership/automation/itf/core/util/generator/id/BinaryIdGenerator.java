@@ -25,7 +25,7 @@ import jakarta.inject.Inject;
 
 public class BinaryIdGenerator implements IdGeneratorInterface {
 
-    private String data;
+    private final String data;
 
     public BinaryIdGenerator(String value) {
         this.data = value;
