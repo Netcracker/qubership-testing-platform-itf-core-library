@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -39,8 +39,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SystemRepository extends StorableRepository<System> {
 
+    // TODO: Check may be better to convert it to native query
     @Query(value = "select oper from Operation oper "
-            + "where parent_id = :parentId and definition_key = :key "
+            + "where oper.parent.id = :parentId and oper.operationDefinitionKey = :key "
     )
     @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "operationByDefinitionKeyCache")})
@@ -84,8 +85,7 @@ public interface SystemRepository extends StorableRepository<System> {
     Collection<System> findByPieceOfNameAndProject(@Param("name") String name,
                                                    @Param("projectId") BigInteger projectId);
 
-    @Query(value = "select system from System system "
-            + "where system.projectId = :projectId")
+    @Query(value = "select system from System system where system.projectId = :projectId")
     Collection<System> findByProject(@Param("projectId") BigInteger projectId);
 
     @Query(value = "select distinct receiver_id "

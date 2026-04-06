@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -57,11 +57,11 @@ public interface OutboundTransportConfigurationRepository extends StorableReposi
     void unbindByEcProject(@Param("ecProjectId") String ecProjectId);
 
     @Query(value = "select conf from OutboundTemplateTransportConfiguration conf "
-            + "where parent_template_id = :templateId")
+            + "where conf.parent.id = :templateId")
     Collection<OutboundTemplateTransportConfiguration> findAllCfgByTemplate(@Param("templateId") BigInteger templateId);
 
     @Query(value = "select conf from OutboundTemplateTransportConfiguration conf "
-            + "where parent_template_id = :templateId and type_name = :typeName")
+            + "where conf.parent.id = :templateId and conf.typeName = :typeName")
     @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "outboundTemplateTransportConfigurationsCollectionCache")})
     Collection<OutboundTemplateTransportConfiguration> findCfgByTemplateAndType(

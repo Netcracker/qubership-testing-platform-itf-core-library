@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -77,12 +77,10 @@ public interface OperationTemplateRepository
     List<IdNamePair> findByPieceOfNameAndParentId(@Param("name") String name,
                                                   @Param("parentId") BigInteger parentId);
 
-    @Query(value = "select t.id, t.name "
-            + "from mb_templates t where t.project_id = :projectId", nativeQuery = true)
+    @Query(value = "select t.id, t.name from mb_templates t where t.project_id = :projectId", nativeQuery = true)
     List<Object[]> findIdAndNameByProjectId(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select t from OperationTemplate  as t "
-            + "where id = :id")
+    @Query(value = "select t from OperationTemplate  as t where id = :id")
     @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
     @QueryHint(name = HINT_CACHE_REGION, value = "operationTemplateCache")})
     OperationTemplate findByIdOnly(@Param("id") BigInteger id);

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -72,8 +72,7 @@ public interface SituationEventTriggerRepository extends EventTriggerRepository<
             nativeQuery = true)
     List<Object[]> getTriggersBriefInfoBySystemId(@Param("systemId") BigInteger systemId);
 
-    @Query(value = "select trigger from SituationEventTrigger as trigger "
-            + "where id = :id")
+    @Query(value = "select trigger from SituationEventTrigger as trigger where id = :id")
     @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "situationEventTriggerCache")})
     SituationEventTrigger findByIdOnly(@Param("id") BigInteger id);
