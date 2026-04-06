@@ -1,5 +1,5 @@
 <!--
-  ~  Copyright 2024-2025 NetCracker Technology Corporation
+  ~  Copyright 2024-2026 NetCracker Technology Corporation
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
   ~  you may not use this file except in compliance with the License.
@@ -29,12 +29,12 @@
         <net.javacrumbs.shedlock.version>4.14.0</net.javacrumbs.shedlock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <hazelcast.version>4.2.6</hazelcast.version>
+        <hazelcast.version>5.2.5</hazelcast.version>
         <querydsl.version>5.1.0</querydsl.version>
         <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
         <io.undertow.undertow-core.version>2.3.21.Final</io.undertow.undertow-core.version>
         <tomcat.embed.version>9.0.108</tomcat.embed.version>
-        <org.bouncycastle.version>1.70</org.bouncycastle.version>
+        <org.bouncycastle.version>1.81</org.bouncycastle.version>
         <lombok.version>1.18.32</lombok.version>
 
         <atp.common.version>1.0.0-SNAPSHOT</atp.common.version>
@@ -81,7 +81,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.15.0</version>
                 <configuration>
                     <release>21</release>
                     <parameters>true</parameters>
@@ -415,7 +415,7 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.6.42.Final</version>
+            <version>6.5.3.Final</version>
         </dependency>
         <!--Hibernate-end-->
         <dependency>
@@ -499,7 +499,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>32.0.0-jre</version>
+            <version>32.0.1-jre</version>
         </dependency>
         <dependency>
             <groupId>jakarta.inject</groupId>
@@ -514,7 +514,7 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.10</version>
+            <version>0.10.2</version>
         </dependency>
         <dependency>
             <groupId>jakarta.servlet</groupId>
@@ -632,11 +632,6 @@
         </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-all</artifactId>
-            <version>${hazelcast.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast-eureka-one</artifactId>
             <version>2.0.1</version>
             <exclusions>
@@ -667,7 +662,6 @@
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
             <version>5.2.5</version>
-            <classifier>tests</classifier>
         </dependency>
         <!--atp-services end-->
 
@@ -718,12 +712,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>5.11.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.co.jemos.podam</groupId>
-            <artifactId>podam</artifactId>
-            <version>7.0.5.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -826,6 +814,15 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -878,6 +875,17 @@
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>annotations</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>3.0.2</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
                 <groupId>org.qubership.atp.common</groupId>
                 <artifactId>qubership-atp-common-probes</artifactId>
                 <version>${atp.common.version}</version>
@@ -914,12 +922,12 @@
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
+                <artifactId>bcpkix-jdk18on</artifactId>
                 <version>${org.bouncycastle.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcpkix-jdk15on</artifactId>
+                <artifactId>bcprov-jdk18on</artifactId>
                 <version>${org.bouncycastle.version}</version>
             </dependency>
         </dependencies>
