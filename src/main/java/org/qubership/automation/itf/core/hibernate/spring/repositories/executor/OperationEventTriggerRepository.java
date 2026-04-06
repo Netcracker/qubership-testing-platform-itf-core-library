@@ -16,8 +16,8 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.executor;
 
-import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
-import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHEABLE;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHE_REGION;
 
 import java.math.BigInteger;
 import java.util.Collection;
@@ -61,7 +61,8 @@ public interface OperationEventTriggerRepository extends EventTriggerRepository<
             + "    select id from mb_situation where parent_id = :operationId"
             + ") and trg.parent_type = 'operation' and trg.state = 'ACTIVE' order by trg.priority asc",
             nativeQuery = true)
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "activeOperationEventTriggersCache")})
     List<OperationEventTrigger> getActiveTriggersByOperationNative(@Param("operationId") BigInteger operationId);
 
@@ -75,12 +76,14 @@ public interface OperationEventTriggerRepository extends EventTriggerRepository<
             + "where trigger.state = 'ACTIVE' and trigger.parent in ("
             + "    select situation.id from Situation situation where situation.parent = :operation"
             + ") order by priority asc")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "activeOperationEventTriggersCache")})
     List<OperationEventTrigger> getActiveTriggersByOperation(@Param("operation") Operation operation);
 
     @Query(value = "select trigger from OperationEventTrigger as trigger where id = :id")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "operationEventTriggerCache")})
     OperationEventTrigger findByIdOnly(@Param("id") BigInteger id);
 }

@@ -16,8 +16,8 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.executor;
 
-import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
-import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHEABLE;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHE_REGION;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -56,7 +56,8 @@ public interface OperationParsingRuleRepository
     List<OperationParsingRule> findByParentName(@Param("name") String name);
 
     @Query(value = "select parsingRule from OperationParsingRule as parsingRule where id = :id")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "operationParsingRulesCache")})
     OperationParsingRule findByIdOnly(@Param("id") BigInteger id);
 }

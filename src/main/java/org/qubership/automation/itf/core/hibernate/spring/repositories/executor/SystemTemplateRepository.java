@@ -16,8 +16,8 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.executor;
 
-import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
-import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHEABLE;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHE_REGION;
 
 import java.math.BigInteger;
 import java.util.Collection;
@@ -84,7 +84,8 @@ public interface SystemTemplateRepository
                                                           @Param("projectId") BigInteger projectId);
 
     @Query(value = "select t from SystemTemplate  as t where id = :id")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "systemTemplateCache")})
     SystemTemplate findByIdOnly(@Param("id") BigInteger id);
 

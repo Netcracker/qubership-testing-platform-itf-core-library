@@ -16,8 +16,8 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.executor;
 
-import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
-import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHEABLE;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHE_REGION;
 
 import java.math.BigInteger;
 import java.util.Collection;
@@ -62,7 +62,8 @@ public interface OutboundTransportConfigurationRepository extends StorableReposi
 
     @Query(value = "select conf from OutboundTemplateTransportConfiguration conf "
             + "where conf.parent.id = :templateId and conf.typeName = :typeName")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "outboundTemplateTransportConfigurationsCollectionCache")})
     Collection<OutboundTemplateTransportConfiguration> findCfgByTemplateAndType(
             @Param("templateId") BigInteger templateId, @Param("typeName") String typeName);
@@ -71,7 +72,8 @@ public interface OutboundTransportConfigurationRepository extends StorableReposi
             + "where otc.parent_out_server_id = :serverId "
             + "and otc.system_id = :systemId "
             + "and otc.type_name = :typeName", nativeQuery = true)
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "outboundTransportConfigurationCache")})
     OutboundTransportConfiguration findOne(@Param("systemId") BigInteger systemId,
                                            @Param("serverId") BigInteger serverId,
@@ -80,7 +82,8 @@ public interface OutboundTransportConfigurationRepository extends StorableReposi
     @Query(value = "select otc.* from mb_configuration otc "
             + "where otc.parent_out_server_id = :serverId "
             + "and otc.system_id = :systemId", nativeQuery = true)
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "outboundTransportConfigurationsCollectionCache")})
     Iterable<OutboundTransportConfiguration> findAll(@Param("systemId") BigInteger systemId,
                                                      @Param("serverId") BigInteger serverId);

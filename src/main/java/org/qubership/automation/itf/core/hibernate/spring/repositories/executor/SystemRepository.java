@@ -16,8 +16,8 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.executor;
 
-import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
-import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHEABLE;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHE_REGION;
 
 import java.math.BigInteger;
 import java.util.Collection;
@@ -43,7 +43,8 @@ public interface SystemRepository extends StorableRepository<System> {
     @Query(value = "select oper from Operation oper "
             + "where oper.parent.id = :parentId and oper.operationDefinitionKey = :key "
     )
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "operationByDefinitionKeyCache")})
     Operation findFirstByDefineOperation(@Param("parentId") BigInteger parentId, @Param("key") String key);
 
@@ -117,7 +118,8 @@ public interface SystemRepository extends StorableRepository<System> {
     @Query(value = "select new org.qubership.automation.itf.core.model.IdNamePair(system.id, system.name) "
             + "from System as system "
             + "where system.projectId = :projectId")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "simpleSystemListByProjectCache")})
     List<IdNamePair> getSimpleListByProject(@Param("projectId") BigInteger projectId);
 
