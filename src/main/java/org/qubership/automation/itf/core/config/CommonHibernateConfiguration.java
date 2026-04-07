@@ -55,8 +55,11 @@ public class CommonHibernateConfiguration {
     @Value("${hibernate.cache.use.structured.entries:false}")
     private boolean useStructuredEntries;
 
+    @Value("${hazelcast.client.name}")
+    private String hazelcastClientName;
+
     /**
-     * TODO: Add JavaDoc.
+     * Datasource bean constructor.
      */
     @Bean(name = "dataSource")
     @ConditionalOnProperty(value = "atp.multi-tenancy.enabled", havingValue = "false")
@@ -81,7 +84,7 @@ public class CommonHibernateConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * JPA properties bean constructor.
      */
     @Bean
     public Properties jpaProperties() {
@@ -121,8 +124,7 @@ public class CommonHibernateConfiguration {
                     "com.hazelcast.cache.HazelcastCachingProvider");
 
             // And set custom Hazelcast instance name according to HazelcastInstanceConfig
-            properties.setProperty("hibernate.javax.cache.instance_name",
-                    HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
+            properties.setProperty("hibernate.javax.cache.instance_name", hazelcastClientName);
         }
         return properties;
     }
