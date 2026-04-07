@@ -51,6 +51,12 @@ public class HazelcastInstanceConfig {
     @Value("${hazelcast.cache.enabled:false}")
     private boolean hazelcastCacheEnabled;
 
+    @Value("${hazelcast.cluster-name}")
+    private String clusterName;
+
+    @Value("${hazelcast.client.name}")
+    private String hazelcastClientName;
+
     /**
      * Create Config object, populate its properties and return the object.
      *
@@ -59,7 +65,7 @@ public class HazelcastInstanceConfig {
     @Bean(name = "instanceConfig")
     public Config getConfig() {
         Config config = new Config();
-        config.setInstanceName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
+        config.setInstanceName(hazelcastClientName);
         if (hazelcastCacheEnabled) {
             config.setProperty("hazelcast.phone.home.enabled", "false");
             config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
@@ -76,7 +82,7 @@ public class HazelcastInstanceConfig {
                     HIBERNATE_CACHE_HAZELCAST_INSTANCE_EUREKA_CONFIG_NAME.stringValue());
             eurekaConfig.setProperty("serviceUrl.default", eurekaUrl);
         } else {
-            config.setClusterName("local-itf-hazelcast-cluster");
+            config.setClusterName(clusterName);
         }
 
         config.addCacheConfig(
