@@ -19,7 +19,7 @@
 
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>5.0.3-SNAPSHOT</version>
+    <version>5.0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -772,8 +772,8 @@
         <!--End contract-test-pacts dependencies-->
         <dependency>
             <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.7</version>
+            <artifactId>velocity-engine-core</artifactId>
+            <version>2.4.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-lang</groupId>
@@ -791,9 +791,9 @@
             <version>3.2.2</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-tools</artifactId>
-            <version>2.0</version>
+            <groupId>org.apache.velocity.tools</groupId>
+            <artifactId>velocity-tools-generic</artifactId>
+            <version>3.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>dom4j</groupId>
