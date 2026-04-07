@@ -91,12 +91,17 @@ public class CommonHibernateConfiguration {
         properties.setProperty("hibernate.max_fetch_depth", "0");
         properties.setProperty("hibernate.jdbc.fetch_size", "50");
         properties.setProperty("hibernate.jdbc.batch_size", "10");
-        properties.setProperty("hibernate.show_sql", "false");
         properties.setProperty("hibernate.globally_quoted_identifiers", "false");
         properties.setProperty("hibernate.connection.CharSet", "utf8");
         properties.setProperty("hibernate.connection.characterEncoding", "utf8");
         properties.setProperty("hibernate.connection.useUnicode", "true");
         properties.setProperty("hibernate.cache.use_second_level_cache", String.valueOf(secondLevelCacheEnabled));
+        properties.setProperty("hibernate.cache.use_query_cache", String.valueOf(queryCacheEnabled));
+        properties.setProperty("hibernate.cache.use_structured_entries", String.valueOf(useStructuredEntries));
+        properties.setProperty("hibernate.show_sql", String.valueOf(showSql));
+        properties.setProperty("hibernate.format_sql", String.valueOf(formatSql));
+        properties.setProperty("hibernate.generate_statistics", String.valueOf(generateStatistics));
+
         if (secondLevelCacheEnabled) {
             // This configuration worked with Hibernate 4/5, but not with Hibernate 6 - so commented.
             /*
@@ -109,22 +114,16 @@ public class CommonHibernateConfiguration {
 
             // JCache region factory (built into Hibernate)
             properties.setProperty("hibernate.cache.region.factory_class",
-                    "org.hibernate.cache.jcache.JCacheRegionFactory");
+                    "org.hibernate.cache.jcache.internal.JCacheRegionFactory");
 
             // Hazelcast as the JCache provider
             properties.setProperty("hibernate.javax.cache.provider",
                     "com.hazelcast.cache.HazelcastCachingProvider");
 
-            properties.setProperty("hibernate.cache.use_query_cache", String.valueOf(queryCacheEnabled));
-
             // And set custom Hazelcast instance name according to HazelcastInstanceConfig
             properties.setProperty("hibernate.javax.cache.instance_name",
                     HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
         }
-        properties.setProperty("hibernate.show_sql", String.valueOf(showSql));
-        properties.setProperty("hibernate.format_sql", String.valueOf(formatSql));
-        properties.setProperty("hibernate.generate_statistics", String.valueOf(generateStatistics));
-        properties.setProperty("hibernate.cache.use_structured_entries", String.valueOf(useStructuredEntries));
         return properties;
     }
 
