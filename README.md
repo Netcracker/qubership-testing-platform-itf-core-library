@@ -1,7 +1,7 @@
 # Qubership Testing Platform ITF Core Library
 
 - **Qubership Testing Platform ITF Core Library** (QSTP ITF CORE) is a core library for `Integrations Testing Framework` services
-- ITF Core Library is used in the following services: 
+- ITF Core Library is used in the following services:
   - itf-executor
   - itf-stubs
   - itf-reporting
@@ -26,7 +26,7 @@ ITF Core Library contains packages:
 
 ## Local build
 
-In IntelliJ IDEA, one can select 'github' Profile in Maven Settings menu on the right, then expand Lifecycle dropdown 
+In IntelliJ IDEA, one can select `github` Profile in Maven Settings menu on the right, then expand Lifecycle dropdown
 of atp-itf-core module, then select 'clean' and 'install' options and click 'Run Maven Build' green arrow button on the top.
 
 Or, one can execute the command:
@@ -36,8 +36,8 @@ mvn -P github clean install
 
 ## Usage
 
-### Connecting in Spring Boot application ###
-#### 1. Add dependency into a service ####
+### Connecting in Spring Boot application
+#### 1. Add dependency into a service
 
 ```xml
 <dependency>
@@ -46,7 +46,7 @@ mvn -P github clean install
     <version>4.4.106-SNAPSHOT</version>
 </dependency>
 ```
-#### 2. Specify the required parameters in application.properties ####
+#### 2. Specify the required parameters in application.properties
 ```properties
 ##======================DataBase configurations=======================
 spring.datasource.url=${SPRING_DATASOURCE_URL}
