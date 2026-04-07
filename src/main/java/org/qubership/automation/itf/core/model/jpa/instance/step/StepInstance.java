@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,12 +16,10 @@
 
 package org.qubership.automation.itf.core.model.jpa.instance.step;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
@@ -36,10 +34,13 @@ import org.qubership.automation.itf.core.util.constants.Mep;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 @Entity
 @JsonFilter("reportWorkerFilter_StepInstance")
 public class StepInstance extends AbstractInstance {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private BigInteger stepId;
@@ -109,8 +110,8 @@ public class StepInstance extends AbstractInstance {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof StepInstance && (obj == this || ((StepInstance) obj).getParent() == getParent()
-                && ((StepInstance) obj).getStepId().equals(stepId));
+        return obj instanceof StepInstance si &&
+                (obj == this || si.getParent() == getParent()  && si.getStepId().equals(stepId));
     }
 
     @Override

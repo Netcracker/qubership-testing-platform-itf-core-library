@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,13 +16,12 @@
 
 package org.qubership.automation.itf.core.model.jpa.environment;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -53,11 +52,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Environment.class)
 public class Environment extends AbstractEciConfigurable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     @JsonSerialize(using = StorablesMapSerializer.class)
@@ -78,8 +79,8 @@ public class Environment extends AbstractEciConfigurable {
      */
     public Environment(Storable parent) {
         Folder<Environment> actualParent = null;
-        if (parent instanceof StubContainer) {
-            actualParent = ((StubContainer) parent).getEnvironments();
+        if (parent instanceof StubContainer container) {
+            actualParent = container.getEnvironments();
         } else if (parent instanceof Folder) {
             Optional<Folder<Environment>> environmentFolder = ((Folder<? extends Storable>) parent)
                     .of(Environment.class);

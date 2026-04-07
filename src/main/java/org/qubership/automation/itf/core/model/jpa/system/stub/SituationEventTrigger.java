@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
 
 package org.qubership.automation.itf.core.model.jpa.system.stub;
 
+import java.io.Serial;
 import java.math.BigInteger;
-
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.util.annotation.RefCopy;
 import org.qubership.automation.itf.core.util.annotation.UserName;
@@ -33,6 +32,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Strings;
+import jakarta.persistence.Entity;
 
 @Entity
 @UserName("Situation start/finish event trigger")
@@ -40,6 +40,7 @@ import com.google.common.base.Strings;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id", scope = SituationEventTrigger.class)
 public class SituationEventTrigger extends EventTriggerImpl {
+    @Serial
     private static final long serialVersionUID = 20240812L;
     public static final String TYPE = "Situation Event Trigger";
     private Situation situation;

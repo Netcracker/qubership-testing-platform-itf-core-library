@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.base.Stor
 import org.qubership.automation.itf.core.model.IdNamePair;
 import org.qubership.automation.itf.core.model.jpa.callchain.CallChain;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
@@ -41,14 +42,13 @@ public interface CallChainRepository extends SearchRepository<CallChain>, Queryd
             + "where chain.projectId = :projectId")
     List<IdNamePair> getSimpleListByProject(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select ch.id from mb_chain ch "
+    @NativeQuery("select ch.id from mb_chain ch "
             + "inner join mb_chain_labels lbl on ch.id = lbl.id "
-            + "where ch.project_id = :projectId and lbl.labels = :label",
-            nativeQuery = true)
+            + "where ch.project_id = :projectId and lbl.labels = :label")
     Collection<BigInteger> getCallchainIdsByLabel(@Param("label") String label,
                                                   @Param("projectId") BigInteger projectId);
 
-    @Query(value = "select distinct ch_labels.labels "
+    @NativeQuery("select distinct ch_labels.labels "
             + "from mb_chain as ch "
             + "inner join mb_chain_labels as ch_labels on ch_labels.id = ch.id "
             + "where project_id = :projectId "
@@ -56,14 +56,13 @@ public interface CallChainRepository extends SearchRepository<CallChain>, Queryd
             + "select distinct mfl.labels as labels "
             + "from mb_folders as mf "
             + "inner join mb_folders_labels as mfl on mfl.id =mf.id "
-            + "where mf.\"type\" = 'chains' and mf.project_id = :projectId",
-           nativeQuery = true)
+            + "where mf.\"type\" = 'chains' and mf.project_id = :projectId")
     Set<String> getAllLabels(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select count(*) from mb_bv_cases bvc where bvc.bv_tcid = :bvCaseId", nativeQuery = true)
+    @NativeQuery("select count(*) from mb_bv_cases bvc where bvc.bv_tcid = :bvCaseId")
     int countBvCaseUsages(@Param("bvCaseId") String bvCaseId);
 
-    @Query(value = "select distinct parent_id from mb_steps where chain_id = :chainId", nativeQuery = true)
+    @NativeQuery("select distinct parent_id from mb_steps where chain_id = :chainId")
     List<BigInteger> getIdsCallchains(@Param("chainId") BigInteger chainId);
 
     @Query(value = "select callChain from CallChain callChain "
@@ -73,8 +72,8 @@ public interface CallChainRepository extends SearchRepository<CallChain>, Queryd
 
     List<CallChain> findByNameAndProjectId(@Param("name") String name, @Param("projectId") BigInteger projectId);
 
-    @Query(value = "select distinct callchain_id from mb_bv_cases "
+    @NativeQuery("select distinct callchain_id from mb_bv_cases "
             + "inner join mb_chain ch on callchain_id=ch.id "
-            + "where ch.project_id = :projectId", nativeQuery = true)
+            + "where ch.project_id = :projectId")
     Collection<BigInteger> getCallChainsWithBvLinks(@Param("projectId") BigInteger projectId);
 }

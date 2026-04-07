@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import jakarta.annotation.Nonnull;
-
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.util.exception.NoSuchManagerException;
@@ -39,6 +37,7 @@ import org.springframework.util.CollectionUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
+import jakarta.annotation.Nonnull;
 
 @Component
 public class ObjectManagerFactoryHB implements ManagerFactory {
@@ -97,11 +96,11 @@ public class ObjectManagerFactoryHB implements ManagerFactory {
             candidates = objectManagersBeans.stream().filter(typesafeGarant).collect(Collectors.toSet());
         }
         if (CollectionUtils.isEmpty(candidates)) {
-            throw new NoSuchManagerException(String.format("Object manager '%s' not found. Available managers: %s",
+            throw new NoSuchManagerException("Object manager '%s' not found. Available managers: %s".formatted(
                     typesafeGarant, objectManagersBeans));
         }
         if (candidates.size() > 1) {
-            throw new NoSuchManagerException(String.format("Got multiple candidates for '%s'. Candidates are: %s",
+            throw new NoSuchManagerException("Got multiple candidates for '%s'. Candidates are: %s".formatted(
                     typesafeGarant, candidates));
         }
         ObjectManager<? extends Storable> found = candidates.iterator().next();
@@ -130,7 +129,7 @@ public class ObjectManagerFactoryHB implements ManagerFactory {
 
         @Override
         public String toString() {
-            return String.format("%s<%s>", ObjectManager.class.getSimpleName(), storableType);
+            return "%s<%s>".formatted(ObjectManager.class.getSimpleName(), storableType);
         }
     }
 
@@ -153,7 +152,7 @@ public class ObjectManagerFactoryHB implements ManagerFactory {
 
         @Override
         public String toString() {
-            return String.format("%s<? extends %s>", ObjectManager.class.getSimpleName(), storableType);
+            return "%s<? extends %s>".formatted(ObjectManager.class.getSimpleName(), storableType);
         }
     }
 }

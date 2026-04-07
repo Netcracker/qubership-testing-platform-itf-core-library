@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.system.stub;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import jakarta.annotation.Nonnull;
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.LabeledStorable;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -56,6 +54,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -65,6 +65,7 @@ import lombok.Setter;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Situation.class)
 public class Situation extends LabeledStorable implements StepContainer, TriggerProvider, KeysRegeneratable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     @JsonSerialize(contentAs = IntegrationStep.class)
@@ -170,8 +171,8 @@ public class Situation extends LabeledStorable implements StepContainer, Trigger
     @JsonIgnore
     public IntegrationStep getIntegrationStep() {
         for (Step step : steps) {
-            if (step instanceof IntegrationStep) {
-                return (IntegrationStep) step;
+            if (step instanceof IntegrationStep integrationStep) {
+                return integrationStep;
             }
         }
         return null;

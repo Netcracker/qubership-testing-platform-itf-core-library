@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,14 +16,12 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.managers.executor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.PostConstruct;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.FolderManager;
@@ -37,10 +35,11 @@ import org.qubership.automation.itf.core.model.jpa.folder.ServerFolder;
 import org.qubership.automation.itf.core.model.jpa.folder.SystemFolder;
 import org.qubership.automation.itf.core.util.copier.StorableCopier;
 import org.qubership.automation.itf.core.util.exception.CopyException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class FolderObjectManager extends AbstractObjectManager<Folder, Folder> implements FolderManager {
@@ -48,7 +47,6 @@ public class FolderObjectManager extends AbstractObjectManager<Folder, Folder> i
     private final FolderRepository folderRepository;
     private Map<String, Class<? extends Folder>> subclasses;
 
-    @Autowired
     public FolderObjectManager(FolderRepository repository) {
         super(Folder.class, repository);
         this.folderRepository = repository;
@@ -62,14 +60,15 @@ public class FolderObjectManager extends AbstractObjectManager<Folder, Folder> i
         }
         Folder result;
         try {
-            result = folderClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            result = folderClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
             throw new RuntimeException("Cannot create folder of type " + type + " with class "
                     + folderClass.getCanonicalName(), e);
         }
         Folder parentFolder = null;
-        if (parent instanceof Folder) {
-            parentFolder = (Folder) parent;
+        if (parent instanceof Folder folder) {
+            parentFolder = folder;
         }
         result.setParent(parentFolder);
         result.setTypeName(type);
@@ -88,7 +87,7 @@ public class FolderObjectManager extends AbstractObjectManager<Folder, Folder> i
 
     @PostConstruct
     protected void init() {
-        subclasses = new HashMap<String, Class<? extends Folder>>() {
+        subclasses = new HashMap<>() {
             {
                 put(EnvFolder.TYPE.getSimpleName(), EnvFolder.class);
                 put(ChainFolder.TYPE.getSimpleName(), ChainFolder.class);

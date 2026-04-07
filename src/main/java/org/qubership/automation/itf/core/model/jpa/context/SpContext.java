@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package org.qubership.automation.itf.core.model.jpa.context;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.jpa.instance.step.StepInstance;
 import org.qubership.automation.itf.core.model.jpa.message.Message;
@@ -29,10 +28,12 @@ import org.qubership.automation.itf.core.util.annotation.JsonRef;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.google.common.collect.Lists;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonFilter("reportWorkerFilter_SPContext")
 public class SpContext extends JsonStorable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     public static final String SP = "sp";

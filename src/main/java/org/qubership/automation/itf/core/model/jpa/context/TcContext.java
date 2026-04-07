@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.context;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -26,9 +27,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.environment.Environment;
@@ -50,6 +48,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,6 +58,7 @@ import lombok.Setter;
 @Entity
 @JsonFilter("reportWorkerFilter_TCContext")
 public class TcContext extends JsonStorable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     public static final String TC = "tc";
@@ -347,8 +348,8 @@ public class TcContext extends JsonStorable {
 
     @Override
     public boolean equals(Object anObject) {
-        if (anObject instanceof TcContext) {
-            return this.getID().toString().equals(((TcContext) anObject).getID().toString());
+        if (anObject instanceof TcContext context) {
+            return this.getID().toString().equals(context.getID().toString());
         }
         return false;
     }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,14 +17,15 @@
 package org.qubership.automation.itf.core.util.generator.id;
 
 import java.nio.charset.StandardCharsets;
-
-import jakarta.inject.Inject;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 
+import jakarta.inject.Inject;
+
 public class BinaryIdGenerator implements IdGeneratorInterface {
 
-    private String data;
+    private final String data;
 
     public BinaryIdGenerator(String value) {
         this.data = value;
@@ -32,7 +33,7 @@ public class BinaryIdGenerator implements IdGeneratorInterface {
 
     @Inject
     public BinaryIdGenerator() {
-        data = "data" + (Math.random() * System.currentTimeMillis() / 31);
+        data = "data" + (ThreadLocalRandom.current().nextDouble() * System.currentTimeMillis() / 31);
     }
 
     @Override

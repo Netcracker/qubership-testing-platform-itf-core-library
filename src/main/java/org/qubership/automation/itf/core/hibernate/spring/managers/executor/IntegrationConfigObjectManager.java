@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import org.qubership.automation.itf.core.model.jpa.project.StubProject;
 import org.qubership.automation.itf.core.util.config.ApplicationConfig;
 import org.qubership.automation.itf.core.util.descriptor.PropertyDescriptor;
 import org.qubership.automation.itf.core.util.registry.EngineIntegrationRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -38,7 +37,6 @@ public class IntegrationConfigObjectManager
         extends AbstractObjectManager<IntegrationConfig, IntegrationConfig>
         implements ObjectCreationByTypeManager<IntegrationConfig> {
 
-    @Autowired
     public IntegrationConfigObjectManager(IntegrationConfigRepository repository) {
         super(IntegrationConfig.class, repository);
     }

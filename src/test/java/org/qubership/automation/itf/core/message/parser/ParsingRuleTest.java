@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,11 +25,6 @@ import org.hamcrest.core.StringStartsWith;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.internal.matchers.StartsWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
 import org.qubership.automation.itf.core.model.jpa.message.Message;
@@ -42,69 +37,72 @@ import org.qubership.automation.itf.core.util.exception.ContentException;
 import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
 import org.qubership.automation.itf.core.util.provider.content.PlainContentProvider;
 import org.qubership.automation.itf.core.util.provider.content.XmlContentProvider;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath*:*core-test-context-no-broker-bean.xml"})
+@SpringJUnitConfig(locations = {"classpath*:*core-test-context-no-broker-bean.xml"})
 public class ParsingRuleTest {
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
 
 
-    private String text = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-            "<starterchain>\n" +
-            "    <name>Bereitstellung TriplePlay BNG Starter chain 17.2</name>\n" +
-            "    <starters>\n" +
-            "        <starter>\n" +
-            "            <enabled>true</enabled>\n" +
-            "            <endSituation>RMK-Access receive reserveServiceCallback (PreOrder)- ServiceOrderResponse</endSituation>\n" +
-            "            <manualStart>false</manualStart>\n" +
-            "            <starter>PreOrder</starter>\n" +
-            "        </starter>\n" +
-            "        <starter>\n" +
-            "            <enabled>true</enabled>\n" +
-            "            <endSituation>VRE Recieve ServiceOrder Message (2)</endSituation>\n" +
-            "            <manualStart>false</manualStart>\n" +
-            "            <starter>VRE send activateService to SMF - new TriplePlay</starter>\n" +
-            "        </starter>\n" +
-            "        <starter>\n" +
-            "            <enabled>true</enabled>\n" +
-            "            <endSituation>OpDiNG send 2nd executeDiagnosticCallback</endSituation>\n" +
-            "            <manualStart>false</manualStart>\n" +
-            "            <starter>[SMF][AL-PS] Last Order Accepted</starter>\n" +
-            "        </starter>\n" +
-            "    </starters>\n" +
-            "    <datasetLists>\n" +
-            "        <dataset>sz_FTTH</dataset>\n" +
-            "    </datasetLists>\n" +
-            "</starterchain>\n";
+    private final String text = """
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <starterchain>
+                <name>Bereitstellung TriplePlay BNG Starter chain 17.2</name>
+                <starters>
+                    <starter>
+                        <enabled>true</enabled>
+                        <endSituation>RMK-Access receive reserveServiceCallback (PreOrder)- ServiceOrderResponse</endSituation>
+                        <manualStart>false</manualStart>
+                        <starter>PreOrder</starter>
+                    </starter>
+                    <starter>
+                        <enabled>true</enabled>
+                        <endSituation>VRE Recieve ServiceOrder Message (2)</endSituation>
+                        <manualStart>false</manualStart>
+                        <starter>VRE send activateService to SMF - new TriplePlay</starter>
+                    </starter>
+                    <starter>
+                        <enabled>true</enabled>
+                        <endSituation>OpDiNG send 2nd executeDiagnosticCallback</endSituation>
+                        <manualStart>false</manualStart>
+                        <starter>[SMF][AL-PS] Last Order Accepted</starter>
+                    </starter>
+                </starters>
+                <datasetLists>
+                    <dataset>sz_FTTH</dataset>
+                </datasetLists>
+            </starterchain>
+            """;
 
-    private String textUmlaut = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-            "\t\t\t\t\t\t<businessInteractionItem>\n" +
-            "\t\t\t\t\t\t\t<entityKey>\n" +
-            "\t\t\t\t\t\t\t\t<keyA>9147412680913944911</keyA>\n" +
-            "\t\t\t\t\t\t\t</entityKey>\n" +
-            "\t\t\t\t\t\t\t<state>\n" +
-            "\t\t\t\t\t\t\t\t<value>incomplete</value>\n" +
-            "\t\t\t\t\t\t\t</state>\n" +
-            "\t\t\t\t\t\t\t<specification>\n" +
-            "\t\t\t\t\t\t\t\t<specificationName>Konsistenzsicherung abschließen</specificationName>\n" +
-            "\t\t\t\t\t\t\t\t<specificationID>Konsistenzsicherung abschließen</specificationID>\n" +
-            "\t\t\t\t\t\t\t\t<characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t<characteristicID>Access_Line</characteristicID>\n" +
-            "\t\t\t\t\t\t\t\t\t<characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t\t<characteristicID>EntityReference</characteristicID>\n" +
-            "\t\t\t\t\t\t\t\t\t\t<characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<characteristicID>keyA</characteristicID>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<characteristicValue>16c7f314-eb5c-4989-a640-45d5d5ecaf45</characteristicValue>\n" +
-            "\t\t\t\t\t\t\t\t\t\t</characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t\t<characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<characteristicID>keyB</characteristicID>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<characteristicValue />\n" +
-            "\t\t\t\t\t\t\t\t\t\t</characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t</characteristic>\n" +
-            "\t\t\t\t\t\t\t\t</characteristic>\n" +
-            "\t\t\t\t\t\t\t</specification>\n" +
-            "\t\t\t\t\t\t</businessInteractionItem>";
+    private final String textUmlaut = """
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            						<businessInteractionItem>
+            							<entityKey>
+            								<keyA>9147412680913944911</keyA>
+            							</entityKey>
+            							<state>
+            								<value>incomplete</value>
+            							</state>
+            							<specification>
+            								<specificationName>Konsistenzsicherung abschließen</specificationName>
+            								<specificationID>Konsistenzsicherung abschließen</specificationID>
+            								<characteristic>
+            									<characteristicID>Access_Line</characteristicID>
+            									<characteristic>
+            										<characteristicID>EntityReference</characteristicID>
+            										<characteristic>
+            											<characteristicID>keyA</characteristicID>
+            											<characteristicValue>16c7f314-eb5c-4989-a640-45d5d5ecaf45</characteristicValue>
+            										</characteristic>
+            										<characteristic>
+            											<characteristicID>keyB</characteristicID>
+            											<characteristicValue />
+            										</characteristic>
+            									</characteristic>
+            								</characteristic>
+            							</specification>
+            						</businessInteractionItem>""";
 
 
     private MessageParameter testURIRegexpReturnsGroups(boolean asMultiple, ParsingRuleType type, String expression, String groups) throws ContentException {
@@ -189,7 +187,7 @@ public class ParsingRuleTest {
 
 
     @Test
-    public void testJSONParsedSingleValue() throws Exception {
+    public void testJSONParsedSingleValue() {
         ParsingRule jsonPathParsingRule = new SystemParsingRule();
         jsonPathParsingRule.setParsingType(ParsingRuleType.JSON_PATH);
         jsonPathParsingRule.setExpression("$.string");
@@ -202,7 +200,7 @@ public class ParsingRuleTest {
     }
 
     @Test
-    public void testJSONParsedMultipleValue() throws Exception {
+    public void testJSONParsedMultipleValue() {
         ParsingRule jsonPathParsingRule = new SystemParsingRule();
         jsonPathParsingRule.setParsingType(ParsingRuleType.JSON_PATH);
         jsonPathParsingRule.setExpression("$.array");
@@ -216,22 +214,24 @@ public class ParsingRuleTest {
 
 
     private Message createJSONMessage() {
-        return new Message("{\n" +
-                "  \"array\": [\n" +
-                "    1,\n" +
-                "    2,\n" +
-                "    3\n" +
-                "  ],\n" +
-                "  \"boolean\": true,\n" +
-                "  \"null\": null,\n" +
-                "  \"number\": 123,\n" +
-                "  \"object\": {\n" +
-                "    \"a\": \"b\",\n" +
-                "    \"c\": \"d\",\n" +
-                "    \"e\": \"f\"\n" +
-                "  },\n" +
-                "  \"string\": \"Hello World\"\n" +
-                "}");
+        return new Message("""
+                {
+                  "array": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "boolean": true,
+                  "null": null,
+                  "number": 123,
+                  "object": {
+                    "a": "b",
+                    "c": "d",
+                    "e": "f"
+                  },
+                  "string": "Hello World"
+                }\
+                """);
     }
 
     private Message createMessage() throws ContentException {

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.managers.executor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-
-import jakarta.annotation.PostConstruct;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.StepRepository;
@@ -30,17 +29,16 @@ import org.qubership.automation.itf.core.model.jpa.step.EmbeddedStep;
 import org.qubership.automation.itf.core.model.jpa.step.IntegrationStep;
 import org.qubership.automation.itf.core.model.jpa.step.SituationStep;
 import org.qubership.automation.itf.core.model.jpa.step.Step;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class StepObjectManager extends AbstractObjectManager<Step, Step> {
 
     private Map<String, Class<? extends Step>> subclasses;
 
-    @Autowired
     public StepObjectManager(StepRepository repository) {
         super(Step.class, repository);
     }
@@ -59,8 +57,9 @@ public class StepObjectManager extends AbstractObjectManager<Step, Step> {
         }
         Step result;
         try {
-            result = stepClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            result = stepClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
             throw new RuntimeException("Cannot create step of type " + type + " with class "
                     + stepClass.getCanonicalName(), e);
         }
@@ -82,7 +81,7 @@ public class StepObjectManager extends AbstractObjectManager<Step, Step> {
 
     @PostConstruct
     protected void init() {
-        subclasses = new HashMap<String, Class<? extends Step>>() {
+        subclasses = new HashMap<>() {
             {
                 put(EmbeddedStep.TYPE, EmbeddedStep.class);
                 put(IntegrationStep.TYPE, IntegrationStep.class);

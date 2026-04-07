@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,19 +23,10 @@ import static org.qubership.automation.itf.configuration.spring.ObjectManagerUti
 
 import java.util.Map;
 
-import jakarta.transaction.Transactional;
-
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.Assert;
-
-import com.google.common.collect.Maps;
-import com.google.common.reflect.TypeToken;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.callchain.CallChain;
@@ -46,11 +37,16 @@ import org.qubership.automation.itf.core.model.jpa.server.Server;
 import org.qubership.automation.itf.core.model.jpa.system.System;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.util.Assert;
+
+import com.google.common.collect.Maps;
+import com.google.common.reflect.TypeToken;
+import jakarta.transaction.Transactional;
 
 @Transactional
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath*:hibernate-configuration-test-context.xml"})
+@SpringJUnitConfig(locations = {"classpath*:hibernate-configuration-test-context.xml"})
 public class FoldersTest {
 
     public static Map<Class, TypeToken<? extends Folder<? extends Storable>>> REGISTRY = Maps.newHashMap();

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@ package org.qubership.automation.itf.core.model.jpa.instance;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-
 import org.qubership.automation.itf.core.model.container.StepContainer;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
 import org.qubership.automation.itf.core.model.jpa.instance.step.StepInstance;
@@ -29,6 +27,7 @@ import org.qubership.automation.itf.core.util.iterator.AbstractStepIterator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
+import jakarta.persistence.Entity;
 
 @Entity
 public abstract class AbstractContainerInstance extends AbstractInstance {
@@ -66,7 +65,7 @@ public abstract class AbstractContainerInstance extends AbstractInstance {
      */
     public String toString() {
         if (getStepContainer() != null) {
-            return String.format("Instance: [%s]", getStepContainer().getName());
+            return "Instance: [%s]".formatted(getStepContainer().getName());
         }
         return "";
     }

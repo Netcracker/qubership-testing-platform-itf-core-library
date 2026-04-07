@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.template;
 
-import jakarta.persistence.Entity;
+import java.io.Serial;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.message.template.Template;
@@ -28,10 +28,12 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OutboundTemplateTransportConfiguration extends Configuration {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     @JsonBackReference

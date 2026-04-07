@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 
 package org.qubership.automation.itf.core.model.jpa.environment;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
 
 import org.hibernate.proxy.HibernateProxy;
 import org.qubership.automation.itf.core.model.eci.EciConfigurable;
@@ -41,12 +40,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",
         scope = InboundTransportConfiguration.class)
 public class InboundTransportConfiguration extends EciConfiguration implements EciConfigurable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private TransportConfiguration referencedConfiguration;
@@ -65,8 +66,8 @@ public class InboundTransportConfiguration extends EciConfiguration implements E
     @RefCopy
     @JsonSerialize(using = IdSerializer.class)
     public TransportConfiguration getReferencedConfiguration() {
-        return referencedConfiguration instanceof HibernateProxy
-                ? (TransportConfiguration) ((HibernateProxy) referencedConfiguration)
+        return referencedConfiguration instanceof HibernateProxy hp
+                ? (TransportConfiguration) hp
                 .getHibernateLazyInitializer().getImplementation()
                 : referencedConfiguration;
     }
@@ -78,7 +79,7 @@ public class InboundTransportConfiguration extends EciConfiguration implements E
     public void setReferencedConfiguration(TransportConfiguration referencedConfiguration) {
         this.referencedConfiguration = referencedConfiguration;
         setTypeName(referencedConfiguration.getTypeName());
-        setName(String.format("%s at %s", referencedConfiguration.getName(), getParent().getName()));
+        setName("%s at %s".formatted(referencedConfiguration.getName(), getParent().getName()));
     }
 
     public Set<TriggerConfiguration> getTriggerConfigurations() {

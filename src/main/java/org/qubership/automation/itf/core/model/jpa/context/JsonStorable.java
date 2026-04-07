@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,14 +16,13 @@
 
 package org.qubership.automation.itf.core.model.jpa.context;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -40,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.persistence.Entity;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({@JsonSubTypes.Type(value = InstanceContext.class, name = "InstanceContext"),
@@ -47,6 +47,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = SpContext.class, name = "SpContext")})
 @Entity
 public class JsonStorable extends JsonContext implements Storable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private String name;

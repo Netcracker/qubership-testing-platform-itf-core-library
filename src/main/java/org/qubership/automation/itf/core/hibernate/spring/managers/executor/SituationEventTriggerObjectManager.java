@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,14 +30,12 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.
 import org.qubership.automation.itf.core.model.communication.EventTriggerBriefInfo;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.model.jpa.system.stub.SituationEventTrigger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SituationEventTriggerObjectManager extends EventTriggerObjectManager<SituationEventTrigger>
         implements EventTriggerManager<SituationEventTrigger>, SearchByProjectIdManager<SituationEventTrigger> {
 
-    @Autowired
     public SituationEventTriggerObjectManager(SituationEventTriggerRepository repository) {
         super(SituationEventTrigger.class, repository);
     }

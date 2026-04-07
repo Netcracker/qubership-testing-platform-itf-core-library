@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -45,21 +45,21 @@ public abstract class AbstractTransportImpl implements Transport {
     @Override
     public Message receive(String sessionId) throws Exception {
         throw new UnsupportedOperationException(
-                String.format("Receiving is not supported in asynchronous %s transport", getClass().getSimpleName())
+                "Receiving is not supported in asynchronous %s transport".formatted(getClass().getSimpleName())
         );
     }
 
     @Override
-    public Message sendReceiveSync(Message messageToSend, BigInteger projectId) throws Exception {
+    public Message sendReceiveSync(Message messageToSend, BigInteger projectId) {
         throw new UnsupportedOperationException(
-                String.format("This method is not supported in %s transport", getClass().getSimpleName())
+                "This method is not supported in %s transport".formatted(getClass().getSimpleName())
         );
     }
 
     @Override
     public String send(Message message, String sessionId, UUID projectUuid) throws Exception {
         throw new UnsupportedOperationException(
-                String.format("Send is not supported in synchronous %s transport", getClass().getSimpleName())
+                "Send is not supported in synchronous %s transport".formatted(getClass().getSimpleName())
         );
     }
 

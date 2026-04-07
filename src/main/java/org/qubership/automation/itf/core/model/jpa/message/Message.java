@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,13 +18,12 @@ package org.qubership.automation.itf.core.model.jpa.message;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.Serial;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.content.Content;
 import org.qubership.automation.itf.core.model.jpa.storage.AbstractStorable;
@@ -34,11 +33,13 @@ import org.qubership.automation.itf.core.util.helper.StorableUtils;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonFilter("reportWorkerFilter_Message")
 public class Message extends AbstractStorable implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -3078836082686301236L;
     private String text;
     private transient Content<?> content;
@@ -164,21 +165,19 @@ public class Message extends AbstractStorable implements Serializable {
     }
 
     private void convertAndAddHeader(String key, Object value) {
-        if (value instanceof byte[]) {
-            headers.put(key, new String((byte[]) value, StandardCharsets.UTF_8)
+        switch (value) {
+            case byte[] bytes1 -> headers.put(key, new String(bytes1, StandardCharsets.UTF_8)
                     .replace((char) 0, (char) 32));
-        } else if (value instanceof ByteArrayInputStream) {
-            ByteArrayInputStream bais = (ByteArrayInputStream) value;
-            int n = bais.available();
-            if (n > 0) {
-                byte[] bytes = new byte[n];
-                int cnt = bais.read(bytes, 0, n);
-                headers.put(key, new String(bytes, 0, cnt, StandardCharsets.UTF_8));
+            case ByteArrayInputStream bais -> {
+                int n = bais.available();
+                if (n > 0) {
+                    byte[] bytes = new byte[n];
+                    int cnt = bais.read(bytes, 0, n);
+                    headers.put(key, new String(bytes, 0, cnt, StandardCharsets.UTF_8));
+                }
             }
-        } else if (value instanceof List) {
-            headers.put(key, value);
-        } else {
-            headers.put(key, Objects.toString(value, "")
+            case List list -> headers.put(key, value);
+            case null, default -> headers.put(key, Objects.toString(value, "")
                     .replace((char) 0, (char) 32)/*TODO it's WA for postgres DB*/);
         }
     }

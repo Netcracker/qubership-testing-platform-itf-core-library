@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,12 +16,14 @@
 
 package org.qubership.automation.itf.core.model.extension;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 public class SituationExtension implements Extension, Serializable {
 
+    @Serial
     private static final long serialVersionUID = 20241125L;
 
     private List<String> situationInstanceIds = new LinkedList<>();

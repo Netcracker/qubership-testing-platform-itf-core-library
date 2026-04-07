@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,26 +16,26 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.executor;
 
-import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
-import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHEABLE;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHE_REGION;
 
 import java.math.BigInteger;
 import java.util.List;
 
-import jakarta.persistence.QueryHint;
-
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.jpa.message.parser.OperationParsingRule;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import jakarta.persistence.QueryHint;
+
 @JaversSpringDataAuditable
 @Repository
-public interface OperationParsingRuleRepository
-        extends ParsingRuleRepository<Operation, OperationParsingRule> {
+public interface OperationParsingRuleRepository extends ParsingRuleRepository<Operation, OperationParsingRule> {
 
     @Override
     @Query(value = "select parsingRule from OperationParsingRule as parsingRule "
@@ -44,9 +44,8 @@ public interface OperationParsingRuleRepository
     List<OperationParsingRule> findByParentIDAndName(@Param("parentId") BigInteger parentId, @Param("name") String name);
 
     @Override
-    @Query(value = "select parsingRule.* from mb_parsing_rules parsingRule "
-            + "where parsingRule.type = 'operation' and parsingRule.parent_operation_id = :parentId",
-            nativeQuery = true)
+    @NativeQuery("select parsingRule.* from mb_parsing_rules parsingRule "
+            + "where parsingRule.type = 'operation' and parsingRule.parent_operation_id = :parentId")
     List<OperationParsingRule> findByParentID(@Param("parentId") BigInteger parentId);
 
     @Override

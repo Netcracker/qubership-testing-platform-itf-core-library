@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.qubership.automation.itf.core.model.jpa.system.System;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.model.jpa.system.stub.Situation;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
@@ -82,15 +83,13 @@ public interface StepRepository extends StorableRepository<Step>, QuerydslPredic
     @Query("select step from IntegrationStep step where step.receiver = :system")
     Iterable<Step> getIntegrationStepsByReceiver(@Param("system") System system);
 
-    @Query(value = "select id from mb_steps where situation_id = :situationId "
+    @NativeQuery("select id from mb_steps where situation_id = :situationId "
             + "union select step_id from mb_end_situations where situation_id = :situationId "
-            + "union select step_id from mb_exceptional_situation where situation_id = :situationId",
-            nativeQuery = true)
+            + "union select step_id from mb_exceptional_situation where situation_id = :situationId")
     List<BigInteger> getIdsSteps(@Param("situationId") BigInteger situationId);
 
-    @Query(value = "SELECT id, name from mb_step_container "
+    @NativeQuery("SELECT id, name from mb_step_container "
             + "where id in (select id from mb_chain where project_id = :projectId) "
-            + "order by name",
-            nativeQuery = true)
+            + "order by name")
     List<Object[]> findIdAndNameByProjectId(@Param("projectId") BigInteger projectId);
 }

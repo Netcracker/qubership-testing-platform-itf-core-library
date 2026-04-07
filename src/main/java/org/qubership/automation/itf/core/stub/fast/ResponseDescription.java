@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.qubership.automation.itf.core.stub.fast;
 
 import static org.qubership.automation.itf.core.util.helper.Reflection.toStringMap;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.qubership.automation.itf.core.model.jpa.message.template.Template;
 import org.qubership.automation.itf.core.model.jpa.step.IntegrationStep;
 import org.qubership.automation.itf.core.model.jpa.system.stub.OperationEventTrigger;
@@ -42,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @NoArgsConstructor
 public class ResponseDescription implements Serializable {
+    @Serial
     private static final long serialVersionUID = 20250303L;
 
     private String name;
@@ -60,7 +62,7 @@ public class ResponseDescription implements Serializable {
      * @param transportType - type of transport.
      */
     public ResponseDescription(Situation storableSituation, StubEndpointConfig.TransportTypes transportType) {
-        this.name = String.format("%s__%s", storableSituation.getID(), storableSituation.getName());
+        this.name = "%s__%s".formatted(storableSituation.getID(), storableSituation.getName());
         this.id = storableSituation.getID().toString();
         Instant start = Instant.now();
         fillBodyAndHeaders(storableSituation, transportType);

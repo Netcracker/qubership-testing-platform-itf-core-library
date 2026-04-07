@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.base.Root
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.SearchRepository;
 import org.qubership.automation.itf.core.model.jpa.context.TcContextBriefInfo;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -32,17 +32,16 @@ public interface TcContextBriefInfoRepository extends RootRepository<TcContextBr
         QuerydslPredicateExecutor<TcContextBriefInfo>, SearchRepository<TcContextBriefInfo> {
 
     @Modifying
-    @Query(value = "delete from mb_tccontext where mb_tccontext.id= :contextId and part_num = :partNum",
-            nativeQuery = true)
+    @NativeQuery("delete from mb_tccontext where mb_tccontext.id= :contextId and part_num = :partNum")
     void deleteFromUIWithPartNum(@Param("contextId") BigInteger contextId, @Param("partNum") Integer partNum);
 
     @Modifying
-    @Query(value = "delete from mb_tccontext where mb_tccontext.id= :contextId", nativeQuery = true)
+    @NativeQuery("delete from mb_tccontext where mb_tccontext.id= :contextId")
     void deleteFromUIWithoutPartNum(@Param("contextId") BigInteger contextId);
 
     TcContextBriefInfo findByIDAndPartNum(BigInteger id, Integer partNum);
 
-    @Query(value = "select current_partition_number() as current_part_num", nativeQuery = true)
+    @NativeQuery("select current_partition_number() as current_part_num")
     int getCurrentPartitionNumber();
 }
 

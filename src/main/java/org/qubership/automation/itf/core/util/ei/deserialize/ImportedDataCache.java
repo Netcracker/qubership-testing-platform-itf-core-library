@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class ImportedDataCache {
             Class<? extends Storable> storableClass = Class.forName(clazz).asSubclass(Storable.class);
             return ((ObjectMapper) p.getCodec()).readValue(treeNode.toString(), storableClass);
         } catch (ClassNotFoundException | JsonProcessingException e) {
-            LOGGER.warn(String.format("Class for type=%s of entity with id=%s was not found.", clazz, entityId));
+            LOGGER.warn("Class for type={} of entity with id={} was not found.", clazz, entityId);
             throw new IllegalArgumentException(e);
         }
     }

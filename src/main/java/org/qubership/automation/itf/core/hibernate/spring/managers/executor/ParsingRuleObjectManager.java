@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -49,8 +49,8 @@ public abstract class ParsingRuleObjectManager<K extends ParsingRuleProvider, T 
     public T create(Storable parent) {
         try {
             T parsingRule = myType.getConstructor(Storable.class).newInstance(parent);
-            if (parent instanceof ParsingRuleProvider) {
-                ((ParsingRuleProvider)parent).addParsingRule(parsingRule);
+            if (parent instanceof ParsingRuleProvider provider) {
+                provider.addParsingRule(parsingRule);
             }
             return repository.save(parsingRule);
         } catch (InstantiationException | IllegalAccessException
@@ -78,7 +78,7 @@ public abstract class ParsingRuleObjectManager<K extends ParsingRuleProvider, T 
 
     @Override
     public Collection<T> getByProperties(BigInteger projectId, Triple<String, Match, ?>... properties) {
-        Collection<T> toReturn = new LinkedList<T>() {
+        Collection<T> toReturn = new LinkedList<>() {
         };
         Collection<T> all = getByProjectId(projectId);
         for (T rule : all) {

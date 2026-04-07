@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.folder;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
 import com.google.common.collect.ImmutableList;
 
 public class DsListFolder extends Folder<DataSetListsSource> {
+    @Serial
     private static final long serialVersionUID = 20240812L;
     public static final Class<DataSetListsSource> TYPE = DataSetListsSource.class;
 

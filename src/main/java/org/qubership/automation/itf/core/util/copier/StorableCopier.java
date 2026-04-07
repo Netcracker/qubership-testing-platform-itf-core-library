@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -111,7 +111,7 @@ public class StorableCopier {
                     ? source.getID().toString() : descriptor.getReadMethod().invoke(source);
             getSetOrFillMethod(descriptor, dest.getClass()).invoke(dest, value);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new CopyException(String.format("Error while copying property %s from %s to %s",
+            throw new CopyException("Error while copying property %s from %s to %s".formatted(
                     descriptor.getName(), source, dest), e);
         }
     }
@@ -119,8 +119,9 @@ public class StorableCopier {
     private static Map produceNewMap(Map ethalon) {
         if (ethalon.getClass().getName().contains("java.util")) {
             try {
-                return ethalon.getClass().newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
+                return ethalon.getClass().getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                     | InvocationTargetException e) {
                 return produceBasicMap(ethalon);
             }
         } else {
@@ -135,8 +136,9 @@ public class StorableCopier {
     private static Collection produceNewCollection(Collection ethalon) {
         if (ethalon.getClass().getName().contains("java.util")) {
             try {
-                return ethalon.getClass().newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
+                return ethalon.getClass().getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                     | InvocationTargetException e) {
                 return produceBasicCollection(ethalon);
             }
         } else {
@@ -162,7 +164,7 @@ public class StorableCopier {
             newCollection.addAll(collection);
             getSetOrFillMethod(descriptor, dest.getClass()).invoke(dest, newCollection);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new CopyException(String.format("Error while copying property %s from %s to %s",
+            throw new CopyException("Error while copying property %s from %s to %s".formatted(
                     descriptor.getName(), source, dest), e);
         }
     }
@@ -176,7 +178,7 @@ public class StorableCopier {
             }
             getSetOrFillMethod(descriptor, dest.getClass()).invoke(dest, newCollection);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new CopyException(String.format("Error while copying property %s from %s to %s",
+            throw new CopyException("Error while copying property %s from %s to %s".formatted(
                     descriptor.getName(), source, dest), e);
         }
     }
@@ -190,7 +192,7 @@ public class StorableCopier {
         String propertyName;
         propertyName = CoreObjectManager.getInstance().getManager(destination.getClass()).acceptsTo(storable);
         if (propertyName == null) {
-            throw new CopyException(String.format("Destination %s cannot accept child %s", destination, storable));
+            throw new CopyException("Destination %s cannot accept child %s".formatted(destination, storable));
         }
         Storable newStorable;
         boolean sameParent = Objects.equals(storable.getParent(), destination);
@@ -203,7 +205,7 @@ public class StorableCopier {
                 collection.add(newStorable);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 OriginalCopyMap.getInstance().clear(sessionId);
-                throw new CopyException(String.format("Error while adding copy of %s to parent %s",
+                throw new CopyException("Error while adding copy of %s to parent %s".formatted(
                         storable, destination));
             }
         } else if (descriptor.getReadMethod().getReturnType().isAssignableFrom(storable.getClass())) {
@@ -213,26 +215,23 @@ public class StorableCopier {
                     descriptor.getWriteMethod().invoke(destination, newStorable);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     OriginalCopyMap.getInstance().clear(sessionId);
-                    throw new CopyException(String.format("Error while setting copy of %s as child to parent %s",
+                    throw new CopyException("Error while setting copy of %s as child to parent %s".formatted(
                             storable, destination));
                 }
             } else {
                 OriginalCopyMap.getInstance().clear(sessionId);
-                throw new CopyException(String.format("Property %s is read-only at %s",
+                throw new CopyException("Property %s is read-only at %s".formatted(
                         descriptor.getName(), destination));
             }
         } else {
             OriginalCopyMap.getInstance().clear(sessionId);
-            throw new CopyException(String.format("Parent %s cannot accept %s", destination, storable));
+            throw new CopyException("Parent %s cannot accept %s".formatted(destination, storable));
         }
-        if (newStorable instanceof Template) {
-            ((Template) newStorable).setParent((TemplateProvider) destination);
-        } else if (newStorable instanceof ParsingRule) {
-            ((ParsingRule) newStorable).setParent((ParsingRuleProvider) destination);
-        } else if (newStorable instanceof TransportConfiguration) {
-            ((TransportConfiguration) newStorable).setParent((System) destination);
-        } else {
-            newStorable.setParent(destination);
+        switch (newStorable) {
+            case Template template -> template.setParent((TemplateProvider) destination);
+            case ParsingRule rule -> rule.setParent((ParsingRuleProvider) destination);
+            case TransportConfiguration configuration -> configuration.setParent((System) destination);
+            default -> newStorable.setParent(destination);
         }
         if (prefix.equals("copy") && !useCaseForTemplate.isEmpty()) {
             // Execute these extra actions only for USECASE1-USECASE6
@@ -252,12 +251,14 @@ public class StorableCopier {
             if (Iterables.tryFind(Arrays.asList(storable.getClass().getInterfaces()),
                             (Predicate<Class>) input -> input.getName().equals("org.hibernate.proxy.HibernateProxy"))
                     .isPresent()) {
-                newStorable = storable.getClass().getSuperclass().asSubclass(Storable.class).newInstance();
+                newStorable = storable.getClass().getSuperclass()
+                        .asSubclass(Storable.class).getDeclaredConstructor().newInstance();
             } else {
-                newStorable = storable.getClass().newInstance();
+                newStorable = storable.getClass().getDeclaredConstructor().newInstance();
             }
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new CopyException(String.format("Error creating copy of %s", storable));
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
+            throw new CopyException("Error creating copy of %s".formatted(storable));
         }
         PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(newStorable.getClass());
         for (PropertyDescriptor descriptor : descriptors) {
@@ -285,20 +286,19 @@ public class StorableCopier {
                     }
                 } else if (Collection.class.isAssignableFrom(descriptor.getReadMethod().getReturnType())) {
                     if (descriptor.getReadMethod().getGenericReturnType() instanceof ParameterizedType) {
-                        Type[] types =
-                                ((ParameterizedType) descriptor.getReadMethod().getGenericReturnType())
+                        Type[] types = ((ParameterizedType) descriptor.getReadMethod().getGenericReturnType())
                                         .getActualTypeArguments();
                         if (types != null && types.length > 0) {
-                            if (types[0] instanceof Class) {
-                                if (Storable.class.isAssignableFrom((Class<?>) types[0])
+                            if (types[0] instanceof Class<?> class2) {
+                                if (Storable.class.isAssignableFrom(class2)
                                         && !descriptor.getReadMethod().isAnnotationPresent(RefCopy.class)) {
                                     copyChildCollection(descriptor, storable, newStorable,
                                             prefix, useCaseForTemplate);
                                 } else {
                                     copyCollection(descriptor, storable, newStorable);
                                 }
-                            } else if (types[0] instanceof ParameterizedType) {
-                                if (Storable.class.isAssignableFrom((Class<?>) ((ParameterizedType) types[0])
+                            } else if (types[0] instanceof ParameterizedType type) {
+                                if (Storable.class.isAssignableFrom((Class<?>) type
                                         .getRawType())
                                         && !descriptor.getReadMethod().isAnnotationPresent(RefCopy.class)) {
                                     copyChildCollection(descriptor, storable, newStorable,
@@ -306,10 +306,9 @@ public class StorableCopier {
                                 } else {
                                     copyCollection(descriptor, storable, newStorable);
                                 }
-                            } else if (types[0] instanceof TypeVariable) {
-                                if (((TypeVariable) types[0]).getBounds()[0] instanceof Class
-                                        && Storable.class.isAssignableFrom((Class<?>) ((TypeVariable) types[0])
-                                        .getBounds()[0])
+                            } else if (types[0] instanceof TypeVariable variable) {
+                                if (variable.getBounds()[0] instanceof Class<?> class1
+                                        && Storable.class.isAssignableFrom(class1)
                                         && !descriptor.getReadMethod().isAnnotationPresent(RefCopy.class)) {
                                     copyChildCollection(descriptor, storable, newStorable,
                                             prefix, useCaseForTemplate);
@@ -331,16 +330,14 @@ public class StorableCopier {
                 }
             }
         }
-        if (storable instanceof Map) {
-            ((Map) newStorable).putAll((Map) storable);
+        if (storable instanceof Map map) {
+            ((Map) newStorable).putAll(map);
         }
         newStorable.setName(storable.getName());
         newStorable.setDescription(storable.getDescription());
-        if (newStorable instanceof LabeledStorable) {
-            LabeledStorable labeledStorable = (LabeledStorable) newStorable;
+        if (newStorable instanceof LabeledStorable labeledStorable) {
             labeledStorable.getLabels().clear();
-            if (storable instanceof LabeledStorable) {
-                LabeledStorable provider = (LabeledStorable) storable;
+            if (storable instanceof LabeledStorable provider) {
                 labeledStorable.getLabels().addAll(provider.getLabels());
             }
         }
@@ -364,7 +361,7 @@ public class StorableCopier {
             }
             getSetOrFillMethod(descriptor, entity.getClass()).invoke(entity, cachedCopiedEntity);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new CopyException(String.format("Error while copying property %s from %s to %s",
+            throw new CopyException("Error while copying property %s from %s to %s".formatted(
                     descriptor.getName(), source, entity), e);
         }
     }
@@ -403,7 +400,7 @@ public class StorableCopier {
                 }
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new CopyException(String.format("Error while copying property %s from %s to %s",
+            throw new CopyException("Error while copying property %s from %s to %s".formatted(
                     descriptor.getName(), source, entity), e);
         }
     }
@@ -483,7 +480,7 @@ public class StorableCopier {
                     log.error("Unknown copy/move use case {}!", useCaseForTemplate);
             }
         } catch (Exception e) {
-            throw new CopyException(String.format("Error while copying property %s from %s to %s",
+            throw new CopyException("Error while copying property %s from %s to %s".formatted(
                     descriptor.getName(), source, entity), e);
         }
     }
@@ -498,7 +495,7 @@ public class StorableCopier {
                 childCopy.setParent(dest);
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new CopyException(String.format("Error while copying property %s from %s to %s",
+            throw new CopyException("Error while copying property %s from %s to %s".formatted(
                     descriptor.getName(), source, dest), e);
         }
     }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -68,12 +68,12 @@ public class CallChainStepIterator extends AbstractStepIterator {
             if (!step.isEnabled()) {
                 LOGGER.debug("Call chain step '{}' is disabled ==> step is skipped.", step);
                 continue;
-            } else if (step instanceof SituationStep) {
-                if (((SituationStep) step).getSituation() == null) {
+            } else if (step instanceof SituationStep situationStep) {
+                if (situationStep.getSituation() == null) {
                     LOGGER.debug("Call chain step '{}': situation is null ==> step is skipped.", step);
                     continue;
                 }
-            } else if (step instanceof EmbeddedStep && ((EmbeddedStep) step).getChain() == null) {
+            } else if (step instanceof EmbeddedStep embeddedStep && embeddedStep.getChain() == null) {
                 LOGGER.debug("Call chain step '{}': callchain is null ==> step is skipped.", step);
                 continue;
             }

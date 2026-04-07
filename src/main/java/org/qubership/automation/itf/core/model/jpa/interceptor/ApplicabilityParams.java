@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package org.qubership.automation.itf.core.model.jpa.interceptor;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Map;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -30,12 +29,14 @@ import org.qubership.automation.itf.core.util.constants.PropertyConstants;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ApplicabilityParams extends Configuration {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     @JsonBackReference
@@ -60,9 +61,9 @@ public class ApplicabilityParams extends Configuration {
         super.performActionsForImportIntoAnotherProject(
                 replacementMap, projectId, projectUuid, needToUpdateProjectId, needToGenerateNewId
         );
-        String applicabiltySystemId = get(PropertyConstants.Applicability.SYSTEM);
-        if (StringUtils.isNotEmpty(applicabiltySystemId)) {
-            BigInteger replacedSystemId = replacementMap.get(new BigInteger(applicabiltySystemId));
+        String applicabilitySystemId = get(PropertyConstants.Applicability.SYSTEM);
+        if (StringUtils.isNotEmpty(applicabilitySystemId)) {
+            BigInteger replacedSystemId = replacementMap.get(new BigInteger(applicabilitySystemId));
             if (replacedSystemId != null) {
                 put(PropertyConstants.Applicability.SYSTEM, replacedSystemId.toString());
             }

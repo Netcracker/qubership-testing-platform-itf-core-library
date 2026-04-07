@@ -35,7 +35,7 @@
         <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
         <io.undertow.undertow-core.version>2.3.21.Final</io.undertow.undertow-core.version>
         <tomcat.embed.version>9.0.108</tomcat.embed.version>
-        <org.bouncycastle.version>1.70</org.bouncycastle.version>
+        <org.bouncycastle.version>1.80</org.bouncycastle.version>
         <lombok.version>1.18.44</lombok.version>
 
         <atp.common.version>1.0.1-SNAPSHOT</atp.common.version>
@@ -81,7 +81,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.15.0</version>
                 <configuration>
                     <release>21</release>
                     <parameters>true</parameters>
@@ -105,38 +105,6 @@
                     </annotationProcessorPaths>
                     <generatedSourcesDirectory>${project.build.directory}/generated-sources/querydsl</generatedSourcesDirectory>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.openclover</groupId>
-                <artifactId>clover-maven-plugin</artifactId>
-                <version>4.2.0</version>
-                <configuration>
-                    <outputDirectory>${project.build.directory}/clover</outputDirectory>
-                    <generateHtml>true</generateHtml>
-                    <generateXml>true</generateXml>
-                    <generatePdf>true</generatePdf>
-                    <targetPercentage>0.0%</targetPercentage>
-                    <excludes>
-                        <exclude>**/model/**</exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>clover-instrument</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>instrument-test</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>clover-report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>clover</goal>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <!-- Generates models and controllers based on api-contract.yaml -->
@@ -415,7 +383,6 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>6.6.42.Final</version>
         </dependency>
         <!--Hibernate-end-->
         <dependency>
@@ -435,13 +402,16 @@
                     <artifactId>commons-lang</artifactId>
                     <groupId>commons-lang</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
-            <version>${jakarta-persistence.version}</version>
         </dependency>
 
         <dependency>
@@ -483,7 +453,6 @@
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom2</artifactId>
-            <version>2.0.6.1</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
@@ -499,12 +468,11 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>32.0.0-jre</version>
+            <version>32.0.1-jre</version>
         </dependency>
         <dependency>
             <groupId>jakarta.inject</groupId>
             <artifactId>jakarta.inject-api</artifactId>
-            <version>2.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -519,7 +487,6 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.0.0</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>
@@ -656,6 +623,14 @@
                     <artifactId>jettison</artifactId>
                     <groupId>org.codehaus.jettison</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>javax.servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.servlet</groupId>
+                    <artifactId>jakarta.servlet-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -711,13 +686,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.11.0</version>
+            <version>5.23.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.11.0</version>
+            <version>5.23.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -743,16 +718,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <!--Code style and code checkers end-->
-
-        <!--Start contract-test-pacts dependencies-->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
         </dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
@@ -782,6 +748,10 @@
                 <exclusion>
                     <artifactId>commons-collections</artifactId>
                     <groupId>commons-collections</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -823,8 +793,8 @@
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.7.0</version>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.8.16</version>
         </dependency>
     </dependencies>
 
@@ -846,7 +816,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
-                <version>5.7.13</version>
+                <version>6.5.9</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -914,12 +884,12 @@
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
+                <artifactId>bcprov-jdk18on</artifactId>
                 <version>${org.bouncycastle.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcpkix-jdk15on</artifactId>
+                <artifactId>bcpkix-jdk18on</artifactId>
                 <version>${org.bouncycastle.version}</version>
             </dependency>
         </dependencies>

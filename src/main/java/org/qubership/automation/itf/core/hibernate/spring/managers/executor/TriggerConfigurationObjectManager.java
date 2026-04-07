@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.
 import org.qubership.automation.itf.core.model.jpa.environment.TriggerConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +34,6 @@ public class TriggerConfigurationObjectManager
     private static final Logger LOGGER = LoggerFactory.getLogger(TriggerConfigurationObjectManager.class);
     private final TriggerConfigurationRepository triggerConfigurationRepository;
 
-    @Autowired
     public TriggerConfigurationObjectManager(TriggerConfigurationRepository repository,
                                              TriggerConfigurationRepository triggerConfigurationRepository) {
         super(TriggerConfiguration.class, repository);

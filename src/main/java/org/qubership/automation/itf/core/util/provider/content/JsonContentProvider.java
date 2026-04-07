@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -53,14 +53,14 @@ public class JsonContentProvider implements MessageContentProvider<JSONObject> {
 
     private static class JsonContent implements Content<JSONObject> {
 
-        private JSONObject object;
+        private final JSONObject object;
 
         private JsonContent(JSONAware object) throws ContentException {
             if (object instanceof JSONArray) {
                 this.object = new JSONObject();
                 this.object.put("array", object);
-            } else if (object instanceof JSONObject) {
-                this.object = (JSONObject) object;
+            } else if (object instanceof JSONObject nObject) {
+                this.object = nObject;
             } else {
                 throw new ContentException("Cannot take JSONObject from parsed object");
             }

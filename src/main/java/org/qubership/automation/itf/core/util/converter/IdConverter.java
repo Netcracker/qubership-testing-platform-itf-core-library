@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ package org.qubership.automation.itf.core.util.converter;
 
 import java.math.BigInteger;
 
-import jakarta.annotation.Nonnull;
-
 import org.apache.commons.lang3.StringUtils;
+
+import jakarta.annotation.Nonnull;
 
 public class IdConverter {
 
@@ -32,12 +32,12 @@ public class IdConverter {
      */
     @Nonnull
     public static BigInteger toBigInt(@Nonnull Object id) {
-        if (id instanceof BigInteger) {
-            return (BigInteger) id;
+        if (id instanceof BigInteger integer) {
+            return integer;
         } else {
             String stringId = id.toString();
             if (!StringUtils.isNumeric(stringId)) {
-                throw new IllegalArgumentException(String.format(IS_NOT_NUMERIC, stringId));
+                throw new IllegalArgumentException(IS_NOT_NUMERIC.formatted(stringId));
             }
             return new BigInteger(stringId);
         }

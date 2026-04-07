@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.StorableRepository;
 import org.qubership.automation.itf.core.model.jpa.folder.Folder;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -29,11 +29,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FolderRepository extends StorableRepository<Folder>, QuerydslPredicateExecutor<Folder> {
 
-    @Query(value = "select folder.* from mb_folders folder "
+    @NativeQuery("select folder.* from mb_folders folder "
                  + "where upper(folder.name) like concat('%', upper(:pieceOfName), '%') "
                  + "and folder.\"type\" = :typeName "
-                 + "and folder.project_id = :projectId",
-            nativeQuery = true)
+                 + "and folder.project_id = :projectId")
     List<Folder> findFolderByProjectAndNameContainingIgnoreCase(@Param("pieceOfName") String pieceOfName,
                                                                 @Param("projectId") BigInteger projectId,
                                                                 @Param("typeName") String typeName);

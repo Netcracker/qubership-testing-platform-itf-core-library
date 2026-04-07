@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.annotation.Nonnull;
-
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.StorableInFolderObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.EnvConfigurationManager;
@@ -50,13 +48,13 @@ import org.qubership.automation.itf.core.model.usage.UsageInfo;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
 
 @Service
 public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
@@ -73,7 +71,6 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
     /**
      * Constructor with related repositories.
      */
-    @Autowired
     public ServerObjectManager(ServerRepository repository, InboundTransportConfigurationRepository inbRep,
                                OutboundTransportConfigurationRepository outbRep,
                                EnvironmentRepository environmentRepository) {
@@ -119,8 +116,8 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
     @Override
     public Server create(Storable parent) {
         Folder<Server> actualParent = null;
-        if (parent instanceof StubContainer) {
-            actualParent = ((StubContainer) parent).getServers();
+        if (parent instanceof StubContainer container) {
+            actualParent = container.getServers();
         } else if (parent instanceof Folder) {
             Optional<Folder<Server>> serverFolder = ((Folder<? extends Storable>) parent).of(Server.class);
             if (serverFolder.isPresent()) {

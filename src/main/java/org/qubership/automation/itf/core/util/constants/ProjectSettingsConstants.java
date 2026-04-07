@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -35,25 +35,33 @@ public class ProjectSettingsConstants {
 
     public static final String TCPDUMP_CAPTURING_FILTER_DEFAULT = "tcpdump.capturing.filter.default";
     public static final String TCPDUMP_CAPTURING_FILTER_DEFAULT_LONG_NAME = "Default TCP dump capturing filter";
-    public static final String TCPDUMP_CAPTURING_FILTER_DEFAULT_DESCRIPTION = "Capturing Filter. \n"
-            + "Example value: port 3840 or port 3867 or port 3868 or port 3869 or port 3870 or port 3871. \n Default:"
-            + "empty string";
+    public static final String TCPDUMP_CAPTURING_FILTER_DEFAULT_DESCRIPTION = """
+            Capturing Filter.\s
+            Example value: port 3840 or port 3867 or port 3868 or port 3869 or port 3870 or port 3871.\s
+             Default:\
+            empty string""";
     public static final String TCPDUMP_CAPTURING_FILTER_DEFAULT_DEFAULT_VALUE = "";
 
     public static final String TCP_DUMP_NI_DEFAULT = "tcpdump.ni.default";
     public static final String TCP_DUMP_NI_DEFAULT_LONG_NAME = "Default TCP dump NetworkInterface";
-    public static final String TCP_DUMP_NI_DEFAULT_DESCRIPTION = "Network adapter to capture packets.\n Example "
-            + "value: \\\\Device\\\\NPF_{FBA5FC6B-29EF-48ED-9D35-7FFB46A95D30}\nCheck this value via commands: "
-            + "ipconfig /all, then getmac\nDefault: empty string";
+    public static final String TCP_DUMP_NI_DEFAULT_DESCRIPTION = """
+            Network adapter to capture packets.
+             Example \
+            value: \\\\Device\\\\NPF_{FBA5FC6B-29EF-48ED-9D35-7FFB46A95D30}
+            Check this value via commands: \
+            ipconfig /all, then getmac
+            Default: empty string""";
     public static final String TCP_DUMP_NI_DEFAULT_VALUE = "";
 
     public static final String COPY_OBJECT_SET_STATUS_OFF = "copyObjects.setStatusOff";
     public static final String COPY_OBJECT_SET_STATUS_OFF_LONG_NAME = "Set status off after copy object";
     public static final String COPY_OBJECT_SET_STATUS_OFF_DESCRIPTION =
-            "If true, then when copying the situation, the new situation assumes the status InActive. It is used in "
-                    + "cases when it is necessary for the user to configure it first and then manually turn it on.\n "
-                    + "The default value is false. The statuses of situations are copied from the environment. "
-                    + "Default: false";
+            """
+            If true, then when copying the situation, the new situation assumes the status InActive. It is used in \
+            cases when it is necessary for the user to configure it first and then manually turn it on.
+             \
+            The default value is false. The statuses of situations are copied from the environment. \
+            Default: false""";
     public static final String COPY_OBJECT_SET_STATUS_OFF_DEFAULT_VALUE = "false";
 
     public static final String COPY_OBJECT_IS_SMART = "copyObjects.isSmart";
@@ -77,16 +85,18 @@ public class ProjectSettingsConstants {
     public static final String ATP_WSDL_PATH = "atp.wsdl.path";
     public static final String ATP_WSDL_PATH_LONG_NAME = "ATP WSDL path";
     public static final String ATP_WSDL_PATH_DESCRIPTION =
-            "If the project plans to report to ATP, you need to set the server address\n"
-                    + "Default: http://atp.our-company.com/solutions/atp/integration/jsp/AtpRamWebService?wsdl";
+            """
+            If the project plans to report to ATP, you need to set the server address
+            Default: http://atp.our-company.com/solutions/atp/integration/jsp/AtpRamWebService?wsdl""";
     public static final String ATP_WSDL_PATH_DEFAULT_VALUE = "http://atp.our-company.com/solutions/atp/integration/jsp"
             + "/AtpRamWebService?wsdl";
 
     public static final String ATP_ACCOUNT_NAME = "atp.account.name";
     public static final String ATP_ACCOUNT_NAME_LONG_NAME = "ATP account name";
     public static final String ATP_ACCOUNT_NAME_DESCRIPTION =
-            "The account name is taken from the \"Project Name\" in ATP parameters of the project\n"
-                    + "Default: empty string";
+            """
+            The account name is taken from the "Project Name" in ATP parameters of the project
+            Default: empty string""";
     public static final String ATP_ACCOUNT_NAME_DEFAULT_VALUE = "";
 
     public static final String ATP_TEST_PLAN = "atp.test.plan";
@@ -122,14 +132,16 @@ public class ProjectSettingsConstants {
     public static final String TC_TIMEOUT_FAIL = "tc.timeout.fail";
     public static final String TC_TIMEOUT_FAIL_LONG_NAME = "TC timeout fail";
     public static final String TC_TIMEOUT_FAIL_DESCRIPTION =
-            "The maximum execution time of the test case. If it runs longer than the specified time, it will fail.\n"
-                    + "The parameter is not required, since the code has a default value. Default: 20";
+            """
+            The maximum execution time of the test case. If it runs longer than the specified time, it will fail.
+            The parameter is not required, since the code has a default value. Default: 20""";
     public static final String TC_TIMEOUT_FAIL_DEFAULT_VALUE = "20";
 
     public static final String TC_TIMEOUT_FAIL_TIME_UNIT = "tc.timeout.fail.timeunit";
     public static final String TC_TIMEOUT_FAIL_TIME_UNIT_LONG_NAME = "TC timeout fail (Time unit)";
-    public static final String TC_TIMEOUT_FAIL_TIME_UNIT_DESCRIPTION = "Timeout units. The default is minutes.\n"
-            + "The parameter is not required, since the code has a default value. Default: MINUTES";
+    public static final String TC_TIMEOUT_FAIL_TIME_UNIT_DESCRIPTION = """
+            Timeout units. The default is minutes.
+            The parameter is not required, since the code has a default value. Default: MINUTES""";
     public static final String TC_TIMEOUT_FAIL_TIME_UNIT_DEFAULT_VALUE = "MINUTES";
 
     public static final String REPORT_EXECUTION_ENABLED = "report.execution.enabled";
@@ -163,16 +175,22 @@ public class ProjectSettingsConstants {
 
     public static final String TEST_SERVER_AVAILABILITY = "test.server.availability";
     public static final String TEST_SERVER_AVAILABILITY_LONG_NAME = "Test server availability";
-    public static final String TEST_SERVER_AVAILABILITY_DECRIPTION = "Checking server availability before activating "
-            + "triggers.\n This functionality work at ITF startup.\nIf server not available, other triggers on this "
-            + "server won't activate.\nDefault: false";
+    public static final String TEST_SERVER_AVAILABILITY_DECRIPTION = """
+            Checking server availability before activating \
+            triggers.
+             This functionality work at ITF startup.
+            If server not available, other triggers on this \
+            server won't activate.
+            Default: false""";
     public static final String TEST_SERVER_AVAILABILITY_DEFAULT_VALUE = "false";
 
     public static final String START_TRIGGERS_AT_STARTUP = "start.triggers.at.startup";
     public static final String START_TRIGGERS_AT_STARTUP_SHORT_NAME = "Start triggers at startup";
     public static final String START_TRIGGERS_AT_STARTUP_DESCRIPTION =
-            "Determines whether triggers are triggered when the ITF starts.\nIf true, then all triggers will be "
-                    + "activated whose active field in the database is true. Default: false";
+            """
+            Determines whether triggers are triggered when the ITF starts.
+            If true, then all triggers will be \
+            activated whose active field in the database is true. Default: false""";
     public static final String START_TRIGGERS_AT_STARTUP_DEFAULT_VALUE = "false";
 
     public static final String START_TRANSPORT_TRIGGERS_AT_STARTUP = "start.transport.triggers.at.startup";
@@ -183,8 +201,10 @@ public class ProjectSettingsConstants {
 
     public static final String MONITORING_PAGINATION_SIZE = "monitoring.pagination.size";
     public static final String MONITORING_PAGINATION_SIZE_LONG_NAME = "Monitoring pagination size";
-    public static final String MONITORING_PAGINATION_SIZE_DESCRIPTION = "Page size on monitoring.\nThe default value "
-            + "is 20.";
+    public static final String MONITORING_PAGINATION_SIZE_DESCRIPTION = """
+            Page size on monitoring.
+            The default value \
+            is 20.""";
     public static final int MONITORING_PAGINATION_SIZE_DEFAULT_VALUE_INT = 20;
     public static final String MONITORING_PAGINATION_SIZE_DEFAULT_VALUE_STRING = "20";
 
@@ -198,14 +218,19 @@ public class ProjectSettingsConstants {
     public static final String MANY_OBJECTS_UI_MODE = "many.objects.ui.mode";
     public static final String MANY_OBJECTS_UI_MODE_LONG_NAME = "Many configurations objects";
     public static final String MANY_OBJECTS_UI_MODE_DESCRIPTION =
-            "false = standart mb EditableSelects are used for choosing object in UI (templates on situations, "
-                    + "situations on situations triggers) \n true = input filter, go to backend, then receive "
-                    + "filtered list of objects" + "Default value: false";
+            """
+            false = standart mb EditableSelects are used for choosing object in UI (templates on situations, \
+            situations on situations triggers)\s
+             true = input filter, go to backend, then receive \
+            filtered list of objects\
+            Default value: false""";
     public static final String MANY_OBJECTS_UI_MODE_DEFAULT_VALUE = "false";
 
     public static final String START_PARAM_RUN_BV_CASE = "startParam.starterObject.runBvCase";
-    public static final String START_PARAM_RUN_BV_CASE_LONG_NAME = "[Run callchain window defaults]\nRun BV Case "
-            + "after execution for the context (if available)";
+    public static final String START_PARAM_RUN_BV_CASE_LONG_NAME = """
+            [Run callchain window defaults]
+            Run BV Case \
+            after execution for the context (if available)""";
     public static final String START_PARAM_RUN_BV_CASE_DESCRIPTION =
             "This parameter is responsible for selecting the option \"Run BV Case after execution for context (if "
                     + "available)\" in run popup by default. Default value: false (off)";
@@ -226,31 +251,41 @@ public class ProjectSettingsConstants {
     public static final String START_PARAM_COLLECT_LOGS_DEFAULT_VALUE = "false";
 
     public static final String START_PARAM_NEED_TO_LOG_IN_ATP = "startParam.starterObject.needToLogInAtp";
-    public static final String START_PARAM_NEED_TO_LOG_IN_ATP_LONG_NAME = "[Run callchain window defaults]\nRun "
-            + "with logging to ATP";
+    public static final String START_PARAM_NEED_TO_LOG_IN_ATP_LONG_NAME = """
+            [Run callchain window defaults]
+            Run \
+            with logging to ATP""";
     public static final String START_PARAM_NEED_TO_LOG_IN_ATP_DESCRIPTION = "This parameter is responsible for "
             + "selecting the option \"With logging to ATP\" in run popup by default. Default value: false (off)";
     public static final String START_PARAM_NEED_TO_LOG_IN_ATP_DEFAULT_VALUE = "false";
 
     public static final String START_PARAM_MAKE_DEFAULT_DATASET = "startParam.starterObject.makeDefaultDataset";
-    public static final String START_PARAM_MAKE_DEFAULT_DATASET_LONG_NAME = "[Run callchain window defaults]\n Set "
-            + "selected dataset as 'Default' for the callChain";
+    public static final String START_PARAM_MAKE_DEFAULT_DATASET_LONG_NAME = """
+            [Run callchain window defaults]
+             Set \
+            selected dataset as 'Default' for the callChain""";
     public static final String START_PARAM_MAKE_DEFAULT_DATASET_DESCRIPTION = "This parameter is responsible for "
             + "selecting the option \"Set selected dataset as 'Default' for the callChain\" in run popup by default"
             + ". Default value: false (off)";
     public static final String START_PARAM_MAKE_DEFAULT_DATASET_DEFAULT_VALUE = "false";
 
     public static final String START_PARAM_RUN_VALIDATION = "startParam.starterObject.runValidation";
-    public static final String START_PARAM_RUN_VALIDATION_LONG_NAME = "[Run callchain window defaults]\n Run "
-            + "BulkValidator Case after situation step (if turned ON) for response messages\"";
+    public static final String START_PARAM_RUN_VALIDATION_LONG_NAME = """
+            [Run callchain window defaults]
+             Run \
+            BulkValidator Case after situation step (if turned ON) for response messages"\
+            """;
     public static final String START_PARAM_RUN_VALIDATION_DESCRIPTION = "This parameter is responsible for selecting "
             + "the option \"Run BulkValidator Case after situation step (if turned ON) for response messages\" in run"
             + " popup by default. Default value: false (off)";
     public static final String START_PARAM_RUN_VALIDATION_DEFAULT_VALUE = "false";
 
     public static final String START_PARAM_TEST_DATA = "startParam.starterObject.testData";
-    public static final String START_PARAM_TEST_DATA_LONG_NAME = "[Run callchain window defaults]\n Send request to "
-            + "TestDataManagement Service after execution PASSED\"";
+    public static final String START_PARAM_TEST_DATA_LONG_NAME = """
+            [Run callchain window defaults]
+             Send request to \
+            TestDataManagement Service after execution PASSED"\
+            """;
     public static final String START_PARAM_TEST_DATA_DESCRIPTION =
             "This parameter is responsible for selecting the option \"Send request to TestDataManagement Service "
                     + "after execution PASSED\" in run popup by default. Default value: false (off)";
@@ -258,7 +293,10 @@ public class ProjectSettingsConstants {
 
     public static final String START_PARAM_CREATE_TCP_DUMP = "startParam.starterObject.createTcpDump";
     public static final String START_PARAM_CREATE_TCP_DUMP_LONG_NAME =
-            "[Run callchain window defaults]\nCreate TCP " + "Dump";
+            """
+            [Run callchain window defaults]
+            Create TCP \
+            Dump""";
     public static final String START_PARAM_CREATE_TCP_DUMP_DESCRIPTION = "This parameter is responsible for selecting"
             + " the option \"Create TCP Dump\" in run popup by default Default value: false (off)";
     public static final String START_PARAM_CREATE_TCP_DUMP_DEFAULT_VALUE = "false";
@@ -275,8 +313,10 @@ public class ProjectSettingsConstants {
 
     public static final String MAX_CONNECTION_TIMEOUT = "max.connection.timeout";
     public static final String MAX_CONNECTION_TIMEOUT_LONG_NAME = "Max Connection Timeout";
-    public static final String MAX_CONNECTION_TIMEOUT_DESCRIPTION = "Max thread timeout to wait while activating "
-            + "triggers at ITF startup (milliseconds).\n Default: 5000";
+    public static final String MAX_CONNECTION_TIMEOUT_DESCRIPTION = """
+            Max thread timeout to wait while activating \
+            triggers at ITF startup (milliseconds).
+             Default: 5000""";
     public static final String MAX_CONNECTION_TIMEOUT_DEFAULT_VALUE = "5000";
 
     public static final String CONTEXT_FORMAT_PRETTY_PRINT = "context.format.prettyPrint";
@@ -343,10 +383,19 @@ public class ProjectSettingsConstants {
     public static final String CONDITIONS_STYLE_LEGACY = "conditions.style.legacy";
     public static final String CONDITIONS_STYLE_LEGACY_LONG_NAME = "Conditions style";
     public static final String CONDITIONS_STYLE_LEGACY_DESCRIPTION =
-            "If variable is absent in the context, then:\n 1. EXISTS returns false,\n2. NOTEXISTS returns true,\n"
-                    + " 3. All rest conditions:\n In case conditions.style.legacy = false (default):\n return false "
-                    + "for all rest conditions,\n In case conditions.style.legacy = true:\n return true for "
-                    + "{NOTEQUALS, NOTMATCHES},\n otherwise - return false. \n Default: false";
+            """
+            If variable is absent in the context, then:
+             1. EXISTS returns false,
+            2. NOTEXISTS returns true,
+             3. All rest conditions:
+             In case conditions.style.legacy = false (default):
+             return false \
+            for all rest conditions,
+             In case conditions.style.legacy = true:
+             return true for \
+            {NOTEQUALS, NOTMATCHES},
+             otherwise - return false.\s
+             Default: false""";
     public static final String CONDITIONS_STYLE_LEGACY_DEFAULT_VALUE = "false";
 
     public static final String REPORT_IN_DIFFERENT_THREAD = "report.in.different.thread";
@@ -390,10 +439,11 @@ public class ProjectSettingsConstants {
     public static final String TC_CONTEXT_CLIENT_ADDRESS = "tc.context.client_address";
     public static final String TC_CONTEXT_CLIENT_ADDRESS_LONG_NAME = "Context variable storing client address";
     public static final String TC_CONTEXT_CLIENT_ADDRESS_DESCRIPTION =
-            "Context variable (or even Velocity expression) storing client address. \n"
-                + "(Useful mostly for stubs) \n"
-                + "Example value: ${tc.saved.customField}. \n"
-                + "Default: empty string";
+            """
+            Context variable (or even Velocity expression) storing client address.\s
+            (Useful mostly for stubs)\s
+            Example value: ${tc.saved.customField}.\s
+            Default: empty string""";
     public static final String TC_CONTEXT_CLIENT_ADDRESS_DEFAULT_VALUE = "";
 
     public static final String ENABLE_HISTORY_AND_VERSIONING = "enable.history.versioning";

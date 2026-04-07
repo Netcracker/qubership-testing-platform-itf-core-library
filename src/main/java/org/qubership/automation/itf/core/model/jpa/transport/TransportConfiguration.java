@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.transport;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.rmi.RemoteException;
 import java.util.Collection;
@@ -23,8 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import jakarta.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.SearchByProjectIdManager;
@@ -58,12 +57,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.persistence.Entity;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id", scope = TransportConfiguration.class)
 public class TransportConfiguration extends EciConfiguration implements InterceptorProvider, EciConfigurable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     @JsonProperty(value = "mep")

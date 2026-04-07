@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,11 +26,13 @@ public class EncodeDecodeUrlTest {
     private static final DecodeUrl decoder = new DecodeUrl();
     private static final EncodeUrl encoder = new EncodeUrl();
 
-    private static final String expectedContent = "Test content to encodeUrl: \n\t"
-            + "Something non-Latin: Günter Александр, "
-            + "digits and special chars: "
-            + "`1234567890-=[];'\\,./\n"
-            + "~!@#$%^&*()_+{}:\"|<>?";
+    private static final String expectedContent = """
+            Test content to encodeUrl:\s
+            	\
+            Something non-Latin: Günter Александр, \
+            digits and special chars: \
+            `1234567890-=[];'\\,./
+            ~!@#$%^&*()_+{}:"|<>?""";
     private static final String expectedEncodedContent = "Test+content+to+encodeUrl%3A+%0A%09Something+non-Latin"
             + "%3A+G%C3%BCnter+%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%2C+digits+and+special+chars"
             + "%3A+%601234567890-%3D%5B%5D%3B%27%5C%2C.%2F%0A%7E%21%40%23%24%25%5E%26*%28%29_"
