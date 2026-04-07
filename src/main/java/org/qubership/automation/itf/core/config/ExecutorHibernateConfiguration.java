@@ -34,7 +34,9 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import com.hazelcast.core.HazelcastInstance;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 @Import(CommonHibernateConfiguration.class)
 public class ExecutorHibernateConfiguration {
@@ -52,7 +54,7 @@ public class ExecutorHibernateConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Entity Manager Factory Bean constructor.
      */
     @Bean(name = "entityManagerFactory")
     public FactoryBean<EntityManagerFactory> getLocalContainerEntityManagerFactoryBean(
@@ -79,11 +81,19 @@ public class ExecutorHibernateConfiguration {
                 "mapping/UpgradeHistory.hbm.xml",
                 "mapping/EntitiesMigration.hbm.xml");
         emf.setJpaProperties(Objects.requireNonNull(jpaProperties));
+
+        // Force early initialization of Hazelcast if it exists
+        if (hazelcastInstance != null) {
+            // This "touches" the bean, ensuring it's fully initialized and registered
+            // before Hibernate tries to look it up by name
+            hazelcastInstance.getName();
+            log.info("Hazelcast instance '{}' is available for JCache", hazelcastInstance.getName());
+        }
         return emf;
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Transaction Manager Bean constructor.
      */
     @Bean(name = "transactionManager")
     public JpaTransactionManager getJpaTransactionManager(FactoryBean<EntityManagerFactory> entityManagerFactory)
