@@ -37,10 +37,10 @@ import net.javacrumbs.shedlock.provider.jdbctemplate.JdbcTemplateLockProvider;
 @Configuration
 public class CommonHibernateConfiguration {
 
-    @Value("${hibernate.second.level.cache.enabled:false}")
+    @Value("${spring.jpa.properties.hibernate.cache.use_second_level_cache:false}")
     private boolean secondLevelCacheEnabled;
 
-    @Value("${hibernate.query.cache.enabled:false}")
+    @Value("${spring.jpa.properties.hibernate.cache.use_query_cache:false}")
     private boolean queryCacheEnabled;
 
     @Value("${hibernate.show.sql:false}")
@@ -98,10 +98,27 @@ public class CommonHibernateConfiguration {
         properties.setProperty("hibernate.connection.useUnicode", "true");
         properties.setProperty("hibernate.cache.use_second_level_cache", String.valueOf(secondLevelCacheEnabled));
         if (secondLevelCacheEnabled) {
+            // This configuration worked with Hibernate 4/5, but not with Hibernate 6 - so commented.
+            /*
             properties.setProperty("hibernate.cache.region.factory_class",
                     "com.hazelcast.hibernate.HazelcastCacheRegionFactory");
             properties.setProperty("hibernate.cache.use_query_cache", String.valueOf(queryCacheEnabled));
             properties.setProperty("hibernate.cache.hazelcast.instance_name",
+                    HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
+             */
+
+            // JCache region factory (built into Hibernate)
+            properties.setProperty("hibernate.cache.region.factory_class",
+                    "org.hibernate.cache.jcache.JCacheRegionFactory");
+
+            // Hazelcast as the JCache provider
+            properties.setProperty("hibernate.javax.cache.provider",
+                    "com.hazelcast.cache.HazelcastCachingProvider");
+
+            properties.setProperty("hibernate.cache.use_query_cache", String.valueOf(queryCacheEnabled));
+
+            // And set custom Hazelcast instance name according to HazelcastInstanceConfig
+            properties.setProperty("hibernate.javax.cache.instance_name",
                     HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
         }
         properties.setProperty("hibernate.show_sql", String.valueOf(showSql));

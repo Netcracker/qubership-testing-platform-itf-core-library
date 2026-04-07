@@ -59,7 +59,7 @@ spring.datasource.hikari.maximum-pool-size=${SPRING_DATASOURCE_HIKARI_MAXIMUM_PO
 spring.datasource.hikari.idle-timeout=${SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT}
 spring.datasource.hikari.max-lifetime=${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME}
 
-hibernate.second.level.cache.enabled=${HIBERNATE_SECOND_LEVEL_CACHE_ENABLED}
+spring.jpa.properties.hibernate.cache.use_second_level_cache=${HIBERNATE_SECOND_LEVEL_CACHE_ENABLED}
 
 ##======================Gridfs configurations=======================
 eds.gridfs.enabled=${EDS_GRIDFS_ENABLED}
