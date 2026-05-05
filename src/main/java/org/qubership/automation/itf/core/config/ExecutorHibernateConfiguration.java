@@ -16,11 +16,12 @@
 
 package org.qubership.automation.itf.core.config;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 
 import javax.cache.CacheManager;
-import javax.cache.Caching;
 import javax.cache.spi.CachingProvider;
 import javax.sql.DataSource;
 
@@ -113,16 +114,20 @@ public class ExecutorHibernateConfiguration {
                 "mapping/EntitiesMigration.hbm.xml");
 
         if (hazelcastInstance != null && secondLevelCacheEnabled) {
-            // Register our HazelcastInstance as JCache provider
+            // 1. JCache provider configuring
             System.setProperty("hazelcast.jcache.provider.type", "member");
-            CachingProvider provider = Caching.getCachingProvider();
+            CachingProvider provider = new HazelcastCachingProvider();
 
+            // 2. Please use EXISTING HazelcastInstance by name
             Properties props = HazelcastCachingProvider.propertiesByInstanceName(hazelcastInstance.getName());
             props.setProperty("hazelcast.jcache.provider.type", "member");
 
             CacheManager manager = provider.getCacheManager(null, null, props);
 
-            jpaProperties.put("hibernate.javax.cache.cache_manager",manager);
+            // 3. Explicitly instruct Hibernate to use JCache and our CacheManager
+            jpaProperties.put("hibernate.cache.region.factory_class",
+                    "org.hibernate.cache.jcache.JCacheRegionFactory");
+            jpaProperties.put("hibernate.javax.cache.cache_manager", manager);
         }
 
         emf.setJpaProperties(Objects.requireNonNull(jpaProperties));
@@ -130,7 +135,7 @@ public class ExecutorHibernateConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * JPA Transaction Manager Bean.
      */
     @Bean(name = "transactionManager")
     @DependsOnDatabaseInitialization

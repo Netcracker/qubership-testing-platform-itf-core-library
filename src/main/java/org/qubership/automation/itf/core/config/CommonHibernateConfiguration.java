@@ -16,8 +16,6 @@
 
 package org.qubership.automation.itf.core.config;
 
-import static org.qubership.automation.itf.core.CoreConstants.HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME;
-
 import java.util.Properties;
 import java.util.TimeZone;
 
@@ -81,7 +79,7 @@ public class CommonHibernateConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * JPA Properties.
      */
     @Bean
     public Properties jpaProperties() {
@@ -98,23 +96,7 @@ public class CommonHibernateConfiguration {
         properties.setProperty("hibernate.connection.useUnicode", "true");
         properties.setProperty("hibernate.cache.use_second_level_cache", String.valueOf(secondLevelCacheEnabled));
         if (secondLevelCacheEnabled) {
-            // Instead of old 'com.hazelcast.hibernate.HazelcastCacheRegionFactory'
-            properties.setProperty("hibernate.cache.region.factory_class",
-                    "org.hibernate.cache.jcache.JCacheRegionFactory");
             properties.setProperty("hibernate.cache.use_query_cache", String.valueOf(queryCacheEnabled));
-
-            // Remove as not needed (AI advice)
-            /*
-            properties.setProperty("hibernate.cache.hazelcast.instance_name",
-                    HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
-                    */
-            // Instead of exact instance name;
-            // Commented, because it's initialized programmatically
-            // in the ExecutorHibernateConfiguration#createEntityManagerFactory
-            /*
-            properties.setProperty("hibernate.javax.cache.provider",
-                    "com.hazelcast.cache.HazelcastCachingProvider");
-                    */
         }
         properties.setProperty("hibernate.show_sql", String.valueOf(showSql));
         properties.setProperty("hibernate.format_sql", String.valueOf(formatSql));
