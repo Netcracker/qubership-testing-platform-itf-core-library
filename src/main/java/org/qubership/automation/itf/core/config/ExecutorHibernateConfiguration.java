@@ -75,13 +75,13 @@ public class ExecutorHibernateConfiguration {
     /**
      * Constructor of EntityManagerFactory in case hazelcastCacheInstance doesn't exist.
      */
-    @Bean(name = "entityManagerFactory")
+    /*@Bean(name = "entityManagerFactory")
     @ConditionalOnMissingBean(name = "hazelcastCacheInstance")
     public FactoryBean<EntityManagerFactory> getLocalContainerEntityManagerFactoryBeanWithoutHazelcast(
             DataSource dataSource,
             Properties jpaProperties) {
         return createEntityManagerFactory(dataSource, jpaProperties, null);
-    }
+    }*/
 
     private FactoryBean<EntityManagerFactory> createEntityManagerFactory(
             DataSource dataSource,
@@ -109,6 +109,7 @@ public class ExecutorHibernateConfiguration {
                 "mapping/UpgradeHistory.hbm.xml",
                 "mapping/EntitiesMigration.hbm.xml");
 
+        log.info("createEntityManagerFactory: secondLevelCacheEnabled {}", secondLevelCacheEnabled);
         if (hazelcastInstance != null && secondLevelCacheEnabled) {
             // 1. JCache provider configuring
             System.setProperty("hazelcast.jcache.provider.type", "member");

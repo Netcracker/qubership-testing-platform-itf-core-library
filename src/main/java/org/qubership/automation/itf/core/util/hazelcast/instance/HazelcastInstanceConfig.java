@@ -145,7 +145,10 @@ public class HazelcastInstanceConfig {
 
     @Bean(name = "hazelcastCacheInstance")
     public HazelcastInstance getHazelcastInstance(@Qualifier("instanceConfig") Config config) {
-        return Hazelcast.newHazelcastInstance(config);
+        HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance(config);
+        LOGGER.info("✅ HazelcastInstance bean created with name 'hazelcastCacheInstance' and instance name '{}'; "
+                + "Config: {}", hazelcastInstance.getName(), config);
+        return hazelcastInstance;
     }
 
     private CacheSimpleConfig initBigRegionCache(String cacheName,
