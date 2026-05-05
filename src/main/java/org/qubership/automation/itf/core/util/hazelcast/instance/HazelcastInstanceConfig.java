@@ -145,10 +145,17 @@ public class HazelcastInstanceConfig {
 
     @Bean(name = "hazelcastCacheInstance")
     public HazelcastInstance getHazelcastInstance(@Qualifier("instanceConfig") Config config) {
-        HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance(config);
-        LOGGER.info("✅ HazelcastInstance bean created with name 'hazelcastCacheInstance' and instance name '{}'; "
-                + "Config: {}", hazelcastInstance.getName(), config);
-        return hazelcastInstance;
+        LOGGER.info("🔵 ENTERING getHazelcastInstance method");
+        try {
+            LOGGER.info("🔵 About to create HazelcastInstance with config: {}", config);
+            HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance(config);
+            LOGGER.info("✅ HazelcastInstance bean created with name 'hazelcastCacheInstance' and instance name '{}'",
+                    hazelcastInstance.getName());
+            return hazelcastInstance;
+        } catch (Exception e) {
+            LOGGER.error("❌ FAILED to create HazelcastInstance", e);
+            throw e; // Re-throw the exception, in order Spring to see it
+        }
     }
 
     private CacheSimpleConfig initBigRegionCache(String cacheName,
