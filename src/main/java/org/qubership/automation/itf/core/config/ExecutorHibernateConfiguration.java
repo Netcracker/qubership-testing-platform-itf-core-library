@@ -16,8 +16,7 @@
 
 package org.qubership.automation.itf.core.config;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URI;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -44,7 +43,9 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.cache.HazelcastCachingProvider;
 import jakarta.persistence.EntityManagerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 @Import(CommonHibernateConfiguration.class)
 public class ExecutorHibernateConfiguration {
@@ -122,15 +123,19 @@ public class ExecutorHibernateConfiguration {
             Properties props = HazelcastCachingProvider.propertiesByInstanceName(hazelcastInstance.getName());
             props.setProperty("hazelcast.jcache.provider.type", "member");
 
-            CacheManager manager = provider.getCacheManager(null, null, props);
+            CacheManager manager = provider.getCacheManager(URI.create("hibernate-l2-cache"), null, props);
 
             // 3. Explicitly instruct Hibernate to use JCache and our CacheManager
             jpaProperties.put("hibernate.cache.region.factory_class",
                     "org.hibernate.cache.jcache.JCacheRegionFactory");
-            jpaProperties.put("hibernate.javax.cache.cache_manager", manager);
+            jpaProperties.put("hibernate.javax.cache.uri", "hibernate-l2-cache");
+            //jpaProperties.put("hibernate.javax.cache.cache_manager", manager);
+
+            log.info("createEntityManagerFactory: hazelcastInstance '{}' is used", hazelcastInstance.getName());
         }
 
         emf.setJpaProperties(Objects.requireNonNull(jpaProperties));
+        log.info("createEntityManagerFactory: jpaProperties: {}", jpaProperties);
         return emf;
     }
 
