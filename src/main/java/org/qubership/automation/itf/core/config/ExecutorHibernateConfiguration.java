@@ -53,13 +53,6 @@ public class ExecutorHibernateConfiguration {
     @Value("${hibernate.second.level.cache.enabled:false}")
     private boolean secondLevelCacheEnabled;
 
-    private HazelcastInstance hazelcastInstance;
-
-    @Autowired(required = false)
-    public void setHazelcastInstance(@Qualifier("hazelcastCacheInstance") HazelcastInstance hazelcastInstance) {
-        this.hazelcastInstance = hazelcastInstance;
-    }
-
     @Bean
     public TxExecutor transactionExecutor(JpaTransactionManager transactionManager) {
         return new TxExecutor(transactionManager);
@@ -73,7 +66,9 @@ public class ExecutorHibernateConfiguration {
     @ConditionalOnBean(name = "hazelcastCacheInstance")
     @DependsOn("hazelcastCacheInstance")
     public FactoryBean<EntityManagerFactory> getLocalContainerEntityManagerFactoryBean(
-            DataSource dataSource, Properties jpaProperties) {
+            DataSource dataSource,
+            Properties jpaProperties,
+            @Qualifier("hazelcastCacheInstance") HazelcastInstance hazelcastInstance) {
         return createEntityManagerFactory(dataSource, jpaProperties, hazelcastInstance);
     }
 
@@ -132,6 +127,8 @@ public class ExecutorHibernateConfiguration {
             //jpaProperties.put("hibernate.javax.cache.cache_manager", manager);
 
             log.info("createEntityManagerFactory: hazelcastInstance '{}' is used", hazelcastInstance.getName());
+        } else {
+            log.info("createEntityManagerFactory: hazelcastInstance is null or cache disabled");
         }
 
         emf.setJpaProperties(Objects.requireNonNull(jpaProperties));
