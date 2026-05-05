@@ -19,26 +19,37 @@ package org.qubership.automation.itf.core.config;
 import java.util.Objects;
 import java.util.Properties;
 
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.spi.CachingProvider;
 import javax.sql.DataSource;
 
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.cache.HazelcastCachingProvider;
 import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 @Import(CommonHibernateConfiguration.class)
 public class ExecutorHibernateConfiguration {
+
+    @Value("${hibernate.second.level.cache.enabled:false}")
+    private boolean secondLevelCacheEnabled;
 
     private HazelcastInstance hazelcastInstance;
 
@@ -53,11 +64,32 @@ public class ExecutorHibernateConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Constructor of EntityManagerFactory in case hazelcastCacheInstance exists.
+     * Ensures that hazelcastCacheInstance is initialized earlier.
      */
     @Bean(name = "entityManagerFactory")
+    @ConditionalOnBean(name = "hazelcastCacheInstance")
+    @DependsOn("hazelcastCacheInstance")
     public FactoryBean<EntityManagerFactory> getLocalContainerEntityManagerFactoryBean(
             DataSource dataSource, Properties jpaProperties) {
+        return createEntityManagerFactory(dataSource, jpaProperties, hazelcastInstance);
+    }
+
+    /**
+     * Constructor of EntityManagerFactory in case hazelcastCacheInstance doesn't exist.
+     */
+    @Bean(name = "entityManagerFactory")
+    @ConditionalOnMissingBean(name = "hazelcastCacheInstance")
+    public FactoryBean<EntityManagerFactory> getLocalContainerEntityManagerFactoryBeanWithoutHazelcast(
+            DataSource dataSource,
+            Properties jpaProperties) {
+        return createEntityManagerFactory(dataSource, jpaProperties, null);
+    }
+
+    private FactoryBean<EntityManagerFactory> createEntityManagerFactory(
+            DataSource dataSource,
+            Properties jpaProperties,
+            HazelcastInstance hazelcastInstance) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setPackagesToScan("org.qubership.automation.itf.core.model.jpa");
         emf.setDataSource(dataSource);
@@ -79,6 +111,20 @@ public class ExecutorHibernateConfiguration {
                 "mapping/Counter.hbm.xml",
                 "mapping/UpgradeHistory.hbm.xml",
                 "mapping/EntitiesMigration.hbm.xml");
+
+        if (hazelcastInstance != null && secondLevelCacheEnabled) {
+            // Register our HazelcastInstance as JCache provider
+            System.setProperty("hazelcast.jcache.provider.type", "member");
+            CachingProvider provider = Caching.getCachingProvider();
+
+            Properties props = HazelcastCachingProvider.propertiesByInstanceName(hazelcastInstance.getName());
+            props.setProperty("hazelcast.jcache.provider.type", "member");
+
+            CacheManager manager = provider.getCacheManager(null, null, props);
+
+            jpaProperties.put("hibernate.javax.cache.cache_manager",manager);
+        }
+
         emf.setJpaProperties(Objects.requireNonNull(jpaProperties));
         return emf;
     }

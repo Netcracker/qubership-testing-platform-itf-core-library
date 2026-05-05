@@ -19,7 +19,7 @@
 
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>5.0.5-SNAPSHOT</version>
+    <version>5.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -27,10 +27,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <spring.boot.version>3.5.11</spring.boot.version>
-        <spring.cloud.version>2025.0.1</spring.cloud.version>
+        <spring.boot.version>3.5.12</spring.boot.version>
+        <spring.cloud.version>2025.0.2</spring.cloud.version>
         <net.javacrumbs.shedlock.version>4.14.0</net.javacrumbs.shedlock.version>
-        <hazelcast.version>4.2.6</hazelcast.version>
+        <hazelcast.version>5.2.5</hazelcast.version>
         <querydsl.version>5.1.0</querydsl.version>
         <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
         <io.undertow.undertow-core.version>2.3.21.Final</io.undertow.undertow-core.version>
@@ -383,6 +383,18 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
+            <version>6.5.3.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-jcache</artifactId>
+            <version>6.5.3.Final</version>
+        </dependency>
+        <!-- JCache API -->
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <!--Hibernate-end-->
         <dependency>
@@ -599,7 +611,7 @@
         </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-all</artifactId>
+            <artifactId>hazelcast</artifactId>
             <version>${hazelcast.version}</version>
         </dependency>
         <dependency>
@@ -637,12 +649,6 @@
             <groupId>org.codehaus.jettison</groupId>
             <artifactId>jettison</artifactId>
             <version>1.5.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast</artifactId>
-            <version>5.2.5</version>
-            <classifier>tests</classifier>
         </dependency>
         <!--atp-services end-->
 
