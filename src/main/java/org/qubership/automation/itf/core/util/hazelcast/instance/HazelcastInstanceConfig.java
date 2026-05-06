@@ -41,7 +41,7 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 
 @Configuration
-@ConditionalOnProperty(name = "hibernate.second.level.cache.enabled", havingValue = "true", matchIfMissing = true)
+//@ConditionalOnProperty(name = "hibernate.second.level.cache.enabled", havingValue = "true", matchIfMissing = true)
 public class HazelcastInstanceConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastInstanceConfig.class);
     static {
@@ -54,6 +54,9 @@ public class HazelcastInstanceConfig {
     @Value("${hazelcast.cache.enabled:false}")
     private boolean hazelcastCacheEnabled;
 
+    @Value("${hibernate.second.level.cache.enabled:NOT_SET}")
+    private String secondLevelCacheEnabledString;
+
     /**
      * Create Config object, populate its properties and return the object.
      *
@@ -61,7 +64,7 @@ public class HazelcastInstanceConfig {
      */
     @Bean(name = "instanceConfig")
     public Config getConfig() {
-        LOGGER.info("🔵 ENTERING getConfig method");
+        LOGGER.info("🔵 ENTERING getConfig method, prop='{}'", secondLevelCacheEnabledString);
         Config config = new Config();
         config.setInstanceName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
         if (hazelcastCacheEnabled) {
