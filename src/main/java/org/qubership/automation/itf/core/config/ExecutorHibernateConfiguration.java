@@ -26,7 +26,6 @@ import javax.sql.DataSource;
 
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -63,20 +62,20 @@ public class ExecutorHibernateConfiguration {
      * Ensures that hazelcastCacheInstance is initialized earlier.
      */
     @Bean(name = "entityManagerFactory")
-    @ConditionalOnBean(name = "hazelcastCacheInstance")
-    @DependsOn("hazelcastCacheInstance")
+    @ConditionalOnBean(name = "hazelcastClient") // Old: hazelcastCacheInstance
+    @DependsOn("hazelcastClient")
     public FactoryBean<EntityManagerFactory> getLocalContainerEntityManagerFactoryBean(
             DataSource dataSource,
             Properties jpaProperties,
-            @Qualifier("hazelcastCacheInstance") HazelcastInstance hazelcastCacheInstance) {
-        return createEntityManagerFactory(dataSource, jpaProperties, hazelcastCacheInstance);
+            @Qualifier("hazelcastClient") HazelcastInstance hazelcastInstance) {
+        return createEntityManagerFactory(dataSource, jpaProperties, hazelcastInstance);
     }
 
     /**
      * Constructor of EntityManagerFactory in case hazelcastCacheInstance doesn't exist.
      */
     @Bean(name = "entityManagerFactory")
-    @ConditionalOnMissingBean(name = "hazelcastCacheInstance")
+    @ConditionalOnMissingBean(name = "hazelcastClient")
     public FactoryBean<EntityManagerFactory> getLocalContainerEntityManagerFactoryBeanWithoutHazelcast(
             DataSource dataSource,
             Properties jpaProperties) {
@@ -86,7 +85,7 @@ public class ExecutorHibernateConfiguration {
     private FactoryBean<EntityManagerFactory> createEntityManagerFactory(
             DataSource dataSource,
             Properties jpaProperties,
-            HazelcastInstance hazelcastCacheInstance) {
+            HazelcastInstance hazelcastInstance) {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setPackagesToScan("org.qubership.automation.itf.core.model.jpa");
         emf.setDataSource(dataSource);
@@ -110,13 +109,13 @@ public class ExecutorHibernateConfiguration {
                 "mapping/EntitiesMigration.hbm.xml");
 
         log.info("createEntityManagerFactory: secondLevelCacheEnabled {}", secondLevelCacheEnabled);
-        if (hazelcastCacheInstance != null && secondLevelCacheEnabled) {
+        if (hazelcastInstance != null && secondLevelCacheEnabled) {
             // 1. JCache provider configuring
             System.setProperty("hazelcast.jcache.provider.type", "member");
             CachingProvider provider = new HazelcastCachingProvider();
 
             // 2. Please use EXISTING HazelcastInstance by name
-            Properties props = HazelcastCachingProvider.propertiesByInstanceName(hazelcastCacheInstance.getName());
+            Properties props = HazelcastCachingProvider.propertiesByInstanceName(hazelcastInstance.getName());
             props.setProperty("hazelcast.jcache.provider.type", "member");
 
             CacheManager manager = provider.getCacheManager(URI.create("hibernate-l2-cache"), null, props);
@@ -127,7 +126,7 @@ public class ExecutorHibernateConfiguration {
             jpaProperties.put("hibernate.javax.cache.uri", "hibernate-l2-cache");
             //jpaProperties.put("hibernate.javax.cache.cache_manager", manager);
 
-            log.info("createEntityManagerFactory: hazelcastInstance '{}' is used", hazelcastCacheInstance.getName());
+            log.info("createEntityManagerFactory: hazelcastInstance '{}' is used", hazelcastInstance.getName());
         } else {
             log.info("createEntityManagerFactory: hazelcastInstance is null or cache disabled");
         }

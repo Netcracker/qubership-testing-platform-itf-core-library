@@ -41,7 +41,7 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 
 @Configuration
-//@ConditionalOnProperty(name = "hibernate.second.level.cache.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "hibernate.second.level.cache.enabled", havingValue = "true")
 public class HazelcastInstanceConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastInstanceConfig.class);
     static {
