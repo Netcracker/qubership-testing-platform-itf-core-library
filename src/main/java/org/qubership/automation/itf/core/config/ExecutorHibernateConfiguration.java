@@ -16,7 +16,6 @@
 
 package org.qubership.automation.itf.core.config;
 
-import java.net.URI;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -25,6 +24,7 @@ import javax.cache.spi.CachingProvider;
 import javax.sql.DataSource;
 
 import org.qubership.automation.itf.core.util.db.TxExecutor;
+import org.qubership.automation.itf.core.util.hazelcast.instance.HazelcastInstanceConfig;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,11 +110,14 @@ public class ExecutorHibernateConfiguration {
 
         log.info("createEntityManagerFactory: secondLevelCacheEnabled {}", secondLevelCacheEnabled);
         if (hazelcastInstance != null && secondLevelCacheEnabled) {
+            // 0. Add big caches to config...
+            HazelcastInstanceConfig.addBigCacheConfigs(hazelcastInstance.getConfig());
+
             // 1. JCache provider configuring
             System.setProperty("hazelcast.jcache.provider.type", "member");
             CachingProvider provider = new HazelcastCachingProvider();
 
-            // 2. Please use EXISTING HazelcastInstance by name
+            // 2. Use EXISTING HazelcastInstance by name
             Properties props = HazelcastCachingProvider.propertiesByInstanceName(hazelcastInstance.getName());
             props.setProperty("hazelcast.jcache.provider.type", "member");
 

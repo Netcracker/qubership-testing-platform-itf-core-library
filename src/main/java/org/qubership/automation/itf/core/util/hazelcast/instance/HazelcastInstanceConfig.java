@@ -44,18 +44,12 @@ import com.hazelcast.core.HazelcastInstance;
 @ConditionalOnProperty(name = "hibernate.second.level.cache.enabled", havingValue = "true")
 public class HazelcastInstanceConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastInstanceConfig.class);
-    static {
-        LOGGER.info("=== HAZELCAST INSTANCE CONFIG CLASS LOADED ===");
-    }
 
     @Value("${eureka.client.serviceUrl.defaultZone}")
     private String eurekaUrl;
 
     @Value("${hazelcast.cache.enabled:false}")
     private boolean hazelcastCacheEnabled;
-
-    @Value("${hibernate.second.level.cache.enabled:NOT_SET}")
-    private String secondLevelCacheEnabledString;
 
     /**
      * Create Config object, populate its properties and return the object.
@@ -64,7 +58,7 @@ public class HazelcastInstanceConfig {
      */
     @Bean(name = "instanceConfig")
     public Config getConfig() {
-        LOGGER.info("🔵 ENTERING getConfig method, prop='{}'", secondLevelCacheEnabledString);
+        LOGGER.info("🔵 ENTERING getConfig method");
         Config config = new Config();
         config.setInstanceName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
         if (hazelcastCacheEnabled) {
@@ -86,6 +80,10 @@ public class HazelcastInstanceConfig {
             config.setClusterName("local-itf-hazelcast-cluster");
         }
 
+        return addBigCacheConfigs(config);
+    }
+
+    public static Config addBigCacheConfigs(Config config) {
         config.addCacheConfig(
                 initBigRegionCache("projectsCache", 300, 12, TimeUnit.HOURS));
 
@@ -125,16 +123,16 @@ public class HazelcastInstanceConfig {
                         70000, 120, TimeUnit.MINUTES));
 
         config.addCacheConfig(initBigRegionCache("systemParsingRulesCollectionCache",
-                        7000, 60, TimeUnit.MINUTES));
+                7000, 60, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("operationParsingRulesCollectionCache",
-                        70000, 60, TimeUnit.MINUTES));
+                70000, 60, TimeUnit.MINUTES));
 
         config.addCacheConfig(initBigRegionCache("activeOperationEventTriggersCache",
-                        30000, 120, TimeUnit.MINUTES));
+                30000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("operationByDefinitionKeyCache",
-                        20000, 120, TimeUnit.MINUTES));
+                20000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("operationSituationsCollectionCache",
-                        30000, 120, TimeUnit.MINUTES));
+                30000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("systemTransportsCollectionCache",
                 4000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("simpleSystemListByProjectCache",
@@ -146,7 +144,6 @@ public class HazelcastInstanceConfig {
             LOGGER.info("CacheConfig: {}: \n   EvictionConfig {}\n   ExpiryPolicyFactoryConfig {}", cfg.getKey(),
                     cfg.getValue().getEvictionConfig(), cfg.getValue().getExpiryPolicyFactoryConfig());
         }
-
         return config;
     }
 
@@ -165,10 +162,10 @@ public class HazelcastInstanceConfig {
         }
     }
 
-    private CacheSimpleConfig initBigRegionCache(String cacheName,
-                                                 int cacheSize,
-                                                 int durationAmount,
-                                                 TimeUnit durationTimeUnit) {
+    private static CacheSimpleConfig initBigRegionCache(String cacheName,
+                                                        int cacheSize,
+                                                        int durationAmount,
+                                                        TimeUnit durationTimeUnit) {
         EvictionConfig evictionConfig = new EvictionConfig();
         evictionConfig.setEvictionPolicy(EvictionPolicy.LRU);
         evictionConfig.setMaxSizePolicy(MaxSizePolicy.ENTRY_COUNT);
