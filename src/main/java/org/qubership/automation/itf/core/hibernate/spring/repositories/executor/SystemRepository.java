@@ -40,10 +40,12 @@ import jakarta.persistence.QueryHint;
 @Repository
 public interface SystemRepository extends StorableRepository<System> {
 
+    // TODO: Check may be better to convert it to native query
     @Query(value = "select oper from Operation oper "
-            + "where parent_id = :parentId and definition_key = :key "
+            + "where oper.parent.id = :parentId and oper.operationDefinitionKey = :key "
     )
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "operationByDefinitionKeyCache")})
     Operation findFirstByDefineOperation(@Param("parentId") BigInteger parentId, @Param("key") String key);
 
@@ -84,8 +86,7 @@ public interface SystemRepository extends StorableRepository<System> {
     Collection<System> findByPieceOfNameAndProject(@Param("name") String name,
                                                    @Param("projectId") BigInteger projectId);
 
-    @Query(value = "select system from System system "
-            + "where system.projectId = :projectId")
+    @Query(value = "select system from System system where system.projectId = :projectId")
     Collection<System> findByProject(@Param("projectId") BigInteger projectId);
 
     @NativeQuery("select distinct receiver_id "
@@ -117,7 +118,8 @@ public interface SystemRepository extends StorableRepository<System> {
     @Query(value = "select new org.qubership.automation.itf.core.model.IdNamePair(system.id, system.name) "
             + "from System as system "
             + "where system.projectId = :projectId")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "simpleSystemListByProjectCache")})
     List<IdNamePair> getSimpleListByProject(@Param("projectId") BigInteger projectId);
 

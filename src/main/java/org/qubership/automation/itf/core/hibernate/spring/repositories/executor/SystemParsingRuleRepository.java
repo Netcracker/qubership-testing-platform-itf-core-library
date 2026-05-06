@@ -54,9 +54,9 @@ public interface SystemParsingRuleRepository extends ParsingRuleRepository<Syste
             + "where system.name = :name")
     List<SystemParsingRule> findByParentName(@Param("name") String name);
 
-    @Query(value = "select parsingRule from SystemParsingRule as parsingRule "
-            + "where id = :id")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @Query(value = "select parsingRule from SystemParsingRule as parsingRule where id = :id")
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "systemParsingRulesCache")})
     SystemParsingRule findByIdOnly(@Param("id") BigInteger id);
 
