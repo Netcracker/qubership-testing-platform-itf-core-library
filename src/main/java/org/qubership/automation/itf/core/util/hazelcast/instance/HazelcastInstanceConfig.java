@@ -44,6 +44,9 @@ import com.hazelcast.core.HazelcastInstance;
 @ConditionalOnProperty(name = "hibernate.second.level.cache.enabled", havingValue = "true")
 public class HazelcastInstanceConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(HazelcastInstanceConfig.class);
+    static {
+        LOGGER.info("=== HAZELCAST INSTANCE CONFIG CLASS LOADED ===");
+    }
 
     @Value("${eureka.client.serviceUrl.defaultZone}")
     private String eurekaUrl;
