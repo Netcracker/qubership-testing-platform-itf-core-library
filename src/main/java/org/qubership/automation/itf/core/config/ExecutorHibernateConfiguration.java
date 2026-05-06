@@ -118,13 +118,12 @@ public class ExecutorHibernateConfiguration {
             Properties props = HazelcastCachingProvider.propertiesByInstanceName(hazelcastInstance.getName());
             props.setProperty("hazelcast.jcache.provider.type", "member");
 
-            CacheManager manager = provider.getCacheManager(URI.create("hibernate-l2-cache"), null, props);
+            CacheManager manager = provider.getCacheManager(null, null, props);
 
             // 3. Explicitly instruct Hibernate to use JCache and our CacheManager
             jpaProperties.put("hibernate.cache.region.factory_class",
                     "org.hibernate.cache.jcache.JCacheRegionFactory");
-            jpaProperties.put("hibernate.javax.cache.uri", "hibernate-l2-cache");
-            //jpaProperties.put("hibernate.javax.cache.cache_manager", manager);
+            jpaProperties.put("hibernate.javax.cache.cache_manager", manager);
 
             log.info("createEntityManagerFactory: hazelcastInstance '{}' is used", hazelcastInstance.getName());
         } else {
