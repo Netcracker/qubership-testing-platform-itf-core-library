@@ -8,6 +8,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,7 @@ import org.qubership.automation.itf.core.model.jpa.system.System;
 import org.qubership.automation.itf.core.util.constants.Match;
 import org.qubership.automation.itf.core.util.converter.IdConverter;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
+import org.qubership.automation.itf.core.util.helper.PropertyHelper;
 import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
 import org.springframework.transaction.TransactionDefinition;
 
@@ -47,6 +50,12 @@ class SystemParsingRuleObjectManagerTest {
     private SystemParsingRuleRepository repository;
 
     @Mock
+    private SystemParsingRule rule1;
+
+    @Mock
+    private SystemParsingRule rule2;
+
+    @Mock
     private System parentSystem;
 
     @Mock
@@ -57,12 +66,14 @@ class SystemParsingRuleObjectManagerTest {
 
     private MockedStatic<TxExecutor> txExecutorMock;
     private MockedStatic<IdConverter> idConverterMock;
+    private MockedStatic<PropertyHelper> propertyHelperMock;
     private TransactionDefinition mockTxDef;
 
     @BeforeEach
     void setUp() {
         txExecutorMock = mockStatic(TxExecutor.class);
         idConverterMock = mockStatic(IdConverter.class);
+        propertyHelperMock = mockStatic(PropertyHelper.class);
         mockTxDef = mock(TransactionDefinition.class);
 
         TestMockHelper.setupCommonMocks(txExecutorMock, idConverterMock, mockTxDef);
@@ -72,6 +83,7 @@ class SystemParsingRuleObjectManagerTest {
     void tearDown() {
         txExecutorMock.close();
         idConverterMock.close();
+        propertyHelperMock.close();
     }
 
     // ==================== create (with parent only) TESTS ====================
@@ -159,20 +171,75 @@ class SystemParsingRuleObjectManagerTest {
     // ==================== getByProperties TESTS ====================
 
     @Test
-    void getByProperties_ShouldReturnMatchingRules() {
+    void getByProperties_ShouldReturnOnlyRulesThatMeetAllProperties() {
         // given
-        List<SystemParsingRule> allRules = List.of(parsingRule);
+        List<SystemParsingRule> allRules = List.of(rule1, rule2);
         when(repository.findByProjectId(PROJECT_ID)).thenReturn(allRules);
 
         @SuppressWarnings("unchecked")
         Triple<String, Match, ?>[] properties = new Triple[0];
 
+        when(PropertyHelper.meetsAllProperties(rule1, properties)).thenReturn(true);
+        when(PropertyHelper.meetsAllProperties(rule2, properties)).thenReturn(false);
+
         // when
-        List<SystemParsingRule> result = (List<SystemParsingRule>) manager.getByProperties(PROJECT_ID, properties);
+        Collection<SystemParsingRule> result = manager.getByProperties(PROJECT_ID, properties);
+
+        // then
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertTrue(result.contains(rule1));
+        Assertions.assertFalse(result.contains(rule2));
+    }
+
+    @Test
+    void getByProperties_WhenNoRulesMatch_ShouldReturnEmptyCollection() {
+        // given
+        List<SystemParsingRule> allRules = List.of(rule1, rule2);
+        when(repository.findByProjectId(PROJECT_ID)).thenReturn(allRules);
+
+        @SuppressWarnings("unchecked")
+        Triple<String, Match, ?>[] properties = new Triple[0];
+
+        when(PropertyHelper.meetsAllProperties(rule1, properties)).thenReturn(false);
+        when(PropertyHelper.meetsAllProperties(rule2, properties)).thenReturn(false);
+
+        // when
+        Collection<SystemParsingRule> result = manager.getByProperties(PROJECT_ID, properties);
 
         // then
         Assertions.assertNotNull(result);
-        verify(repository).findByProjectId(PROJECT_ID);
+        Assertions.assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void getByProperties_WhenNoRulesInProject_ShouldReturnEmptyCollection() {
+        // given
+        when(repository.findByProjectId(PROJECT_ID)).thenReturn(new ArrayList<>());
+
+        @SuppressWarnings("unchecked")
+        Triple<String, Match, ?>[] properties = new Triple[0];
+
+        // when
+        Collection<SystemParsingRule> result = manager.getByProperties(PROJECT_ID, properties);
+
+        // then
+        Assertions.assertNotNull(result);
+        Assertions.assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void getByProperties_WithNullProperties_ShouldStillFilter() {
+        // given
+        List<SystemParsingRule> allRules = List.of(rule1);
+        when(repository.findByProjectId(PROJECT_ID)).thenReturn(allRules);
+
+        when(PropertyHelper.meetsAllProperties(rule1, (Triple<String, Match, ?>[]) null)).thenReturn(true);
+
+        // when
+        Collection<SystemParsingRule> result = manager.getByProperties(PROJECT_ID, (Triple<String, Match, ?>[]) null);
+
+        // then
+        Assertions.assertEquals(1, result.size());
     }
 
     // ==================== getByIdOnly TESTS ====================
