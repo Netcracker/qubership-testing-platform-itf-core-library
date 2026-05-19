@@ -93,6 +93,8 @@ public class StepObjectManager extends AbstractObjectManager<Step, Step> {
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only Step objects are here")
     @Override
     public void afterDelete(Storable object) {
+        // The below block is executed for CallChain steps only.
+        // It doesn't mean that deleted steps should remain under Situation parent... They are removed another way.
         if (object.getParent() instanceof CallChain) {
             synchronized (object.getParent()) {
                 ((CallChain) object.getParent()).getSteps().remove((Step) object);

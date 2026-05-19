@@ -72,7 +72,7 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
     public StubProject create() {
         StubProject project = super.create();
         prepareRootFolders(project);
-        createDatasetFolder((BigInteger) project.getID());
+        createDatasetFolder(project.getID());
         return stubProjectRepository.save(project);
     }
 
@@ -95,7 +95,7 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
                 switch (action) {
                     case "SELECT":
                         List<String> objs = stubProjectRepository.getData(key, projectId);
-                        return !objs.isEmpty() ? objs.get(0) : "";
+                        return !objs.isEmpty() ? objs.getFirst() : "";
                     case "INSERT":
                         stubProjectRepository.setData(key, value, projectId);
                         break;
@@ -139,8 +139,8 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
             return null;
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("projectId", toBigInt(results.get(0)[0]));
-        map.put("projectUuid", UUID.fromString(results.get(0)[1]));
+        map.put("projectId", toBigInt(results.getFirst()[0]));
+        map.put("projectUuid", UUID.fromString(results.getFirst()[1]));
         return map;
     }
 
@@ -217,6 +217,9 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
     }
 
     private void createDatasetFolder(BigInteger projectId) {
+        if (ApplicationConfig.env == null) {
+            return; // We are here in case itf-core Unit-tests only.
+        }
         Path newDataSetFolder = Path.of(Objects.requireNonNull(ApplicationConfig.env.getProperty(WORKING_DIRECTORY)),
                 "dataset").resolve(String.valueOf(projectId));
         if (!newDataSetFolder.toFile().mkdirs()) {

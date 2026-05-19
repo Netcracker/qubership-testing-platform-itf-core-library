@@ -71,8 +71,10 @@ public class CallChainObjectManager extends AbstractObjectManager<CallChain, Cal
      */
     @Override
     public Collection<UsageInfo> findUsages(Storable storable) {
-        Collection<UsageInfo> result = Lists.newArrayListWithExpectedSize(50);
-        addToUsages(result, "callChains", getCallChains((BigInteger) storable.getID()));
+        Collection<UsageInfo> result = new ArrayList<>();
+        if (storable instanceof CallChain) {
+            addToUsages(result, "callChains", getCallChains(storable.getID()));
+        }
         return result;
     }
 

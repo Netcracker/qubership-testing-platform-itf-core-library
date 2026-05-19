@@ -152,7 +152,7 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
      */
     public OutboundTransportConfiguration getOutbound(Server server, System system, String type) {
         try {
-            return outboundTransportRepository.findOne((BigInteger) system.getID(), (BigInteger) server.getID(), type);
+            return outboundTransportRepository.findOne(system.getID(), server.getID(), type);
         } catch (Exception e) {
             LOGGER.error("Can't get outbound configuration for Server: {}, System {} and type '{}'", server, system,
                     type, e);
@@ -164,7 +164,7 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
      * Find outbound transport configurations under System + Server pair.
      */
     public Iterable<OutboundTransportConfiguration> getOutbounds(Server server, System system) {
-        return outboundTransportRepository.findAll((BigInteger) system.getID(), (BigInteger) server.getID());
+        return outboundTransportRepository.findAll(system.getID(), server.getID());
     }
 
     /**
@@ -172,25 +172,27 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
      */
     public InboundTransportConfiguration getInbound(Server server,
                                                     TransportConfiguration configuration) {
-        return inboundTransportRepository.findOne((BigInteger) server.getID(), (BigInteger) configuration.getID());
+        return inboundTransportRepository.findOne(server.getID(), configuration.getID());
     }
 
     /**
      * Find inbound transport configurations under System + Server pair.
      */
     public Iterable<InboundTransportConfiguration> getInbounds(Server server, System system) {
-        return inboundTransportRepository.findAll((BigInteger) server.getID(), (BigInteger) system.getID());
+        return inboundTransportRepository.findAll(server.getID(), system.getID());
     }
 
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only Server objects are here")
     @Override
     public Collection<UsageInfo> findUsages(Storable storable) {
         Collection<UsageInfo> result = Lists.newArrayListWithExpectedSize(20);
-        Iterable<Environment> environments =
-                environmentRepository.findAll(QEnvironment.environment.outbound.containsValue((Server) storable));
-        addToUsages(result, "outbound", environments);
-        environments = environmentRepository.findAll(QEnvironment.environment.inbound.containsValue((Server) storable));
-        addToUsages(result, "inbound", environments);
+        if (storable instanceof Server server) {
+            Iterable<Environment> environments =
+                    environmentRepository.findAll(QEnvironment.environment.outbound.containsValue(server));
+            addToUsages(result, "outbound", environments);
+            environments = environmentRepository.findAll(QEnvironment.environment.inbound.containsValue(server));
+            addToUsages(result, "inbound", environments);
+        }
         return result;
     }
 

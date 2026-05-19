@@ -82,6 +82,9 @@ public class TransportConfiguration extends EciConfiguration implements Intercep
      */
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only System objects are here")
     public TransportConfiguration(Storable parent, String name, String type) {
+        if (parent == null) {
+            throw new IllegalArgumentException("Parent should not be null");
+        }
         setParent((System) parent);
         ((System) parent).getTransports().add(this);
         setName(name);
@@ -93,6 +96,9 @@ public class TransportConfiguration extends EciConfiguration implements Intercep
      */
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only System objects are here")
     public TransportConfiguration(Storable parent, Map parameters) {
+        if (parent == null) {
+            throw new IllegalArgumentException("Parent should not be null");
+        }
         setParent((System) parent);
         ((System) parent).getTransports().add(this);
         if (parameters != null) {
