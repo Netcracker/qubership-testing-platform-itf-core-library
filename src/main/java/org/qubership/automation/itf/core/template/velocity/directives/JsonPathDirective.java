@@ -47,14 +47,13 @@ public class JsonPathDirective extends Directive {
         int count = node.jjtGetNumChildren();
         if (count < 2) {
             throw new IllegalArgumentException("Directive '#" + getName()
-                    + "' arguments is missing. 1st argument is $json, second+ is JsonPath's.");
+                    + "' arguments are missed. The 1st argument is $json, all others are JsonPath's.");
         }
         String json = String.valueOf(node.jjtGetChild(0).value(internalContextAdapter));
         DocumentContext documentContext = JsonPath.parse(json);
         for (int index = 1; index < count; index++) {
-            String result = documentContext.read(
-                    node.jjtGetChild(index).value(internalContextAdapter).toString()
-            ).toString();
+            String result = documentContext.read(node.jjtGetChild(index).value(internalContextAdapter).toString())
+                    .toString();
             writer.append(result);
         }
         return true;
