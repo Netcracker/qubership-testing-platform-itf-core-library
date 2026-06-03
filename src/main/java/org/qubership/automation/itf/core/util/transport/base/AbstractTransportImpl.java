@@ -50,7 +50,7 @@ public abstract class AbstractTransportImpl implements Transport {
     }
 
     @Override
-    public Message sendReceiveSync(Message messageToSend, BigInteger projectId) {
+    public Message sendReceiveSync(Message messageToSend, BigInteger projectId) throws Exception {
         throw new UnsupportedOperationException(
                 "This method is not supported in %s transport".formatted(getClass().getSimpleName())
         );

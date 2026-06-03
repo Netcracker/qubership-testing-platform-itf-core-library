@@ -79,9 +79,9 @@ public interface OperationTemplateRepository extends TemplateRepository<Operatio
     @NativeQuery("select t.id, t.name from mb_templates t where t.project_id = :projectId")
     List<Object[]> findIdAndNameByProjectId(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select t from OperationTemplate  as t "
-            + "where id = :id")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
-    @QueryHint(name = HINT_CACHE_REGION, value = "operationTemplateCache")})
+    @Query(value = "select t from OperationTemplate  as t where id = :id")
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
+            @QueryHint(name = HINT_CACHE_REGION, value = "operationTemplateCache")})
     OperationTemplate findByIdOnly(@Param("id") BigInteger id);
 }

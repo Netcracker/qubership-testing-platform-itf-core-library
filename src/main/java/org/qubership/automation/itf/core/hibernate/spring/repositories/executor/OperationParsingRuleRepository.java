@@ -54,9 +54,9 @@ public interface OperationParsingRuleRepository extends ParsingRuleRepository<Op
             + "where operation.name = :name")
     List<OperationParsingRule> findByParentName(@Param("name") String name);
 
-    @Query(value = "select parsingRule from OperationParsingRule as parsingRule "
-            + "where id = :id")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @Query(value = "select parsingRule from OperationParsingRule as parsingRule where id = :id")
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "operationParsingRulesCache")})
     OperationParsingRule findByIdOnly(@Param("id") BigInteger id);
 }

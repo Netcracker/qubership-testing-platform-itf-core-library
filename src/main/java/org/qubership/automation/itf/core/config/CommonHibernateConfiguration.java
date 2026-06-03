@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@
  */
 
 package org.qubership.automation.itf.core.config;
-
-import static org.qubership.automation.itf.core.CoreConstants.HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME;
 
 import java.util.Properties;
 import java.util.TimeZone;
@@ -81,7 +79,7 @@ public class CommonHibernateConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * JPA Properties.
      */
     @Bean
     public Properties jpaProperties() {
@@ -98,11 +96,7 @@ public class CommonHibernateConfiguration {
         properties.setProperty("hibernate.connection.useUnicode", "true");
         properties.setProperty("hibernate.cache.use_second_level_cache", String.valueOf(secondLevelCacheEnabled));
         if (secondLevelCacheEnabled) {
-            properties.setProperty("hibernate.cache.region.factory_class",
-                    "com.hazelcast.hibernate.HazelcastCacheRegionFactory");
             properties.setProperty("hibernate.cache.use_query_cache", String.valueOf(queryCacheEnabled));
-            properties.setProperty("hibernate.cache.hazelcast.instance_name",
-                    HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
         }
         properties.setProperty("hibernate.show_sql", String.valueOf(showSql));
         properties.setProperty("hibernate.format_sql", String.valueOf(formatSql));

@@ -72,9 +72,9 @@ public interface SituationEventTriggerRepository extends EventTriggerRepository<
             where op.parent_id = :systemId""")
     List<Object[]> getTriggersBriefInfoBySystemId(@Param("systemId") BigInteger systemId);
 
-    @Query(value = "select trigger from SituationEventTrigger as trigger "
-            + "where id = :id")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @Query(value = "select trigger from SituationEventTrigger as trigger where id = :id")
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "situationEventTriggerCache")})
     SituationEventTrigger findByIdOnly(@Param("id") BigInteger id);
 }

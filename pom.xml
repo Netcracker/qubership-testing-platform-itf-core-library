@@ -19,7 +19,7 @@
 
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>5.0.6-SNAPSHOT</version>
+    <version>5.1.12-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -29,7 +29,7 @@
         <spring.boot.version>3.5.14</spring.boot.version>
         <spring.cloud.version>2025.0.2</spring.cloud.version>
         <net.javacrumbs.shedlock.version>4.14.0</net.javacrumbs.shedlock.version>
-        <hazelcast.version>4.2.6</hazelcast.version>
+        <hazelcast.version>5.2.5</hazelcast.version>
         <querydsl.version>5.1.0</querydsl.version>
         <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
         <io.undertow.undertow-core.version>2.3.21.Final</io.undertow.undertow-core.version>
@@ -109,7 +109,22 @@
                 <!-- Generates models and controllers based on api-contract.yaml -->
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>7.6.0</version>
+                <version>7.9.0</version>
+                <configuration>
+                    <generatorName>spring</generatorName>
+                    <output>${project.build.directory}/generated-sources</output>
+                    <modelNameSuffix>Dto</modelNameSuffix>
+                    <skipOverwrite>false</skipOverwrite>
+                    <generateModelTests>false</generateModelTests>
+                    <configOptions>
+                        <useSpringBoot3>true</useSpringBoot3>
+                        <useJakartaEe>true</useJakartaEe>
+                        <java8>true</java8>
+                        <interfaceOnly>true</interfaceOnly>
+                        <useTags>true</useTags>
+                        <skipDefaultInterface>true</skipDefaultInterface>
+                    </configOptions>
+                </configuration>
                 <executions>
                     <execution>
                         <id>attachment-controller-v1.yaml</id>
@@ -118,20 +133,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <generatorName>spring</generatorName>
                             <inputSpec>${project.basedir}/src/main/resources/apispecs/api/dataset/v1/attachment-controller-v1.yaml</inputSpec>
                             <apiPackage>org.qubership.atp.datasets.controllers</apiPackage>
                             <modelPackage>org.qubership.atp.datasets.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <skipOverwrite>false</skipOverwrite>
-                            <generateModelTests>false</generateModelTests>
-                            <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <jakarta>true</jakarta>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useTags>true</useTags>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                            </configOptions>
                         </configuration>
                     </execution>
                     <execution>
@@ -141,20 +145,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <generatorName>spring</generatorName>
                             <inputSpec>${project.basedir}/src/main/resources/apispecs/api/dataset/v1/data-set-controller-v1.yaml</inputSpec>
                             <apiPackage>org.qubership.atp.datasets.controllers</apiPackage>
                             <modelPackage>org.qubership.atp.datasets.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <skipOverwrite>false</skipOverwrite>
-                            <generateModelTests>false</generateModelTests>
-                            <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <jakarta>true</jakarta>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useTags>true</useTags>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                            </configOptions>
                         </configuration>
                     </execution>
                     <execution>
@@ -164,20 +157,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <generatorName>spring</generatorName>
                             <inputSpec>${project.basedir}/src/main/resources/apispecs/api/dataset/v1/data-set-list-controller-v1.yaml</inputSpec>
                             <apiPackage>org.qubership.atp.datasets.controllers</apiPackage>
                             <modelPackage>org.qubership.atp.datasets.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <skipOverwrite>false</skipOverwrite>
-                            <generateModelTests>false</generateModelTests>
-                            <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <jakarta>true</jakarta>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useTags>true</useTags>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                            </configOptions>
                         </configuration>
                     </execution>
                     <execution>
@@ -187,20 +169,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <generatorName>spring</generatorName>
                             <inputSpec>${project.basedir}/src/main/resources/apispecs/api/dataset/v1/attribute-controller-v1.yaml</inputSpec>
                             <apiPackage>org.qubership.atp.datasets.controllers</apiPackage>
                             <modelPackage>org.qubership.atp.datasets.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <skipOverwrite>false</skipOverwrite>
-                            <generateModelTests>false</generateModelTests>
-                            <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <jakarta>true</jakarta>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useTags>true</useTags>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                            </configOptions>
                         </configuration>
                     </execution>
                     <execution>
@@ -210,20 +181,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <generatorName>spring</generatorName>
                             <inputSpec>${project.basedir}/src/main/resources/apispecs/api/dataset/v1/visibility-area-controller-v1.yaml</inputSpec>
                             <apiPackage>org.qubership.atp.datasets.controllers</apiPackage>
                             <modelPackage>org.qubership.atp.datasets.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <skipOverwrite>false</skipOverwrite>
-                            <generateModelTests>false</generateModelTests>
-                            <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <jakarta>true</jakarta>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useTags>true</useTags>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                            </configOptions>
                         </configuration>
                     </execution>
                     <execution>
@@ -233,20 +193,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <generatorName>spring</generatorName>
                             <inputSpec>${project.basedir}/src/main/resources/apispecs/api/bv/v1/test-case-v1.yaml</inputSpec>
                             <apiPackage>org.qubership.atp.bv.controllers</apiPackage>
                             <modelPackage>org.qubership.atp.bv.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <skipOverwrite>false</skipOverwrite>
-                            <generateModelTests>false</generateModelTests>
-                            <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <jakarta>true</jakarta>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useTags>true</useTags>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                            </configOptions>
                         </configuration>
                     </execution>
                     <execution>
@@ -256,20 +205,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <generatorName>spring</generatorName>
                             <inputSpec>${project.basedir}/src/main/resources/apispecs/api/bv/v1/api-v1.yaml</inputSpec>
                             <apiPackage>org.qubership.atp.bv.controllers</apiPackage>
                             <modelPackage>org.qubership.atp.bv.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <skipOverwrite>false</skipOverwrite>
-                            <generateModelTests>false</generateModelTests>
-                            <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <jakarta>true</jakarta>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useTags>true</useTags>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                            </configOptions>
                         </configuration>
                     </execution>
                     <execution>
@@ -279,20 +217,9 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <generatorName>spring</generatorName>
                             <inputSpec>${project.basedir}/src/main/resources/apispecs/api/bv/v1/public-api-v1.yaml</inputSpec>
                             <apiPackage>org.qubership.atp.bv.controllers</apiPackage>
                             <modelPackage>org.qubership.atp.bv.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
-                            <skipOverwrite>false</skipOverwrite>
-                            <generateModelTests>false</generateModelTests>
-                            <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <jakarta>true</jakarta>
-                                <interfaceOnly>true</interfaceOnly>
-                                <useTags>true</useTags>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                            </configOptions>
                         </configuration>
                     </execution>
                 </executions>
@@ -382,6 +309,18 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
+            <version>6.5.3.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-jcache</artifactId>
+            <version>6.5.3.Final</version>
+        </dependency>
+        <!-- JCache API -->
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <!--Hibernate-end-->
         <dependency>
@@ -598,7 +537,7 @@
         </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-all</artifactId>
+            <artifactId>hazelcast</artifactId>
             <version>${hazelcast.version}</version>
         </dependency>
         <dependency>
@@ -636,12 +575,6 @@
             <groupId>org.codehaus.jettison</groupId>
             <artifactId>jettison</artifactId>
             <version>1.5.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast</artifactId>
-            <version>5.2.5</version>
-            <classifier>tests</classifier>
         </dependency>
         <!--atp-services end-->
 

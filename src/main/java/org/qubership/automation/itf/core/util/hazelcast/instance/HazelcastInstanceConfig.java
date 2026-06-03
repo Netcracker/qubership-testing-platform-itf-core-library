@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -58,6 +58,7 @@ public class HazelcastInstanceConfig {
      */
     @Bean(name = "instanceConfig")
     public Config getConfig() {
+        LOGGER.info("🔵 ENTERING getConfig method");
         Config config = new Config();
         config.setInstanceName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
         if (hazelcastCacheEnabled) {
@@ -79,6 +80,10 @@ public class HazelcastInstanceConfig {
             config.setClusterName("local-itf-hazelcast-cluster");
         }
 
+        return addBigCacheConfigs(config);
+    }
+
+    public static Config addBigCacheConfigs(Config config) {
         config.addCacheConfig(
                 initBigRegionCache("projectsCache", 300, 12, TimeUnit.HOURS));
 
@@ -118,16 +123,16 @@ public class HazelcastInstanceConfig {
                         70000, 120, TimeUnit.MINUTES));
 
         config.addCacheConfig(initBigRegionCache("systemParsingRulesCollectionCache",
-                        7000, 60, TimeUnit.MINUTES));
+                7000, 60, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("operationParsingRulesCollectionCache",
-                        70000, 60, TimeUnit.MINUTES));
+                70000, 60, TimeUnit.MINUTES));
 
         config.addCacheConfig(initBigRegionCache("activeOperationEventTriggersCache",
-                        30000, 120, TimeUnit.MINUTES));
+                30000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("operationByDefinitionKeyCache",
-                        20000, 120, TimeUnit.MINUTES));
+                20000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("operationSituationsCollectionCache",
-                        30000, 120, TimeUnit.MINUTES));
+                30000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("systemTransportsCollectionCache",
                 4000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("simpleSystemListByProjectCache",
@@ -139,19 +144,28 @@ public class HazelcastInstanceConfig {
             LOGGER.info("CacheConfig: {}: \n   EvictionConfig {}\n   ExpiryPolicyFactoryConfig {}", cfg.getKey(),
                     cfg.getValue().getEvictionConfig(), cfg.getValue().getExpiryPolicyFactoryConfig());
         }
-
         return config;
     }
 
     @Bean(name = "hazelcastCacheInstance")
     public HazelcastInstance getHazelcastInstance(@Qualifier("instanceConfig") Config config) {
-        return Hazelcast.newHazelcastInstance(config);
+        LOGGER.info("🔵 ENTERING getHazelcastInstance method");
+        try {
+            LOGGER.info("🔵 About to create HazelcastInstance with config: {}", config);
+            HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance(config);
+            LOGGER.info("✅ HazelcastInstance bean created with name 'hazelcastCacheInstance' and instance name '{}'",
+                    hazelcastInstance.getName());
+            return hazelcastInstance;
+        } catch (Exception e) {
+            LOGGER.error("❌ FAILED to create HazelcastInstance", e);
+            throw e; // Re-throw the exception, in order Spring to see it
+        }
     }
 
-    private CacheSimpleConfig initBigRegionCache(String cacheName,
-                                                 int cacheSize,
-                                                 int durationAmount,
-                                                 TimeUnit durationTimeUnit) {
+    private static CacheSimpleConfig initBigRegionCache(String cacheName,
+                                                        int cacheSize,
+                                                        int durationAmount,
+                                                        TimeUnit durationTimeUnit) {
         EvictionConfig evictionConfig = new EvictionConfig();
         evictionConfig.setEvictionPolicy(EvictionPolicy.LRU);
         evictionConfig.setMaxSizePolicy(MaxSizePolicy.ENTRY_COUNT);
