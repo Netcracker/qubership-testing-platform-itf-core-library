@@ -19,16 +19,15 @@
 
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>5.0.5-SNAPSHOT</version>
+    <version>5.0.6-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-        <spring.boot.version>3.5.11</spring.boot.version>
-        <spring.cloud.version>2025.0.1</spring.cloud.version>
+        <spring.boot.version>3.5.14</spring.boot.version>
+        <spring.cloud.version>2025.0.2</spring.cloud.version>
         <net.javacrumbs.shedlock.version>4.14.0</net.javacrumbs.shedlock.version>
         <hazelcast.version>4.2.6</hazelcast.version>
         <querydsl.version>5.1.0</querydsl.version>
@@ -38,9 +37,9 @@
         <org.bouncycastle.version>1.80</org.bouncycastle.version>
         <lombok.version>1.18.44</lombok.version>
 
-        <atp.common.version>1.0.1-SNAPSHOT</atp.common.version>
-        <atp.auth.version>2.0.3-SNAPSHOT</atp.auth.version>
-        <atp.integration.version>1.0.1-SNAPSHOT</atp.integration.version>
+        <atp.common.version>1.0.0</atp.common.version>
+        <atp.auth.version>2.0.1-SNAPSHOT</atp.auth.version>
+        <atp.integration.version>1.0.0</atp.integration.version>
         <javers.version>7.9.0</javers.version>
     </properties>
 
