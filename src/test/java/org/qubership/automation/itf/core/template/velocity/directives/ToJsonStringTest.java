@@ -34,11 +34,13 @@ import org.apache.velocity.runtime.parser.node.Node;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.qubership.automation.itf.core.model.jpa.context.JsonContext;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -82,7 +84,19 @@ class ToJsonStringTest {
         boolean result = directive.render(context, writer, node);
 
         assertTrue(result);
-        verify(writer).append("{\"key1\":\"value1\",\"key2\":\"value2\"}");
+
+        // Instead of String comparison, JSONAssert.assertEquals is used.
+        // Because Map.of doesn't guarantee entries order.
+
+        //verify(writer).append("{\"key1\":\"value1\",\"key2\":\"value2\"}");
+
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(writer).append(captor.capture());
+
+        String actualJson = captor.getValue();
+        String expectedJson = "{\"key1\":\"value1\",\"key2\":\"value2\"}";
+
+        JSONAssert.assertEquals(expectedJson, actualJson, false);
     }
 
     @Test
