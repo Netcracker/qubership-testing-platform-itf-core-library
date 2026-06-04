@@ -22,7 +22,6 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.EventTriggerManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.SearchByProjectIdManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.OperationEventTriggerRepository;

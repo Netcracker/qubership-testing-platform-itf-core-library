@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package org.qubership.automation.itf.core.util.feign.http;
 
-import javax.annotation.Nonnull;
-
 import org.qubership.automation.itf.core.util.feign.FeignHttpClient;
 import org.qubership.automation.itf.core.util.feign.impl.BvApiResourceFeignClient;
 import org.qubership.automation.itf.core.util.feign.impl.BvPublicApiResourceFeignClient;
@@ -32,6 +30,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import jakarta.annotation.Nonnull;
 
 @Component
 public class HttpClientFactory implements EnvironmentAware {

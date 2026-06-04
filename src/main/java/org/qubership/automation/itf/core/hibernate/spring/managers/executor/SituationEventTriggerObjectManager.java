@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.EventTriggerManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.SearchByProjectIdManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.SituationEventTriggerRepository;
@@ -32,6 +30,8 @@ import org.qubership.automation.itf.core.model.communication.EventTriggerBriefIn
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.model.jpa.system.stub.SituationEventTrigger;
 import org.springframework.stereotype.Service;
+
+import jakarta.annotation.Nonnull;
 
 @Service
 public class SituationEventTriggerObjectManager extends EventTriggerObjectManager<SituationEventTrigger>

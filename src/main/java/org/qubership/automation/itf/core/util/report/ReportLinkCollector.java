@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.util.report;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,8 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import jakarta.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.qubership.automation.itf.core.hibernate.spring.managers.executor.EnvironmentObjectManager;
@@ -42,6 +41,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Maps;
+import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -51,7 +51,7 @@ public class ReportLinkCollector {
     private final Map<String, LinkCollector> collectors = Maps.newConcurrentMap();
     private org.springframework.core.env.Environment env;
     private final LoadingCache<String, String> urls = CacheBuilder.newBuilder()
-            .build(new CacheLoader<String, String>() {
+            .build(new CacheLoader<>() {
                 @Override
                 public String load(@Nonnull String key) {
                     return env.getProperty(key);
@@ -61,7 +61,7 @@ public class ReportLinkCollector {
     private static final LoadingCache<BigInteger, Set<LinkCollectorConfiguration>> CONF_CACHE = CacheBuilder
             .newBuilder()
             .expireAfterWrite(60, TimeUnit.MINUTES)
-            .build(new CacheLoader<BigInteger, Set<LinkCollectorConfiguration>>() {
+            .build(new CacheLoader<>() {
                 @Override
                 public Set<LinkCollectorConfiguration> load(@Nonnull BigInteger id) {
                     try {
@@ -103,8 +103,10 @@ public class ReportLinkCollector {
             for (LinkCollectorConfiguration configuration : reportCollectors) {
                 LinkCollector collector = collectors.computeIfAbsent(configuration.getTypeName(), key -> {
                     try {
-                        return Class.forName(key).asSubclass(LinkCollector.class).newInstance();
-                    } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+                        return Class.forName(key).asSubclass(LinkCollector.class)
+                                .getDeclaredConstructor().newInstance();
+                    } catch (IllegalAccessException | InstantiationException | ClassNotFoundException |
+                             NoSuchMethodException | InvocationTargetException e) {
                         log.error("Error initializing link collector for {}: ", key, e);
                         return null;
                     }
@@ -137,8 +139,9 @@ public class ReportLinkCollector {
     public void registerCollector(Class<? extends LinkCollector> collectorClass) {
         collectors.computeIfAbsent(collectorClass.getName(), key -> {
             try {
-                return collectorClass.newInstance();
-            } catch (IllegalAccessException | InstantiationException e) {
+                return collectorClass.getDeclaredConstructor().newInstance();
+            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException
+                     | InvocationTargetException e) {
                 log.error("Error while registering collector class {}: ", collectorClass, e);
                 return null;
             }
