@@ -129,8 +129,12 @@ public class SystemObjectManager extends AbstractObjectManager<System, System> i
 
     @Override
     public Storable getChildByClass(System parent, Class childrenClass, Object... param) {
-        if (childrenClass.getName().equals(Operation.class.getName()) && param[0] != null) {
-            return systemRepository.findFirstByDefineOperation(toBigInt(parent.getID()), String.valueOf(param[0]));
+        if (childrenClass.getName().equals(Operation.class.getName())) {
+            if (param == null || param.length == 0 || param[0] == null) {
+                throw new IllegalArgumentException("The 1st param should not be null");
+            } else {
+                return systemRepository.findFirstByDefineOperation(toBigInt(parent.getID()), String.valueOf(param[0]));
+            }
         }
         throw new NotImplementedException("Not implemented for classes other than " + Operation.class.getName());
     }

@@ -75,8 +75,10 @@ public class TransportConfigurationObjectManager extends AbstractObjectManager<T
     @Override
     public Collection<UsageInfo> findUsages(Storable storable) {
         Collection<UsageInfo> result = Sets.newHashSet();
-        addToUsages(result, "transport",
-                operationRepository.findAll(QOperation.operation.transport.eq((TransportConfiguration) storable)));
+        if (storable instanceof TransportConfiguration transportConfiguration) {
+            addToUsages(result, "transport",
+                    operationRepository.findAll(QOperation.operation.transport.eq(transportConfiguration)));
+        }
         return result;
     }
 
@@ -161,9 +163,9 @@ public class TransportConfigurationObjectManager extends AbstractObjectManager<T
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only TransportConfiguration objects are here")
     @Override
     public void afterDelete(Storable object) {
-        if (object.getParent() instanceof System) {
-            synchronized (object.getParent()) {
-                ((System) object.getParent()).getTransports().remove((TransportConfiguration) object);
+        if (object.getParent() instanceof System system) {
+            synchronized (system) {
+                system.getTransports().remove((TransportConfiguration) object);
             }
         }
     }

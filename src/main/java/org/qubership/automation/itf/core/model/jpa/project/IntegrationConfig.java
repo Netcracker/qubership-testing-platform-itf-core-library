@@ -57,7 +57,9 @@ public class IntegrationConfig extends Configuration {
         setName(name);
         setTypeName(type);
         setParent(parent);
-        ((StubProject) parent).getIntegrationConfs().add(this);
+        if (parent instanceof StubProject stubProject) {
+            stubProject.getIntegrationConfs().add(this);
+        }
     }
 
     /**
@@ -66,9 +68,11 @@ public class IntegrationConfig extends Configuration {
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only StubProject objects are here")
     public IntegrationConfig(Storable parent, Map parameters) {
         setParent(parent);
-        ((StubProject) parent).getIntegrationConfs().add(this);
-        if (parameters != null) {
-            putAll(parameters);
+        if (parent instanceof StubProject stubProject) {
+            stubProject.getIntegrationConfs().add(this);
+            if (parameters != null) {
+                putAll(parameters);
+            }
         }
     }
 

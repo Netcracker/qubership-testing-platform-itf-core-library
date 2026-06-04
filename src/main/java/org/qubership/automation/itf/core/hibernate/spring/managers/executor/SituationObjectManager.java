@@ -106,10 +106,12 @@ public class SituationObjectManager extends AbstractObjectManager<Situation, Sit
     @Override
     public Collection<UsageInfo> findUsages(Storable storable) {
         Collection<UsageInfo> result = Lists.newArrayListWithExpectedSize(50);
-        addToUsages(result, "situationSteps", getSteps((BigInteger) storable.getID()));
-        Iterable<SituationEventTrigger> triggers =
-                situationEventTriggerRepository.getTriggersBySituation((Situation) storable);
-        addToUsages(result, "triggers", triggers);
+        if (storable instanceof Situation situation) {
+            addToUsages(result, "situationSteps", getSteps(situation.getID()));
+            Iterable<SituationEventTrigger> triggers =
+                    situationEventTriggerRepository.getTriggersBySituation(situation);
+            addToUsages(result, "triggers", triggers);
+        }
         return result;
     }
 

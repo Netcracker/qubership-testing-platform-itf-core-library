@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.managers.executor;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -61,7 +62,12 @@ public class IntegrationConfigObjectManager
     }
 
     private void addPropertiesToConfig(IntegrationConfig config) {
-        for (PropertyDescriptor property : EngineIntegrationRegistry.getInstance().getProperties(config.getName())) {
+        List<PropertyDescriptor> propertyDescriptors = EngineIntegrationRegistry.getInstance()
+                .getProperties(config.getName());
+        if (propertyDescriptors == null || propertyDescriptors.isEmpty()) {
+            return;
+        }
+        for (PropertyDescriptor property : propertyDescriptors) {
             String propertyValue = ApplicationConfig.env.getProperty(property.getShortName(), "");
             if (StringUtils.isNotEmpty(propertyValue)) {
                 config.put(property.getShortName(), propertyValue);

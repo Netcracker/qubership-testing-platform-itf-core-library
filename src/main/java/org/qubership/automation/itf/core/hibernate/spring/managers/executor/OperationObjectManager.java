@@ -68,7 +68,7 @@ public class OperationObjectManager extends AbstractObjectManager<Operation, Ope
 
     @Override
     public Collection<UsageInfo> findUsages(Storable storable) {
-        Collection<UsageInfo> result = Lists.newArrayListWithExpectedSize(500);
+        Collection<UsageInfo> result = Lists.newArrayListWithExpectedSize(100);
         Iterable<Step> all = storable instanceof Operation o
                 ? stepRepository.getIntegrationStepsByOperation(o) : new ArrayList<>();
         addToUsages(result, "operation", all);
@@ -111,10 +111,8 @@ public class OperationObjectManager extends AbstractObjectManager<Operation, Ope
 
                     ((Operation) operation).setTransport((TransportConfiguration) cachedTransportCopy);
                 } catch (CopyException e) {
-                    LOGGER.error(
-                            "Can't create the copy of {} transport for moved {} operation. Please, fill the "
-                                    + "transport manualy.",
-                            transport.getName(), operation.getName());
+                    LOGGER.error("Can't create a copy of {} transport for moved {} operation. "
+                                    + "Please, fill the transport manually.", transport.getName(), operation.getName());
                 }
             }
         }

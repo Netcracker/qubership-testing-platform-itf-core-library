@@ -75,6 +75,9 @@ public class DecodeSaml extends Directive {
     public String decodeSaml(String text, String encoding) {
         try {
             byte[] decodedBytes = Base64.decodeBase64(java.net.URLDecoder.decode(text, encoding));
+            if (decodedBytes.length == 0) {
+                return StringUtils.EMPTY;
+            }
             ByteArrayInputStream bytesIn = new ByteArrayInputStream(decodedBytes);
             InflaterInputStream in = new InflaterInputStream(bytesIn, new Inflater(true));
             byte[] buffer = new byte[decodedBytes.length];
