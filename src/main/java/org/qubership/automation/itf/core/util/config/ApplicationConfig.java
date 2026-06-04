@@ -16,7 +16,8 @@
 
 package org.qubership.automation.itf.core.util.config;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ public class ApplicationConfig implements EnvironmentAware {
     public static Environment env;
 
     @Override
-    public void setEnvironment(@NotNull Environment environment) {
+    public void setEnvironment(@Nonnull Environment environment) {
         env = environment;
     }
 }

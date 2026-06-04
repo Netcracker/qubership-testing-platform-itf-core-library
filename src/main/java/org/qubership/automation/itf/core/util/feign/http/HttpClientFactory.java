@@ -16,7 +16,8 @@
 
 package org.qubership.automation.itf.core.util.feign.http;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
+
 import org.qubership.automation.itf.core.util.feign.FeignHttpClient;
 import org.qubership.automation.itf.core.util.feign.impl.BvApiResourceFeignClient;
 import org.qubership.automation.itf.core.util.feign.impl.BvPublicApiResourceFeignClient;
@@ -79,7 +80,7 @@ public class HttpClientFactory implements EnvironmentAware {
     }
 
     @Override
-    public void setEnvironment(@NotNull final Environment environment) {
+    public void setEnvironment(@Nonnull final Environment environment) {
         env = environment;
         eventIsReady();
     }

@@ -51,7 +51,7 @@ public class OperationEventTriggerObjectManager extends EventTriggerObjectManage
     }
 
     @Override
-    public List<OperationEventTrigger> getActiveByProject(@NotNull BigInteger projectId) {
+    public List<OperationEventTrigger> getActiveByProject(@Nonnull BigInteger projectId) {
         return ((OperationEventTriggerRepository) repository).getActiveTriggersByProject(projectId);
     }
 

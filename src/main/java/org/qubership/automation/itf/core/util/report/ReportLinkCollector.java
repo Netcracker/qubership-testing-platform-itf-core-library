@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 import jakarta.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 import org.qubership.automation.itf.core.hibernate.spring.managers.executor.EnvironmentObjectManager;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
 import org.qubership.automation.itf.core.model.jpa.environment.Environment;
@@ -49,12 +48,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ReportLinkCollector {
 
-    private Map<String, LinkCollector> collectors = Maps.newConcurrentMap();
+    private final Map<String, LinkCollector> collectors = Maps.newConcurrentMap();
     private org.springframework.core.env.Environment env;
     private final LoadingCache<String, String> urls = CacheBuilder.newBuilder()
             .build(new CacheLoader<String, String>() {
                 @Override
-                public String load(@NotNull String key) {
+                public String load(@Nonnull String key) {
                     return env.getProperty(key);
                 }
             });
