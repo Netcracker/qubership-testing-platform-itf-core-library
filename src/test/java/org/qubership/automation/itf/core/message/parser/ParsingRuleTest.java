@@ -18,16 +18,16 @@ package org.qubership.automation.itf.core.message.parser;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.internal.matchers.StartsWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
@@ -39,17 +39,14 @@ import org.qubership.automation.itf.core.model.jpa.system.System;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.util.exception.ContentException;
 import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
+import org.qubership.automation.itf.core.util.provider.content.JsonContentProvider;
 import org.qubership.automation.itf.core.util.provider.content.PlainContentProvider;
 import org.qubership.automation.itf.core.util.provider.content.XmlContentProvider;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath*:*core-test-context-no-broker-bean.xml"})
+@RunWith(MockitoJUnitRunner.class)
 public class ParsingRuleTest {
-    @Rule
-    public ExpectedException expectedEx = ExpectedException.none();
 
-
-    private String text = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+    private static final String TEST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
             "<starterchain>\n" +
             "    <name>Bereitstellung TriplePlay BNG Starter chain 17.2</name>\n" +
             "    <starters>\n" +
@@ -59,207 +56,214 @@ public class ParsingRuleTest {
             "            <manualStart>false</manualStart>\n" +
             "            <starter>PreOrder</starter>\n" +
             "        </starter>\n" +
-            "        <starter>\n" +
-            "            <enabled>true</enabled>\n" +
-            "            <endSituation>VRE Recieve ServiceOrder Message (2)</endSituation>\n" +
-            "            <manualStart>false</manualStart>\n" +
-            "            <starter>VRE send activateService to SMF - new TriplePlay</starter>\n" +
-            "        </starter>\n" +
-            "        <starter>\n" +
-            "            <enabled>true</enabled>\n" +
-            "            <endSituation>OpDiNG send 2nd executeDiagnosticCallback</endSituation>\n" +
-            "            <manualStart>false</manualStart>\n" +
-            "            <starter>[SMF][AL-PS] Last Order Accepted</starter>\n" +
-            "        </starter>\n" +
             "    </starters>\n" +
             "    <datasetLists>\n" +
             "        <dataset>sz_FTTH</dataset>\n" +
             "    </datasetLists>\n" +
             "</starterchain>\n";
 
-    private String textUmlaut = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-            "\t\t\t\t\t\t<businessInteractionItem>\n" +
-            "\t\t\t\t\t\t\t<entityKey>\n" +
-            "\t\t\t\t\t\t\t\t<keyA>9147412680913944911</keyA>\n" +
-            "\t\t\t\t\t\t\t</entityKey>\n" +
-            "\t\t\t\t\t\t\t<state>\n" +
-            "\t\t\t\t\t\t\t\t<value>incomplete</value>\n" +
-            "\t\t\t\t\t\t\t</state>\n" +
-            "\t\t\t\t\t\t\t<specification>\n" +
-            "\t\t\t\t\t\t\t\t<specificationName>Konsistenzsicherung abschließen</specificationName>\n" +
-            "\t\t\t\t\t\t\t\t<specificationID>Konsistenzsicherung abschließen</specificationID>\n" +
-            "\t\t\t\t\t\t\t\t<characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t<characteristicID>Access_Line</characteristicID>\n" +
-            "\t\t\t\t\t\t\t\t\t<characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t\t<characteristicID>EntityReference</characteristicID>\n" +
-            "\t\t\t\t\t\t\t\t\t\t<characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<characteristicID>keyA</characteristicID>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<characteristicValue>16c7f314-eb5c-4989-a640-45d5d5ecaf45</characteristicValue>\n" +
-            "\t\t\t\t\t\t\t\t\t\t</characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t\t<characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<characteristicID>keyB</characteristicID>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<characteristicValue />\n" +
-            "\t\t\t\t\t\t\t\t\t\t</characteristic>\n" +
-            "\t\t\t\t\t\t\t\t\t</characteristic>\n" +
-            "\t\t\t\t\t\t\t\t</characteristic>\n" +
-            "\t\t\t\t\t\t\t</specification>\n" +
-            "\t\t\t\t\t\t</businessInteractionItem>";
+    private static final String XML_WITH_UMLAUT = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<businessInteractionItem>\n" +
+            "    <entityKey>\n" +
+            "        <keyA>9147412680913944911</keyA>\n" +
+            "    </entityKey>\n" +
+            "    <specification>\n" +
+            "        <specificationID>Konsistenzsicherung abschließen</specificationID>\n" +
+            "    </specification>\n" +
+            "</businessInteractionItem>";
 
+    private System system;
+    private Operation mockOperation;
+    private TcContext tcContext;
 
-    private MessageParameter testURIRegexpReturnsGroups(boolean asMultiple, ParsingRuleType type, String expression, String groups) throws ContentException {
-        ParsingRule parsingRule = new SystemParsingRule();
-        parsingRule.setParsingType(type);
-        parsingRule.setMultiple(asMultiple);
-        parsingRule.setExpression(expression);
-        Message message = new Message();
-        message.getConnectionProperties().put("uriParams", groups);
-        message.setContent(new PlainContentProvider().provide(message));
-        setParents(parsingRule);
-        TcContext context = new TcContext();
-        context.put("aaa", "bbb");
-        return parsingRule.apply(message, InstanceContext.from(context, null), false);
+    @Before
+    public void setUp() {
+        system = new System();
+        system.setName("SomeSystem");
+
+        mockOperation = mock(Operation.class);
+        when(mockOperation.getName()).thenReturn("SomeOperation");
+        when(mockOperation.getParent()).thenReturn(system);
+
+        tcContext = new TcContext();
+        tcContext.put("aaa", "bbb");
     }
 
     @Test
     public void testURIRegexpReturnsGroupsWhenAsMultipleTrue() throws ContentException {
-        MessageParameter messageParameter = testURIRegexpReturnsGroups(true, ParsingRuleType.REGEX_URI,
-                ".*/api/space/managed-domain/managed-elements/(\\S*)/equipment-holders/([^\\s/]*)$",
-                "http://mockingbird-tst:8080/mockingbird-transports-df/api/space/managed-domain/managed-elements/4F850DF7BFED2A03E0537402E80A8497/equipment-holders/4F850DF7BFED2A03E0537402E80A8497");
-        assertArrayEquals(new String[]{"4F850DF7BFED2A03E0537402E80A8497", "4F850DF7BFED2A03E0537402E80A8497"}, messageParameter.getMultipleValue().toArray());
+        ParsingRule parsingRule = createUriRegexParsingRule(true);
+        Message message = createMessageWithUriParams(
+                "http://mockingbird-tst:8080/mockingbird-transports-df/api/space/managed-domain/managed-elements/4F850DF7BFED2A03E0537402E80A8497/equipment-holders/4F850DF7BFED2A03E0537402E80A8497"
+        );
+
+        MessageParameter result = parsingRule.apply(message, InstanceContext.from(tcContext, null), false);
+
+        assertArrayEquals(
+                new String[]{"4F850DF7BFED2A03E0537402E80A8497", "4F850DF7BFED2A03E0537402E80A8497"},
+                result.getMultipleValue().toArray()
+        );
     }
 
     @Test
     public void testURIRegexpReturnsGroupsWhenAsMultipleFalse() throws ContentException {
-        MessageParameter messageParameter = testURIRegexpReturnsGroups(false, ParsingRuleType.REGEX_URI,
-                ".*/api/space/managed-domain/managed-elements/(\\S*)/equipment-holders/([^\\s/]*)$",
-                "http://mockingbird-tst:8080/mockingbird-transports-df/api/space/managed-domain/managed-elements/4F850DF7BFED2A03E0537402E80A8497/equipment-holders/4F850DF7BFED2A03E0537402E80A8497");
-        assertArrayEquals(new String[]{"4F850DF7BFED2A03E0537402E80A8497"}, messageParameter.getMultipleValue().toArray());
+        ParsingRule parsingRule = createUriRegexParsingRule(false);
+        Message message = createMessageWithUriParams(
+                "http://mockingbird-tst:8080/mockingbird-transports-df/api/space/managed-domain/managed-elements/4F850DF7BFED2A03E0537402E80A8497/equipment-holders/4F850DF7BFED2A03E0537402E80A8497"
+        );
+
+        MessageParameter result = parsingRule.apply(message, InstanceContext.from(tcContext, null), false);
+
+        assertArrayEquals(
+                new String[]{"4F850DF7BFED2A03E0537402E80A8497"},
+                result.getMultipleValue().toArray()
+        );
     }
 
     @Test
-    public void testURIRegexpReturnsGroupsIsEmpty() throws Exception {
-        MessageParameter messageParameter = testURIRegexpReturnsGroups(true, ParsingRuleType.REGEX_URI,
-                ".*/api/space/managed-domain/managed-elements/(\\S*)/equipment-holders/([^\\s/]*)$",
-                "");
-        assertArrayEquals(new String[]{}, messageParameter.getMultipleValue().toArray());
+    public void testURIRegexpReturnsGroupsIsEmpty() throws ContentException {
+        ParsingRule parsingRule = createUriRegexParsingRule(true);
+        Message message = createMessageWithUriParams("");
+
+        MessageParameter result = parsingRule.apply(message, InstanceContext.from(tcContext, null), false);
+
+        assertArrayEquals(new String[]{}, result.getMultipleValue().toArray());
     }
 
     @Test
-    public void testURIRegexpReturnsGroupsButResultIsEmpty() throws Exception {
-        MessageParameter messageParameter = testURIRegexpReturnsGroups(true, ParsingRuleType.REGEX_URI,
-                ".*/api/space/managed-domain/managed-elements/(\\S*)/equipment-holders/([^\\s/]*)$",
-                "http://mockingbird-tst:8080/mockingbird-transports-df/some/other/api/managed-domain/managed-elements/4F850DF7BFED2A03E0537402E80A8497/equipment-holders/4F850DF7BFED2A03E0537402E80A8497");
-        assertArrayEquals(new String[]{}, messageParameter.getMultipleValue().toArray());
+    public void testURIRegexpReturnsGroupsButResultIsEmpty() throws ContentException {
+        ParsingRule parsingRule = createUriRegexParsingRule(true);
+        Message message = createMessageWithUriParams(
+                "http://mockingbird-tst:8080/some/other/api/managed-domain/managed-elements/4F850DF7BFED2A03E0537402E80A8497/equipment-holders/4F850DF7BFED2A03E0537402E80A8497"
+        );
+
+        MessageParameter result = parsingRule.apply(message, InstanceContext.from(tcContext, null), false);
+
+        assertArrayEquals(new String[]{}, result.getMultipleValue().toArray());
     }
 
     @Test
-    public void testThrowingExceptionIfIllegalXpath() throws ContentException {
-        expectedEx.expect(IllegalArgumentException.class);
-        expectedEx.expectMessage(new StartsWith("Failed applying xpath. Probably xPaths is incorrect"));
-        ParsingRule parsingRule = createXpathParsingRule(".//com:characteristic[com:characteristicID = \"Line_ID\"]//com:characteristicValue/text()");
-        Message message = createMessage();
-        setParents(parsingRule);
-        TcContext context = new TcContext();
-        context.put("aaa", "bbb");
-        parsingRule.apply(message, InstanceContext.from(context, null), false);
+    public void testThrowingExceptionIfIllegalXpath() {
+        ParsingRule parsingRule = createXpathParsingRule(
+                ".//com:characteristic[com:characteristicID = \"Line_ID\"]//com:characteristicValue/text()"
+        );
+        Message message = createXmlMessage(TEST_XML);
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> parsingRule.apply(message, InstanceContext.from(tcContext, null), false)
+        );
+
+        assertTrue(exception.getMessage().startsWith("Failed applying xpath. Probably xPaths is incorrect"));
     }
 
     @Test
-    public void testValidXpath() throws ContentException {
-        ParsingRule xpathParsingRule = createXpathParsingRule(".//starterchain");
-        Message message = createMessage();
-        setParents(xpathParsingRule);
-        TcContext context = new TcContext();
-        context.put("aaa", "bbb");
-        MessageParameter apply = xpathParsingRule.apply(message, InstanceContext.from(context, null), false);
+    public void testValidXpath() {
+        ParsingRule parsingRule = createXpathParsingRule("//starterchain");
+        Message message = createXmlMessage(TEST_XML);
+
+        MessageParameter result = parsingRule.apply(message, InstanceContext.from(tcContext, null), false);
+
+        assertNotNull(result);
+        assertNotNull(result.getSingleValue());
+        assertTrue(result.getSingleValue().contains("starterchain"));
     }
 
     @Test
-    public void testUmlaut() throws ContentException {
-//        ParsingRule xpathParsingRule = createXpathParsingRule("//*[contains(text(),'Konsistenzsicherung')]/text()");
-        ParsingRule xpathParsingRule = createXpathParsingRule("//*[local-name()='specificationID' and text()='Konsistenzsicherung abschließen']/../../*[local-name()='entityKey']/*[local-name()='keyA']/text()");
-        Message message = createMessage(textUmlaut);
-        setParents(xpathParsingRule);
-        TcContext context = new TcContext();
-        context.put("aaa", "bbb");
-        MessageParameter messageParameter = xpathParsingRule.apply(message, InstanceContext.from(context, null), false);
-        assertEquals("9147412680913944911", messageParameter.getSingleValue());
-    }
+    public void testUmlaut() {
+        ParsingRule parsingRule = createXpathParsingRule(
+                "//*[local-name()='specificationID' and text()='Konsistenzsicherung abschließen']/../../*[local-name()='entityKey']/*[local-name()='keyA']/text()"
+        );
+        Message message = createXmlMessage(XML_WITH_UMLAUT);
 
+        MessageParameter result = parsingRule.apply(message, InstanceContext.from(tcContext, null), false);
 
-    @Test
-    public void testJSONParsedSingleValue() throws Exception {
-        ParsingRule jsonPathParsingRule = new SystemParsingRule();
-        jsonPathParsingRule.setParsingType(ParsingRuleType.JSON_PATH);
-        jsonPathParsingRule.setExpression("$.string");
-        jsonPathParsingRule.setMultiple(false);
-        Message message = createJSONMessage();
-        TcContext context = new TcContext();
-        context.put("aaa", "bbb");
-        MessageParameter apply = jsonPathParsingRule.apply(message, InstanceContext.from(context, null), false);
-        assertEquals("Hello World", apply.getSingleValue());
+        assertEquals("9147412680913944911", result.getSingleValue());
     }
 
     @Test
-    public void testJSONParsedMultipleValue() throws Exception {
-        ParsingRule jsonPathParsingRule = new SystemParsingRule();
-        jsonPathParsingRule.setParsingType(ParsingRuleType.JSON_PATH);
-        jsonPathParsingRule.setExpression("$.array");
-        jsonPathParsingRule.setMultiple(true);
-        Message message = createJSONMessage();
-        TcContext context = new TcContext();
-        context.put("aaa", "bbb");
-        MessageParameter apply = jsonPathParsingRule.apply(message, InstanceContext.from(context, null), false);
-        assertArrayEquals(new String[]{"1", "2", "3"}, apply.getMultipleValue().toArray());
+    public void testJSONParsedSingleValue() {
+        SystemParsingRule parsingRule = new SystemParsingRule();
+        parsingRule.setParsingType(ParsingRuleType.JSON_PATH);
+        parsingRule.setExpression("$.string");
+        parsingRule.setMultiple(false);
+        parsingRule.setParamName("someJsonPathParam");
+        parsingRule.setParent(system);
+
+        Message message = createJsonMessage();
+
+        MessageParameter result = parsingRule.apply(message, InstanceContext.from(tcContext, null), false);
+
+        assertEquals("Hello World", result.getSingleValue());
     }
 
+    @Test
+    public void testJSONParsedMultipleValue() {
+        SystemParsingRule parsingRule = new SystemParsingRule();
+        parsingRule.setParsingType(ParsingRuleType.JSON_PATH);
+        parsingRule.setExpression("$.array");
+        parsingRule.setMultiple(true);
+        parsingRule.setParamName("someJsonPathParam");
+        parsingRule.setParent(system);
+        Message message = createJsonMessage();
 
-    private Message createJSONMessage() {
-        return new Message("{\n" +
-                "  \"array\": [\n" +
-                "    1,\n" +
-                "    2,\n" +
-                "    3\n" +
-                "  ],\n" +
-                "  \"boolean\": true,\n" +
-                "  \"null\": null,\n" +
-                "  \"number\": 123,\n" +
-                "  \"object\": {\n" +
-                "    \"a\": \"b\",\n" +
-                "    \"c\": \"d\",\n" +
-                "    \"e\": \"f\"\n" +
-                "  },\n" +
-                "  \"string\": \"Hello World\"\n" +
-                "}");
+        MessageParameter result = parsingRule.apply(message, InstanceContext.from(tcContext, null), false);
+
+        assertArrayEquals(new String[]{"1", "2", "3"}, result.getMultipleValue().toArray());
     }
 
-    private Message createMessage() throws ContentException {
-        return createMessage(this.text);
-    }
+    // ==================== HELPER METHODS ====================
 
-    private Message createMessage(String text) throws ContentException {
-        Message message = new Message();
-        message.setText(text);
-        message.setContent(new XmlContentProvider().provide(message));
-        return message;
-    }
-
-    private void setParents(ParsingRule parsingRule) {
-        System system = new System();
-        system.setName("SomeSystem");
-        Operation mock = mock(Operation.class);
-        when(mock.getName()).thenReturn("SomeOperation");
-        system.getOperations().add(mock);
-        when(mock.getParent()).thenReturn(system);
-        parsingRule.setParent(mock);
-    }
-
-    private ParsingRule createXpathParsingRule(String expression) {
-        ParsingRule parsingRule = new SystemParsingRule();
-        parsingRule.setParsingType(ParsingRuleType.XPATH);
-        parsingRule.setExpression(expression);
-        parsingRule.setName("SomeParsingRule");
+    private SystemParsingRule createUriRegexParsingRule(boolean multiple) {
+        SystemParsingRule parsingRule = new SystemParsingRule();
+        parsingRule.setParsingType(ParsingRuleType.REGEX_URI);
+        parsingRule.setMultiple(multiple);
+        parsingRule.setParamName("someRegexParam");
+        parsingRule.setExpression(".*/api/space/managed-domain/managed-elements/(\\S*)/equipment-holders/([^\\s/]*)$");
+        parsingRule.setParent(system);
         return parsingRule;
     }
 
+    private SystemParsingRule createXpathParsingRule(String expression) {
+        SystemParsingRule parsingRule = new SystemParsingRule();
+        parsingRule.setParsingType(ParsingRuleType.XPATH);
+        parsingRule.setExpression(expression);
+        parsingRule.setParamName("someXpathParam");
+        parsingRule.setParent(system);
+        return parsingRule;
+    }
+
+    private Message createMessageWithUriParams(String uriParams) throws ContentException {
+        Message message = new Message();
+        message.getConnectionProperties().put("uriParams", uriParams);
+        message.setContent(new PlainContentProvider().provide(message));
+        return message;
+    }
+
+    private Message createXmlMessage(String xmlContent) {
+        Message message = new Message();
+        message.setText(xmlContent);
+        try {
+            message.setContent(new XmlContentProvider().provide(message));
+        } catch (ContentException e) {
+            throw new RuntimeException("Failed to create XML message", e);
+        }
+        return message;
+    }
+
+    private Message createJsonMessage() {
+        Message message = new Message("{\n" +
+                "  \"array\": [1, 2, 3],\n" +
+                "  \"boolean\": true,\n" +
+                "  \"null\": null,\n" +
+                "  \"number\": 123,\n" +
+                "  \"object\": {\"a\": \"b\", \"c\": \"d\", \"e\": \"f\"},\n" +
+                "  \"string\": \"Hello World\"\n" +
+                "}");
+        try {
+            message.setContent(new JsonContentProvider().provide(message));
+        } catch (ContentException e) {
+            throw new RuntimeException("Failed to create JSON message", e);
+        }
+        return message;
+    }
 }
