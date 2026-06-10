@@ -1,7 +1,7 @@
 # Qubership Testing Platform ITF Core Library
 
 - **Qubership Testing Platform ITF Core Library** (QSTP ITF CORE) is a core library for `Integrations Testing Framework` services
-- ITF Core Library is used in the following services: 
+- ITF Core Library is used in the following services:
   - itf-executor
   - itf-stubs
   - itf-reporting
@@ -26,7 +26,7 @@ ITF Core Library contains packages:
 
 ## Local build
 
-In IntelliJ IDEA, one can select 'github' Profile in Maven Settings menu on the right, then expand Lifecycle dropdown 
+In IntelliJ IDEA, one can select `github` Profile in Maven Settings menu on the right, then expand Lifecycle dropdown
 of atp-itf-core module, then select 'clean' and 'install' options and click 'Run Maven Build' green arrow button on the top.
 
 Or, one can execute the command:
@@ -36,8 +36,8 @@ mvn -P github clean install
 
 ## Usage
 
-### Connecting in Spring Boot application ###
-#### 1. Add dependency into a service ####
+### Connecting in Spring Boot application
+#### 1. Add dependency into a service
 
 ```xml
 <dependency>
@@ -46,7 +46,7 @@ mvn -P github clean install
     <version>4.4.106-SNAPSHOT</version>
 </dependency>
 ```
-#### 2. Specify the required parameters in application.properties ####
+#### 2. Specify the required parameters in application.properties
 ```properties
 ##======================DataBase configurations=======================
 spring.datasource.url=${SPRING_DATASOURCE_URL}
@@ -56,8 +56,12 @@ spring.datasource.driver-class-name=${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
 
 spring.datasource.hikari.minimum-idle=${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE}
 spring.datasource.hikari.maximum-pool-size=${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE}
-spring.datasource.hikari.idle-timeout=${SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT}
-spring.datasource.hikari.max-lifetime=${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME}
+spring.datasource.hikari.idle-timeout=${SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT:180000}
+spring.datasource.hikari.max-lifetime=${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME:0}
+spring.datasource.hikari.keepalive-time=${SPRING_DATASOURCE_HIKARI_KEEPALIVE_TIME:55000}
+spring.datasource.hikari.connection-timeout=${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT:25000}
+spring.datasource.url.tcpKeepAlive=true
+spring.datasource.url.socketTimeout=120000
 
 hibernate.second.level.cache.enabled=${HIBERNATE_SECOND_LEVEL_CACHE_ENABLED}
 
