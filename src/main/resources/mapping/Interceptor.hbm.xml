@@ -16,7 +16,9 @@
         <version name="version" type="integer" column="version"/>
         <property name="name" type="string" column="name"/>
         <property name="typeName" type="string" column="type_name"/>
-        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="naturalId" type="java.math.BigInteger">
+            <column name="natural_id" sql-type="bigint"/>
+        </property>
         <property name="description" type="string" column="description"/>
         <property name="transportName" type="string" column="transport_name"/>
         <property name="active" type="java.lang.Boolean" column="active"/>

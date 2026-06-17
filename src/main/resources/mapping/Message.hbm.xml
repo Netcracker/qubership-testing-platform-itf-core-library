@@ -9,7 +9,9 @@
             <column name="id" sql-type="bigint"/>
             <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
         </id>
-        <property name="naturalId" type="string" column="natural_id" lazy="true"/>
+        <property name="naturalId" type="java.math.BigInteger">
+            <column name="natural_id" sql-type="bigint"/>
+        </property>
         <property name="text" type="text" lazy="true"/>
         <map name="headers" lazy="false" table="mb_message_headers">
             <key>

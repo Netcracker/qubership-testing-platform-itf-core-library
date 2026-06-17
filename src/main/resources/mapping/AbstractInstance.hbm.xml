@@ -14,7 +14,9 @@
         <discriminator column="type" type="string"/>
         <!--TODO <version name="version" type="integer" column="version"/>-->
         <property name="name" type="string" column="name"/>
-        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="naturalId" type="java.math.BigInteger">
+            <column name="natural_id" sql-type="bigint"/>
+        </property>
         <!--Immutable section ends-->
 
         <property name="status" column="status">

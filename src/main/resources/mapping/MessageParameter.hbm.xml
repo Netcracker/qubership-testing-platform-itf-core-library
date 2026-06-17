@@ -9,7 +9,9 @@
             <column name="id" sql-type="bigint"/>
             <generator class="org.qubership.automation.itf.core.util.generator.id.UniqueIdGenerator"/>
         </id>
-        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="naturalId" type="java.math.BigInteger">
+            <column name="natural_id" sql-type="bigint"/>
+        </property>
         <property name="paramName" type="string" column="param_name"/>
         <property name="multiple" type="boolean"/>
         <many-to-one name="parent" class="org.qubership.automation.itf.core.model.jpa.context.SpContext" lazy="proxy">
