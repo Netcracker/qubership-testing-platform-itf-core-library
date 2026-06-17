@@ -139,7 +139,9 @@
         </property>
         <property name="duration" type="java.lang.Long" column="duration"/>
         <property name="client" type="string" column="client"/>
-        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="naturalId" type="java.math.BigInteger">
+            <column name="natural_id" sql-type="bigint"/>
+        </property>
         <property name="partNum" type="java.lang.Integer" column="part_num"/>
     </class>
 </hibernate-mapping>
