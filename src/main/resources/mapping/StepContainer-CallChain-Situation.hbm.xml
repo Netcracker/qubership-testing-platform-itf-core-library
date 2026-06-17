@@ -14,7 +14,9 @@
         <version name="version" type="integer" column="version"/>
         <property name="name" type="string" column="name"/>
         <property name="description" type="string" column="description"/>
-        <property name="naturalId" type="string" column="natural_id"/>
+        <property name="naturalId" type="java.math.BigInteger">
+            <column name="natural_id" sql-type="bigint"/>
+        </property>
 
         <joined-subclass name="org.qubership.automation.itf.core.model.jpa.callchain.CallChain" table="mb_chain"
                          lazy="false">

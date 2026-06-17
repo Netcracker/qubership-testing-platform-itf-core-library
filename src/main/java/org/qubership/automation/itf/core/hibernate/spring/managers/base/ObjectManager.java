@@ -36,7 +36,7 @@ public interface ObjectManager<T extends Storable> {
 
     T getById(@Nonnull Object id);
 
-    Collection<? extends T> getByNatureId(@Nonnull Object id, Object projectId);
+    Collection<? extends T> getByNatureId(@Nonnull BigInteger id, Object projectId);
 
     Collection<? extends T> getAllByParentId(@Nonnull Object id);
 

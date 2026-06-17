@@ -30,5 +30,5 @@ public interface RootRepository<T extends Storable> extends JpaRepository<T, Big
 
     List<T> findByNameContainingIgnoreCase(String name);
 
-    List<T> findByNaturalId(String naturalId);
+    List<T> findByNaturalId(BigInteger naturalId);
 }

@@ -134,8 +134,8 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
     }
 
     @Override
-    public Collection<? extends T> getByNatureId(@Nonnull Object id, @Nonnull Object projectId) {
-        return repository.findByNaturalId(id.toString());
+    public Collection<? extends T> getByNatureId(@Nonnull BigInteger id, @Nonnull Object projectId) {
+        return repository.findByNaturalId(id);
     }
 
     @Override
@@ -589,7 +589,7 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
         }
 
         @Override
-        public List<T> findByNaturalId(String naturalId) {
+        public List<T> findByNaturalId(BigInteger naturalId) {
             return rootRepository.findByNaturalId(naturalId);
         }
 

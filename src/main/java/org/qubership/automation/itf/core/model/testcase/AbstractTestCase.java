@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.testcase;
 
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -53,7 +54,7 @@ public abstract class AbstractTestCase extends LabeledStorable implements TestCa
         HashSet<DataSetList> result = new HashSet<>();
         for (String natureId : compatibleDataSetLists) {
             try {
-                result.addAll(dsMan.getByNatureId(natureId, projectId));
+                result.addAll(dsMan.getByNatureId(new BigInteger(natureId), projectId));
             } catch (Throwable th) {
                 // Silently ignore now; may be thrown later
                 throwable = th;

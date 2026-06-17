@@ -111,7 +111,7 @@ public class CommonHibernateConfiguration {
      * Also this bean uses by JobRunner in atp-itf-reporting service for scheduled job which update ITF contexts
      * statuses to STOPPED after some time (configured in properties)
      */
-    @Bean(name = "lockProvider")
+    @Bean(name = "jdbcLockProvider")
     public LockProvider getLockProvider(DataSource dataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource);
