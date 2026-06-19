@@ -113,7 +113,7 @@
                 </index>
                 <one-to-many class="org.qubership.automation.itf.core.model.jpa.step.Step"/>
             </list>
-            <map name="keysToRegenerate" lazy="true" table="mb_situation_keys_to_regenerate">
+            <map name="keysToRegenerate" lazy="false" table="mb_situation_keys_to_regenerate">
                 <cache usage="read-write" region="keysToRegenerateCache"/>
                 <key>
                     <column name="parent_id" sql-type="bigint"/>
