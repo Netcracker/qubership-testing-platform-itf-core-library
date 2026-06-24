@@ -39,6 +39,9 @@ import com.hazelcast.config.EvictionPolicy;
 import com.hazelcast.config.MaxSizePolicy;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.eureka.one.EurekaOneDiscoveryStrategyFactory;
+import com.netflix.discovery.EurekaClient;
+import com.netflix.discovery.shared.transport.jersey.TransportClientFactories;
 
 @Configuration
 @ConditionalOnProperty(name = "hibernate.second.level.cache.enabled", havingValue = "true")
@@ -57,10 +60,12 @@ public class HazelcastInstanceConfig {
      * @return Config object
      */
     @Bean(name = "instanceConfig")
-    public Config getConfig() {
-        LOGGER.info("🔵 ENTERING getConfig method");
+    public Config getConfig(EurekaClient eurekaClient, TransportClientFactories clientFactories) {
+        EurekaOneDiscoveryStrategyFactory.setEurekaClient(eurekaClient);
+        EurekaOneDiscoveryStrategyFactory.setTransportClientFactories(clientFactories);
         Config config = new Config();
         config.setInstanceName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
+        config.setClusterName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_EUREKA_CONFIG_NAME.stringValue());
         if (hazelcastCacheEnabled) {
             config.setProperty("hazelcast.phone.home.enabled", "false");
             config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
@@ -76,14 +81,11 @@ public class HazelcastInstanceConfig {
             eurekaConfig.setProperty("name",
                     HIBERNATE_CACHE_HAZELCAST_INSTANCE_EUREKA_CONFIG_NAME.stringValue());
             eurekaConfig.setProperty("serviceUrl.default", eurekaUrl);
+            eurekaConfig.setProperty("use-metadata-for-host-and-port", "true");
         } else {
             config.setClusterName("local-itf-hazelcast-cluster");
         }
 
-        return addBigCacheConfigs(config);
-    }
-
-    public static Config addBigCacheConfigs(Config config) {
         config.addCacheConfig(
                 initBigRegionCache("projectsCache", 300, 12, TimeUnit.HOURS));
 
@@ -149,23 +151,13 @@ public class HazelcastInstanceConfig {
 
     @Bean(name = "hazelcastCacheInstance")
     public HazelcastInstance getHazelcastInstance(@Qualifier("instanceConfig") Config config) {
-        LOGGER.info("🔵 ENTERING getHazelcastInstance method");
-        try {
-            LOGGER.info("🔵 About to create HazelcastInstance with config: {}", config);
-            HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance(config);
-            LOGGER.info("✅ HazelcastInstance bean created with name 'hazelcastCacheInstance' and instance name '{}'",
-                    hazelcastInstance.getName());
-            return hazelcastInstance;
-        } catch (Exception e) {
-            LOGGER.error("❌ FAILED to create HazelcastInstance", e);
-            throw e; // Re-throw the exception, in order Spring to see it
-        }
+        return Hazelcast.newHazelcastInstance(config);
     }
 
-    private static CacheSimpleConfig initBigRegionCache(String cacheName,
-                                                        int cacheSize,
-                                                        int durationAmount,
-                                                        TimeUnit durationTimeUnit) {
+    private CacheSimpleConfig initBigRegionCache(String cacheName,
+                                                 int cacheSize,
+                                                 int durationAmount,
+                                                 TimeUnit durationTimeUnit) {
         EvictionConfig evictionConfig = new EvictionConfig();
         evictionConfig.setEvictionPolicy(EvictionPolicy.LRU);
         evictionConfig.setMaxSizePolicy(MaxSizePolicy.ENTRY_COUNT);
