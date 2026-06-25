@@ -60,9 +60,7 @@ public class HazelcastInstanceConfig {
      * @return Config object
      */
     @Bean(name = "instanceConfig")
-    public Config getConfig(EurekaClient eurekaClient, TransportClientFactories clientFactories) {
-        EurekaOneDiscoveryStrategyFactory.setEurekaClient(eurekaClient);
-        EurekaOneDiscoveryStrategyFactory.setTransportClientFactories(clientFactories);
+    public Config getConfig() {
         Config config = new Config();
         config.setInstanceName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
         config.setClusterName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_EUREKA_CONFIG_NAME.stringValue());
@@ -81,7 +79,6 @@ public class HazelcastInstanceConfig {
             eurekaConfig.setProperty("name",
                     HIBERNATE_CACHE_HAZELCAST_INSTANCE_EUREKA_CONFIG_NAME.stringValue());
             eurekaConfig.setProperty("serviceUrl.default", eurekaUrl);
-            eurekaConfig.setProperty("use-metadata-for-host-and-port", "true");
         } else {
             config.setClusterName("local-itf-hazelcast-cluster");
         }
