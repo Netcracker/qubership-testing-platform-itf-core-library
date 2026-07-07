@@ -31,7 +31,7 @@ import com.google.gson.JsonParser;
 
 public class ExtendableImpl extends AbstractStorable implements Extendable, Serializable {
     private static final long serialVersionUID = 20240812L;
-    private Set<Extension> extensions = Sets.newHashSetWithExpectedSize(5);
+    private final transient Set<Extension> extensions = Sets.newHashSetWithExpectedSize(5);
 
     @Override
     public boolean extend(Extension extension) {
@@ -76,7 +76,7 @@ public class ExtendableImpl extends AbstractStorable implements Extendable, Seri
                 } catch (ClassNotFoundException e) {
                     LOGGER.warn("Cannot read extension - class not found {}", className);
                 } catch (Exception e) {
-                    LOGGER.error("Cannot read extension - {}; runtime exception: {}", className, e);
+                    LOGGER.error("Cannot read extension - {}; runtime exception:", className, e);
                 }
             }
         }
