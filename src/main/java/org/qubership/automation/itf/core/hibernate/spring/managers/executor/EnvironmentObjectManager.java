@@ -33,6 +33,7 @@ import org.qubership.automation.itf.core.hibernate.spring.managers.custom.EnvCon
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.EnvironmentManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.SearchByParameterAndProjectIdManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.EnvironmentRepository;
+import org.qubership.automation.itf.core.model.projection.IdNameCouple;
 import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.environment.Environment;
 import org.qubership.automation.itf.core.model.jpa.report.LinkCollectorConfiguration;
@@ -178,6 +179,10 @@ public class EnvironmentObjectManager extends AbstractObjectManager<Environment,
     @Override
     public List<Object[]> findDuplicateConfigurationBySystemServer(BigInteger projectId) {
         return environmentRepository.findDuplicateConfigurationBySystemServer(projectId);
+    }
+
+    public List<IdNameCouple> getIdNamePairEnvByTriggerId(BigInteger triggerId) {
+        return environmentRepository.getIdNamePairEnvByTriggerId(triggerId);
     }
 
     @Override
