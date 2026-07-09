@@ -16,9 +16,7 @@
         <property name="name" type="string" column="name"/>
         <property name="description" type="string" column="description"/>
 
-        <property name="naturalId" type="java.math.BigInteger">
-            <column name="natural_id" sql-type="bigint"/>
-        </property>
+        <property name="naturalId" type="string" column="natural_id"/>
 
         <!--Immutable section ends-->
         <property name="prefix" type="string"/>

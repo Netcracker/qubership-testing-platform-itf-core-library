@@ -11,9 +11,7 @@
         </id>
         <discriminator column="type" type="string"/>
         <property name="name" type="string" column="name"/>
-        <property name="naturalId" type="java.math.BigInteger">
-            <column name="natural_id" sql-type="bigint"/>
-        </property>
+        <property name="naturalId" type="string" column="natural_id"/>
         <!--Immutable section ends-->
 
         <property name="date" type="date" column="data"/>
