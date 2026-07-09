@@ -16,7 +16,6 @@
 
 package org.qubership.automation.itf.core.model.testcase;
 
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
