@@ -250,7 +250,7 @@ public class Situation extends LabeledStorable implements StepContainer, Trigger
 
     @ProduceNewObject
     @Override
-    public BigInteger getNaturalId() {
+    public String getNaturalId() {
         return super.getNaturalId();
     }
 

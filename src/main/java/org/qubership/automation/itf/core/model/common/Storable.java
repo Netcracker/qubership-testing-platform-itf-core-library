@@ -61,9 +61,9 @@ public interface Storable extends Named, Identified<BigInteger>, Prefixed, Optim
     void setDescription(String description);
 
     @JsonIgnore
-    BigInteger getNaturalId();
+    String getNaturalId();
 
-    void setNaturalId(BigInteger id);
+    void setNaturalId(String id);
 
     /**
      * While copying some types of objects we should set their statuses

@@ -221,7 +221,7 @@ public class System extends AbstractEciConfigurable
 
     @Override
     @ProduceNewObject
-    public BigInteger getNaturalId() {
+    public String getNaturalId() {
         return super.getNaturalId();
     }
 

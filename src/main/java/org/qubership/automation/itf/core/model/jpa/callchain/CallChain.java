@@ -162,7 +162,7 @@ public class CallChain extends AbstractTestCase {
 
     @ProduceNewObject
     @Override
-    public BigInteger getNaturalId() {
+    public String getNaturalId() {
         return super.getNaturalId();
     }
 

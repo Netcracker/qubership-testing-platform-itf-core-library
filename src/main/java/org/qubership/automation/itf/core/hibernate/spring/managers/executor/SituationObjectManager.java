@@ -279,7 +279,7 @@ public class SituationObjectManager extends AbstractObjectManager<Situation, Sit
         if (cachedTemplateCopy == null) {
             if (template.getNaturalId() != null) {
                 cachedTemplateCopy = (Template) OriginalCopyMap.getInstance()
-                                .get(sessionId, new BigInteger(template.getNaturalId().toString()));
+                                .get(sessionId, new BigInteger(template.getNaturalId()));
             }
             if (cachedTemplateCopy == null) {
                 try {
