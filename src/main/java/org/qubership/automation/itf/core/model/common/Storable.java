@@ -103,4 +103,15 @@ public interface Storable extends Named, Identified<BigInteger>, Prefixed, Optim
     Storable getExtendsParameters();
 
     void upStorableVersion();
+
+    /**
+     * Compose String representation of Storable object ID (for UI purposes).
+     * Implementations can override it in specific cases.
+     *
+     * @return String representation of Storable object ID.
+     */
+    default String returnDisplayId() {
+        return getID() == null ? "" : getID().toString();
+    }
+
 }
