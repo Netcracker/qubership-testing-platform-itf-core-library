@@ -1,4 +1,4 @@
-<RIGatewayRequest xmlns="http://virginmedia/schema/RIGateway/1/0">
+<RIGatewayRequest xmlns="http://example.com/schema/RIGateway/1/0">
     <message>
         <releasePremise>
             <clientCorrelationId>9151733298913788090</clientCorrelationId>
@@ -88,7 +88,6 @@
             </manageTechnology>
         </releasePremise>
     </message>
-
     <message>
         <releasePremise>
             <clientCorrelationId>800800800800</clientCorrelationId>
