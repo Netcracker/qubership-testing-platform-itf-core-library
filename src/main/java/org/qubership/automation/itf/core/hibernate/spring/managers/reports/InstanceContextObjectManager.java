@@ -142,7 +142,8 @@ public class InstanceContextObjectManager extends AbstractObjectManager<Instance
             tcContextBriefInfo.setIniname((String) initiatorInfo.get(0)[0]);
             tcContextBriefInfo.setInitiatortype((String) initiatorInfo.get(0)[1]);
             tcContextBriefInfo.setSituationId(BigInteger.valueOf((Long) initiatorInfo.get(0)[2]));
-            tcContextBriefInfo.setChainId(BigInteger.valueOf((Long) initiatorInfo.get(0)[3]));
+            tcContextBriefInfo.setChainId(Objects.isNull(initiatorInfo.get(0)[3])
+                    ? null : BigInteger.valueOf((Long) initiatorInfo.get(0)[3]));
             tcContextBriefInfo.setExecutiondata((String) initiatorInfo.get(0)[4]);
             tcContextBriefInfo.setOperationName((String) initiatorInfo.get(0)[5]);
             tcContextBriefInfo.setSystemName((String) initiatorInfo.get(0)[6]);
