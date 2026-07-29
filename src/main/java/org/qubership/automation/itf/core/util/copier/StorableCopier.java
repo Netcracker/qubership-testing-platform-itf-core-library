@@ -689,7 +689,7 @@ public class StorableCopier {
                         for (OperationParsingRule parsingRule : copyOperationOnStep.getOperationParsingRules()) {
                             for (ParsingRule sitParsingRule : sit.getParsingRules()) {
                                 if (parsingRule.getNaturalId() != null && sitParsingRule.getID().toString()
-                                        .equals(parsingRule.getNaturalId().toString())) {
+                                        .equals(parsingRule.getNaturalId())) {
                                     parsingRulesForSet.add(parsingRule);
                                 }
                             }

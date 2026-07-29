@@ -88,18 +88,7 @@ public enum ParsingRuleType {
                     .multiple(parsingRule.getMultiple())
                     .setAutosave(parsingRule.getAutosave());
             Element element = (Element) message.getContent().get();
-            /*
-            List<Namespace> namespaces = new ArrayList<>();
-            namespaces.add(Namespace.NO_NAMESPACE);
-            if (!(element.getNamespace().getPrefix().equals(Namespace.NO_NAMESPACE.getPrefix())))
-                namespaces.add(element.getNamespace());
-            namespaces.addAll(element.getAdditionalNamespaces());
-            */
             XPathExpression<Object> xpathExpr = XPathFactory.instance().compile(parsingRule.getParsedExpression());
-            /*
-            XPathExpression<Object> xpathExpr = XPathFactory.instance().compile(parsingRule.getExpression(),
-                    Filters.fpassthrough(), null, namespaces);
-            */
             List evaluate;
             try {
                 evaluate = xpathExpr.evaluate(element);

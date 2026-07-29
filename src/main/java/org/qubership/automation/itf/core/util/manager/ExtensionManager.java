@@ -27,11 +27,10 @@ import org.qubership.automation.itf.core.model.extension.Extension;
 import org.qubership.automation.itf.core.util.exception.ExtensionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.InvocationHandler;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.InvocationHandler;
+import org.springframework.cglib.proxy.MethodInterceptor;
+import org.springframework.cglib.proxy.MethodProxy;
 
 @SuppressWarnings("unchecked")
 public class ExtensionManager implements Serializable {

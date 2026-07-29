@@ -135,12 +135,12 @@ public class JsonStorable extends JsonContext implements Storable {
     }
 
     @Override
-    public BigInteger getNaturalId() {
+    public String getNaturalId() {
         return null;
     }
 
     @Override
-    public void setNaturalId(BigInteger id) {
+    public void setNaturalId(String id) {
     }
 
     @Override

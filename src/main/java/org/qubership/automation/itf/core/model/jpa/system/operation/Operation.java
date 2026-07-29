@@ -123,7 +123,7 @@ public class Operation extends AbstractStorable
 
     @Override
     @ProduceNewObject
-    public BigInteger getNaturalId() {
+    public String getNaturalId() {
         return super.getNaturalId();
     }
 

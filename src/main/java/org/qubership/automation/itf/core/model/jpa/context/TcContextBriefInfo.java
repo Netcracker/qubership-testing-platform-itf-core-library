@@ -143,7 +143,7 @@ public class TcContextBriefInfo extends AbstractStorable {
 
     @ProduceNewObject
     @Override
-    public BigInteger getNaturalId() {
+    public String getNaturalId() {
         return super.getNaturalId();
     }
 }

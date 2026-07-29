@@ -102,7 +102,7 @@ public abstract class AbstractParsingRule<T extends ParsingRuleProvider>
      */
     @Override
     @ProduceNewObject
-    public BigInteger getNaturalId() {
+    public String getNaturalId() {
         return super.getNaturalId();
     }
 

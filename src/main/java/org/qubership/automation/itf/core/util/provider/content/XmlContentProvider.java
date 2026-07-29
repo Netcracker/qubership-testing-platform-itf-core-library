@@ -16,10 +16,9 @@
 
 package org.qubership.automation.itf.core.util.provider.content;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.io.Reader;
+import java.io.StringReader;
 
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -40,9 +39,9 @@ public class XmlContentProvider implements MessageContentProvider<Element> {
         SAXBuilder builder;
         builder = new SAXBuilder();
         builder.setIgnoringBoundaryWhitespace(true);
-        InputStream stream = new ByteArrayInputStream(message.getText().getBytes(StandardCharsets.UTF_8));
+        Reader reader = new StringReader(message.getText());
         try {
-            return new XmlContent(builder.build(stream).getRootElement());
+            return new XmlContent(builder.build(reader).getRootElement());
         } catch (JDOMException e) {
             throw new ContentException("Cannot parse XML in message", e);
         } catch (IOException e) {

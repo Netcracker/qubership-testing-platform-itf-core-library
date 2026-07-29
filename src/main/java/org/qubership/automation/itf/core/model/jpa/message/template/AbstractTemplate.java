@@ -108,7 +108,7 @@ public abstract class AbstractTemplate<T extends TemplateProvider>
 
     @Override
     @ProduceNewObject
-    public BigInteger getNaturalId() {
+    public String getNaturalId() {
         return super.getNaturalId();
     }
 

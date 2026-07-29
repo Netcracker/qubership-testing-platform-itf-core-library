@@ -23,9 +23,7 @@
             </key>
             <element column="labels" type="string"/>
         </bag>
-        <property name="naturalId" type="java.math.BigInteger">
-            <column name="natural_id" sql-type="bigint"/>
-        </property>
+        <property name="naturalId" type="string" column="natural_id"/>
         <property name="projectId" type="java.math.BigInteger">
             <column name="project_id" sql-type="bigint"/>
         </property>

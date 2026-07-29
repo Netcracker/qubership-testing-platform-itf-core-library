@@ -58,7 +58,7 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
 
     private String prefix;
     private String description;
-    private BigInteger naturalId;
+    private String naturalId;
     private Map<String, String> storableProp;
 
     @Override
@@ -184,12 +184,12 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
     }
 
     @Override
-    public BigInteger getNaturalId() {
+    public String getNaturalId() {
         return naturalId;
     }
 
     @Override
-    public void setNaturalId(BigInteger id) {
+    public void setNaturalId(String id) {
         this.naturalId = id;
     }
 
