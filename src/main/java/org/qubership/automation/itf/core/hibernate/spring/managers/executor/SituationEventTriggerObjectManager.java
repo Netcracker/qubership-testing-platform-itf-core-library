@@ -76,7 +76,7 @@ public class SituationEventTriggerObjectManager extends EventTriggerObjectManage
                     continue;
                 }
                 EventTriggerBriefInfo briefInfo = new EventTriggerBriefInfo(
-                        (BigInteger) entry[0],
+                        BigInteger.valueOf((Long) entry[0]),
                         SituationEventTrigger.TYPE);
                 if ("ACTIVE".equals(entry[1].toString())) {
                     triggersToReactivate.add(briefInfo);
