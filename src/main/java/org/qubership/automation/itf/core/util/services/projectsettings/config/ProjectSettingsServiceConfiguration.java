@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 public class ProjectSettingsServiceConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(ProjectSettingsService.class)
+    @ConditionalOnMissingBean(name = "projectSettingsService")
     public ProjectSettingsService projectSettingsService() {
         return new ProjectSettingsService();
     }
