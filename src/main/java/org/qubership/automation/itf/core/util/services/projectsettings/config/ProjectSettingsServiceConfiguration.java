@@ -16,7 +16,6 @@
 
 package org.qubership.automation.itf.core.util.services.projectsettings.config;
 
-import org.qubership.automation.itf.core.util.services.projectsettings.AbstractProjectSettingsService;
 import org.qubership.automation.itf.core.util.services.projectsettings.ProjectSettingsService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 public class ProjectSettingsServiceConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(AbstractProjectSettingsService.class)
+    @ConditionalOnMissingBean(ProjectSettingsService.class)
     public ProjectSettingsService projectSettingsService() {
         return new ProjectSettingsService();
     }
