@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package org.qubership.automation.itf.core.util.services.projectsettings.config;
 
-import org.qubership.automation.itf.core.util.services.projectsettings.AbstractProjectSettingsService;
 import org.qubership.automation.itf.core.util.services.projectsettings.ProjectSettingsService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 public class ProjectSettingsServiceConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(AbstractProjectSettingsService.class)
+    @ConditionalOnMissingBean(name = "projectSettingsService")
     public ProjectSettingsService projectSettingsService() {
         return new ProjectSettingsService();
     }
