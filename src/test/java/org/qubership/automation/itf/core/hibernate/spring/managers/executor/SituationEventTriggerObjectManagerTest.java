@@ -32,8 +32,6 @@ import org.springframework.transaction.TransactionDefinition;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class SituationEventTriggerObjectManagerTest {
 
-    private static final BigInteger TRIGGER_ID = BigInteger.valueOf(100L);
-    private static final BigInteger PROJECT_ID = BigInteger.valueOf(200L);
     private static final BigInteger SYSTEM_ID = BigInteger.valueOf(300L);
 
     @Mock
@@ -73,9 +71,9 @@ class SituationEventTriggerObjectManagerTest {
     void getTriggersBriefInfoBySystem_ShouldSeparateActiveAndInactiveTriggers() {
         // given
         List<Object[]> dbResult = new ArrayList<>();
-        dbResult.add(new Object[]{BigInteger.valueOf(1L), "ACTIVE"});
-        dbResult.add(new Object[]{BigInteger.valueOf(2L), "INACTIVE"});
-        dbResult.add(new Object[]{BigInteger.valueOf(3L), "ACTIVE"});
+        dbResult.add(new Object[]{1L, "ACTIVE"});
+        dbResult.add(new Object[]{2L, "INACTIVE"});
+        dbResult.add(new Object[]{3L, "ACTIVE"});
 
         when(repository.getTriggersBriefInfoBySystemId(SYSTEM_ID)).thenReturn(dbResult);
 
@@ -102,8 +100,8 @@ class SituationEventTriggerObjectManagerTest {
     void getTriggersBriefInfoBySystem_WhenOnlyActiveTriggers_ShouldReturnEmptyToDeactivate() {
         // given
         List<Object[]> dbResult = new ArrayList<>();
-        dbResult.add(new Object[]{BigInteger.valueOf(1L), "ACTIVE"});
-        dbResult.add(new Object[]{BigInteger.valueOf(2L), "ACTIVE"});
+        dbResult.add(new Object[]{1L, "ACTIVE"});
+        dbResult.add(new Object[]{2L, "ACTIVE"});
 
         when(repository.getTriggersBriefInfoBySystemId(SYSTEM_ID)).thenReturn(dbResult);
 
@@ -120,8 +118,8 @@ class SituationEventTriggerObjectManagerTest {
     void getTriggersBriefInfoBySystem_WhenOnlyInactiveTriggers_ShouldReturnEmptyToReactivate() {
         // given
         List<Object[]> dbResult = new ArrayList<>();
-        dbResult.add(new Object[]{BigInteger.valueOf(1L), "INACTIVE"});
-        dbResult.add(new Object[]{BigInteger.valueOf(2L), "INACTIVE"});
+        dbResult.add(new Object[]{1L, "INACTIVE"});
+        dbResult.add(new Object[]{2L, "INACTIVE"});
 
         when(repository.getTriggersBriefInfoBySystemId(SYSTEM_ID)).thenReturn(dbResult);
 
@@ -166,9 +164,9 @@ class SituationEventTriggerObjectManagerTest {
     void getTriggersBriefInfoBySystem_WhenEntriesHaveInsufficientLength_ShouldSkipThem() {
         // given
         List<Object[]> dbResult = new ArrayList<>();
-        dbResult.add(new Object[]{BigInteger.valueOf(1L), "ACTIVE"});  // ok
-        dbResult.add(new Object[]{BigInteger.valueOf(2L)});             // insufficient
-        dbResult.add(new Object[]{BigInteger.valueOf(3L), "INACTIVE"}); // ok
+        dbResult.add(new Object[]{1L, "ACTIVE"});  // ok
+        dbResult.add(new Object[]{2L});             // insufficient
+        dbResult.add(new Object[]{3L, "INACTIVE"}); // ok
 
         when(repository.getTriggersBriefInfoBySystemId(SYSTEM_ID)).thenReturn(dbResult);
 
@@ -185,7 +183,7 @@ class SituationEventTriggerObjectManagerTest {
     void getTriggersBriefInfoBySystem_ShouldSetCorrectTriggerType() {
         // given
         List<Object[]> dbResult = new ArrayList<>();
-        dbResult.add(new Object[]{BigInteger.valueOf(1L), "ACTIVE"});
+        dbResult.add(new Object[]{1L, "ACTIVE"});
 
         when(repository.getTriggersBriefInfoBySystemId(SYSTEM_ID)).thenReturn(dbResult);
 
