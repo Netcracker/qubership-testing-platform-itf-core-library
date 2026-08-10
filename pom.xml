@@ -19,7 +19,7 @@
 
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>5.1.32-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -38,7 +38,7 @@
         <lombok.version>1.18.44</lombok.version>
 
         <atp.common.version>1.0.0</atp.common.version>
-        <atp.auth.version>2.0.1-SNAPSHOT</atp.auth.version>
+        <atp.auth.version>2.0.1</atp.auth.version>
         <atp.integration.version>1.0.0</atp.integration.version>
         <javers.version>7.9.0</javers.version>
     </properties>
@@ -494,12 +494,12 @@
             <version>${atp.integration.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>mockito-core</artifactId>
                     <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>spring-cloud-commons</artifactId>
                     <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-commons</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.qubership.atp.common</groupId>
@@ -510,8 +510,8 @@
                     <artifactId>log4j</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>snappy-java</artifactId>
                     <groupId>org.xerial.snappy</groupId>
+                    <artifactId>snappy-java</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -585,6 +585,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -707,6 +708,12 @@
             <groupId>org.skyscreamer</groupId>
             <artifactId>jsonassert</artifactId>
             <version>1.5.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <version>1.1.6</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
