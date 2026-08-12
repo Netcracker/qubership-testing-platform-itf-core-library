@@ -31,6 +31,8 @@ public class StorableDescriptor implements Serializable {
 
     private Object id;
     private String name;
+    private Object envId;
+    private String envName;
     private UUID projectUuid;
     private BigInteger projectId;
 
@@ -58,6 +60,22 @@ public class StorableDescriptor implements Serializable {
     @Nullable
     public String getName() {
         return name;
+    }
+
+    public Object getEnvId() {
+        return envId;
+    }
+
+    public void setEnvId(Object envId) {
+        this.envId = envId;
+    }
+
+    public String getEnvName() {
+        return envName;
+    }
+
+    public void setEnvName(String envName) {
+        this.envName = envName;
     }
 
     @Nonnull

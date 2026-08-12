@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.SearchRepository;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.StorableRepository;
+import org.qubership.automation.itf.core.model.projection.IdNameCouple;
 import org.qubership.automation.itf.core.model.jpa.environment.Environment;
 import org.qubership.automation.itf.core.model.jpa.report.LinkCollectorConfiguration;
 import org.springframework.data.jpa.repository.Modifying;
@@ -170,5 +171,13 @@ public interface EnvironmentRepository
             + " group by systems, servers "
             + " having count(*) > 1)")
     List<Object[]> findDuplicateConfigurationBySystemServer(@Param("projectId") BigInteger projectId);
+
+    @Query(value = "select mb_env.id as id, mb_env.name as name " +
+            "from mb_configuration inbound " +
+            " inner join mb_configuration trig ON (inbound.id = trig.parent_conf_id and trig.id = :triggerId) " +
+            " inner join mb_configuration transport ON (inbound.transport_id = transport.id) " +
+            " inner join mb_env_inbound env_inbound ON (env_inbound.servers = inbound.parent_in_server_id and env_inbound.systems = transport.parent_system_id) " +
+            " inner join mb_env ON (env_inbound.environment_id = mb_env.id)", nativeQuery = true)
+    List<IdNameCouple> getIdNamePairEnvByTriggerId(@Param("triggerId") BigInteger triggerId);
 
 }

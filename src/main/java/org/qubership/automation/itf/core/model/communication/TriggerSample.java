@@ -34,6 +34,9 @@ public class TriggerSample {
     private BigInteger triggerId;
     private String triggerName;
     private String triggerTypeName;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private BigInteger envId;
+    private String envName;
     private String transportName;
     private String serverName;
     private TriggerState triggerState;
