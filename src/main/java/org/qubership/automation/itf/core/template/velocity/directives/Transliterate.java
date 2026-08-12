@@ -58,7 +58,7 @@ public class Transliterate extends Directive {
             Transliterator transliterator = Transliterator.getInstance(fromTo);
             return transliterator.transliterate(content);
         } catch (Exception e) {
-            rsvc.getLog().error("Unable to transliterate content. Cause: " + e.getMessage());
+            rsvc.getLog().error("Unable to transliterate content. Cause: {}", e.getMessage());
         }
         return "#err";
     }

@@ -68,7 +68,7 @@ public class AddDate extends Directive {
         date = getDate(currentDate, date, currentFormatter);
         if (date != null) {
             String addedTime = StringUtils.EMPTY;
-            String dataString = StringUtils.EMPTY;
+            String dataString = currentDate;
             for (int i = 1; i < node.jjtGetNumChildren(); i++) {
                 if (node.jjtGetChild(i) != null) {
                     addedTime = String.valueOf(node.jjtGetChild(i).value(internalContextAdapter));

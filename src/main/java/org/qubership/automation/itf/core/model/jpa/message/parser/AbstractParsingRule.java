@@ -57,6 +57,9 @@ public abstract class AbstractParsingRule<T extends ParsingRuleProvider>
      * @param parent - System or Operation
      */
     public AbstractParsingRule(T parent) {
+        if (parent == null) {
+            throw new IllegalArgumentException("Parent should not be null");
+        }
         setParent(parent);
         setProjectId(parent.getProjectId());
         parent.returnParsingRules().add(this);
@@ -99,7 +102,7 @@ public abstract class AbstractParsingRule<T extends ParsingRuleProvider>
      */
     @Override
     @ProduceNewObject
-    public Object getNaturalId() {
+    public String getNaturalId() {
         return super.getNaturalId();
     }
 

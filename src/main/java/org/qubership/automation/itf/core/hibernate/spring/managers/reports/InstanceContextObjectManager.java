@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.reports.I
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.context.TcContextBriefInfo;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,7 +40,6 @@ public class InstanceContextObjectManager extends AbstractObjectManager<Instance
 
     private final InstanceContextRepository instanceContextRepository;
 
-    @Autowired
     public InstanceContextObjectManager(InstanceContextRepository repository) {
         super(InstanceContext.class, repository);
         instanceContextRepository = repository;
@@ -143,12 +141,15 @@ public class InstanceContextObjectManager extends AbstractObjectManager<Instance
         if (!(Objects.isNull(initiatorInfo) || initiatorInfo.isEmpty())) {
             tcContextBriefInfo.setIniname((String) initiatorInfo.get(0)[0]);
             tcContextBriefInfo.setInitiatortype((String) initiatorInfo.get(0)[1]);
-            tcContextBriefInfo.setSituationId((BigInteger) initiatorInfo.get(0)[2]);
-            tcContextBriefInfo.setChainId((BigInteger) initiatorInfo.get(0)[3]);
+            tcContextBriefInfo.setSituationId(Objects.isNull(initiatorInfo.get(0)[2])
+                    ? null : BigInteger.valueOf((Long) initiatorInfo.get(0)[2]));
+            tcContextBriefInfo.setChainId(Objects.isNull(initiatorInfo.get(0)[3])
+                    ? null : BigInteger.valueOf((Long) initiatorInfo.get(0)[3]));
             tcContextBriefInfo.setExecutiondata((String) initiatorInfo.get(0)[4]);
             tcContextBriefInfo.setOperationName((String) initiatorInfo.get(0)[5]);
             tcContextBriefInfo.setSystemName((String) initiatorInfo.get(0)[6]);
-            tcContextBriefInfo.setSystemId((BigInteger) initiatorInfo.get(0)[7]);
+            tcContextBriefInfo.setSystemId(Objects.isNull(initiatorInfo.get(0)[7])
+                    ? null : BigInteger.valueOf((Long) initiatorInfo.get(0)[7]));
         }
         return tcContextBriefInfo;
     }

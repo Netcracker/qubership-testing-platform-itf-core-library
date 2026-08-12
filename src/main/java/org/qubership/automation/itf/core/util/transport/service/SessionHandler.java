@@ -19,8 +19,8 @@ package org.qubership.automation.itf.core.util.transport.service;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.qubership.automation.itf.core.util.constants.InstanceSettingsConstants.SESSION_HANDLER_PROCESS_TIMEOUT;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import org.qubership.automation.itf.core.model.jpa.message.Message;
 import org.qubership.automation.itf.core.util.config.Config;

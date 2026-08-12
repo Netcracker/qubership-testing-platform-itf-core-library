@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,15 +16,17 @@
 
 package org.qubership.automation.itf.core.util.descriptor;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.qubership.automation.itf.core.util.helper.Reflection;
 
 public class PropertyDescriptor implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -1115137482811099873L;
     private final boolean loadTemplate;
-    private boolean userSettings;
+    private final boolean userSettings;
     private final String shortName;
     private final String longName;
     private final String typeName;

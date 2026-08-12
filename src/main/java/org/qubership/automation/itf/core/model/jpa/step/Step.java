@@ -17,9 +17,10 @@
 package org.qubership.automation.itf.core.model.jpa.step;
 
 import java.beans.Transient;
+import java.math.BigInteger;
 import java.util.concurrent.TimeUnit;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Identified;
 import org.qubership.automation.itf.core.model.common.Named;
@@ -37,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = SituationStep.class, name = "SituationStep"),
         @JsonSubTypes.Type(value = EmbeddedStep.class, name = "EmbeddedStep")
 })
-public interface Step extends Storable, Named, Identified<Object>, OptimisticLockable<Object> {
+public interface Step extends Storable, Named, Identified<BigInteger>, OptimisticLockable<Object> {
     Mep getMep();
 
     String getUnit();

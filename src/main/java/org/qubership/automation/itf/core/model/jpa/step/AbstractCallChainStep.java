@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.qubership.automation.itf.core.model.condition.parameter.ConditionParameter;
 import org.qubership.automation.itf.core.model.jpa.callchain.CallChain;

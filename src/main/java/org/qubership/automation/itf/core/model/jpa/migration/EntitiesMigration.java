@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.model.jpa.migration;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

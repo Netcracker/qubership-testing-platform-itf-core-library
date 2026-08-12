@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.StorableInFolderObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.EnvConfigurationManager;
@@ -50,13 +48,13 @@ import org.qubership.automation.itf.core.model.usage.UsageInfo;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.Nonnull;
 
 @Service
 public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
@@ -73,7 +71,6 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
     /**
      * Constructor with related repositories.
      */
-    @Autowired
     public ServerObjectManager(ServerRepository repository, InboundTransportConfigurationRepository inbRep,
                                OutboundTransportConfigurationRepository outbRep,
                                EnvironmentRepository environmentRepository) {
@@ -119,8 +116,8 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
     @Override
     public Server create(Storable parent) {
         Folder<Server> actualParent = null;
-        if (parent instanceof StubContainer) {
-            actualParent = ((StubContainer) parent).getServers();
+        if (parent instanceof StubContainer container) {
+            actualParent = container.getServers();
         } else if (parent instanceof Folder) {
             Optional<Folder<Server>> serverFolder = ((Folder<? extends Storable>) parent).of(Server.class);
             if (serverFolder.isPresent()) {
@@ -155,7 +152,7 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
      */
     public OutboundTransportConfiguration getOutbound(Server server, System system, String type) {
         try {
-            return outboundTransportRepository.findOne((BigInteger) system.getID(), (BigInteger) server.getID(), type);
+            return outboundTransportRepository.findOne(system.getID(), server.getID(), type);
         } catch (Exception e) {
             LOGGER.error("Can't get outbound configuration for Server: {}, System {} and type '{}'", server, system,
                     type, e);
@@ -167,7 +164,7 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
      * Find outbound transport configurations under System + Server pair.
      */
     public Iterable<OutboundTransportConfiguration> getOutbounds(Server server, System system) {
-        return outboundTransportRepository.findAll((BigInteger) system.getID(), (BigInteger) server.getID());
+        return outboundTransportRepository.findAll(system.getID(), server.getID());
     }
 
     /**
@@ -175,25 +172,27 @@ public class ServerObjectManager extends AbstractObjectManager<Server, ServerHB>
      */
     public InboundTransportConfiguration getInbound(Server server,
                                                     TransportConfiguration configuration) {
-        return inboundTransportRepository.findOne((BigInteger) server.getID(), (BigInteger) configuration.getID());
+        return inboundTransportRepository.findOne(server.getID(), configuration.getID());
     }
 
     /**
      * Find inbound transport configurations under System + Server pair.
      */
     public Iterable<InboundTransportConfiguration> getInbounds(Server server, System system) {
-        return inboundTransportRepository.findAll((BigInteger) server.getID(), (BigInteger) system.getID());
+        return inboundTransportRepository.findAll(server.getID(), system.getID());
     }
 
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only Server objects are here")
     @Override
     public Collection<UsageInfo> findUsages(Storable storable) {
         Collection<UsageInfo> result = Lists.newArrayListWithExpectedSize(20);
-        Iterable<Environment> environments =
-                environmentRepository.findAll(QEnvironment.environment.outbound.containsValue((Server) storable));
-        addToUsages(result, "outbound", environments);
-        environments = environmentRepository.findAll(QEnvironment.environment.inbound.containsValue((Server) storable));
-        addToUsages(result, "inbound", environments);
+        if (storable instanceof Server server) {
+            Iterable<Environment> environments =
+                    environmentRepository.findAll(QEnvironment.environment.outbound.containsValue(server));
+            addToUsages(result, "outbound", environments);
+            environments = environmentRepository.findAll(QEnvironment.environment.inbound.containsValue(server));
+            addToUsages(result, "inbound", environments);
+        }
         return result;
     }
 

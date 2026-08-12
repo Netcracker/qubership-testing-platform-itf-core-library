@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.model.javers.history;
 import java.math.BigInteger;
 import java.util.Set;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import com.google.common.collect.Sets;
 import lombok.Getter;

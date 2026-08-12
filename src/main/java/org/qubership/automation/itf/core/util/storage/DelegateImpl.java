@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,16 +16,18 @@
 
 package org.qubership.automation.itf.core.util.storage;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-public class DelegateImpl implements StoreInformationDelegate<Object, Integer>, Serializable {
+public class DelegateImpl implements StoreInformationDelegate<BigInteger, Integer>, Serializable {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
-    private Object ID;
+    private BigInteger ID;
     private Integer version;
     private Map<Class, Object> additionalInformation;
 
@@ -33,23 +35,13 @@ public class DelegateImpl implements StoreInformationDelegate<Object, Integer>, 
     }
 
     @Override
-    public Object getID() {
+    public BigInteger getID() {
         return ID;
     }
 
     @Override
-    public void setID(Object id) {
-        if (id instanceof String) {
-            try {
-                this.ID = new BigInteger((String) id);
-            } catch (NumberFormatException e) {
-                this.ID = id;
-            }
-        } else if (id instanceof Long) {
-            this.ID = BigInteger.valueOf((long) id);
-        } else {
+    public void setID(BigInteger id) {
             this.ID = id;
-        }
     }
 
     @Override

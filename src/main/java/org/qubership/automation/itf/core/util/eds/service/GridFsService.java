@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ import org.qubership.automation.itf.core.util.eds.ExternalStorageService;
 import org.qubership.automation.itf.core.util.eds.configuration.ItfGridFsConfiguration;
 import org.qubership.automation.itf.core.util.eds.model.FileInfo;
 import org.qubership.automation.itf.core.util.eds.repository.ItfGridFsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
@@ -44,7 +43,6 @@ public class GridFsService implements ExternalStorageService {
 
     private final ItfGridFsRepository gridFsRepository;
 
-    @Autowired
     public GridFsService(@Qualifier("ItfGridFsRepository") ItfGridFsRepository gridFsRepository) {
         this.gridFsRepository = gridFsRepository;
     }

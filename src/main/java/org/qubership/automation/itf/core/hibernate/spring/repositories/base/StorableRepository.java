@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.base;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -24,9 +25,9 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface StorableRepository<T extends Storable> extends RootRepository<T> {
 
-    List<T> findByParentIDAndName(Object parentId, String name);
+    List<T> findByParentIDAndName(BigInteger parentId, String name);
 
-    List<T> findByParentID(Object parentId);
+    List<T> findByParentID(BigInteger parentId);
 
     List<T> findByParentName(String name);
 }

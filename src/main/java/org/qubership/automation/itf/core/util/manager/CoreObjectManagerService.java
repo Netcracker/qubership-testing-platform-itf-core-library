@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package org.qubership.automation.itf.core.util.manager;
 import org.qubership.automation.itf.core.hibernate.ManagerFactory;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
 import org.qubership.automation.itf.core.model.common.Storable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,7 +26,6 @@ public class CoreObjectManagerService {
 
     private ManagerFactory managerFactory;
 
-    @Autowired
     private CoreObjectManagerService(ManagerFactory managerFactory) {
         this.managerFactory = managerFactory;
     }
@@ -57,7 +55,7 @@ public class CoreObjectManagerService {
         if (toCast.isAssignableFrom(manager.getClass())) {
             return (T) manager;
         } else {
-            throw new IllegalArgumentException(String.format("Object manager %s is not of type %s",
+            throw new IllegalArgumentException("Object manager %s is not of type %s".formatted(
                     manager, toCast.getName()));
         }
     }

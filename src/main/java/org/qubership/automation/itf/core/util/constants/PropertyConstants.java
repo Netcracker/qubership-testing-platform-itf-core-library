@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,8 +30,9 @@ public interface PropertyConstants {
     interface Jms {
 
         String DESTINATION_TYPE_DESCRIPTION = "Queue or Topic";
-        String DESTINATION_DESCRIPTION = "For cluser:NCJMSServer_clust1/NCJMSModule!queue_xxx\n"
-                + "For non cluster:NCJMSModule!queue_xxx";
+        String DESTINATION_DESCRIPTION = """
+                For cluser:NCJMSServer_clust1/NCJMSModule!queue_xxx
+                For non cluster:NCJMSModule!queue_xxx""";
         String CONNECTION_FACTORY_DESCRIPTION = "jms_xxx_xxx";
         String INITIAL_CONTEXT_FACTORY_DESCRIPTION = "weblogic.jndi.WLInitialContextFactory";
         String ADDITIONAL_JNDI_PROPERTIES_DESCRIPTION = "aaa=bbb\nccc=ddd";

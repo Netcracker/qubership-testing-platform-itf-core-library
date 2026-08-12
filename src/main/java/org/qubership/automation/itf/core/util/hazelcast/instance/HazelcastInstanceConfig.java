@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -39,6 +39,9 @@ import com.hazelcast.config.EvictionPolicy;
 import com.hazelcast.config.MaxSizePolicy;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.eureka.one.EurekaOneDiscoveryStrategyFactory;
+import com.netflix.discovery.EurekaClient;
+import com.netflix.discovery.shared.transport.jersey.TransportClientFactories;
 
 @Configuration
 @ConditionalOnProperty(name = "hibernate.second.level.cache.enabled", havingValue = "true")
@@ -60,6 +63,7 @@ public class HazelcastInstanceConfig {
     public Config getConfig() {
         Config config = new Config();
         config.setInstanceName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_NAME.stringValue());
+        config.setClusterName(HIBERNATE_CACHE_HAZELCAST_INSTANCE_EUREKA_CONFIG_NAME.stringValue());
         if (hazelcastCacheEnabled) {
             config.setProperty("hazelcast.phone.home.enabled", "false");
             config.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
@@ -118,16 +122,16 @@ public class HazelcastInstanceConfig {
                         70000, 120, TimeUnit.MINUTES));
 
         config.addCacheConfig(initBigRegionCache("systemParsingRulesCollectionCache",
-                        7000, 60, TimeUnit.MINUTES));
+                7000, 60, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("operationParsingRulesCollectionCache",
-                        70000, 60, TimeUnit.MINUTES));
+                70000, 60, TimeUnit.MINUTES));
 
         config.addCacheConfig(initBigRegionCache("activeOperationEventTriggersCache",
-                        30000, 120, TimeUnit.MINUTES));
+                30000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("operationByDefinitionKeyCache",
-                        20000, 120, TimeUnit.MINUTES));
+                20000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("operationSituationsCollectionCache",
-                        30000, 120, TimeUnit.MINUTES));
+                30000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("systemTransportsCollectionCache",
                 4000, 120, TimeUnit.MINUTES));
         config.addCacheConfig(initBigRegionCache("simpleSystemListByProjectCache",
@@ -139,7 +143,6 @@ public class HazelcastInstanceConfig {
             LOGGER.info("CacheConfig: {}: \n   EvictionConfig {}\n   ExpiryPolicyFactoryConfig {}", cfg.getKey(),
                     cfg.getValue().getEvictionConfig(), cfg.getValue().getExpiryPolicyFactoryConfig());
         }
-
         return config;
     }
 

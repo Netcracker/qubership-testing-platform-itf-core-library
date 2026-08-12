@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import static org.qubership.automation.itf.core.util.converter.IdConverter.toBig
 
 import java.math.BigInteger;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,6 @@ import org.qubership.automation.itf.core.util.config.ApplicationConfig;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.qubership.automation.itf.core.util.exception.StorageException;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +56,6 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
 
     private final StubProjectRepository stubProjectRepository;
 
-    @Autowired
     public StubProjectObjectManager(StubProjectRepository repository) {
         super(StubProject.class, repository);
         this.stubProjectRepository = repository;
@@ -75,7 +72,7 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
     public StubProject create() {
         StubProject project = super.create();
         prepareRootFolders(project);
-        createDatasetFolder((BigInteger) project.getID());
+        createDatasetFolder(project.getID());
         return stubProjectRepository.save(project);
     }
 
@@ -98,7 +95,7 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
                 switch (action) {
                     case "SELECT":
                         List<String> objs = stubProjectRepository.getData(key, projectId);
-                        return !objs.isEmpty() ? objs.get(0) : "";
+                        return !objs.isEmpty() ? objs.getFirst() : "";
                     case "INSERT":
                         stubProjectRepository.setData(key, value, projectId);
                         break;
@@ -142,8 +139,8 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
             return null;
         }
         Map<String, Object> map = new HashMap<>();
-        map.put("projectId", toBigInt(results.get(0)[0]));
-        map.put("projectUuid", UUID.fromString(results.get(0)[1]));
+        map.put("projectId", toBigInt(results.getFirst()[0]));
+        map.put("projectUuid", UUID.fromString(results.getFirst()[1]));
         return map;
     }
 
@@ -220,10 +217,13 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
     }
 
     private void createDatasetFolder(BigInteger projectId) {
-        Path newDataSetFolder = Paths.get(Objects.requireNonNull(ApplicationConfig.env.getProperty(WORKING_DIRECTORY)),
+        if (ApplicationConfig.env == null) {
+            return; // We are here in case itf-core Unit-tests only.
+        }
+        Path newDataSetFolder = Path.of(Objects.requireNonNull(ApplicationConfig.env.getProperty(WORKING_DIRECTORY)),
                 "dataset").resolve(String.valueOf(projectId));
         if (!newDataSetFolder.toFile().mkdirs()) {
-            throw new StorageException(String.format("DataSet folder for project %d hasn't been created.", projectId));
+            throw new StorageException("DataSet folder for project %d hasn't been created.".formatted(projectId));
         }
     }
 }

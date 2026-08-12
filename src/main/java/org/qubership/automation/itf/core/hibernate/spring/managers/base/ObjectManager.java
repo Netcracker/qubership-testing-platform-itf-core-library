@@ -21,8 +21,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.qubership.automation.itf.core.model.common.Storable;
@@ -36,7 +36,7 @@ public interface ObjectManager<T extends Storable> {
 
     T getById(@Nonnull Object id);
 
-    Collection<? extends T> getByNatureId(@Nonnull Object id, Object projectId);
+    Collection<? extends T> getByNatureId(@Nonnull String id, Object projectId);
 
     Collection<? extends T> getAllByParentId(@Nonnull Object id);
 

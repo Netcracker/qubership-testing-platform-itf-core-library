@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.base.Stor
 import org.qubership.automation.itf.core.model.jpa.server.Server;
 import org.qubership.automation.itf.core.model.jpa.server.ServerHB;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -36,40 +37,39 @@ public interface ServerRepository extends ServerSearchRepository<ServerHB>, Stor
             + "where server.ecId = :ecId or (server.name = :name and server.url = :url)")
     Server findByEcId(@Param("ecId") String ecId, @Param("name") String name, @Param("url") String url);
 
-    @Query(value = "select ec_project_id from mb_servers "
+    @NativeQuery("select ec_project_id from mb_servers "
             + "where project_id = :projectId and ec_project_id is not null "
-            + "group by ec_project_id", nativeQuery = true)
+            + "group by ec_project_id")
     Collection<String> getEcProjectIds(@Param("projectId") BigInteger projectId);
 
     @Query(value = "select server from ServerHB server where server.ecProjectId = :ecProjectId")
     Collection<Server> getByEcProject(@Param("ecProjectId") String ecProjectId);
 
     @Modifying
-    @Query(value = "update mb_servers "
+    @NativeQuery("update mb_servers "
             + "set ec_project_id = null, ec_id = null "
-            + "where ec_project_id = :ecProjectId", nativeQuery = true)
+            + "where ec_project_id = :ecProjectId")
     void unbindByEcProject(@Param("ecProjectId") String ecProjectId);
 
-    @Query(value = "select id from mb_servers "
+    @NativeQuery("select id from mb_servers "
             + " where project_id = :projectId "
-            + " and case when right(url,1)='/' then url else url||'/' end = :url",
-            nativeQuery = true)
+            + " and case when right(url,1)='/' then url else url||'/' end = :url")
     List<BigInteger> getServersByProjectAndUrlSlashed(
             @Param("url") String url,
             @Param("projectId") BigInteger projectId);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "DELETE FROM mb_configuration "
+    @NativeQuery("DELETE FROM mb_configuration "
             + "WHERE type = 'outbound' "
             + "AND (parent_out_server_id, system_id) IN ( "
             + "SELECT mc.parent_out_server_id, mc.system_id "
             + "FROM mb_configuration mc "
             + "LEFT JOIN mb_env_outbound eo ON mc.parent_out_server_id = eo.servers AND mc.system_id = eo.systems "
-            + "WHERE eo.servers IS NULL AND eo.systems IS NULL)", nativeQuery = true)
+            + "WHERE eo.servers IS NULL AND eo.systems IS NULL)")
     int deleteUnusedOutboundConfigurations();
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "DELETE FROM mb_configuration "
+    @NativeQuery("DELETE FROM mb_configuration "
             + "WHERE type = 'outbound' "
             + "AND parent_out_server_id IN (SELECT id FROM mb_servers WHERE project_id = :projectId) "
             + "AND (parent_out_server_id, system_id) IN ("
@@ -77,11 +77,10 @@ public interface ServerRepository extends ServerSearchRepository<ServerHB>, Stor
             + "FROM mb_configuration mc "
             + "LEFT JOIN mb_env_outbound eo ON mc.parent_out_server_id = eo.servers AND mc.system_id = eo.systems "
             + "WHERE eo.servers IS NULL AND eo.systems IS null and mc.parent_out_server_id in "
-            + "(SELECT id FROM mb_servers WHERE project_id = :projectId))", nativeQuery = true)
+            + "(SELECT id FROM mb_servers WHERE project_id = :projectId))")
     int deleteUnusedOutboundConfigurationsByProjectId(@Param("projectId") BigInteger projectId);
 
-    @Query(value = "select id from mb_configuration where parent_conf_id in "
-            + "(select id from mb_configuration where parent_in_server_id = :serverId)",
-            nativeQuery = true)
+    @NativeQuery("select id from mb_configuration where parent_conf_id in "
+            + "(select id from mb_configuration where parent_in_server_id = :serverId)")
     List<BigInteger> getTransportTriggersByServerId(@Param("serverId") BigInteger serverId);
 }

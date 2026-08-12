@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,38 +16,37 @@
 
 package org.qubership.automation.itf.core.hibernate.spring.repositories.executor;
 
-import static org.hibernate.jpa.QueryHints.HINT_CACHEABLE;
-import static org.hibernate.jpa.QueryHints.HINT_CACHE_REGION;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHEABLE;
+import static org.hibernate.jpa.HibernateHints.HINT_CACHE_REGION;
 
 import java.math.BigInteger;
 import java.util.List;
 
-import javax.persistence.QueryHint;
-
 import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.model.jpa.message.parser.SystemParsingRule;
 import org.qubership.automation.itf.core.model.jpa.system.System;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import jakarta.persistence.QueryHint;
+
 @JaversSpringDataAuditable
 @Repository
-public interface SystemParsingRuleRepository
-        extends ParsingRuleRepository<System, SystemParsingRule> {
+public interface SystemParsingRuleRepository extends ParsingRuleRepository<System, SystemParsingRule> {
 
     @Override
     @Query(value = "select parsingRule from SystemParsingRule as parsingRule "
             + "inner join System as system on system = parsingRule.parent "
             + "where parsingRule.name = :name and system.ID = :parentId")
-    List<SystemParsingRule> findByParentIDAndName(@Param("parentId") Object parentId, @Param("name") String name);
+    List<SystemParsingRule> findByParentIDAndName(@Param("parentId") BigInteger parentId, @Param("name") String name);
 
     @Override
-    @Query(value = "select parsingRule.* from mb_parsing_rules parsingRule "
-            + "where parsingRule.type = 'system' and parsingRule.parent_system_id = :parentId",
-            nativeQuery = true)
-    List<SystemParsingRule> findByParentID(@Param("parentId") Object parentId);
+    @NativeQuery("select parsingRule.* from mb_parsing_rules parsingRule "
+            + "where parsingRule.type = 'system' and parsingRule.parent_system_id = :parentId")
+    List<SystemParsingRule> findByParentID(@Param("parentId") BigInteger parentId);
 
     @Override
     @Query(value = "select parsingRule from SystemParsingRule as parsingRule "
@@ -55,9 +54,9 @@ public interface SystemParsingRuleRepository
             + "where system.name = :name")
     List<SystemParsingRule> findByParentName(@Param("name") String name);
 
-    @Query(value = "select parsingRule from SystemParsingRule as parsingRule "
-            + "where id = :id")
-    @QueryHints(value = {@QueryHint(name = HINT_CACHEABLE, value = "true"),
+    @Query(value = "select parsingRule from SystemParsingRule as parsingRule where id = :id")
+    @QueryHints(value = {
+            @QueryHint(name = HINT_CACHEABLE, value = "true"),
             @QueryHint(name = HINT_CACHE_REGION, value = "systemParsingRulesCache")})
     SystemParsingRule findByIdOnly(@Param("id") BigInteger id);
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,10 +19,6 @@ package org.qubership.automation.itf.core.message.parser.impl;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
 import org.qubership.automation.itf.core.model.jpa.message.Message;
@@ -31,9 +27,9 @@ import org.qubership.automation.itf.core.model.jpa.message.parser.SystemParsingR
 import org.qubership.automation.itf.core.util.exception.ContentException;
 import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
 import org.qubership.automation.itf.core.util.provider.content.XmlContentProvider;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"classpath*:hibernate-configuration-test-context.xml"})
+@SpringJUnitConfig(locations = {"classpath*:hibernate-configuration-test-context.xml"})
 public class XpathXmlRuleTest {
     public static final String XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<keys>" +

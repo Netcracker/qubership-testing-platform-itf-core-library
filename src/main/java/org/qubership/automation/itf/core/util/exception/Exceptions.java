@@ -19,8 +19,8 @@ package org.qubership.automation.itf.core.util.exception;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 

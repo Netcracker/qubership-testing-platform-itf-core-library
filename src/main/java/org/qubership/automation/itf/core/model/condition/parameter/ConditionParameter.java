@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import static java.lang.Float.parseFloat;
 import static org.qubership.automation.itf.core.util.constants.ProjectSettingsConstants.CONDITIONS_STYLE_LEGACY;
 import static org.qubership.automation.itf.core.util.constants.ProjectSettingsConstants.CONDITIONS_STYLE_LEGACY_DEFAULT_VALUE;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,6 +38,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ConditionParameter implements Serializable {
+    @Serial
     private static final long serialVersionUID = 20250303L;
 
     /* If variable is absent in the context, then:
@@ -67,9 +69,9 @@ public class ConditionParameter implements Serializable {
         } else if (Condition.NOTEXISTS.equals(condition)) {
             return !context.containsKey(getName());
         } else {
-            if (!context.containsKey(getName()) && context instanceof InstanceContext) {
+            if (!context.containsKey(getName()) && context instanceof InstanceContext instanceContext) {
                 return Boolean.parseBoolean(CoreServices.getProjectSettingsService().get(
-                        ((InstanceContext) context).tc().getProjectId(),
+                        instanceContext.tc().getProjectId(),
                         CONDITIONS_STYLE_LEGACY,
                         CONDITIONS_STYLE_LEGACY_DEFAULT_VALUE))
                         && (Condition.NOTEQUALS.equals(condition) || Condition.NOTMATCHES.equals(condition));

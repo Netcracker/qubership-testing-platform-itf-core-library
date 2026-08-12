@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -88,31 +88,19 @@ public enum ParsingRuleType {
                     .multiple(parsingRule.getMultiple())
                     .setAutosave(parsingRule.getAutosave());
             Element element = (Element) message.getContent().get();
-            /*
-            List<Namespace> namespaces = new ArrayList<>();
-            namespaces.add(Namespace.NO_NAMESPACE);
-            if (!(element.getNamespace().getPrefix().equals(Namespace.NO_NAMESPACE.getPrefix())))
-                namespaces.add(element.getNamespace());
-            namespaces.addAll(element.getAdditionalNamespaces());
-            */
             XPathExpression<Object> xpathExpr = XPathFactory.instance().compile(parsingRule.getParsedExpression());
-            /*
-            XPathExpression<Object> xpathExpr = XPathFactory.instance().compile(parsingRule.getExpression(),
-                    Filters.fpassthrough(), null, namespaces);
-            */
             List evaluate;
             try {
                 evaluate = xpathExpr.evaluate(element);
                 for (Object o : evaluate) {
-                    if (o instanceof Element) {
-                        xmlOutputter.get().setFormat(Format.getPrettyFormat());
-                        builder.multipleValue(xmlOutputter.get().outputString((Element) o));
-                    } else if (o instanceof Text) {
-                        builder.multipleValue(((org.jdom2.Content) o).getValue());
-                    } else if (o instanceof Attribute) {
-                        builder.multipleValue(((Attribute) o).getValue());
-                    } else {
-                        builder.multipleValue(o.toString());
+                    switch (o) {
+                        case Element element1 -> {
+                            xmlOutputter.get().setFormat(Format.getPrettyFormat());
+                            builder.multipleValue(xmlOutputter.get().outputString(element1));
+                        }
+                        case Text text -> builder.multipleValue(((org.jdom2.Content) o).getValue());
+                        case Attribute attribute -> builder.multipleValue(attribute.getValue());
+                        default -> builder.multipleValue(o.toString());
                     }
                     if (!parsingRule.getMultiple()) {
                         break;
@@ -121,8 +109,8 @@ public enum ParsingRuleType {
                 return builder.get();
             } catch (IllegalArgumentException e) {
                 //let's write more informed message, which of parsing rules is dead
-                throw new IllegalArgumentException(String.format(
-                        "Failed applying xpath. Probably xPaths is incorrect. ParsingRule '%s', at %s",
+                throw new IllegalArgumentException(
+                        "Failed applying xpath. Probably xPaths is incorrect. ParsingRule '%s', at %s".formatted(
                         parsingRule.getParamName(), parsingRule.getParsingRulePath()), e);
             }
         }
@@ -194,9 +182,9 @@ public enum ParsingRuleType {
                 // It's not error really, so simply return empty parameter.
                 return builder.get();
             } catch (Exception e) {
-                throw new IllegalArgumentException(String.format(
-                        "Failed parsing JsonPath. Probably JsonPath expression is incorrect. ParsingRule '%s', at %s",
-                        parsingRule.getParamName(), parsingRule.getParsingRulePath()), e);
+                throw new IllegalArgumentException(
+                        "Failed parsing JsonPath. Probably JsonPath expression is incorrect. ParsingRule '%s', at %s"
+                                .formatted(parsingRule.getParamName(), parsingRule.getParsingRulePath()), e);
             }
         }
 
@@ -232,8 +220,8 @@ public enum ParsingRuleType {
                 } else {
                     Object headerValue = headers.get(requiredHeaderName);
                     if (Objects.nonNull(headerValue)) {
-                        if (headerValue instanceof List) {
-                            for (Object elem : (List)headerValue) {
+                        if (headerValue instanceof List list) {
+                            for (Object elem : list) {
                                 builder.multipleValue(Objects.toString(elem));
                                 if (!parsingRule.getMultiple()) {
                                     break;

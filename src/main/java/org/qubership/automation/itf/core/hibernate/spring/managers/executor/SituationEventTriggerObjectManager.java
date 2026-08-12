@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,22 +23,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.EventTriggerManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.SearchByProjectIdManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.SituationEventTriggerRepository;
 import org.qubership.automation.itf.core.model.communication.EventTriggerBriefInfo;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.model.jpa.system.stub.SituationEventTrigger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.annotation.Nonnull;
 
 @Service
 public class SituationEventTriggerObjectManager extends EventTriggerObjectManager<SituationEventTrigger>
         implements EventTriggerManager<SituationEventTrigger>, SearchByProjectIdManager<SituationEventTrigger> {
 
-    @Autowired
     public SituationEventTriggerObjectManager(SituationEventTriggerRepository repository) {
         super(SituationEventTrigger.class, repository);
     }
@@ -78,7 +76,7 @@ public class SituationEventTriggerObjectManager extends EventTriggerObjectManage
                     continue;
                 }
                 EventTriggerBriefInfo briefInfo = new EventTriggerBriefInfo(
-                        (BigInteger) entry[0],
+                        BigInteger.valueOf((Long) entry[0]),
                         SituationEventTrigger.TYPE);
                 if ("ACTIVE".equals(entry[1].toString())) {
                     triggersToReactivate.add(briefInfo);

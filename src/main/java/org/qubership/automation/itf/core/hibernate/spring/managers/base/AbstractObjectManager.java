@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2026-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,10 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Function;
-
-import javax.annotation.Nonnull;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Triple;
@@ -74,6 +70,9 @@ import org.springframework.data.repository.query.FluentQuery;
 
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Striped;
+import jakarta.annotation.Nonnull;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.Getter;
 
 public abstract class AbstractObjectManager<T extends Storable, V extends T> implements ObjectManager<T> {
@@ -135,8 +134,8 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
     }
 
     @Override
-    public Collection<? extends T> getByNatureId(@Nonnull Object id, @Nonnull Object projectId) {
-        return repository.findByNaturalId(id.toString());
+    public Collection<? extends T> getByNatureId(@Nonnull String id, @Nonnull Object projectId) {
+        return repository.findByNaturalId(id);
     }
 
     @Override
@@ -323,7 +322,7 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
     public void update(Storable object) {
         try {
             TxExecutor.execute(() -> {
-                ((Session)entityManager.getDelegate()).update(object);
+                ((Session)entityManager.getDelegate()).merge(object);
                 return null;
             } , TxExecutor.defaultWritableTransaction());
         } catch (Exception e) {
@@ -363,8 +362,9 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
     @Override
     public T create() {
         try {
-            return repository.save((V) myType.newInstance());
-        } catch (InstantiationException | IllegalAccessException e) {
+            return repository.save((V) myType.getDeclaredConstructor().newInstance());
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException
+                 | InvocationTargetException e) {
             LOGGER.error("Error while creating the storable: ", e);
         }
         return null;
@@ -467,7 +467,7 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
                 CoreObjectManager.getInstance().getManager(obj.getClass()).additionalMoveActions(obj, sessionId);
                 store(obj);
             } else {
-                throw new IllegalArgumentException(String.format("Destination %s cannot accept object %s",
+                throw new IllegalArgumentException("Destination %s cannot accept object %s".formatted(
                         dst.getName(), obj.getName()));
             }
         }
@@ -564,12 +564,12 @@ public abstract class AbstractObjectManager<T extends Storable, V extends T> imp
         }
 
         @Override
-        public List<T> findByParentIDAndName(Object parentId, String name) {
+        public List<T> findByParentIDAndName(BigInteger parentId, String name) {
             return Collections.emptyList();
         }
 
         @Override
-        public List<T> findByParentID(Object parentId) {
+        public List<T> findByParentID(BigInteger parentId) {
             return Collections.emptyList();
         }
 

@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.hibernate.spring.managers.executor;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.EventTriggerRepository;

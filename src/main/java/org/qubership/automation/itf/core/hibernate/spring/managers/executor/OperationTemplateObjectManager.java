@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.
 import org.qubership.automation.itf.core.model.IdNamePair;
 import org.qubership.automation.itf.core.model.jpa.message.template.OperationTemplate;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -39,7 +38,6 @@ public class OperationTemplateObjectManager extends TemplateObjectManager<Operat
     /**
      * TODO: Add JavaDoc.
      */
-    @Autowired
     public OperationTemplateObjectManager(OperationTemplateRepository operationTemplateRepository,
                                           StepRepository stepRepository,
                                           OutboundTransportConfigurationRepository otcRepository) {

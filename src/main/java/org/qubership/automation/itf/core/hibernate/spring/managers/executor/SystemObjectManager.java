@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
 import org.apache.commons.lang3.NotImplementedException;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.AbstractObjectManager;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.StorableInFolderObjectManager;
@@ -47,10 +45,10 @@ import org.qubership.automation.itf.core.model.jpa.system.System;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.model.usage.UsageInfo;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
+import jakarta.annotation.Nonnull;
 
 @Service
 public class SystemObjectManager extends AbstractObjectManager<System, System> implements NativeManager<System>,
@@ -64,7 +62,6 @@ public class SystemObjectManager extends AbstractObjectManager<System, System> i
     /**
      * Constructor.
      */
-    @Autowired
     public SystemObjectManager(SystemRepository repository, StepRepository stepRepository,
                                EnvironmentRepository environmentRepository) {
         super(System.class, repository);
@@ -93,8 +90,7 @@ public class SystemObjectManager extends AbstractObjectManager<System, System> i
     @Override
     public Collection<UsageInfo> findUsages(Storable storable) {
         Collection<UsageInfo> result = Lists.newArrayListWithExpectedSize(500);
-        if (storable instanceof System) {
-            System system = (System) storable;
+        if (storable instanceof System system) {
             Iterable<Step> stepsWithSender = stepRepository.getIntegrationStepsBySender(system);
             addToUsages(result, "Sender", stepsWithSender);
             Iterable<Step> stepsWithReceiver = stepRepository.getIntegrationStepsByReceiver(system);
@@ -133,8 +129,12 @@ public class SystemObjectManager extends AbstractObjectManager<System, System> i
 
     @Override
     public Storable getChildByClass(System parent, Class childrenClass, Object... param) {
-        if (childrenClass.getName().equals(Operation.class.getName()) && param[0] != null) {
-            return systemRepository.findFirstByDefineOperation(toBigInt(parent.getID()), String.valueOf(param[0]));
+        if (childrenClass.getName().equals(Operation.class.getName())) {
+            if (param == null || param.length == 0 || param[0] == null) {
+                throw new IllegalArgumentException("The 1st param should not be null");
+            } else {
+                return systemRepository.findFirstByDefineOperation(toBigInt(parent.getID()), String.valueOf(param[0]));
+            }
         }
         throw new NotImplementedException("Not implemented for classes other than " + Operation.class.getName());
     }

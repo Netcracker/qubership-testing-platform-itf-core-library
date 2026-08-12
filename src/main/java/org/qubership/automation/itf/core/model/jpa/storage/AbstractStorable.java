@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,15 +16,12 @@
 
 package org.qubership.automation.itf.core.model.jpa.storage;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
-import javax.persistence.PreRemove;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
@@ -47,6 +44,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.PostPersist;
+import jakarta.persistence.PostUpdate;
+import jakarta.persistence.PreRemove;
 
 public abstract class AbstractStorable extends AbstractNamedImpl implements Storable {
     protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractStorable.class);
@@ -58,7 +58,7 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
 
     private String prefix;
     private String description;
-    private Object naturalId;
+    private String naturalId;
     private Map<String, String> storableProp;
 
     @Override
@@ -143,7 +143,7 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
     public Storable returnSimpleParent() {
         if (parent != null) {
             try {
-                Storable simpleStorable = parent.getClass().newInstance();
+                Storable simpleStorable = parent.getClass().getDeclaredConstructor().newInstance();
                 simpleStorable.setID(parent.getID());
                 simpleStorable.setName(parent.getName());
                 simpleStorable.setDescription(SIMPLE_PARENT_MARKER);
@@ -151,7 +151,8 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
                 simpleStorable.setNaturalId(parent.getNaturalId());
                 simpleStorable.setParent(parent.returnSimpleParent());
                 return simpleStorable;
-            } catch (IllegalAccessException | InstantiationException e) {
+            } catch (IllegalAccessException | InstantiationException | NoSuchMethodException
+                     | InvocationTargetException e) {
                 LOGGER.error("Can't create the object of {}. Null is returned.", parent.getClass().getName(), e);
                 return null;
             }
@@ -173,22 +174,22 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
 
     @NoCopy
     @Override
-    public Object getID() {
-        return storeInformationDelegate.getID();
+    public BigInteger getID() {
+        return (BigInteger) storeInformationDelegate.getID();
     }
 
     @Override
-    public void setID(Object id) {
+    public void setID(BigInteger id) {
         storeInformationDelegate.setID(id);
     }
 
     @Override
-    public Object getNaturalId() {
+    public String getNaturalId() {
         return naturalId;
     }
 
     @Override
-    public void setNaturalId(Object id) {
+    public void setNaturalId(String id) {
         this.naturalId = id;
     }
 
@@ -211,10 +212,10 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
     @Override
     public void setVersion(Object version) {
         Integer intVersion = null;
-        if (version instanceof Integer) {
-            intVersion = (Integer) version;
-        } else if (version instanceof String) {
-            intVersion = Integer.parseInt((String) version);
+        if (version instanceof Integer integer) {
+            intVersion = integer;
+        } else if (version instanceof String string) {
+            intVersion = Integer.parseInt(string);
         }
         storeInformationDelegate.setVersion(intVersion);
     }

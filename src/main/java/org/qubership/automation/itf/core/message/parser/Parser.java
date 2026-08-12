@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -148,11 +148,13 @@ public class Parser {
                 }
             } catch (ContentException ex) {
                 contentTypes.put(parsingRuleType, false);
-                log.error("Message parsing is failed (probably incorrect message format).  "
-                                + "Rule '{}' (expression: '{}') at {}\nException: ", parsingRule.getParamName(),
+                log.error("""
+                                Message parsing is failed (probably incorrect message format).  \
+                                Rule '{}' (expression: '{}') at {}
+                                Exception:""", parsingRule.getParamName(),
                         parsingRule.getParsedExpression(), parsingRule.getParsingRulePath(), ex);
             } catch (Throwable ex) {
-                log.error("Applying rule '{}' (expression: '{}') at {} failed with exception ",
+                log.error("Applying rule '{}' (expression: '{}') at {} failed with exception",
                         parsingRule.getParamName(), parsingRule.getParsedExpression(), parsingRule.getParsingRulePath(),
                         ex);
             }

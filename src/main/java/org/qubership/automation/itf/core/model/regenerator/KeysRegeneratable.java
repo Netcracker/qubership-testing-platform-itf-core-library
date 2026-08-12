@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.model.regenerator;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 

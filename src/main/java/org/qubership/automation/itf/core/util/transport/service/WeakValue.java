@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package org.qubership.automation.itf.core.util.transport.service;
 
 public class WeakValue {
-    private Long dateCreation;
+    private final Long dateCreation;
 
     public WeakValue() {
         dateCreation = System.nanoTime();
@@ -25,7 +25,7 @@ public class WeakValue {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof WeakValue && dateCreation.equals(((WeakValue) obj).dateCreation);
+        return obj instanceof WeakValue wv && dateCreation.equals(wv.dateCreation);
     }
 
     @Override

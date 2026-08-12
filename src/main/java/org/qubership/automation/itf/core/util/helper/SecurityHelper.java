@@ -17,71 +17,14 @@
 package org.qubership.automation.itf.core.util.helper;
 
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.util.Random;
 import java.util.UUID;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.representations.IDToken;
 import org.qubership.automation.itf.core.model.jpa.project.StubProject;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
 import org.springframework.stereotype.Component;
 
-@Component("securityHelper")
+@Component
 public class SecurityHelper {
-
-    private static final Random RANDOM = new SecureRandom();
-    private static final int ITERATIONS = 1000;
-    private static final int KEY_LENGTH = 512;
-    private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
-
-    /**
-     * Deprecated. This method used in monolith ITF with custom ITF authorization.
-     */
-    @Deprecated
-    public static byte[] getSalt() {
-        byte[] salt = new byte[16];
-        RANDOM.nextBytes(salt);
-        return salt;
-    }
-
-    /**
-     * Deprecated. This method used in monolith ITF with custom ITF authorization.
-     */
-    @Deprecated
-    public static boolean arePasswordsEquals(String testedPassword, byte[] storedPassword, byte[] salt) {
-        byte[] hashedTestedPassword = encodePassword(testedPassword.toCharArray(), salt);
-        if (hashedTestedPassword.length != storedPassword.length) {
-            return false;
-        }
-        for (int i = 0; i < hashedTestedPassword.length; i++) {
-            if (hashedTestedPassword[i] != storedPassword[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Deprecated. This method used in monolith ITF with custom ITF authorization.
-     */
-    @Deprecated
-    public static byte[] encodePassword(char[] password, byte[] salt) {
-        PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
-        try {
-            SecretKeyFactory skf = SecretKeyFactory.getInstance(ALGORITHM);
-            return skf.generateSecret(spec).getEncoded();
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new AssertionError("Error while hashing a password: " + e.getMessage(), e);
-        } finally {
-            spec.clearPassword();
-        }
-    }
 
     /**
      * Temporary solution to get ProjectUUID from our internal projectId
@@ -94,17 +37,5 @@ public class SecurityHelper {
      */
     public static UUID getCurrentProjectUuid(BigInteger projectId) {
         return CoreObjectManager.getInstance().getManager(StubProject.class).getById(projectId).getUuid();
-    }
-
-    /**
-     * Deprecated. This method used in monolith ITF with custom ITF authorization.
-     */
-    @Deprecated
-    public static IDToken getTokenForLogger(KeycloakPrincipal principal) {
-        IDToken idToken = principal.getKeycloakSecurityContext().getIdToken();
-        if (idToken == null) {
-            idToken = principal.getKeycloakSecurityContext().getToken();
-        }
-        return idToken;
     }
 }

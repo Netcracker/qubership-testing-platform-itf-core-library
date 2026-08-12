@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -34,6 +34,6 @@ public abstract class AbstractNamedImpl implements Named {
 
     @Override
     public String toString() {
-        return String.format("%s: [%s]", getClass().getSimpleName(), Strings.nullToEmpty(name));
+        return "%s: [%s]".formatted(getClass().getSimpleName(), Strings.nullToEmpty(name));
     }
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.base.RootRepository;
 import org.qubership.automation.itf.core.model.jpa.project.StubProject;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -33,53 +34,49 @@ import org.springframework.stereotype.Repository;
 public interface StubProjectRepository extends RootRepository<StubProject> {
 
     @Modifying
-    @Query(value = "SET session_replication_role = 'replica'", nativeQuery = true)
+    @NativeQuery("SET session_replication_role = 'replica'")
     void setReplicationRoleReplica();
 
     @Modifying
-    @Query(value = "SET session_replication_role = 'origin'", nativeQuery = true)
+    @NativeQuery("SET session_replication_role = 'origin'")
     void setReplicationRoleOrigin();
 
-    @Query(value = "select id from mb_projects where uuid = :projectUuid", nativeQuery = true)
+    @NativeQuery("select id from mb_projects where uuid = :projectUuid")
     BigInteger getEntityInternalIdByUuid(@Param("projectUuid") UUID projectUuid);
 
     @Query(value = "select project from StubProject as project where uuid = :projectUuid")
     StubProject getByUuid(@Param("projectUuid") UUID projectUuid);
 
-    @Query(value = "select value from mb_userdata "
-            + "where userkey = :keyParam and project_id = :projectId", nativeQuery = true)
+    @NativeQuery("select value from mb_userdata where userkey = :keyParam and project_id = :projectId")
     List<String> getData(@Param("keyParam") String keyParam, @Param("projectId") BigInteger projectId);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "insert into mb_userdata (project_id, userkey, value) "
-            + "values (:projectId, :keyParam, :valueParam)", nativeQuery = true)
+    @NativeQuery("insert into mb_userdata (project_id, userkey, value) "
+            + "values (:projectId, :keyParam, :valueParam)")
     void setData(@Param("keyParam") String keyParam,
                  @Param("valueParam") String valueParam,
                  @Param("projectId") BigInteger projectId);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "update mb_userdata SET value = :valueParam where userkey = :keyParam and project_id = :projectId",
-            nativeQuery = true)
+    @NativeQuery("update mb_userdata SET value = :valueParam where userkey = :keyParam and project_id = :projectId")
     void updateData(@Param("keyParam") String keyParam,
                     @Param("valueParam") String valueParam,
                     @Param("projectId") BigInteger projectId);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "insert into mb_userdata (project_id, userkey, value) "
+    @NativeQuery("insert into mb_userdata (project_id, userkey, value) "
             + "values (:projectId, :keyParam, :valueParam) "
             + "on conflict (userkey, project_id) do "
-            + "update set value = :valueParam where EXCLUDED.userkey = :keyParam and EXCLUDED.project_id = :projectId",
-            nativeQuery = true)
+            + "update set value = :valueParam where EXCLUDED.userkey = :keyParam and EXCLUDED.project_id = :projectId")
     void upsertData(@Param("keyParam") String keyParam,
                     @Param("valueParam") String valueParam,
                     @Param("projectId") BigInteger projectId);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "delete from mb_userdata where userkey = :keyParam and project_id = :projectId",
-            nativeQuery = true)
+    @NativeQuery("delete from mb_userdata where userkey = :keyParam and project_id = :projectId")
     void deleteData(@Param("keyParam") String keyParam, @Param("projectId") BigInteger projectId);
 
-    @Query(value = "select clear_user_data_func(:leaveDays)", nativeQuery = true)
+    @NativeQuery("select clear_user_data_func(:leaveDays)")
     String clearUserData(@Param("leaveDays") Integer leaveDays);
 
     /*
@@ -92,26 +89,23 @@ public interface StubProjectRepository extends RootRepository<StubProject> {
      *
      *  Returns: [project.id, project.uuid]
      */
-    @Query(value = "select mb_systems.project_id as id, ''||mb_projects.uuid as project_uuid "
+    @NativeQuery("select mb_systems.project_id as id, ''||mb_projects.uuid as project_uuid "
             + "from mb_systems "
             + "inner join mb_projects on mb_systems.project_id = mb_projects.id "
-            + "where mb_systems.id = :systemId",
-            nativeQuery = true)
+            + "where mb_systems.id = :systemId")
     List<String[]> determineProjectIdsBySystemId(@Param("systemId") BigInteger systemId);
 
-    @Query(value = "select prop_value from mb_project_settings "
-            + "where project_id = :projectId and prop_short_name = :propertyName",
-            nativeQuery = true)
+    @NativeQuery("select prop_value from mb_project_settings "
+            + "where project_id = :projectId and prop_short_name = :propertyName")
     String getProjectSetting(@Param("projectId") BigInteger projectId, @Param("propertyName") String propertyName);
 
-    @Query(value = "select prop_short_name, prop_value from mb_project_settings "
-            + "where project_id = :projectId",
-            nativeQuery = true)
+    @NativeQuery("select prop_short_name, prop_value from mb_project_settings "
+            + "where project_id = :projectId")
     List<Object[]> getAllProjectSettingsByProjectId(@Param("projectId") BigInteger projectId);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query(value = "update mb_project_settings set prop_value = :propValue "
-            + "where project_id = :projectId and prop_short_name = :propShortName", nativeQuery = true)
+    @NativeQuery("update mb_project_settings set prop_value = :propValue "
+            + "where project_id = :projectId and prop_short_name = :propShortName")
     void updateProjectSetting(@Param("projectId") BigInteger projectId, @Param("propShortName") String propShortName,
                               @Param("propValue") String propValue);
 

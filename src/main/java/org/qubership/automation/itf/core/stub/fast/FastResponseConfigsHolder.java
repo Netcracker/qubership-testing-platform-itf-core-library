@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -96,9 +96,9 @@ public enum FastResponseConfigsHolder {
         List<FastStubsTreeView> endpoints = new ArrayList<>();
 
         Pattern restPattern = Pattern.compile(
-                String.format("%s\\/%s\\/.*", projectUuid, StubEndpointConfig.TransportTypes.REST));
+                "%s\\/%s\\/.*".formatted(projectUuid, StubEndpointConfig.TransportTypes.REST));
         Pattern soapPattern = Pattern.compile(
-                String.format("%s\\/%s\\/.*", projectUuid, StubEndpointConfig.TransportTypes.SOAP));
+                "%s\\/%s\\/.*".formatted(projectUuid, StubEndpointConfig.TransportTypes.SOAP));
         Matcher restMatcher;
         Matcher soapMatcher;
         for (String key : cfg.keySet()) {

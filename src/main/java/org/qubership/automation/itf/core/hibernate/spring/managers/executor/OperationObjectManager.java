@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -44,7 +44,6 @@ import org.qubership.automation.itf.core.util.exception.CopyException;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -57,7 +56,6 @@ public class OperationObjectManager extends AbstractObjectManager<Operation, Ope
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationObjectManager.class);
     private final StepRepository stepRepository;
 
-    @Autowired
     public OperationObjectManager(OperationRepository repository, StepRepository stepRepository) {
         super(Operation.class, repository);
         this.stepRepository = stepRepository;
@@ -70,9 +68,9 @@ public class OperationObjectManager extends AbstractObjectManager<Operation, Ope
 
     @Override
     public Collection<UsageInfo> findUsages(Storable storable) {
-        Collection<UsageInfo> result = Lists.newArrayListWithExpectedSize(500);
-        Iterable<Step> all = storable instanceof Operation
-                ? stepRepository.getIntegrationStepsByOperation((Operation)storable) : new ArrayList<>();
+        Collection<UsageInfo> result = Lists.newArrayListWithExpectedSize(100);
+        Iterable<Step> all = storable instanceof Operation o
+                ? stepRepository.getIntegrationStepsByOperation(o) : new ArrayList<>();
         addToUsages(result, "operation", all);
         return result;
     }
@@ -113,10 +111,8 @@ public class OperationObjectManager extends AbstractObjectManager<Operation, Ope
 
                     ((Operation) operation).setTransport((TransportConfiguration) cachedTransportCopy);
                 } catch (CopyException e) {
-                    LOGGER.error(
-                            "Can't create the copy of {} transport for moved {} operation. Please, fill the "
-                                    + "transport manualy.",
-                            transport.getName(), operation.getName());
+                    LOGGER.error("Can't create a copy of {} transport for moved {} operation. "
+                                    + "Please, fill the transport manually.", transport.getName(), operation.getName());
                 }
             }
         }

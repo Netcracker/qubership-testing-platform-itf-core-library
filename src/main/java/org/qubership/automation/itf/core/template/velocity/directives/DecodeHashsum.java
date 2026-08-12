@@ -70,6 +70,9 @@ public class DecodeHashsum extends Directive {
     }
 
     private String getString(Node node, InternalContextAdapter internalContextAdapter) {
+        // There is a gap here: no check if node.value() == null. The same problem is in ComputeHash and in others.
+        // Due to it, null value become "null".
+        // I do NOT change it, because it can lead to global behavior changes in project scripts...
         return (node == null) ? null : String.valueOf(node.value(internalContextAdapter));
     }
 

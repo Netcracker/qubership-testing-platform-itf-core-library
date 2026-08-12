@@ -21,6 +21,7 @@ import org.qubership.atp.bv.controllers.ApiResourceApi;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(name = "${feign.atp.bv.name}",
+        contextId = "bvApiResourceFeignClient",
         url = "${feign.atp.bv.url}",
         path = "${feign.atp.bv.route}",
         configuration = FeignConfiguration.class)

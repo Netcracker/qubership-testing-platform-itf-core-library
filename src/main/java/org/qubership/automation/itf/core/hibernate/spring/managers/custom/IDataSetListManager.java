@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.hibernate.spring.managers.custom;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
 import org.qubership.automation.itf.core.model.dataset.DataSetList;

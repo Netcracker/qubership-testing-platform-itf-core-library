@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.counter;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import org.qubership.automation.itf.core.util.exception.CounterLimitIsExhaustedE
 import com.google.common.collect.Sets;
 
 public class CounterImpl extends AbstractStorable implements Counter {
+    @Serial
     private static final long serialVersionUID = 20240812L;
 
     private Set<Object> owners = Sets.newHashSet();

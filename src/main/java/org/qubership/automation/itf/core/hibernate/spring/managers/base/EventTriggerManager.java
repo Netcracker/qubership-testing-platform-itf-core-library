@@ -19,7 +19,7 @@ package org.qubership.automation.itf.core.hibernate.spring.managers.base;
 import java.math.BigInteger;
 import java.util.List;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.model.jpa.system.stub.EventTrigger;

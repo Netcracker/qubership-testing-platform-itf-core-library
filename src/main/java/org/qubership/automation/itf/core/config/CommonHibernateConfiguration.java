@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -154,7 +154,6 @@ public class CommonHibernateConfiguration {
     @Bean
     public Properties jpaProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
         properties.setProperty("hibernate.order_inserts", "true");
         properties.setProperty("hibernate.order_updates", "true");
         properties.setProperty("hibernate.max_fetch_depth", "0");
@@ -187,7 +186,7 @@ public class CommonHibernateConfiguration {
      * Also, this bean is used by JobRunner in atp-itf-reporting service for scheduled job which updates ITF contexts
      * statuses to STOPPED after some time (configured in properties).
      */
-    @Bean(name = "lockProvider")
+    @Bean(name = "jdbcLockProvider")
     public LockProvider getLockProvider(DataSource dataSource) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource);

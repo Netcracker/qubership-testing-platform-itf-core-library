@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class ReportAdapterStorage {
     public void init() {
         for (Class<? extends ReportAdapter> clazz : Reflection.getReflections().getSubTypesOf(ReportAdapter.class)) {
             try {
-                STORAGE.add(clazz.newInstance());
+                STORAGE.add(clazz.getDeclaredConstructor().newInstance());
             } catch (Exception e) {
                 LOGGER.error("Failed registration of adapter", e);
             }

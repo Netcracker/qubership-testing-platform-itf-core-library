@@ -32,7 +32,7 @@ import org.qubership.automation.itf.core.util.storage.StoreInformationDelegate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public interface Storable extends Named, Identified<Object>, Prefixed, OptimisticLockable<Object>, Serializable {
+public interface Storable extends Named, Identified<BigInteger>, Prefixed, OptimisticLockable<Object>, Serializable {
 
     void store() throws StorageException;
 
@@ -61,9 +61,9 @@ public interface Storable extends Named, Identified<Object>, Prefixed, Optimisti
     void setDescription(String description);
 
     @JsonIgnore
-    Object getNaturalId();
+    String getNaturalId();
 
-    void setNaturalId(Object id);
+    void setNaturalId(String id);
 
     /**
      * While copying some types of objects we should set their statuses
@@ -103,4 +103,15 @@ public interface Storable extends Named, Identified<Object>, Prefixed, Optimisti
     Storable getExtendsParameters();
 
     void upStorableVersion();
+
+    /**
+     * Compose String representation of Storable object ID (for UI purposes).
+     * Implementations can override it in specific cases.
+     *
+     * @return String representation of Storable object ID.
+     */
+    default String returnDisplayId() {
+        return getID() == null ? "" : getID().toString();
+    }
+
 }

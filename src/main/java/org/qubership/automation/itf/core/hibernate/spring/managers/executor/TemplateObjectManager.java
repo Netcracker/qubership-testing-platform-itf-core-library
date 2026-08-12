@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -80,10 +80,10 @@ public abstract class TemplateObjectManager<K extends TemplateProvider, T extend
 
     @Override
     public Collection<UsageInfo> findUsages(Storable storable) {
-        Iterable<Step> all = storable instanceof SystemTemplate
-                ? stepRepository.getIntegrationStepsBySystemTemplate((SystemTemplate)storable)
-                : storable instanceof OperationTemplate
-                ? stepRepository.getIntegrationStepsByOperationTemplate((OperationTemplate)storable)
+        Iterable<Step> all = storable instanceof SystemTemplate st
+                ? stepRepository.getIntegrationStepsBySystemTemplate(st)
+                : storable instanceof OperationTemplate ot
+                ? stepRepository.getIntegrationStepsByOperationTemplate(ot)
                 : new ArrayList<>();
         Collection<UsageInfo> result = Sets.newHashSet();
         addToUsages(result, "template", all);

@@ -21,7 +21,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.qubership.automation.itf.core.model.jpa.message.Message;

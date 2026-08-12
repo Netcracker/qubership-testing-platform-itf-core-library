@@ -21,6 +21,7 @@ import org.qubership.atp.datasets.controllers.DataSetListControllerApi;
 import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(name = "${feign.atp.datasets.name}",
+        contextId = "datasetsDatasetListFeignClient",
         url = "${feign.atp.datasets.url}",
         path = "${feign.atp.datasets.route}",
         configuration = FeignConfiguration.class)

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,11 +16,13 @@
 
 package org.qubership.automation.itf.core.model.transport;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ConnectionProperties extends HashMap<String, Object> {
 
+    @Serial
     private static final long serialVersionUID = 8895341504195631045L;
 
     public ConnectionProperties() {

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 import java.util.UUID;
@@ -122,9 +121,9 @@ public class FileManagementService {
      */
     public Path getDirectoryPath(String contentType, UUID projectUuid, String filePath) {
         if (EdsContentType.KEYSTORE.getStringValue().equals(contentType)) {
-            return Paths.get(rootFolder, contentType, filePath);
+            return Path.of(rootFolder, contentType, filePath);
         } else {
-            return Paths.get(rootFolder, contentType, projectUuid.toString(), filePath);
+            return Path.of(rootFolder, contentType, projectUuid.toString(), filePath);
         }
     }
 

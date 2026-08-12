@@ -18,7 +18,7 @@ package org.qubership.automation.itf.core.model.jpa.message.parser;
 
 import java.math.BigInteger;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.qubership.automation.itf.core.model.common.Identified;
 import org.qubership.automation.itf.core.model.common.Named;
@@ -31,7 +31,7 @@ import org.qubership.automation.itf.core.util.provider.ParsingRuleProvider;
 
 @Entity
 public interface ParsingRule<T extends ParsingRuleProvider>
-        extends Storable, Named, Identified<Object>, OptimisticLockable<Object> {
+        extends Storable, Named, Identified<BigInteger>, OptimisticLockable<Object> {
     String getParamName();
 
     Boolean getMultiple();
