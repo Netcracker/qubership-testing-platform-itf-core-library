@@ -32,10 +32,10 @@
         <hazelcast.version>5.2.5</hazelcast.version>
         <querydsl.version>5.1.0</querydsl.version>
         <jakarta-persistence.version>3.1.0</jakarta-persistence.version>
-        <io.undertow.undertow-core.version>2.3.21.Final</io.undertow.undertow-core.version>
-        <tomcat.embed.version>9.0.108</tomcat.embed.version>
+        <io.undertow.undertow-core.version>2.3.24.Final</io.undertow.undertow-core.version>
+        <tomcat.embed.version>10.1.54</tomcat.embed.version>
         <org.bouncycastle.version>1.80</org.bouncycastle.version>
-        <lombok.version>1.18.44</lombok.version>
+        <lombok.version>1.18.46</lombok.version>
 
         <atp.common.version>1.0.0</atp.common.version>
         <atp.auth.version>2.0.1</atp.auth.version>
@@ -371,7 +371,6 @@
             <classifier>jakarta</classifier>
         </dependency>
         <dependency>
-
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -392,7 +391,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <version>2.13.2</version>
         </dependency>
         <dependency>
             <groupId>org.jdom</groupId>
