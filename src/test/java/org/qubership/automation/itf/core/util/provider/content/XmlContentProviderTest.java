@@ -65,7 +65,7 @@ class XmlContentProviderTest {
     @Test
     void hardModeRejectsDoctypeAndNeverReadsTheReferencedFile() {
         when(message.getText()).thenReturn(xxeMessage());
-        XmlContentProvider provider = new XmlContentProvider();
+        XmlContentProvider provider = new XmlContentProvider(false);
 
         ContentException exception = assertThrows(ContentException.class, () -> provider.provide(message));
 
@@ -75,7 +75,7 @@ class XmlContentProviderTest {
     @Test
     void hardModeStillParsesAMessageWithNoDoctype() throws ContentException {
         when(message.getText()).thenReturn("<root><data>value</data></root>");
-        XmlContentProvider provider = new XmlContentProvider();
+        XmlContentProvider provider = new XmlContentProvider(false);
 
         Content<Element> content = provider.provide(message);
 
@@ -85,7 +85,7 @@ class XmlContentProviderTest {
     @Test
     void softModeParsesTheDoctypeButNeverReadsTheReferencedFile() {
         when(message.getText()).thenReturn(xxeMessage());
-        XmlContentProvider provider = new XmlContentProvider(true);
+        XmlContentProvider provider = new XmlContentProvider();
 
         Content<Element> content = assertDoesNotThrow(() -> provider.provide(message));
 
@@ -95,7 +95,7 @@ class XmlContentProviderTest {
     @Test
     void softModeStillParsesAMessageWithNoDoctype() throws ContentException {
         when(message.getText()).thenReturn("<root><data>value</data></root>");
-        XmlContentProvider provider = new XmlContentProvider(true);
+        XmlContentProvider provider = new XmlContentProvider();
 
         Content<Element> content = provider.provide(message);
 
