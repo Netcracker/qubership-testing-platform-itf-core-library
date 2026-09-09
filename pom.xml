@@ -86,7 +86,7 @@
                 <version>3.5.5</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
-                    <argLine>-Dfile.encoding=UTF-8 -javaagent:${org.mockito:mockito-core:jar} -Xshare:off</argLine>
+                    <argLine>-Dfile.encoding=UTF-8 -javaagent:${org.mockito:mockito-core:jar} -Xshare:off --add-opens java.base/java.lang=ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
             <plugin>

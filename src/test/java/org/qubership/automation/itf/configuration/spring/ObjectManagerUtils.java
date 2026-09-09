@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.qubership.automation.itf.core.hibernate.ObjectManagerFactoryHB;
 import org.qubership.automation.itf.core.hibernate.spring.managers.base.ObjectManager;
 import org.qubership.automation.itf.core.model.common.LabeledStorable;
@@ -90,21 +90,21 @@ public class ObjectManagerUtils extends ObjectManagerFactoryHB {
     @Nonnull
     public static <T extends Storable> T getFirst(Class<T> type) {
         T result = managerFor(type).getAll().stream().findFirst().get();
-        Assert.assertNotNull(result);
+        Assertions.assertNotNull(result);
         return result;
     }
 
     @Nonnull
     public static <T extends Storable> T getById(Class<T> type, Object id) {
         T result = managerFor(type).getById(id);
-        Assert.assertNotNull(result);
+        Assertions.assertNotNull(result);
         return result;
     }
 
     @Nonnull
     public static <T extends Storable> Collection<? extends T> getAll(Class<T> type) {
         Collection<? extends T> result = managerFor(type).getAll();
-        Assert.assertNotNull(result);
+        Assertions.assertNotNull(result);
         return result;
     }
 
@@ -152,7 +152,7 @@ public class ObjectManagerUtils extends ObjectManagerFactoryHB {
      */
     protected static <T extends Storable> void validateStorableSearch(@Nonnull ObjectManager<T> om, @Nonnull T stored) {
         T byId = om.getById(stored.getID());
-        Assert.assertEquals(stored, byId);
+        Assertions.assertEquals(stored, byId);
         validateStorableSearchInternal(om, byId);
     }
 
@@ -163,7 +163,7 @@ public class ObjectManagerUtils extends ObjectManagerFactoryHB {
                                                                       @Nonnull Class<T> itsClass) {
         //ObjectManager<T> om = CoreObjectManager.getInstance().getManager(itsClass);
 //        T byId = om.getById(id);
-//        Assert.assertNotNull(byId);
+//        Assertions.assertNotNull(byId);
 //        validateStorableSearchInternal(om, byId);
     }
 
@@ -171,25 +171,26 @@ public class ObjectManagerUtils extends ObjectManagerFactoryHB {
                                                                             @Nonnull T stored) {
         String storedName = stored.getName();
         if (storedName != null) {
-            Assert.assertTrue("No [%s] with name [%s] found by name".formatted(stored, storedName),
-                    om.getByName(storedName).contains(stored));
+            Assertions.assertTrue(om.getByName(storedName).contains(stored),
+                    "No [%s] with name [%s] found by name".formatted(stored, storedName));
         }
         Storable parent = stored.getParent();
         if (parent != null) {
             BigInteger parentId = (BigInteger) parent.getID();
-            Assert.assertTrue("No [%s] with parent [%s] found by parentId".formatted(stored, parent),
-                    om.getAllByParentId(parentId).contains(stored));
+            Assertions.assertTrue(om.getAllByParentId(parentId).contains(stored),
+                    "No [%s] with parent [%s] found by parentId".formatted(stored, parent));
             if (storedName != null) {
-                Assert.assertTrue("No [%s] with parent [%s] and name [%s] found by parent and name".formatted(
-                        stored, parent, storedName), om.getByParentAndName(parent, storedName).contains(stored));
+                Assertions.assertTrue(om.getByParentAndName(parent, storedName).contains(stored),
+                        "No [%s] with parent [%s] and name [%s] found by parent and name".formatted(
+                                stored, parent, storedName));
             }
             String parentName = parent.getName();
             if (parentName != null) {
-                Assert.assertTrue("No [%s] with parent [%s] found by parent name".formatted(stored, parent),
-                        om.getAllByParentName(parentName).contains(stored));
+                Assertions.assertTrue(om.getAllByParentName(parentName).contains(stored),
+                        "No [%s] with parent [%s] found by parent name".formatted(stored, parent));
             }
         }
-        Assert.assertTrue("No [%s] found by [getAll] call".formatted(stored), om.getAll().contains(stored));
+        Assertions.assertTrue(om.getAll().contains(stored), "No [%s] found by [getAll] call".formatted(stored));
     }
 
     private static void fillNameDescrLabels(Storable storable) {

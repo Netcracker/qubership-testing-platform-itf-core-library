@@ -16,25 +16,31 @@
 
 package org.qubership.automation.itf.core.system.stub.conditions;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.qubership.automation.itf.core.IdentityTemplateEngine;
 import org.qubership.automation.itf.core.model.condition.ConditionsHelper;
 import org.qubership.automation.itf.core.model.condition.parameter.ConditionParameter;
 import org.qubership.automation.itf.core.model.jpa.context.SpContext;
 import org.qubership.automation.itf.core.model.jpa.message.Message;
 import org.qubership.automation.itf.core.util.constants.Condition;
 import org.qubership.automation.itf.core.util.constants.Etc;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.qubership.automation.itf.core.util.engine.TemplateEngineFactory;
 
-@SpringJUnitConfig(locations = {"classpath*:*core-test-context.xml"})
 public class DefaultConditionPropertyTest {
+
+    @BeforeAll
+    public static void initTemplateEngine() {
+        TemplateEngineFactory.init(new IdentityTemplateEngine());
+    }
 
     @Test
     public void testMatches() {

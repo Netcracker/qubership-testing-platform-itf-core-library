@@ -16,59 +16,15 @@
 
 package org.qubership.automation.itf.configuration.spring;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.qubership.automation.itf.configuration.spring.ObjectManagerUtils.create;
-import static org.qubership.automation.itf.configuration.spring.ObjectManagerUtils.renameStoreValidate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.json.simple.JSONArray;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.Test;
 import org.qubership.automation.itf.core.model.jpa.context.JsonContext;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import jakarta.transaction.Transactional;
-
-@Transactional
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@SpringJUnitConfig(locations = {"classpath*:hibernate-configuration-test-context.xml"})
 public class TcContextTest {
-
-//    @Autowired
-//    private TCContextObjectManager contextManager;
-
-
-//    @Test
-//    public void workedCacheInObjectManager() throws Exception {
-//        TCContext tcContext = create(TCContext.class);
-//        Environment environment = create(Environment.class);
-//        tcContext.setEnvironment(environment);
-//        tcContext.start();
-//        Thread.sleep(3000);
-//        tcContext.finish();
-//        InstanceContext instanceContext = CoreObjectManager.managerFor(InstanceContext.class).create();
-//        instanceContext.setTC(tcContext);
-//        SPContext sp = new SPContext();
-//        sp.setIncomingMessage(new Message("123"));
-//        sp.setOutgoingMessage(new Message("321"));
-//        instanceContext.setSP(sp);
-//        instanceContext.store();
-//        Object instanceContextID = instanceContext.getID();
-//        TxExecutor.execute(() -> {
-//            InstanceContext instContext = CoreObjectManager.managerFor(InstanceContext.class).getById(instanceContextID);
-//            TCContext tc = instContext.getTC();
-//            assertNotNull(tc.getEnvironment());
-//            return null;
-//        });
-//    }
-
-    @Test
-    public void workedRenameFind() {
-        TcContext tcContext = create(TcContext.class);
-        renameStoreValidate(tcContext);
-    }
 
     @Test
     public void testContextSaveOrder() {

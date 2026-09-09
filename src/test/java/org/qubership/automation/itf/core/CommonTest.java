@@ -16,10 +16,10 @@
 
 package org.qubership.automation.itf.core;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.qubership.automation.itf.core.util.eds.service.EdsContentType;
 
 public class CommonTest {
