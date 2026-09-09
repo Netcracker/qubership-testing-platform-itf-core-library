@@ -22,13 +22,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.qubership.automation.itf.core.util.parser.ParsingRuleType.XPATH;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.jdom2.Element;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.qubership.automation.itf.core.model.content.Content;
 import org.qubership.automation.itf.core.model.jpa.message.Message;
@@ -40,7 +41,6 @@ import org.qubership.automation.itf.core.util.exception.ContentException;
 import org.qubership.automation.itf.core.util.helper.ContentHelper;
 import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
 import org.qubership.automation.itf.core.util.provider.content.XmlContentProvider;
-import org.testng.reporters.Files;
 
 public class ParsingRuleTypeTest {
 
@@ -102,9 +102,13 @@ public class ParsingRuleTypeTest {
     }
 
     @Test
-    public void testParsingXpath() throws URISyntaxException, IOException, ContentException {
-        File file = new File(getClass().getResource("/parsing_rule/xml_expression.xml").toURI());
-        String xmlContent = Files.readFile(file);
+    public void testParsingXpath() throws IOException, ContentException {
+        String xmlContent;
+        try (InputStream is = getClass().getResourceAsStream("/parsing_rule/xml_expression.xml")) {
+            Assertions.assertNotNull(is);
+            xmlContent = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        }
+
         String xpath = "//*[local-name() = 'UPRN']/text()"; // "//UPRN/text()" - it works only w/o namespace
         ParsingRule parsingRule = mock(SystemParsingRule.class);
         when(parsingRule.getExpression()).thenReturn(xpath);

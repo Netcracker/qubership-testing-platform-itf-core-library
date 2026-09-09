@@ -25,92 +25,92 @@ import static org.qubership.automation.itf.core.util.constants.Mep.OUTBOUND_REQU
 import static org.qubership.automation.itf.core.util.constants.Mep.OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS;
 import static org.qubership.automation.itf.core.util.constants.Mep.OUTBOUND_RESPONSE_ASYNCHRONOUS;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MepTest {
     @Test
     public void testIsAsync() {
-        Assert.assertFalse(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isAsync());
-        Assert.assertTrue(OUTBOUND_REQUEST_ASYNCHRONOUS.isAsync());
-        Assert.assertTrue(OUTBOUND_RESPONSE_ASYNCHRONOUS.isAsync());
-        Assert.assertFalse(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isAsync());
-        Assert.assertFalse(INBOUND_REQUEST_SYNCHRONOUS.isAsync());
-        Assert.assertFalse(INBOUND_RESPONSE_SYNCHRONOUS.isAsync());
-        Assert.assertTrue(INBOUND_REQUEST_ASYNCHRONOUS.isAsync());
-        Assert.assertTrue(INBOUND_RESPONSE_ASYNCHRONOUS.isAsync());
+        Assertions.assertFalse(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isAsync());
+        Assertions.assertTrue(OUTBOUND_REQUEST_ASYNCHRONOUS.isAsync());
+        Assertions.assertTrue(OUTBOUND_RESPONSE_ASYNCHRONOUS.isAsync());
+        Assertions.assertFalse(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isAsync());
+        Assertions.assertFalse(INBOUND_REQUEST_SYNCHRONOUS.isAsync());
+        Assertions.assertFalse(INBOUND_RESPONSE_SYNCHRONOUS.isAsync());
+        Assertions.assertTrue(INBOUND_REQUEST_ASYNCHRONOUS.isAsync());
+        Assertions.assertTrue(INBOUND_RESPONSE_ASYNCHRONOUS.isAsync());
     }
 
     @Test
     public void testIsSync() {
-        Assert.assertTrue(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isSync());
-        Assert.assertFalse(OUTBOUND_REQUEST_ASYNCHRONOUS.isSync());
-        Assert.assertFalse(OUTBOUND_RESPONSE_ASYNCHRONOUS.isSync());
-        Assert.assertTrue(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isSync());
-        Assert.assertTrue(INBOUND_REQUEST_SYNCHRONOUS.isSync());
-        Assert.assertTrue(INBOUND_RESPONSE_SYNCHRONOUS.isSync());
-        Assert.assertFalse(INBOUND_REQUEST_ASYNCHRONOUS.isSync());
-        Assert.assertFalse(INBOUND_RESPONSE_ASYNCHRONOUS.isSync());
+        Assertions.assertTrue(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isSync());
+        Assertions.assertFalse(OUTBOUND_REQUEST_ASYNCHRONOUS.isSync());
+        Assertions.assertFalse(OUTBOUND_RESPONSE_ASYNCHRONOUS.isSync());
+        Assertions.assertTrue(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isSync());
+        Assertions.assertTrue(INBOUND_REQUEST_SYNCHRONOUS.isSync());
+        Assertions.assertTrue(INBOUND_RESPONSE_SYNCHRONOUS.isSync());
+        Assertions.assertFalse(INBOUND_REQUEST_ASYNCHRONOUS.isSync());
+        Assertions.assertFalse(INBOUND_RESPONSE_ASYNCHRONOUS.isSync());
     }
 
     @Test
     public void testIsOutbound() {
-        Assert.assertTrue(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isOutbound());
-        Assert.assertTrue(OUTBOUND_REQUEST_ASYNCHRONOUS.isOutbound());
-        Assert.assertTrue(OUTBOUND_RESPONSE_ASYNCHRONOUS.isOutbound());
-        Assert.assertFalse(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isOutbound());
-        Assert.assertFalse(INBOUND_REQUEST_SYNCHRONOUS.isOutbound());
-        Assert.assertFalse(INBOUND_RESPONSE_SYNCHRONOUS.isOutbound());
-        Assert.assertFalse(INBOUND_REQUEST_ASYNCHRONOUS.isOutbound());
-        Assert.assertFalse(INBOUND_RESPONSE_ASYNCHRONOUS.isOutbound());
+        Assertions.assertTrue(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isOutbound());
+        Assertions.assertTrue(OUTBOUND_REQUEST_ASYNCHRONOUS.isOutbound());
+        Assertions.assertTrue(OUTBOUND_RESPONSE_ASYNCHRONOUS.isOutbound());
+        Assertions.assertFalse(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isOutbound());
+        Assertions.assertFalse(INBOUND_REQUEST_SYNCHRONOUS.isOutbound());
+        Assertions.assertFalse(INBOUND_RESPONSE_SYNCHRONOUS.isOutbound());
+        Assertions.assertFalse(INBOUND_REQUEST_ASYNCHRONOUS.isOutbound());
+        Assertions.assertFalse(INBOUND_RESPONSE_ASYNCHRONOUS.isOutbound());
     }
 
     @Test
     public void testIsInbound() {
-        Assert.assertFalse(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isInbound());
-        Assert.assertFalse(OUTBOUND_REQUEST_ASYNCHRONOUS.isInbound());
-        Assert.assertFalse(OUTBOUND_RESPONSE_ASYNCHRONOUS.isInbound());
-        Assert.assertTrue(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isInbound());
-        Assert.assertTrue(INBOUND_REQUEST_SYNCHRONOUS.isInbound());
-        Assert.assertTrue(INBOUND_RESPONSE_SYNCHRONOUS.isInbound());
-        Assert.assertTrue(INBOUND_REQUEST_ASYNCHRONOUS.isInbound());
-        Assert.assertTrue(INBOUND_RESPONSE_ASYNCHRONOUS.isInbound());
+        Assertions.assertFalse(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isInbound());
+        Assertions.assertFalse(OUTBOUND_REQUEST_ASYNCHRONOUS.isInbound());
+        Assertions.assertFalse(OUTBOUND_RESPONSE_ASYNCHRONOUS.isInbound());
+        Assertions.assertTrue(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isInbound());
+        Assertions.assertTrue(INBOUND_REQUEST_SYNCHRONOUS.isInbound());
+        Assertions.assertTrue(INBOUND_RESPONSE_SYNCHRONOUS.isInbound());
+        Assertions.assertTrue(INBOUND_REQUEST_ASYNCHRONOUS.isInbound());
+        Assertions.assertTrue(INBOUND_RESPONSE_ASYNCHRONOUS.isInbound());
     }
 
     @Test
     public void testIsRequest() {
-        Assert.assertTrue(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isRequest());
-        Assert.assertTrue(OUTBOUND_REQUEST_ASYNCHRONOUS.isRequest());
-        Assert.assertFalse(OUTBOUND_RESPONSE_ASYNCHRONOUS.isRequest());
-        Assert.assertTrue(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isRequest());
-        Assert.assertTrue(INBOUND_REQUEST_SYNCHRONOUS.isRequest());
-        Assert.assertFalse(INBOUND_RESPONSE_SYNCHRONOUS.isRequest());
-        Assert.assertTrue(INBOUND_REQUEST_ASYNCHRONOUS.isRequest());
-        Assert.assertFalse(INBOUND_RESPONSE_ASYNCHRONOUS.isRequest());
+        Assertions.assertTrue(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isRequest());
+        Assertions.assertTrue(OUTBOUND_REQUEST_ASYNCHRONOUS.isRequest());
+        Assertions.assertFalse(OUTBOUND_RESPONSE_ASYNCHRONOUS.isRequest());
+        Assertions.assertTrue(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isRequest());
+        Assertions.assertTrue(INBOUND_REQUEST_SYNCHRONOUS.isRequest());
+        Assertions.assertFalse(INBOUND_RESPONSE_SYNCHRONOUS.isRequest());
+        Assertions.assertTrue(INBOUND_REQUEST_ASYNCHRONOUS.isRequest());
+        Assertions.assertFalse(INBOUND_RESPONSE_ASYNCHRONOUS.isRequest());
     }
 
     @Test
     public void testIsResponse() {
-        Assert.assertTrue(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isResponse());
-        Assert.assertFalse(OUTBOUND_REQUEST_ASYNCHRONOUS.isResponse());
-        Assert.assertTrue(OUTBOUND_RESPONSE_ASYNCHRONOUS.isResponse());
-        Assert.assertTrue(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isResponse());
-        Assert.assertFalse(INBOUND_REQUEST_SYNCHRONOUS.isResponse());
-        Assert.assertTrue(INBOUND_RESPONSE_SYNCHRONOUS.isResponse());
-        Assert.assertFalse(INBOUND_REQUEST_ASYNCHRONOUS.isResponse());
-        Assert.assertTrue(INBOUND_RESPONSE_ASYNCHRONOUS.isResponse());
+        Assertions.assertTrue(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isResponse());
+        Assertions.assertFalse(OUTBOUND_REQUEST_ASYNCHRONOUS.isResponse());
+        Assertions.assertTrue(OUTBOUND_RESPONSE_ASYNCHRONOUS.isResponse());
+        Assertions.assertTrue(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isResponse());
+        Assertions.assertFalse(INBOUND_REQUEST_SYNCHRONOUS.isResponse());
+        Assertions.assertTrue(INBOUND_RESPONSE_SYNCHRONOUS.isResponse());
+        Assertions.assertFalse(INBOUND_REQUEST_ASYNCHRONOUS.isResponse());
+        Assertions.assertTrue(INBOUND_RESPONSE_ASYNCHRONOUS.isResponse());
     }
 
     @Test
     public void testIsOneDirection() {
-        Assert.assertFalse(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isOneDirection());
-        Assert.assertTrue(OUTBOUND_REQUEST_ASYNCHRONOUS.isOneDirection());
-        Assert.assertTrue(OUTBOUND_RESPONSE_ASYNCHRONOUS.isOneDirection());
-        Assert.assertFalse(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isOneDirection());
-        Assert.assertTrue(INBOUND_REQUEST_SYNCHRONOUS.isOneDirection());
-        Assert.assertTrue(INBOUND_RESPONSE_SYNCHRONOUS.isOneDirection());
-        Assert.assertTrue(INBOUND_REQUEST_ASYNCHRONOUS.isOneDirection());
-        Assert.assertTrue(INBOUND_RESPONSE_ASYNCHRONOUS.isOneDirection());
+        Assertions.assertFalse(OUTBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isOneDirection());
+        Assertions.assertTrue(OUTBOUND_REQUEST_ASYNCHRONOUS.isOneDirection());
+        Assertions.assertTrue(OUTBOUND_RESPONSE_ASYNCHRONOUS.isOneDirection());
+        Assertions.assertFalse(INBOUND_REQUEST_RESPONSE_SYNCHRONOUS.isOneDirection());
+        Assertions.assertTrue(INBOUND_REQUEST_SYNCHRONOUS.isOneDirection());
+        Assertions.assertTrue(INBOUND_RESPONSE_SYNCHRONOUS.isOneDirection());
+        Assertions.assertTrue(INBOUND_REQUEST_ASYNCHRONOUS.isOneDirection());
+        Assertions.assertTrue(INBOUND_RESPONSE_ASYNCHRONOUS.isOneDirection());
     }
 
 }
