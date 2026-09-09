@@ -25,7 +25,6 @@ import jakarta.inject.Named;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,22 +43,9 @@ import com.google.common.base.Throwables;
 @Service
 public class TxExecutor {
 
-    private static final Supplier<PlatformTransactionManager> DEFAULT = () -> new PlatformTransactionManager() {
-        @Override
-        public TransactionStatus getTransaction(TransactionDefinition transactionDefinition)
-                throws TransactionException {
-            return null;
-        }
-
-        @Override
-        public void commit(TransactionStatus transactionStatus) throws TransactionException {
-
-        }
-
-        @Override
-        public void rollback(TransactionStatus transactionStatus) throws TransactionException {
-
-        }
+    private static final Supplier<PlatformTransactionManager> DEFAULT = () -> {
+        throw new IllegalStateException("TxExecutor is not initialized: no \"transactionManager\" "
+                + "PlatformTransactionManager has been set via init(...)");
     };
 
     /**
@@ -80,22 +66,36 @@ public class TxExecutor {
         NESTED_WRITABLE = new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
         DefaultTransactionDefinition nestedReadonly =
                 new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        readonly.setReadOnly(true);
+        nestedReadonly.setReadOnly(true);
         NESTED_READ_ONLY_DEFINITION = nestedReadonly;
     }
 
+    /**
+     * Installs {@code manager} as the shared transaction manager, unless one is already installed.
+     */
     @Inject
     public TxExecutor(@Named("transactionManager") PlatformTransactionManager manager) {
         init(manager);
     }
 
+    /**
+     * Returns the transaction manager installed through {@link #init}.
+     *
+     * @throws IllegalStateException if no manager has been installed yet
+     */
     public static PlatformTransactionManager get() {
         init(DEFAULT);
         return INSTANCE;
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Installs the manager {@code instance} supplies as the shared transaction manager, unless one
+     * is already installed.
+     *
+     * <p>Thread-safe: concurrent callers race to install exactly one manager, and once one is
+     * installed, no later call invokes {@code instance.get()}.</p>
+     *
+     * @param instance supplies the manager to install
      */
     public static void init(Supplier<PlatformTransactionManager> instance) {
         if (INSTANCE == null) {
@@ -107,31 +107,63 @@ public class TxExecutor {
         }
     }
 
+    /**
+     * Installs {@code instance} as the shared transaction manager, unless one is already installed.
+     *
+     * @param instance the manager to install
+     * @see #init(Supplier)
+     */
     public static void init(PlatformTransactionManager instance) {
         init(Suppliers.ofInstance(instance)::get);
     }
 
+    /**
+     * Returns the default writable transaction definition: {@code PROPAGATION_REQUIRED}, the same
+     * propagation {@link Transactional @Transactional} defaults to.
+     */
     public static TransactionDefinition defaultWritableTransaction() {
         return DEFAULT_DEFINITION;
     }
 
+    /**
+     * Returns the read-only transaction definition: {@code PROPAGATION_REQUIRED} with
+     * {@code readOnly} set.
+     */
     public static TransactionDefinition readOnlyTransaction() {
         return READ_ONLY_DEFINITION;
     }
 
+    /**
+     * Returns the nested read-only transaction definition: {@code PROPAGATION_REQUIRES_NEW} with
+     * {@code readOnly} set.
+     */
     public static TransactionDefinition nestedReadOnlyTransaction() {
         return NESTED_READ_ONLY_DEFINITION;
     }
 
     /**
-     * used when you want to do extra nested writable transaction.
+     * Returns the nested writable transaction definition: {@code PROPAGATION_REQUIRES_NEW}.
+     *
+     * <p>Use it to run an inner transaction that commits or rolls back independently of the
+     * caller's transaction.</p>
      */
     public static TransactionDefinition nestedWritableTransaction() {
         return NESTED_WRITABLE;
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Runs {@code callable} inside a transaction and returns its result.
+     *
+     * <p>Obtains a transaction from {@link #get()} using {@code def} and commits it once
+     * {@code callable} returns normally. If {@code callable} throws, the transaction is rolled
+     * back and the original exception propagates, except that a rollback failure other than
+     * {@link UnexpectedRollbackException} replaces it with a new {@link Exception} carrying the
+     * original as its cause.</p>
+     *
+     * @param callable the work to run inside the transaction
+     * @param def the transaction definition to open
+     * @return the value {@code callable} returns
+     * @throws Exception propagated from {@code callable}, or from a failed rollback
      */
     public static <T> T execute(Callable<T> callable, TransactionDefinition def) throws Exception {
         PlatformTransactionManager instance = get();
@@ -153,12 +185,29 @@ public class TxExecutor {
         }
     }
 
+    /**
+     * Same as {@link #execute(Callable, TransactionDefinition)}, using
+     * {@link #defaultWritableTransaction()}.
+     *
+     * @param callable the work to run inside the transaction
+     * @return the value {@code callable} returns
+     * @throws Exception propagated from {@code callable}, or from a failed rollback
+     */
     public static <T> T execute(Callable<T> callable) throws Exception {
         return execute(callable, defaultWritableTransaction());
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Runs {@code callable} inside a transaction opened with {@code def}.
+     *
+     * <p>The transaction comes from {@link #get()}. If {@code callable} throws, the transaction
+     * is rolled back and the original exception propagates; a rollback failure is thrown instead,
+     * with the original exception attached to it via {@link Throwable#addSuppressed}. On success,
+     * the transaction is left open: unlike {@link #execute(Callable, TransactionDefinition)}, this
+     * method never calls {@link PlatformTransactionManager#commit}.</p>
+     *
+     * @param callable the work to run inside the transaction
+     * @param def the transaction definition to open
      */
     public static void executeVoid(TxCallable callable, TransactionDefinition def) {
         PlatformTransactionManager instance = get();
@@ -176,12 +225,32 @@ public class TxExecutor {
         }
     }
 
+    /**
+     * Commits the transaction of the method currently running under Spring's
+     * {@code @Transactional} aspect.
+     *
+     * <p>Commits {@link TransactionAspectSupport#currentTransactionStatus()} directly on the
+     * installed manager, ahead of the aspect's own commit when the method returns.</p>
+     *
+     * @throws NullPointerException if no transaction manager has been installed yet
+     * @throws org.springframework.transaction.NoTransactionException if no aspect-managed
+     *     transaction is active on the current thread
+     */
     public static void commit() {
         INSTANCE.commit(TransactionAspectSupport.currentTransactionStatus());
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Same as {@link #execute(Callable, TransactionDefinition)}, without the checked exception.
+     *
+     * <p>A {@link RuntimeException} or {@link Error} from {@code callable} or from a failed
+     * rollback propagates unchanged. A checked exception is silently discarded and {@code null}
+     * is returned instead, because {@link Throwables#throwIfUnchecked} only rethrows an unchecked
+     * throwable.</p>
+     *
+     * @param callable the work to run inside the transaction
+     * @param def the transaction definition to open
+     * @return the value {@code callable} returns, or {@code null} if a checked exception was thrown
      */
     public static <T> T executeUnchecked(Callable<T> callable, TransactionDefinition def) {
         try {
@@ -193,7 +262,16 @@ public class TxExecutor {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Runs {@code callable} inside a transaction opened with {@code definition}, propagating any
+     * failure unchanged.
+     *
+     * <p>Delegates to {@link #executeVoid(TxCallable, TransactionDefinition)}. Because
+     * {@link TxCallable#execute()} declares no checked exception, every exception it or a failed
+     * rollback can throw is already unchecked, so {@link Throwables#throwIfUnchecked} always
+     * rethrows it.</p>
+     *
+     * @param callable the work to run inside the transaction
+     * @param definition the transaction definition to open
      */
     public static void executeUnchecked(TxCallable callable, TransactionDefinition definition) {
         try {
@@ -203,6 +281,13 @@ public class TxExecutor {
         }
     }
 
+    /**
+     * Same as {@link #executeUnchecked(Callable, TransactionDefinition)}, using
+     * {@link #defaultWritableTransaction()}.
+     *
+     * @param callable the work to run inside the transaction
+     * @return the value {@code callable} returns, or {@code null} if a checked exception was thrown
+     */
     public static <T> T executeUnchecked(Callable<T> callable) {
         return executeUnchecked(callable, defaultWritableTransaction());
     }
