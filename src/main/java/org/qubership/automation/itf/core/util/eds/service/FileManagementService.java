@@ -74,8 +74,15 @@ public class FileManagementService {
      * Delete file by fileInfo.
      */
     public void delete(FileInfo fileInfo) {
-        Path path = getDirectoryPath(fileInfo.getContentType(), fileInfo.getProjectUuid(), fileInfo.getFilePath())
-                .resolve(fileInfo.getFileName());
+        Path path;
+        try {
+            Path directory = getDirectoryPath(fileInfo.getContentType(), fileInfo.getProjectUuid(),
+                    fileInfo.getFilePath());
+            path = resolveWithinRoot(directory, fileInfo.getFileName());
+        } catch (IllegalArgumentException e) {
+            log.error("An error occurred while deleting file '{}': {}", fileInfo.getFileName(), e.getMessage());
+            return;
+        }
         try {
             Files.delete(path);
             log.info("File by path '{}' is deleted from storage successfully.", path);
@@ -100,11 +107,31 @@ public class FileManagementService {
      * Creates file (and directory, if needed).
      */
     private File findOrCreateDirectoryWithFile(String directoryName, String fileName) {
-        File directory = new File(directoryName);
+        Path target = resolveWithinRoot(Path.of(directoryName), fileName);
+        File directory = target.getParent().toFile();
         if (!directory.exists() && !directory.mkdirs()) {
             log.info("Directory {} is created", directoryName);
         }
-        return new File(directoryName + "/" + fileName);
+        return target.toFile();
+    }
+
+    /**
+     * Resolves fileName against directory and returns the result.
+     *
+     * @throws IllegalArgumentException if fileName contains a path separator, or the resolved
+     *                                  path is not under the storage root.
+     */
+    private Path resolveWithinRoot(Path directory, String fileName) {
+        if (fileName == null || fileName.isEmpty() || fileName.contains("/") || fileName.contains("\\")) {
+            throw new IllegalArgumentException("File name '" + fileName + "' must not contain path separators.");
+        }
+        Path root = Path.of(rootFolder).toAbsolutePath().normalize();
+        Path target = directory.resolve(fileName).toAbsolutePath().normalize();
+        if (!target.startsWith(root)) {
+            throw new IllegalArgumentException("File name '" + fileName
+                    + "' resolves outside of the storage root '" + root + "'.");
+        }
+        return target;
     }
 
     /**
@@ -117,14 +144,20 @@ public class FileManagementService {
     }
 
     /**
-     * Get path to file.
+     * Returns the storage directory for contentType, projectUuid and filePath.
+     *
+     * @throws IllegalArgumentException if filePath resolves outside of the storage root.
      */
     public Path getDirectoryPath(String contentType, UUID projectUuid, String filePath) {
-        if (EdsContentType.KEYSTORE.getStringValue().equals(contentType)) {
-            return Path.of(rootFolder, contentType, filePath);
-        } else {
-            return Path.of(rootFolder, contentType, projectUuid.toString(), filePath);
+        Path root = Path.of(rootFolder).toAbsolutePath().normalize();
+        Path directory = EdsContentType.KEYSTORE.getStringValue().equals(contentType)
+                ? Path.of(rootFolder, contentType, filePath)
+                : Path.of(rootFolder, contentType, projectUuid.toString(), filePath);
+        Path normalized = directory.toAbsolutePath().normalize();
+        if (!normalized.startsWith(root)) {
+            throw new IllegalArgumentException("File path '" + filePath + "' resolves outside of the storage root.");
         }
+        return normalized;
     }
 
     /**
