@@ -33,6 +33,17 @@ import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
 
 public class DecodeSaml extends Directive {
+
+    /**
+     * Largest deflate-decompressed payload, in bytes, that {@link #decodeSaml(String, String)} accepts before it
+     * aborts. A stub template's argument to this directive comes from a message a counterparty sent, so an attacker
+     * who controls that message can pick a compression ratio around 1000:1; without a bound, decompressing it
+     * exhausts the heap before the resulting String is even built. Overridable via the
+     * {@code itf.decode_saml.max.decoded.size.bytes} system property.
+     */
+    private static final int MAX_DECODED_SIZE_BYTES =
+            Integer.getInteger("itf.decode_saml.max.decoded.size.bytes", 16 * 1024 * 1024);
+
     @Override
     public String getName() {
         return "decode_saml";
@@ -82,7 +93,13 @@ public class DecodeSaml extends Directive {
             InflaterInputStream in = new InflaterInputStream(bytesIn, new Inflater(true));
             byte[] buffer = new byte[decodedBytes.length];
             ByteArrayOutputStream out = new ByteArrayOutputStream();
+            long totalBytesRead = 0;
             for (int bytesRead = 0; bytesRead != -1; bytesRead = in.read(buffer)) {
+                totalBytesRead += bytesRead;
+                if (totalBytesRead > MAX_DECODED_SIZE_BYTES) {
+                    throw new IllegalArgumentException("#decode_saml: decompressed content exceeds the maximum "
+                            + "allowed size of " + MAX_DECODED_SIZE_BYTES + " bytes");
+                }
                 out.write(buffer, 0, bytesRead);
             }
             return out.toString(encoding);
