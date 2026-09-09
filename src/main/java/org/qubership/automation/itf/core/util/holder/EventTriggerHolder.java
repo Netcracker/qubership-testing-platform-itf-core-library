@@ -39,12 +39,11 @@ public class EventTriggerHolder {
     public void add(Listener listener, boolean isStartListener) {
         listenerMap.put(listener.getId(), listener);
         if (isStartListener) {
-            synchronized (listener.getSituationId()) {
-                List<Listener> list = situationOnStartListenersMap
-                        .getOrDefault(listener.getSituationId(), new ArrayList<>());
-                list.add(listener);
-                situationOnStartListenersMap.put(listener.getSituationId(), list);
-            }
+            situationOnStartListenersMap.compute(listener.getSituationId(), (id, list) -> {
+                List<Listener> result = list == null ? new ArrayList<>() : list;
+                result.add(listener);
+                return result;
+            });
         }
     }
 
@@ -55,12 +54,10 @@ public class EventTriggerHolder {
         if (listener != null) {
             listenerMap.remove(listener.getId());
             if (isStartListener) {
-                synchronized (listener.getSituationId()) {
-                    List<Listener> list = situationOnStartListenersMap.get(listener.getSituationId());
-                    if (list != null) {
-                        list.remove(listener);
-                    }
-                }
+                situationOnStartListenersMap.computeIfPresent(listener.getSituationId(), (id, list) -> {
+                    list.remove(listener);
+                    return list;
+                });
             }
         }
     }
