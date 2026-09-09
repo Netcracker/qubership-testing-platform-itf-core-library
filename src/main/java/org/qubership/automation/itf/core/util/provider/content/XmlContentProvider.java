@@ -26,19 +26,50 @@ import org.jdom2.input.SAXBuilder;
 import org.qubership.automation.itf.core.model.content.Content;
 import org.qubership.automation.itf.core.model.jpa.message.Message;
 import org.qubership.automation.itf.core.util.exception.ContentException;
+import org.xml.sax.InputSource;
 
 public class XmlContentProvider implements MessageContentProvider<Element> {
 
+    private static final String FEATURE_DISALLOW_DOCTYPE = "http://apache.org/xml/features/disallow-doctype-decl";
+    private static final String FEATURE_EXTERNAL_GENERAL_ENTITIES =
+            "http://xml.org/sax/features/external-general-entities";
+    private static final String FEATURE_EXTERNAL_PARAMETER_ENTITIES =
+            "http://xml.org/sax/features/external-parameter-entities";
+    private static final String FEATURE_LOAD_EXTERNAL_DTD =
+            "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+
+    private final boolean allowDoctype;
+
+    /**
+     * Parses a DOCTYPE, but never resolves an external general or parameter
+     * entity or an external DTD subset (the soft mitigation).
+     */
     public XmlContentProvider() {
+        this(true);
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * @param allowDoctype {@code false} rejects a DOCTYPE declaration outright (the hard mitigation).
+     *     {@code true} still parses a DOCTYPE, but never resolves an external general or parameter
+     *     entity or an external DTD subset (the soft mitigation).
+     */
+    public XmlContentProvider(boolean allowDoctype) {
+        this.allowDoctype = allowDoctype;
+    }
+
+    /**
+     * Parses the message body as XML.
+     *
+     * <p>Either mitigation keeps an XML external entity reference in the message from reading a local
+     * file or reaching a remote host through the parser.</p>
+     *
+     * @throws ContentException if the message text is not well-formed XML, or the hard mitigation
+     *     rejects a DOCTYPE declaration
      */
     public Content<Element> provide(Message message) throws ContentException {
-        SAXBuilder builder;
-        builder = new SAXBuilder();
+        SAXBuilder builder = new SAXBuilder();
         builder.setIgnoringBoundaryWhitespace(true);
+        configureXxeProtection(builder);
         Reader reader = new StringReader(message.getText());
         try {
             return new XmlContent(builder.build(reader).getRootElement());
@@ -46,6 +77,17 @@ public class XmlContentProvider implements MessageContentProvider<Element> {
             throw new ContentException("Cannot parse XML in message", e);
         } catch (IOException e) {
             throw new ContentException("Cannot load content", e);
+        }
+    }
+
+    private void configureXxeProtection(SAXBuilder builder) {
+        if (allowDoctype) {
+            builder.setFeature(FEATURE_EXTERNAL_GENERAL_ENTITIES, false);
+            builder.setFeature(FEATURE_EXTERNAL_PARAMETER_ENTITIES, false);
+            builder.setFeature(FEATURE_LOAD_EXTERNAL_DTD, false);
+            builder.setEntityResolver((publicId, systemId) -> new InputSource(new StringReader("")));
+        } else {
+            builder.setFeature(FEATURE_DISALLOW_DOCTYPE, true);
         }
     }
 
