@@ -14,4 +14,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Update PR body"
-        uses: netcracker/qubership-workflow-hub/actions/pr-add-messages@main
+        uses: netcracker/qubership-workflow-hub/actions/pr-add-messages@8b1f50086b028c0ad22dafd33352e2166189b742 # v2.7.0
