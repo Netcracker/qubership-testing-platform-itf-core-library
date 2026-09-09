@@ -16,13 +16,13 @@
 
 package org.qubership.automation.itf.core.util;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.qubership.automation.itf.core.model.interceptor.CommonInterceptor;
 import org.qubership.automation.itf.core.model.interceptor.Interceptor;
 import org.qubership.automation.itf.core.util.helper.Comparators;
@@ -30,7 +30,7 @@ import org.qubership.automation.itf.core.util.helper.Comparators;
 public class ComparatorsTest {
     private List<Interceptor> interceptorList = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         interceptorList.clear();
         CommonInterceptor first = new CommonInterceptor();

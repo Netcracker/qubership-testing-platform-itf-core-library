@@ -16,8 +16,8 @@
 
 package org.qubership.automation.itf.core.message.parser.impl;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
@@ -40,8 +40,8 @@ public class RegexTextRuleTest {
         TcContext context = new TcContext();
         context.put("aaa", "bbb");
         MessageParameter apply = rule.apply(message, InstanceContext.from(context, null), false);
-        Assert.assertEquals(apply.getSingleValue(), "to tes");
-        Assert.assertEquals(apply.getParamName(), "test");
+        Assertions.assertEquals(apply.getSingleValue(), "to tes");
+        Assertions.assertEquals(apply.getParamName(), "test");
     }
 
     @Test
@@ -55,7 +55,7 @@ public class RegexTextRuleTest {
         TcContext context = new TcContext();
         context.put("aaa", "bbb");
         MessageParameter apply = rule.apply(message, InstanceContext.from(context, null), false);
-        Assert.assertEquals(apply.getMultipleValue().size(), 3);
-        Assert.assertEquals(apply.getParamName(), "test");
+        Assertions.assertEquals(apply.getMultipleValue().size(), 3);
+        Assertions.assertEquals(apply.getParamName(), "test");
     }
 }

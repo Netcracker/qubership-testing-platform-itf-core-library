@@ -40,7 +40,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.qubership.automation.itf.core.model.jpa.context.JsonContext;
-import org.skyscreamer.jsonassert.JSONAssert;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -85,8 +86,7 @@ class ToJsonStringTest {
 
         assertTrue(result);
 
-        // Instead of String comparison, JSONAssert.assertEquals is used.
-        // Because Map.of doesn't guarantee entries order.
+        // Compared as parsed JSON trees, not strings, because Map.of doesn't guarantee entries order.
 
         //verify(writer).append("{\"key1\":\"value1\",\"key2\":\"value2\"}");
 
@@ -96,7 +96,8 @@ class ToJsonStringTest {
         String actualJson = captor.getValue();
         String expectedJson = "{\"key1\":\"value1\",\"key2\":\"value2\"}";
 
-        JSONAssert.assertEquals(expectedJson, actualJson, false);
+        ObjectMapper mapper = new ObjectMapper();
+        assertEquals(mapper.readTree(expectedJson), mapper.readTree(actualJson));
     }
 
     @Test

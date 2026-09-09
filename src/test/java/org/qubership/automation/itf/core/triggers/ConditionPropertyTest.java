@@ -19,18 +19,24 @@ package org.qubership.automation.itf.core.triggers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.qubership.automation.itf.core.IdentityTemplateEngine;
 import org.qubership.automation.itf.core.model.condition.ConditionsHelper;
 import org.qubership.automation.itf.core.model.condition.parameter.ConditionParameter;
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
 import org.qubership.automation.itf.core.util.constants.Condition;
 import org.qubership.automation.itf.core.util.constants.Etc;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.testng.Assert;
+import org.qubership.automation.itf.core.util.engine.TemplateEngineFactory;
 
-@SpringJUnitConfig(locations = {"classpath*:*core-test-context.xml"})
 public class ConditionPropertyTest {
+
+    @BeforeAll
+    public static void initTemplateEngine() {
+        TemplateEngineFactory.init(new IdentityTemplateEngine());
+    }
 
     @Test
     public void testConditionsAnd() {
@@ -38,7 +44,7 @@ public class ConditionPropertyTest {
         InstanceContext context = InstanceContext.from(new TcContext(), null);
         context.put("tc.aaa", "123");
         context.put("tc.ccc", "ddd");
-        Assert.assertFalse(ConditionsHelper.isApplicable(context, conditionParameters));
+        Assertions.assertFalse(ConditionsHelper.isApplicable(context, conditionParameters));
     }
 
     @Test
@@ -48,7 +54,7 @@ public class ConditionPropertyTest {
         context.put("tc.aaa", "123");
         context.put("tc.ccc", "ddd");
         context.put("tc.eee", "fff");
-        Assert.assertTrue(ConditionsHelper.isApplicable(context, conditionParameters));
+        Assertions.assertTrue(ConditionsHelper.isApplicable(context, conditionParameters));
     }
 
     @Test
@@ -58,7 +64,7 @@ public class ConditionPropertyTest {
         context.put("tc.aaa", "123");
         context.put("tc.ccc", "ddd");
         context.put("tc.eee", "fff");
-        Assert.assertTrue(ConditionsHelper.isApplicable(context, conditionParameters));
+        Assertions.assertTrue(ConditionsHelper.isApplicable(context, conditionParameters));
     }
 
     private List<ConditionParameter> createSingleConditionProperty() {

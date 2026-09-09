@@ -1,17 +1,18 @@
 package org.qubership.automation.itf.core.util.exception;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ExceptionsTest {
 
     // ==================== getMessagesOnly() TESTS ====================
@@ -183,10 +184,10 @@ public class ExceptionsTest {
                 + "java.lang.NullPointerException\n"));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void fillWithBriefInfo_withNullStringBuilder_throwsNPE() {
-        // When
-        Exceptions.fillWithBriefInfo(null, new Exception());
+        // When/Then
+        assertThrows(NullPointerException.class, () -> Exceptions.fillWithBriefInfo(null, new Exception()));
     }
 
     @Test
