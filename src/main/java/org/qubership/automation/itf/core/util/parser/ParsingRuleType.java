@@ -46,8 +46,6 @@ import lombok.extern.slf4j.Slf4j;
 public enum ParsingRuleType {
 
     REGEX {
-        private static final int maxRegexTimeoutSeconds = 60; // Should be made configurable (on exec and stubs sides)
-
         @Override
         public String toString() {
             return "Regex";
@@ -60,7 +58,7 @@ public enum ParsingRuleType {
             if (!StringUtils.isEmpty(message.getText())) {
                 Pattern pattern = Pattern.compile(parsingRule.getParsedExpression());
                 Matcher matcher = pattern.matcher(new TimeoutRegexCharSequence(message.getText(),
-                        maxRegexTimeoutSeconds));
+                        MAX_REGEX_TIMEOUT_SECONDS));
                 while (matcher.find()) {
                     if (matcher.groupCount() > 0) {
                         builder.multipleValue(matcher.group(1));
@@ -126,7 +124,8 @@ public enum ParsingRuleType {
                     .multiple(parsingRule.getMultiple()).setAutosave(parsingRule.getAutosave());
             if (message.getConnectionProperties().get("uriParams") != null) {
                 Pattern pattern = Pattern.compile(parsingRule.getParsedExpression());
-                Matcher matcher = pattern.matcher((String) message.getConnectionProperties().get("uriParams"));
+                Matcher matcher = pattern.matcher(new TimeoutRegexCharSequence(
+                        (String) message.getConnectionProperties().get("uriParams"), MAX_REGEX_TIMEOUT_SECONDS));
                 if (matcher.find()) {
                     buildResult(parsingRule, matcher, builder);
                 }
@@ -244,13 +243,17 @@ public enum ParsingRuleType {
             }
 
             Pattern pattern = Pattern.compile(expression);
-            Matcher matcher = pattern.matcher(Objects.toString(headers.get(requiredHeaderName)));
+            Matcher matcher = pattern.matcher(new TimeoutRegexCharSequence(
+                    Objects.toString(headers.get(requiredHeaderName)), MAX_REGEX_TIMEOUT_SECONDS));
             if (matcher.find()) {
                 buildResult(parsingRule, matcher, builder);
             }
             return builder.get();
         }
     };
+
+    // Should be made configurable (on exec and stubs sides)
+    protected static final int MAX_REGEX_TIMEOUT_SECONDS = 60;
 
     @Override
     public abstract String toString();
