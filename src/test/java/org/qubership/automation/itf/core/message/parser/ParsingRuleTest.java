@@ -16,18 +16,14 @@
 
 package org.qubership.automation.itf.core.message.parser;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.context.TcContext;
@@ -36,14 +32,12 @@ import org.qubership.automation.itf.core.model.jpa.message.parser.MessageParamet
 import org.qubership.automation.itf.core.model.jpa.message.parser.ParsingRule;
 import org.qubership.automation.itf.core.model.jpa.message.parser.SystemParsingRule;
 import org.qubership.automation.itf.core.model.jpa.system.System;
-import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 import org.qubership.automation.itf.core.util.exception.ContentException;
 import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
 import org.qubership.automation.itf.core.util.provider.content.JsonContentProvider;
 import org.qubership.automation.itf.core.util.provider.content.PlainContentProvider;
 import org.qubership.automation.itf.core.util.provider.content.XmlContentProvider;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ParsingRuleTest {
 
     private static final String TEST_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
@@ -73,17 +67,12 @@ public class ParsingRuleTest {
             "</businessInteractionItem>";
 
     private System system;
-    private Operation mockOperation;
     private TcContext tcContext;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         system = new System();
         system.setName("SomeSystem");
-
-        mockOperation = mock(Operation.class);
-        when(mockOperation.getName()).thenReturn("SomeOperation");
-        when(mockOperation.getParent()).thenReturn(system);
 
         tcContext = new TcContext();
         tcContext.put("aaa", "bbb");

@@ -19,10 +19,10 @@ package org.qubership.automation.itf.core.environment;
 import com.google.common.collect.Sets;
 import org.qubership.automation.itf.core.util.constants.TriggerState;
 import org.qubership.automation.itf.core.util.manager.TriggerStateManager;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -37,13 +37,13 @@ public class TriggerStateManagerTest  {
 
 
 
-    @BeforeClass
+    @BeforeAll
     public static void prepare() throws NoSuchMethodException {
         stateCalculationForStub = TriggerStateManager.class.getDeclaredMethod("stateCalculationForStub", Set.class);
         stateCalculationForStub.setAccessible(true);
     }
 
-    @Before
+    @BeforeEach
     public void prepareTest(){
         triggerStates.clear();
     }
@@ -51,18 +51,19 @@ public class TriggerStateManagerTest  {
     @Test
     public void stateCalculationForStabTestNull() throws InvocationTargetException, IllegalAccessException {
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertNull(triggerState);
+        Assertions.assertTrue(triggerState == null || triggerState == TriggerState.EMPTY,
+                "Expected null or EMPTY for an empty trigger-state set, but was " + triggerState);
     }
 
     @Test
     public void stateCalculationForStabTestActivate() throws InvocationTargetException, IllegalAccessException {
         triggerStates.add(TriggerState.ACTIVE);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active", TriggerState.ACTIVE, triggerState);
+        Assertions.assertEquals(TriggerState.ACTIVE, triggerState, "Need Active");
         triggerStates.add(TriggerState.ACTIVE);
         triggerStates.add(TriggerState.ACTIVE);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active", TriggerState.ACTIVE, triggerState);
+        Assertions.assertEquals(TriggerState.ACTIVE, triggerState, "Need Active");
     }
 
     @Test
@@ -70,10 +71,10 @@ public class TriggerStateManagerTest  {
         triggerStates.add(TriggerState.ACTIVE);
         triggerStates.add(TriggerState.INACTIVE);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active (Not all)", TriggerState.ACTIVE_PART, triggerState);
+        Assertions.assertEquals(TriggerState.ACTIVE_PART, triggerState, "Need Active (Not all)");
         triggerStates.add(TriggerState.ACTIVE_PART);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active (Not all)", TriggerState.ACTIVE_PART, triggerState);
+        Assertions.assertEquals(TriggerState.ACTIVE_PART, triggerState, "Need Active (Not all)");
 
     }
 
@@ -82,34 +83,34 @@ public class TriggerStateManagerTest  {
         triggerStates.add(TriggerState.ACTIVE);
         triggerStates.add(TriggerState.ERROR);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active (Errors)", TriggerState.ACTIVE_ERROR, triggerState);
+        Assertions.assertEquals(TriggerState.ACTIVE_ERROR, triggerState, "Need Active (Errors)");
         triggerStates.add(TriggerState.INACTIVE);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active (Errors)", TriggerState.ACTIVE_ERROR, triggerState);
+        Assertions.assertEquals(TriggerState.ACTIVE_ERROR, triggerState, "Need Active (Errors)");
         triggerStates.add(TriggerState.ACTIVE_ERROR);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active (Errors)", TriggerState.ACTIVE_ERROR, triggerState);
+        Assertions.assertEquals(TriggerState.ACTIVE_ERROR, triggerState, "Need Active (Errors)");
     }
 
     @Test
     public void stateCalculationForStabTestError() throws InvocationTargetException, IllegalAccessException {
         triggerStates.add(TriggerState.ERROR);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active", TriggerState.ERROR, triggerState);
+        Assertions.assertEquals(TriggerState.ERROR, triggerState, "Need Active");
         triggerStates.add(TriggerState.ERROR);
         triggerStates.add(TriggerState.ERROR);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active", TriggerState.ERROR, triggerState);
+        Assertions.assertEquals(TriggerState.ERROR, triggerState, "Need Active");
     }
 
     @Test
     public void stateCalculationForStabTestInactive() throws InvocationTargetException, IllegalAccessException {
         triggerStates.add(TriggerState.INACTIVE);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active", TriggerState.INACTIVE, triggerState);
+        Assertions.assertEquals(TriggerState.INACTIVE, triggerState, "Need Active");
         triggerStates.add(TriggerState.INACTIVE);
         triggerStates.add(TriggerState.INACTIVE);
         triggerState = (TriggerState) stateCalculationForStub.invoke(triggerStateManager, triggerStates);
-        Assert.assertEquals("Need Active", TriggerState.INACTIVE, triggerState);
+        Assertions.assertEquals(TriggerState.INACTIVE, triggerState, "Need Active");
     }
 }

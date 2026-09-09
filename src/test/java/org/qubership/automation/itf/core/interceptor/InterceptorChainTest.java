@@ -16,15 +16,15 @@
 
 package org.qubership.automation.itf.core.interceptor;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.qubership.automation.itf.core.model.interceptor.Interceptor;
 import org.qubership.automation.itf.core.model.interceptor.InterceptorChain;
 import org.qubership.automation.itf.core.model.interceptor.TransportInterceptor;
@@ -33,7 +33,7 @@ import org.qubership.automation.itf.core.model.jpa.interceptor.TemplateIntercept
 import org.qubership.automation.itf.core.model.jpa.interceptor.TransportConfigurationInterceptor;
 import org.qubership.automation.itf.core.model.jpa.message.Message;
 
-@Ignore("Temporary, to be refactored soon")
+@Disabled("Temporary, to be refactored soon")
 public class InterceptorChainTest {
     @Test
     public void testInterceptorChainCallsInterceptors() throws Exception {

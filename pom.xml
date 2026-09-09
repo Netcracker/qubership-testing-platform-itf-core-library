@@ -1,5 +1,5 @@
 <!--
-  ~  Copyright 2024-2025 NetCracker Technology Corporation
+  ~  Copyright 2024-2026 NetCracker Technology Corporation
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
   ~  you may not use this file except in compliance with the License.
@@ -41,6 +41,9 @@
         <atp.auth.version>2.0.1</atp.auth.version>
         <atp.integration.version>1.0.0</atp.integration.version>
         <javers.version>7.9.0</javers.version>
+
+        <mockito.version>5.23.0</mockito.version>
+        <junit.version>5.12.2</junit.version>
     </properties>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -86,7 +89,7 @@
                 <version>3.5.5</version>
                 <configuration>
                     <testFailureIgnore>true</testFailureIgnore>
-                    <argLine>-Dfile.encoding=UTF-8 -javaagent:${org.mockito:mockito-core:jar} -Xshare:off</argLine>
+                    <argLine>-Dfile.encoding=UTF-8 -javaagent:${org.mockito:mockito-core:jar} -Xshare:off --add-opens java.base/java.lang=ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -582,43 +585,33 @@
 
         <!--tests-->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.23.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.23.0</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>uk.co.jemos.podam</groupId>
-            <artifactId>podam</artifactId>
-            <version>7.0.5.RELEASE</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.8</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!--tests end-->
         <!--Code style and code checkers-->
@@ -702,12 +695,6 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.8.16</version>
-        </dependency>
-        <dependency>
-            <groupId>org.skyscreamer</groupId>
-            <artifactId>jsonassert</artifactId>
-            <version>1.5.3</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>jaxen</groupId>
@@ -810,6 +797,36 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcpkix-jdk18on</artifactId>
                 <version>${org.bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
