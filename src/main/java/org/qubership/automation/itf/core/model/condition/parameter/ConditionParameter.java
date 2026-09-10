@@ -22,11 +22,14 @@ import static org.qubership.automation.itf.core.util.constants.ProjectSettingsCo
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
 import org.qubership.automation.itf.core.model.jpa.context.JsonContext;
+import org.qubership.automation.itf.core.model.jpa.context.SpContext;
+import org.qubership.automation.itf.core.model.jpa.context.TcContext;
 import org.qubership.automation.itf.core.util.constants.Condition;
 import org.qubership.automation.itf.core.util.constants.Etc;
 import org.qubership.automation.itf.core.util.engine.TemplateEngineFactory;
@@ -69,12 +72,15 @@ public class ConditionParameter implements Serializable {
         } else if (Condition.NOTEXISTS.equals(condition)) {
             return !context.containsKey(getName());
         } else {
-            if (!context.containsKey(getName()) && context instanceof InstanceContext instanceContext) {
-                return Boolean.parseBoolean(CoreServices.getProjectSettingsService().get(
-                        instanceContext.tc().getProjectId(),
-                        CONDITIONS_STYLE_LEGACY,
-                        CONDITIONS_STYLE_LEGACY_DEFAULT_VALUE))
-                        && (Condition.NOTEQUALS.equals(condition) || Condition.NOTMATCHES.equals(condition));
+            if (!context.containsKey(getName())) {
+                // Check the condition type first: only NOTEQUALS/NOTMATCHES can ever return true
+                // here, so this order lets that check short-circuit the project settings lookup
+                // below instead of always paying for it.
+                return (Condition.NOTEQUALS.equals(condition) || Condition.NOTMATCHES.equals(condition))
+                        && Boolean.parseBoolean(CoreServices.getProjectSettingsService().get(
+                                determineProjectId(context),
+                                CONDITIONS_STYLE_LEGACY,
+                                CONDITIONS_STYLE_LEGACY_DEFAULT_VALUE));
             }
             Object keyValue = context.get(getName());
             String stringValue = (keyValue == null) ? "" : keyValue.toString();
@@ -97,6 +103,26 @@ public class ConditionParameter implements Serializable {
                     return false;
             }
         }
+    }
+
+    /*
+        SpContext(StepInstance) sets its parent to the step's InstanceContext, so a condition
+        evaluated against an SpContext still resolves to the same project as one evaluated against
+        that InstanceContext directly. Plain JsonContext and JsonStorable carry no project id and
+        no such parent; falling through to null for them is deliberate, not an omission, since
+        ProjectSettingsService#get(Object, ...) already treats a null projectId as "use the
+        caller's default".
+     */
+    private static BigInteger determineProjectId(JsonContext context) {
+        if (context instanceof InstanceContext instanceContext) {
+            return instanceContext.tc().getProjectId();
+        } else if (context instanceof TcContext tcContext) {
+            return tcContext.getProjectId();
+        } else if (context instanceof SpContext spContext
+                && spContext.getParent() instanceof InstanceContext parentInstanceContext) {
+            return determineProjectId(parentInstanceContext);
+        }
+        return null;
     }
 
     private boolean isKeyFound(Matcher matcher) {
