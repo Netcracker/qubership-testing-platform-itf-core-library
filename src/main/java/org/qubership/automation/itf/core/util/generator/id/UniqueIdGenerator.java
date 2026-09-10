@@ -19,6 +19,7 @@ package org.qubership.automation.itf.core.util.generator.id;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.hibernate.HibernateException;
@@ -34,8 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UniqueIdGenerator implements IdentifierGenerator {
 
-    private static final LinkedBlockingQueue<BigInteger> IDS = new LinkedBlockingQueue<>();
-    private static final LinkedBlockingQueue<BigInteger> IDS_REPORTING = new LinkedBlockingQueue<>();
+    private static final IdPool IDS = new IdPool(true);
+    private static final IdPool IDS_REPORTING = new IdPool(false);
     public static InternalDataBaseSqlExecutor INTERNAL_DATABASE_SQL_EXECUTOR;
 
     public UniqueIdGenerator() {
@@ -52,7 +53,7 @@ public class UniqueIdGenerator implements IdentifierGenerator {
      * @return BigInteger id
      */
     public static Serializable generate() {
-        return getNextIdFromQueue();
+        return IDS.next();
     }
 
     /**
@@ -65,7 +66,7 @@ public class UniqueIdGenerator implements IdentifierGenerator {
     @Override
     public Serializable generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o)
             throws HibernateException {
-        return getNextIdFromQueue();
+        return IDS.next();
     }
 
     /**
@@ -74,30 +75,78 @@ public class UniqueIdGenerator implements IdentifierGenerator {
      * @return BigInteger id
      */
     public static Serializable generateReportingId() {
-        return getNextReportingIdFromQueue();
+        return IDS_REPORTING.next();
     }
 
-    private static synchronized Serializable getNextIdFromQueue() {
-        if (IDS.isEmpty()) {
+    /**
+     * A pool of pre-fetched ids for one id space, refilled from the database on demand.
+     *
+     * <p>A refill releases {@link #lock} before the database round trip and reacquires it only to
+     * add the fetched batch to {@link #queue} and to hand the caller doing the refill its own id, so
+     * a slow or unreachable database blocks callers of this pool alone. At most one refill runs at a
+     * time per pool: a caller that finds the queue empty while another refill is already in flight
+     * waits for that refill instead of starting a second one.</p>
+     */
+    private static final class IdPool {
+
+        private final LinkedBlockingQueue<BigInteger> queue = new LinkedBlockingQueue<>();
+        private final Object lock = new Object();
+        private final boolean forConfigObjects;
+        private boolean refillInProgress;
+
+        private IdPool(boolean forConfigObjects) {
+            this.forConfigObjects = forConfigObjects;
+        }
+
+        private BigInteger next() {
+            BigInteger id = queue.poll();
+            if (id != null) {
+                return id;
+            }
+            synchronized (lock) {
+                while (true) {
+                    id = queue.poll();
+                    if (id != null) {
+                        return id;
+                    }
+                    if (!refillInProgress) {
+                        refillInProgress = true;
+                        break;
+                    }
+                    waitForRefill();
+                }
+            }
             try {
-                IDS.addAll(INTERNAL_DATABASE_SQL_EXECUTOR.selectArrayViaNonParameterizedFunction(true));
+                return refill();
+            } finally {
+                synchronized (lock) {
+                    refillInProgress = false;
+                    lock.notifyAll();
+                }
+            }
+        }
+
+        private void waitForRefill() {
+            try {
+                lock.wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new HibernateException(e);
+            }
+        }
+
+        private BigInteger refill() {
+            List<BigInteger> batch;
+            try {
+                batch = INTERNAL_DATABASE_SQL_EXECUTOR.selectArrayViaNonParameterizedFunction(forConfigObjects);
             } catch (SQLException e) {
                 log.error("Error while generating the next id: " + e);
                 throw new HibernateException(e);
             }
-        }
-        return IDS.poll();
-    }
-
-    private static synchronized Serializable getNextReportingIdFromQueue() {
-        if (IDS_REPORTING.isEmpty()) {
-            try {
-                IDS_REPORTING.addAll(INTERNAL_DATABASE_SQL_EXECUTOR.selectArrayViaNonParameterizedFunction(false));
-            } catch (SQLException e) {
-                log.error("Error while generating the next reporting id: " + e);
-                throw new HibernateException(e);
+            synchronized (lock) {
+                queue.addAll(batch);
+                return queue.poll();
             }
         }
-        return IDS_REPORTING.poll();
     }
 }
