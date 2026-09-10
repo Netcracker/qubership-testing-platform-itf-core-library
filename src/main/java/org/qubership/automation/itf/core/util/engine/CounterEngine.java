@@ -32,11 +32,18 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+/**
+ * Issues per-day, per-owner sequential indexes backed by {@link Counter} rows.
+ *
+ * <p>{@link #getInstance()} commits the singleton only once construction succeeds, so a call
+ * reaching it before {@link CoreObjectManager} is wired leaves the singleton unset and a later
+ * call retries construction instead of failing permanently.</p>
+ */
 public class CounterEngine {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterEngine.class);
 
-    private static CounterEngine INSTANCE = new CounterEngine();
+    private static volatile CounterEngine instance;
 
     private final Map<Set<Object>, Counter> counterMap = Maps.newHashMap();
 
@@ -52,8 +59,23 @@ public class CounterEngine {
         }
     }
 
+    /**
+     * Returns the singleton, building it lazily on first call.
+     *
+     * @throws NullPointerException if {@link CoreObjectManager} has not been wired yet; the
+     *     singleton stays unset so a later call can retry
+     */
     public static CounterEngine getInstance() {
-        return INSTANCE;
+        CounterEngine result = instance;
+        if (result == null) {
+            synchronized (CounterEngine.class) {
+                result = instance;
+                if (result == null) {
+                    instance = result = new CounterEngine();
+                }
+            }
+        }
+        return result;
     }
 
     /**
