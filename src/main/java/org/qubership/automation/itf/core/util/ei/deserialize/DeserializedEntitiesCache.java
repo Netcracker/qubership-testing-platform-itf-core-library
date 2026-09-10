@@ -18,13 +18,12 @@ package org.qubership.automation.itf.core.util.ei.deserialize;
 
 import java.math.BigInteger;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DeserializedEntitiesCache {
 
     private static volatile DeserializedEntitiesCache deserializedEntitiesCache;
-    private Map<BigInteger, ImportedDataCache> sessionToStorable = Maps.newHashMap();
+    private final Map<BigInteger, ImportedDataCache> sessionToStorable = new ConcurrentHashMap<>();
 
     private DeserializedEntitiesCache() {
         if (deserializedEntitiesCache != null) {
@@ -62,5 +61,19 @@ public class DeserializedEntitiesCache {
         importedDataCache.setProjectId(projectId);
         sessionToStorable.put(sessionId, importedDataCache);
         return importedDataCache;
+    }
+
+    /**
+     * Removes the session record {@code sessionId} created by {@link #createSessionRecord}, releasing the
+     * imported entity graph it held.
+     *
+     * <p>Call this once an import session finishes, successfully or not; without it, the record and every
+     * {@link org.qubership.automation.itf.core.model.common.Storable} it accumulated stay in this cache for
+     * the life of the JVM.</p>
+     *
+     * @param sessionId the session to release
+     */
+    public void removeSessionRecord(BigInteger sessionId) {
+        sessionToStorable.remove(sessionId);
     }
 }
