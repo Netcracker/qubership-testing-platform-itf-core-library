@@ -17,13 +17,21 @@
 package org.qubership.automation.itf.core.util.copier;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 import org.qubership.automation.itf.core.model.common.Storable;
 
 import com.google.common.collect.Maps;
 
 public class OriginalCopyMap {
-    private Map<Object, Map<Object, Storable>> cache = Maps.newHashMap();
+    /*
+        Keyed by session id, one entry per copy/move request in flight; different sessions are
+        written from different request threads, so the outer map has to be concurrency-safe on its
+        own (EventTriggerHolder.listenerMap uses the same computeIfAbsent shape for the same
+        reason). The per-session inner map does not need it: only the single thread running that
+        session's StorableCopier ever touches it.
+     */
+    private final ConcurrentMap<Object, Map<Object, Storable>> cache = Maps.newConcurrentMap();
 
     private static OriginalCopyMap instance = new OriginalCopyMap();
 
@@ -38,14 +46,7 @@ public class OriginalCopyMap {
      * TODO: Add JavaDoc.
      */
     public void put(Object key, Object originalId, Storable copy) {
-        Map<Object, Storable> objectStorableMap = cache.get(key);
-        if (objectStorableMap == null) {
-            Map<Object, Storable> map = Maps.newHashMap();
-            map.put(originalId, copy);
-            cache.put(key, map);
-        } else {
-            objectStorableMap.put(originalId, copy);
-        }
+        cache.computeIfAbsent(key, k -> Maps.newHashMap()).put(originalId, copy);
     }
 
     public Storable get(Object key, Object originalId) {
