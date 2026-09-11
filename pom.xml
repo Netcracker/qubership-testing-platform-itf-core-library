@@ -26,6 +26,9 @@
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Reproducible Builds: pin jar/zip entry timestamps to the commit being built instead of the
+             build clock. Resolved by git-commit-id-maven-plugin (see build/plugins) at the initialize phase. -->
+        <project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
         <spring.boot.version>3.5.14</spring.boot.version>
         <spring.cloud.version>2025.0.2</spring.cloud.version>
         <net.javacrumbs.shedlock.version>4.14.0</net.javacrumbs.shedlock.version>
@@ -82,6 +85,26 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <!-- Sets git.commit.time, consumed by project.build.outputTimestamp above. -->
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>9.0.2</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dateFormat>yyyy-MM-dd'T'HH:mm:ss'Z'</dateFormat>
+                    <dateFormatTimeZone>UTC</dateFormatTimeZone>
+                    <generateGitPropertiesFile>false</generateGitPropertiesFile>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
