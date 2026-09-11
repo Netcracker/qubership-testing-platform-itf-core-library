@@ -1,0 +1,75 @@
+---
+
+# Lightweight, always-reporting build+test gate for pull requests into main.
+#
+# maven-central-snapshot-deploy.yaml's mvn-snapshot-deploy job only triggers on `push`
+# and skips branches/paths it doesn't care about (release-looking branch names,
+# docs/workflow-only changes) - both reasonable for a workflow whose job is publishing
+# SNAPSHOT artifacts, not gating merges. Requiring that job as a branch-protection
+# status check means a PR whose latest commit only touches .github/** or docs/** can
+# never satisfy it (the workflow never runs for that push), and a PR from a fork gets
+# no build at all (push-triggered workflows don't run for pushes to a fork).
+#
+# This workflow's only purpose is to give every pull request into main a required
+# status check that always reports. It looks at which files the PR actually changed and
+# skips the Maven build entirely when none of them matter to the Java project - e.g. a
+# Dependabot bump of a GitHub Action version - succeeding immediately either way.
+
+name: PR build gate
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  build-gate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: "Determine whether Maven-relevant files changed"
+        id: changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" != "pull_request" ]]; then
+            echo "Not a pull_request event (${{ github.event_name }}); building unconditionally."
+            echo "relevant=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          files=$(gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" --paginate --jq '.[].filename')
+          echo "Changed files:"
+          echo "$files"
+
+          # Mirrors maven-central-snapshot-deploy.yaml's own paths-ignore list, inverted:
+          # a PR only needs a real build when it touches something outside that list.
+          relevant=false
+          while IFS= read -r f; do
+            case "$f" in
+              docs/*|README.md|.github/*) ;;
+              *) relevant=true ;;
+            esac
+          done <<< "$files"
+          echo "relevant=$relevant" >> "$GITHUB_OUTPUT"
+
+      - name: "Checkout code"
+        if: steps.changed.outputs.relevant == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: "Build and test"
+        if: steps.changed.outputs.relevant == 'true'
+        uses: netcracker/qubership-workflow-hub/actions/maven-snapshot-deploy@8b1f50086b028c0ad22dafd33352e2166189b742 # v2.7.0
+        with:
+          java-version: "21"
+          # "verify", not "deploy": this only builds and runs tests. Passing an empty
+          # target-store keeps it from matching any pom.xml profile id, so it doesn't
+          # pull in the release-only source/javadoc plugins, and it needs no publish
+          # credentials, so it's safe to run on pull_request from a fork too.
+          maven-command: "verify"
+          target-store: ""
+          maven-token: ${{ github.token }}
