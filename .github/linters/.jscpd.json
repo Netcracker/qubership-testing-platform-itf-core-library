@@ -4,7 +4,9 @@
     "**/.github/**",
     "**/.qubership/**",
     "**/mapping/*.xml",
-    "**/apispecs.api/*.yaml",
-    "**/*/*.md"
+    "**/apispecs/**/*.yaml",
+    "**/*/*.md",
+    "**/pom.xml",
+    "**/src/test/resources/**/*.xml"
   ]
 }
