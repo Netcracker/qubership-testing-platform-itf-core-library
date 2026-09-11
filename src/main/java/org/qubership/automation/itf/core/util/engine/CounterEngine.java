@@ -18,8 +18,8 @@ package org.qubership.automation.itf.core.util.engine;
 
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.qubership.automation.itf.core.model.counter.Counter;
@@ -32,13 +32,20 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
+/**
+ * Issues per-day, per-owner sequential indexes backed by {@link Counter} rows.
+ *
+ * <p>{@link #getInstance()} commits the singleton only once construction succeeds, so a call
+ * reaching it before {@link CoreObjectManager} is wired leaves the singleton unset and a later
+ * call retries construction instead of failing permanently.</p>
+ */
 public class CounterEngine {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterEngine.class);
 
-    private static CounterEngine INSTANCE = new CounterEngine();
+    private static volatile CounterEngine instance;
 
-    private final Map<Set<Object>, Counter> counterMap = Maps.newHashMap();
+    private final ConcurrentMap<Set<Object>, Counter> counterMap = Maps.newConcurrentMap();
 
     //TODO need optimisation the constructor. getAll() for all counters is a bed idea.
     private CounterEngine() {
@@ -52,27 +59,53 @@ public class CounterEngine {
         }
     }
 
+    /**
+     * Returns the singleton, building it lazily on first call.
+     *
+     * @throws NullPointerException if {@link CoreObjectManager} has not been wired yet; the
+     *     singleton stays unset so a later call can retry
+     */
     public static CounterEngine getInstance() {
-        return INSTANCE;
+        CounterEngine result = instance;
+        if (result == null) {
+            synchronized (CounterEngine.class) {
+                result = instance;
+                if (result == null) {
+                    instance = result = new CounterEngine();
+                }
+            }
+        }
+        return result;
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the next formatted index for {@code owners}, creating a counter for today when none
+     * exists yet or the stored one predates today.
+     *
+     * @param owners the counter's identity
+     * @param counterFormat the index format; {@code null} is logged and returns {@code null}
+     * @return the formatted next index, or {@code null} when {@code counterFormat} is {@code null}
+     * @throws CounterLimitIsExhaustedException if the index already reached its format's limit, or
+     *     the counter could not be stored
      */
     public String nextIndex(Set<Object> owners, String counterFormat) throws CounterLimitIsExhaustedException {
         if (counterFormat == null) {
             LOGGER.warn("Counter format is null");
             return null;
         }
-        synchronized (counterMap) {
-            for (Map.Entry<Set<Object>, Counter> entry : counterMap.entrySet()) {
-                if (entry.getKey().equals(owners)) {
-                    return getNextIndexAndStore(entry.getValue());
-                }
+        Counter counter = counterMap.get(owners);
+        if (counter != null) {
+            if (DateUtils.isSameDay(Calendar.getInstance().getTime(), counter.getDate())) {
+                return getNextIndexAndStore(counter);
             }
-            //TODO if we will have more one Impl for counter then we will need edit signature
-            return newCounter(owners, counterFormat, CounterImpl.class);
+            // Only the thread that wins this conditional remove deletes the row, so a concurrent
+            // evictor for the same owners never double-deletes it.
+            if (counterMap.remove(owners, counter)) {
+                counter.remove();
+            }
         }
+        //TODO if we will have more one Impl for counter then we will need edit signature
+        return newCounter(owners, counterFormat, CounterImpl.class);
     }
 
     //TODO Need to implement other format if it's needed
@@ -98,32 +131,56 @@ public class CounterEngine {
     }
 
     private String newCounter(Set<Object> owners, String format, Class clazz) throws CounterLimitIsExhaustedException {
+        // computeIfAbsent runs its function at most once per owners key even under concurrent
+        // callers, so only one Counter row is ever created for a given owners set, and the map's
+        // per-bucket locking never blocks a call for a different owners key.
+        String[] freshIndex = new String[1];
+        Counter counter;
         try {
-            return TxExecutor.execute(() -> {
-                Counter counter = CoreObjectManager.getInstance().getManager(Counter.class).create();
-                counter.setOwners(owners);
-                counter.setDate(Calendar.getInstance().getTime());
-                counter.setFormat(format);
-                counter.setIndex(1); // Set starting value to 1 (old variant: 0) in order to avoid subsequent call of
-                // 'getNextIndexAndStore'
-                counter.store();
-                counterMap.put(owners, counter);
-                return prepareIndex(1, format);
-            }, TxExecutor.nestedWritableTransaction());
-        } catch (Exception e) {
-            throw new CounterLimitIsExhaustedException("Unable to create new counter", e);
+            counter = counterMap.computeIfAbsent(owners, key -> {
+                try {
+                    return TxExecutor.execute(() -> {
+                        Counter created = CoreObjectManager.getInstance().getManager(Counter.class).create();
+                        created.setOwners(key);
+                        created.setDate(Calendar.getInstance().getTime());
+                        created.setFormat(format);
+                        created.setIndex(1); // Set starting value to 1 (old variant: 0) in order to avoid
+                        // subsequent call of 'getNextIndexAndStore'
+                        created.store();
+                        freshIndex[0] = prepareIndex(1, format);
+                        return created;
+                    }, TxExecutor.nestedWritableTransaction());
+                } catch (Exception e) {
+                    throw new CounterCreationFailure(e);
+                }
+            });
+        } catch (CounterCreationFailure e) {
+            throw new CounterLimitIsExhaustedException("Unable to create new counter", e.getCause());
+        }
+        return freshIndex[0] != null ? freshIndex[0] : getNextIndexAndStore(counter);
+    }
+
+    // Synchronized per counter, not per map: CounterImpl.getNextIndex() increments a plain field,
+    // so two threads sharing one counter must not run this concurrently, while unrelated owners
+    // must still run their own DB round trip without waiting on this one.
+    private String getNextIndexAndStore(Counter counter) throws CounterLimitIsExhaustedException {
+        synchronized (counter) {
+            try {
+                return TxExecutor.execute(() -> {
+                    String index = prepareIndex(counter.getNextIndex(), counter.getFormat());
+                    counter.store();
+                    return index;
+                }, TxExecutor.nestedWritableTransaction());
+            } catch (Exception e) {
+                throw new CounterLimitIsExhaustedException("Unable to store counter", e);
+            }
         }
     }
 
-    private String getNextIndexAndStore(Counter counter) throws CounterLimitIsExhaustedException {
-        try {
-            return TxExecutor.execute(() -> {
-                String index = prepareIndex(counter.getNextIndex(), counter.getFormat());
-                counter.store();
-                return index;
-            }, TxExecutor.nestedWritableTransaction());
-        } catch (Exception e) {
-            throw new CounterLimitIsExhaustedException("Unable to store counter", e);
+    /** Wraps a checked failure from {@link #newCounter} so it can cross {@link ConcurrentMap#computeIfAbsent}. */
+    private static final class CounterCreationFailure extends RuntimeException {
+        CounterCreationFailure(Throwable cause) {
+            super(cause);
         }
     }
 }
