@@ -214,6 +214,7 @@ public class TxExecutor {
         TransactionStatus status = instance.getTransaction(def);
         try {
             callable.execute();
+            instance.commit(status);
         } catch (Exception ex) {
             try {
                 instance.rollback(status);
