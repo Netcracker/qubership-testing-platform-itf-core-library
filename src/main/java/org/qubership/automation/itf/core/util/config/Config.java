@@ -49,16 +49,19 @@ public class Config extends AbstractConfig {
      * @return Config
      */
     public static Config getConfig() {
-        if (config == null) {
+        Config result = config;
+        if (result == null) {
             synchronized (Config.class) {
-                if (config == null) {
-                    config = new Config(true);
-                    addDefaultHostProperties();
-                    parseResponseCodes();
+                result = config;
+                if (result == null) {
+                    result = new Config(true);
+                    addDefaultHostProperties(result);
+                    parseResponseCodes(result);
+                    config = result;
                 }
             }
         }
-        return config;
+        return result;
     }
 
     /**
@@ -93,7 +96,7 @@ public class Config extends AbstractConfig {
      * Silently go away in case of empty value.
      * Only valid ranges are added to the list.
      */
-    private static void parseResponseCodes() {
+    private static void parseResponseCodes(Config config) {
         String strCodes = config.getString(InstanceSettingsConstants.HTTP_RESPONSE_CODE_SUCCESS);
         if (StringUtils.isBlank(strCodes)) {
             return;
@@ -144,16 +147,16 @@ public class Config extends AbstractConfig {
         return boundaries;
     }
 
-    private static void addDefaultHostProperties() {
-        if (StringUtils.isBlank(config.getRunningHostname())) {
+    private static void addDefaultHostProperties(Config config) {
+        if (StringUtils.isBlank(config.getString(RUNNING_HOSTNAME))) {
             config.addProperty(RUNNING_HOSTNAME, determineHostname());
         }
-        if (StringUtils.isBlank(config.getRunningPort())) {
+        if (StringUtils.isBlank(config.getString(RUNNING_PORT))) {
             config.addProperty(RUNNING_PORT, determinePort());
         }
         String url = config.getString(RUNNING_URL);
         if (StringUtils.isBlank(url)) {
-            config.addProperty(RUNNING_URL, constructRunningUrl());
+            config.addProperty(RUNNING_URL, constructRunningUrl(config));
         } else {
             url = url.trim();
             if (!url.endsWith("/")) {
@@ -163,8 +166,8 @@ public class Config extends AbstractConfig {
         config.addProperty(CONTEXT_POPUP_URL, config.getString(RUNNING_URL) + "#/context/");
     }
 
-    private static String constructRunningUrl() {
-        return "%s://%s:%s/".formatted("http", config.getRunningHostname(), config.getRunningPort());
+    private static String constructRunningUrl(Config config) {
+        return "%s://%s:%s/".formatted("http", config.getString(RUNNING_HOSTNAME), config.getString(RUNNING_PORT));
     }
 
     private static String determineHostname() {
@@ -302,6 +305,6 @@ public class Config extends AbstractConfig {
      */
     public String getRunningUrl() {
         String url = config.getString(RUNNING_URL);
-        return StringUtils.isNotBlank(url) ? url : constructRunningUrl();
+        return StringUtils.isNotBlank(url) ? url : constructRunningUrl(config);
     }
 }

@@ -18,6 +18,7 @@ package org.qubership.automation.itf.core.system.stub.conditions;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -157,6 +158,12 @@ public class DefaultConditionPropertyTest {
         SpContext spContext = mock(SpContext.class);
         when(spContext.getIncomingMessage()).thenReturn(new Message("123"));
         when(spContext.getOutgoingMessage()).thenReturn(new Message("123"));
+        // ConditionParameter.applicable() looks up getName() (never set below, so null) as a
+        // context key; stubbing it present with an empty value keeps every condition in this
+        // class on the ordinary MATCHES-against-a-value path instead of the "variable absent"
+        // one, which is what these tests exercise.
+        when(spContext.containsKey(any())).thenReturn(true);
+        when(spContext.get(any())).thenReturn("");
         return spContext;
     }
 
