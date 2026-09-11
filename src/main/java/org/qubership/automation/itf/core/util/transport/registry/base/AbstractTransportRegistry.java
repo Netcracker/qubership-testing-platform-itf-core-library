@@ -47,12 +47,12 @@ public abstract class AbstractTransportRegistry implements TransportRegistry {
             - activate triggers not while deploying transports but later.
      */
     private static final boolean deferredActivation = true;
-    private static boolean triggersActivationCompleted;
+    private static volatile boolean triggersActivationCompleted;
     private Map<String, TransportState> states = Maps.newConcurrentMap();
-    private Map<String, String> transportTypes = Maps.newHashMapWithExpectedSize(50);
+    private Map<String, String> transportTypes = Maps.newConcurrentMap();
     private Map<String, Boolean> availableServers = Maps.newConcurrentMap();
-    private CoreCallback coreCallback;
-    private boolean loaded;
+    private volatile CoreCallback coreCallback;
+    private volatile boolean loaded;
 
     public static boolean isTriggersActivationCompleted() {
         return triggersActivationCompleted;
