@@ -1,0 +1,10 @@
+{
+  "threshold": 29,
+  "ignore": [
+    "**/.github/**",
+    "**/.qubership/**",
+    "**/mapping/*.xml",
+    "**/apispecs.api/*.yaml",
+    "**/*/*.md"
+  ]
+}
