@@ -27,32 +27,48 @@ import org.slf4j.LoggerFactory;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
 
 public class MonitorManager {
 
     private static final MonitorManager INSTANCE = new MonitorManager();
     private static final Logger LOGGER = LoggerFactory.getLogger(MonitorManager.class);
-    /*
-        expireAfterWrite(1, TimeUnit.HOURS) setting is potentially erroneous:
-            - Execution of durability test cases can be longer,
-            so entry will be invalidated earlier than execution is finished,
-            so AtpCallchainExecutor#execute thread, waiting for notification, never receive it.
-     */
-    // TODO: based on above analysis, remove .expireAfterWrite or increase duration or do smth. else
-    private final LoadingCache<String, Object> monitors = CacheBuilder.newBuilder()
-            .expireAfterAccess(20 * 60 * 1000 + 30000, TimeUnit.MILLISECONDS)
-            .build(new CacheLoader<String, Object>() {
-                @Override
-                public Object load(@Nonnull String id) {
-                    return new Object();
-                }
-            });
+    private static final long MONITOR_TTL_MILLIS = 20 * 60 * 1000 + 30000;
+
+    private final LoadingCache<String, Object> monitors = buildCache(MONITOR_TTL_MILLIS);
 
     public static MonitorManager getInstance() {
         return INSTANCE;
     }
 
     private MonitorManager() {
+    }
+
+    /*
+        expireAfterAccess releases a context's monitor once it has gone idle long enough;
+        TCContextService#updateLastAccess re-fetches it on every update, so an active run keeps
+        resetting the clock and only a truly stalled context ever expires. The removalListener
+        notifies whoever is synchronized on the monitor as part of the eviction itself, the same
+        way LockProvider does, so a waiter is never left blocked on an Object that nothing will
+        notify again once its entry is gone from the cache.
+
+        Package-visible, and parameterized on the TTL, so a test can exercise this exact wiring
+        with a short duration instead of waiting out the real ~20.5 minutes.
+     */
+    static LoadingCache<String, Object> buildCache(long ttlMillis) {
+        return CacheBuilder.newBuilder()
+                .expireAfterAccess(ttlMillis, TimeUnit.MILLISECONDS)
+                .removalListener((RemovalListener<String, Object>) notification -> {
+                    synchronized (notification.getValue()) {
+                        notification.getValue().notify();
+                    }
+                })
+                .build(new CacheLoader<String, Object>() {
+                    @Override
+                    public Object load(@Nonnull String id) {
+                        return new Object();
+                    }
+                });
     }
 
     /**
