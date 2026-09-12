@@ -356,10 +356,6 @@
         </dependency>
         <!--Hibernate-end-->
         <dependency>
-            <groupId>com.netflix.archaius</groupId>
-            <artifactId>archaius-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.qubership.atp.common</groupId>
             <artifactId>qubership-atp-common-logging</artifactId>
             <version>${atp.common.version}</version>
@@ -404,11 +400,6 @@
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.14.0</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -457,11 +448,6 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.pcap4j</groupId>
-            <artifactId>pcap4j-core</artifactId>
-            <version>1.7.3</version>
         </dependency>
         <!--Feign-->
         <dependency>
@@ -571,11 +557,6 @@
             <artifactId>hazelcast-eureka-two</artifactId>
             <version>3.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.jettison</groupId>
-            <artifactId>jettison</artifactId>
-            <version>1.5.4</version>
-        </dependency>
         <!--atp-services end-->
 
         <!--eds start-->
@@ -684,11 +665,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.velocity.tools</groupId>
             <artifactId>velocity-tools-generic</artifactId>
             <version>3.1</version>
@@ -704,21 +680,13 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>2.1.3</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>*</artifactId>
-                    <groupId>*</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
             <version>4.8.1.1</version>
         </dependency>
+        <!-- Not an unused starter: openapi-generator-maven-plugin generates controller interfaces into
+             target/generated-sources that import io.swagger.v3.oas.annotations.*, resolved only through
+             this dependency's transitive swagger-annotations-jakarta. Removing it breaks compilation. -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
