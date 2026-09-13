@@ -62,7 +62,7 @@ import lombok.Setter;
         property = "id", scope = StubProject.class)
 public class StubProject extends AbstractStorable implements StubContainer {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913042L;
 
     private SystemFolder systems;
     private ChainFolder callchains;

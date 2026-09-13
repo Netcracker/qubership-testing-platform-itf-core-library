@@ -46,7 +46,7 @@ import jakarta.persistence.Transient;
 @Entity
 public class Folder<T extends Storable> extends AbstractConfiguration<String, String> {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913025L;
 
     private final Class<T> genericType;
     private List<T> objects = Lists.newArrayListWithExpectedSize(50);

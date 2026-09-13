@@ -44,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 public class ResponseDescription implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20250303L;
+    private static final long serialVersionUID = 20260913067L;
 
     private String name;
     private String id;

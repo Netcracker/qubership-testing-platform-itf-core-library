@@ -42,7 +42,7 @@ import lombok.Setter;
 @Setter
 public class ConditionParameter implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20250303L;
+    private static final long serialVersionUID = 20260913004L;
 
     /* If variable is absent in the context, then:
             1. EXISTS returns false,

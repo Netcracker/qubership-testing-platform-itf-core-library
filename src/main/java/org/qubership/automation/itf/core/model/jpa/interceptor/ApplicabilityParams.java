@@ -37,7 +37,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ApplicabilityParams extends Configuration {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913032L;
 
     @JsonBackReference
     public void setParent(Interceptor parent) {

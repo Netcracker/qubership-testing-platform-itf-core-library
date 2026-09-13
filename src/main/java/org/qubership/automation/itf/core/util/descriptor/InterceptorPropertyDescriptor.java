@@ -23,7 +23,7 @@ import org.qubership.automation.itf.core.util.constants.InterceptorConstants;
 
 public class InterceptorPropertyDescriptor implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913071L;
 
     private final String name;
     private final String longname;

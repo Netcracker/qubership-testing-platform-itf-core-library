@@ -37,7 +37,7 @@ import jakarta.persistence.Transient;
 @JsonFilter("reportWorkerFilter_CallChainInstance")
 public class CallChainInstance extends AbstractContainerInstance {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913029L;
 
     private BigInteger testCaseId;
     private String datasetName;

@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.message.template;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
@@ -57,6 +58,9 @@ import lombok.Setter;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public abstract class AbstractTemplate<T extends TemplateProvider>
         extends LabeledStorable implements Template<T>, Named, InterceptorProvider {
+
+    @Serial
+    private static final long serialVersionUID = 20260913087L;
 
     private String text;
 

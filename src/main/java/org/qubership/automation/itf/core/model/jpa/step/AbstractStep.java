@@ -17,6 +17,7 @@
 package org.qubership.automation.itf.core.model.jpa.step;
 
 import java.beans.Transient;
+import java.io.Serial;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,9 @@ import org.qubership.automation.itf.core.model.jpa.storage.AbstractStorable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public abstract class AbstractStep extends AbstractStorable implements Step {
+    @Serial
+    private static final long serialVersionUID = 20260913086L;
+
     private boolean enabled = true;
     private boolean manual = false;
     private long delay;

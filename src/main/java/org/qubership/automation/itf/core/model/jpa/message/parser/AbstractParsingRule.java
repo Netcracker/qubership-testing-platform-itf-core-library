@@ -18,6 +18,7 @@ package org.qubership.automation.itf.core.model.jpa.message.parser;
 
 import static org.qubership.automation.itf.core.util.parser.ParsingRuleType.from;
 
+import java.io.Serial;
 import java.math.BigInteger;
 
 import org.jdom2.Element;
@@ -42,6 +43,9 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class AbstractParsingRule<T extends ParsingRuleProvider>
         extends AbstractStorable implements ParsingRule<T> {
+
+    @Serial
+    private static final long serialVersionUID = 20260913085L;
 
     private Boolean multiple = false;
     private String paramName;

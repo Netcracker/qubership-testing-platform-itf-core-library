@@ -41,7 +41,7 @@ import jakarta.persistence.Transient;
 @JsonFilter("reportWorkerFilter_StepInstance")
 public class StepInstance extends AbstractInstance {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913031L;
 
     private BigInteger stepId;
     private Step step;

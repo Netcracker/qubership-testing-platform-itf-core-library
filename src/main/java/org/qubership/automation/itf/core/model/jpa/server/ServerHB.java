@@ -60,7 +60,7 @@ import lombok.Getter;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = ServerHB.class)
 public class ServerHB extends AbstractEciConfigurable implements Server {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913044L;
 
     private String url;
     @JsonProperty(value = "type")

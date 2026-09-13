@@ -27,7 +27,7 @@ import lombok.Setter;
 @Getter
 public class DiameterTriggerExecutionMessage extends TriggerExecutionMessage {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913002L;
 
     private Object transportId;
     private Object tcContextId;

@@ -31,7 +31,7 @@ import jakarta.persistence.Entity;
 @JsonFilter("reportWorkerFilter_MessageParameter")
 public class MessageParameter extends AbstractStorable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913036L;
 
     @JsonIgnore
     private Storable parent;

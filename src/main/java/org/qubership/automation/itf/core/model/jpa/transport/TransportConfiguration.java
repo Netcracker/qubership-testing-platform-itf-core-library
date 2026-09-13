@@ -65,7 +65,7 @@ import jakarta.persistence.Entity;
         property = "id", scope = TransportConfiguration.class)
 public class TransportConfiguration extends EciConfiguration implements InterceptorProvider, EciConfigurable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913054L;
 
     @JsonProperty(value = "mep")
     private volatile Mep mepCache;

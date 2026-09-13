@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TriggerExecutionMessage implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913003L;
 
     private Message message;
     private String sessionId;

@@ -35,7 +35,7 @@ import lombok.Setter;
 @Setter
 public class TcContextBriefInfo extends AbstractStorable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913017L;
 
     Object id;
     private String name;

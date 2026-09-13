@@ -40,7 +40,7 @@ import lombok.Setter;
 public class OperationEventTrigger extends EventTriggerImpl {
 
     @Serial
-    private static final long serialVersionUID = 20241125L;
+    private static final long serialVersionUID = 20260913049L;
 
     public static final String TYPE = "Operation Event Trigger";
     private int priority;

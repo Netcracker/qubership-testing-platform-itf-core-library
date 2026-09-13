@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 
 public class JsonIdGen extends ObjectIdGenerator<String> {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913075L;
 
     protected final Class<?> protectedScope;
 

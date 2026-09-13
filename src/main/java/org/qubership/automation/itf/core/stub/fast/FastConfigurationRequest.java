@@ -30,7 +30,7 @@ import lombok.Setter;
 @Setter
 public class FastConfigurationRequest implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20250303L;
+    private static final long serialVersionUID = 20260913060L;
 
     private List<FastTransportConfig> transportConfigs;
     private String projectUuid;
@@ -39,7 +39,7 @@ public class FastConfigurationRequest implements Serializable {
     @Setter
     public static class FastTransportConfig implements Serializable {
         @Serial
-        private static final long serialVersionUID = 20250303L;
+        private static final long serialVersionUID = 20260913061L;
 
         private StubEndpointConfig.TransportTypes transportType;
         private LinkedList<FastSystem> systems;
@@ -49,7 +49,7 @@ public class FastConfigurationRequest implements Serializable {
     @Setter
     public static class FastSystem implements Serializable {
         @Serial
-        private static final long serialVersionUID = 20250303L;
+        private static final long serialVersionUID = 20260913062L;
 
         private String id;
         private List<FastOperation> operations;
@@ -60,7 +60,7 @@ public class FastConfigurationRequest implements Serializable {
     @Setter
     public static class FastOperation implements Serializable {
         @Serial
-        private static final long serialVersionUID = 20250303L;
+        private static final long serialVersionUID = 20260913063L;
 
         private String id;
         private List<FastSituation> situations;
@@ -70,7 +70,7 @@ public class FastConfigurationRequest implements Serializable {
     @Setter
     public static class FastSituation implements Serializable {
         @Serial
-        private static final long serialVersionUID = 20250303L;
+        private static final long serialVersionUID = 20260913064L;
 
         private String id;
     }

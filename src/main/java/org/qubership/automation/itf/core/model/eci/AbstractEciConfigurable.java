@@ -16,9 +16,14 @@
 
 package org.qubership.automation.itf.core.model.eci;
 
+import java.io.Serial;
+
 import org.qubership.automation.itf.core.model.common.LabeledStorable;
 
 public abstract class AbstractEciConfigurable extends LabeledStorable implements EciConfigurable {
+    @Serial
+    private static final long serialVersionUID = 20260913083L;
+
     private String ecId;
     private String ecProjectId;
     private String ecLabel;

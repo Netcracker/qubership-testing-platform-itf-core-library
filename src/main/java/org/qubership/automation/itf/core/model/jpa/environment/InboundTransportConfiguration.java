@@ -48,7 +48,7 @@ import jakarta.persistence.Entity;
         scope = InboundTransportConfiguration.class)
 public class InboundTransportConfiguration extends EciConfiguration implements EciConfigurable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913019L;
 
     private TransportConfiguration referencedConfiguration;
 

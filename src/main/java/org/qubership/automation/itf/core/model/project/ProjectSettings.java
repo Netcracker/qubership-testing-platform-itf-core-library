@@ -24,7 +24,7 @@ import org.qubership.automation.itf.core.util.descriptor.ProjectSettingsDescript
 
 public class ProjectSettings extends Configuration {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913059L;
 
     /**
      * Constructor from params map.

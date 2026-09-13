@@ -50,7 +50,7 @@ import jakarta.persistence.Entity;
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class SituationStep extends AbstractCallChainStep implements KeysRegeneratable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913047L;
 
     @JsonProperty(value = "type")
     public static final String TYPE = "situationStep";

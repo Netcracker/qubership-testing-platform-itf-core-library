@@ -39,7 +39,7 @@ import lombok.NoArgsConstructor;
         property = "id", scope = OperationParsingRule.class)
 public class OperationParsingRule extends AbstractParsingRule<Operation> {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913037L;
 
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only Operation objects are here")
     public OperationParsingRule(Storable parent) {

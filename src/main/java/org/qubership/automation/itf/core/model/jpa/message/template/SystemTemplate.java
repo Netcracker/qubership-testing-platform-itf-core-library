@@ -38,7 +38,7 @@ import lombok.NoArgsConstructor;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = SystemTemplate.class)
 public class SystemTemplate extends AbstractTemplate<System> {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913040L;
 
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only System objects are here")
     public SystemTemplate(Storable parent) {

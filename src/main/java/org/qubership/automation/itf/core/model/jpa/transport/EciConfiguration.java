@@ -16,7 +16,12 @@
 
 package org.qubership.automation.itf.core.model.jpa.transport;
 
+import java.io.Serial;
+
 public abstract class EciConfiguration extends Configuration {
+    @Serial
+    private static final long serialVersionUID = 20260913090L;
+
     private String ecId;
     private String ecProjectId;
 

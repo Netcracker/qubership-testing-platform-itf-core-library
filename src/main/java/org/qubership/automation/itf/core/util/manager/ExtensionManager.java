@@ -35,7 +35,7 @@ import org.springframework.cglib.proxy.MethodProxy;
 @SuppressWarnings("unchecked")
 public class ExtensionManager implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913077L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtensionManager.class);
 
@@ -155,7 +155,7 @@ public class ExtensionManager implements Serializable {
 
     private static class ExtendedSelfMethodInterceptor implements MethodInterceptor, Serializable {
         @Serial
-        private static final long serialVersionUID = 20240812L;
+        private static final long serialVersionUID = 20260913078L;
 
         private final ExtendableImpl extendable = new ExtendableImpl();
 

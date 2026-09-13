@@ -30,7 +30,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommonTriggerExecutionMessage extends TriggerExecutionMessage {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913001L;
 
     private String typeName;
     private StorableDescriptor triggerConfigurationDescriptor;

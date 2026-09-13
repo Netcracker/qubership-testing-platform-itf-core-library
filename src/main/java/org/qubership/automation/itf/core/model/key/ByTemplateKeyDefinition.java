@@ -25,7 +25,7 @@ import org.qubership.automation.itf.core.util.engine.TemplateEngineFactory;
 
 public class ByTemplateKeyDefinition extends AbstractStorable implements KeyDefinition {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913058L;
 
     private String macro;
 

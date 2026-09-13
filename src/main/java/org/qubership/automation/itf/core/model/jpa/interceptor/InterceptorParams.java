@@ -34,7 +34,7 @@ import lombok.Setter;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class InterceptorParams extends Configuration {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913033L;
 
     private String transportName;
 
