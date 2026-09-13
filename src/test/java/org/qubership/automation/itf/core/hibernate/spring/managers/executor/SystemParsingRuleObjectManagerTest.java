@@ -18,7 +18,6 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,7 +34,6 @@ import org.qubership.automation.itf.core.util.constants.Match;
 import org.qubership.automation.itf.core.util.converter.IdConverter;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.qubership.automation.itf.core.util.helper.PropertyHelper;
-import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
 import org.springframework.transaction.TransactionDefinition;
 
 @ExtendWith(MockitoExtension.class)
@@ -120,23 +118,15 @@ class SystemParsingRuleObjectManagerTest {
     // ==================== create (with type and parameters) TESTS ====================
 
     @Test
-    @Disabled("Production code throws java.lang.NoSuchMethodException "
-            + "because there is no constructor with 3rd parameter as 'Map parameters'. "
-            + "Should be fixed by adding proper check in constructor.")
-    void create_WithTypeAndParameters_ShouldCreateParsingRule() {
+    void create_WithTypeAndParameters_ShouldThrowInsteadOfCreatingGarbage() {
         // given
         Map<String, Object> parameters = new HashMap<>();
-        SystemParsingRule newRule = mock(SystemParsingRule.class);
-        when(repository.save(any(SystemParsingRule.class))).thenReturn(newRule);
 
-        // when
-        SystemParsingRule result = manager.create(parentSystem, RULE_NAME, parameters);
-
-        // then
-        Assertions.assertNotNull(result);
-        verify(newRule).setParsingType(ParsingRuleType.XPATH);
-        verify(newRule).setExpression(".");
-        verify(repository).save(newRule);
+        // when & then
+        UnsupportedOperationException ex = Assertions.assertThrows(UnsupportedOperationException.class,
+                () -> manager.create(parentSystem, RULE_NAME, parameters));
+        Assertions.assertTrue(ex.getMessage().contains("create(parent) instead"));
+        verify(repository, never()).save(any());
     }
 
     @Test
