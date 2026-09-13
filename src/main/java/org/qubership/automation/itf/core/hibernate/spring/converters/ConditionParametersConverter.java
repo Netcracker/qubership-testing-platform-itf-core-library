@@ -27,13 +27,15 @@ import org.qubership.automation.itf.core.model.condition.parameter.ConditionPara
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ConditionParametersConverter implements AttributeConverter<List<ConditionParameter>, String> {
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper()
+            .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
 
     @Override
     public String convertToDatabaseColumn(List<ConditionParameter> attribute) {
@@ -48,15 +50,17 @@ public class ConditionParametersConverter implements AttributeConverter<List<Con
 
     @Override
     public List<ConditionParameter> convertToEntityAttribute(String dbData) {
-        List<ConditionParameter> conditionParameters = new ArrayList<>();
+        if (StringUtils.isBlank(dbData)) {
+            return new ArrayList<>();
+        }
         try {
-            if (StringUtils.isNotBlank(dbData)) {
-                conditionParameters = objectMapper.readValue(dbData,
-                        new TypeReference<List<ConditionParameter>>() {});
-            }
+            return objectMapper.readValue(dbData, new TypeReference<List<ConditionParameter>>() {});
         } catch (final IOException e) {
             log.error("JSON reading error", e);
+            // An empty list reads as "no conditions, applicable anyway"; a bare ConditionParameter never is.
+            List<ConditionParameter> neverSatisfied = new ArrayList<>();
+            neverSatisfied.add(new ConditionParameter());
+            return neverSatisfied;
         }
-        return conditionParameters;
     }
 }
