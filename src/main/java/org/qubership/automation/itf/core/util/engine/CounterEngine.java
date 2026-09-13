@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.util.engine;
 
+import java.io.Serial;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Set;
@@ -179,6 +180,9 @@ public class CounterEngine {
 
     /** Wraps a checked failure from {@link #newCounter} so it can cross {@link ConcurrentMap#computeIfAbsent}. */
     private static final class CounterCreationFailure extends RuntimeException {
+        @Serial
+        private static final long serialVersionUID = 20260913097L;
+
         CounterCreationFailure(Throwable cause) {
             super(cause);
         }

@@ -16,6 +16,8 @@
 
 package org.qubership.automation.itf.core.util.exception;
 
+import java.io.Serial;
+
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -23,6 +25,9 @@ import org.qubership.automation.itf.core.model.jpa.system.System;
 import org.qubership.automation.itf.core.model.jpa.system.operation.Operation;
 
 public class KeyDefinitionException extends CoreException {
+
+    @Serial
+    private static final long serialVersionUID = 20260913104L;
 
     public KeyDefinitionException(@Nonnull System system, @Nullable Operation operation) {
         super(String.format("Cannot define incoming context key - no definition found under operation %s or system "

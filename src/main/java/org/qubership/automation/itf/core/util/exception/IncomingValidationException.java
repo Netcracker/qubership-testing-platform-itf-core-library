@@ -16,7 +16,12 @@
 
 package org.qubership.automation.itf.core.util.exception;
 
+import java.io.Serial;
+
 public class IncomingValidationException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = 20260913103L;
 
     public IncomingValidationException(String message) {
         super(message);

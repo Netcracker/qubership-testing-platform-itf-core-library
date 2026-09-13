@@ -16,7 +16,12 @@
 
 package org.qubership.automation.itf.core.util.exception;
 
+import java.io.Serial;
+
 public class TriggerException extends CoreException {
+
+    @Serial
+    private static final long serialVersionUID = 20260913112L;
 
     public TriggerException(String message) {
         super(message);

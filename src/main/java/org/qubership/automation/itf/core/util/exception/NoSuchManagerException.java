@@ -16,7 +16,12 @@
 
 package org.qubership.automation.itf.core.util.exception;
 
+import java.io.Serial;
+
 public class NoSuchManagerException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = 20260913106L;
 
     public NoSuchManagerException() {
         super();
