@@ -1,5 +1,5 @@
 /*
- *  Copyright 2024-2025 NetCracker Technology Corporation
+ *  Copyright 2024-2026 NetCracker Technology Corporation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,22 +30,51 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 
+/**
+ * Coordinates threads waiting on a transport session response, keyed by session ID.
+ *
+ * <p>{@link #ensureInitialized()} builds the lock cache lazily, on first use, so a call reaching it
+ * before {@link ApplicationConfig#getEnv()} is wired throws and leaves the singleton's state unset
+ * for a later call to retry, rather than permanently marking this class erroneous.</p>
+ */
 public enum LockProvider {
     INSTANCE;
-    private final int timeout = setTimeout(Integer.parseInt(
-            ApplicationConfig.getEnv().getProperty(LOCK_PROVIDER_PROCESS_TIMEOUT, "25000")), 25000);
-    private LoadingCache<String, WeakValue> locks = CacheBuilder.newBuilder()
-            .expireAfterWrite(timeout, MILLISECONDS)
-            .removalListener((RemovalListener<String, WeakValue>) notification -> {
-                synchronized (notification.getValue()) {
-                    notification.getValue().notify();
+
+    private volatile int timeout;
+    private volatile LoadingCache<String, WeakValue> locks;
+
+    /**
+     * Builds {@link #locks} and {@link #timeout} lazily, on first use, instead of in the enum
+     * constant's field initializers.
+     *
+     * <p>A call reaching this method before {@link ApplicationConfig#getEnv()} is wired throws and
+     * leaves both fields unset, so a later call retries the same computation instead of failing
+     * permanently.</p>
+     */
+    private void ensureInitialized() {
+        if (locks == null) {
+            synchronized (this) {
+                if (locks == null) {
+                    int computedTimeout = setTimeout(Integer.parseInt(
+                            ApplicationConfig.getEnv().getProperty(LOCK_PROVIDER_PROCESS_TIMEOUT, "25000")), 25000);
+                    LoadingCache<String, WeakValue> computedLocks = CacheBuilder.newBuilder()
+                            .expireAfterWrite(computedTimeout, MILLISECONDS)
+                            .removalListener((RemovalListener<String, WeakValue>) notification -> {
+                                synchronized (notification.getValue()) {
+                                    notification.getValue().notify();
+                                }
+                            }).build(new CacheLoader<String, WeakValue>() {
+                                @Override
+                                public WeakValue load(@Nonnull String id) {
+                                    return new WeakValue();
+                                }
+                            });
+                    timeout = computedTimeout;
+                    locks = computedLocks;
                 }
-            }).build(new CacheLoader<String, WeakValue>() {
-                @Override
-                public WeakValue load(@Nonnull String id) {
-                    return new WeakValue();
-                }
-            });
+            }
+        }
+    }
 
     /**
      * Method will take the {@link WeakValue} from cache by the key
@@ -55,6 +84,7 @@ public enum LockProvider {
      * @param key - session key.
      */
     public void notify(@Nonnull String key) {
+        ensureInitialized();
         WeakValue value = locks.getIfPresent(key);
         if (value != null) {
             locks.invalidate(key);
@@ -70,6 +100,7 @@ public enum LockProvider {
      * @throws InterruptedException - exception
      */
     public void wait(@Nonnull String sessionId) throws InterruptedException {
+        ensureInitialized();
         WeakValue lock = locks.getUnchecked(sessionId);
         synchronized (lock) {
             lock.wait(timeout);
@@ -100,6 +131,7 @@ public enum LockProvider {
      */
     public Message waitResponse(@Nonnull String sessionId, int interval, int maxInterval, float multiplier)
             throws InterruptedException {
+        ensureInitialized();
         int checkedInterval = interval < 50 || interval >= timeout ? 500 : interval;
         float checkedMultiplier = Math.max(multiplier, 1.0f);
         int checkedMaxInterval = (checkedMultiplier == 1.0f) ? checkedInterval : maxInterval;
@@ -135,10 +167,12 @@ public enum LockProvider {
      * @return true.
      */
     public boolean init() {
+        ensureInitialized();
         return true;
     }
 
     public void cleanupCache() {
+        ensureInitialized();
         locks.cleanUp();
     }
 
