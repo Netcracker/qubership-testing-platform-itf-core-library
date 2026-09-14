@@ -39,13 +39,56 @@ mvn -P github clean install
 ### Connecting in Spring Boot application
 #### 1. Add dependency into a service
 
+Two release lines are published, depending on the Spring Boot version the consuming service targets.
+
+**Spring Boot 3.5.14 or later** (the current `main` branch): published to GitHub Packages, starting at `5.0.0`.
+
 ```xml
 <dependency>
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>4.4.106-SNAPSHOT</version>
+    <version>5.0.1</version>
 </dependency>
 ```
+
+GitHub Packages requires authentication for every read, including a public repository. Add the repository:
+
+```xml
+<repositories>
+    <repository>
+        <id>github</id>
+        <url>https://maven.pkg.github.com/Netcracker/qubership-testing-platform-itf-core-library</url>
+    </repository>
+</repositories>
+```
+
+and a matching server entry with a GitHub personal access token that has the `read:packages` scope:
+
+```xml
+<!-- ~/.m2/settings.xml -->
+<servers>
+    <server>
+        <id>github</id>
+        <username>YOUR_GITHUB_USERNAME</username>
+        <password>YOUR_GITHUB_TOKEN</password>
+    </server>
+</servers>
+```
+
+**Spring Boot versions before 3.5.14**: published to Maven Central, which Maven resolves against with no extra
+repository configuration. `4.4.115` is the last release on this line.
+
+```xml
+<dependency>
+    <groupId>org.qubership.atp</groupId>
+    <artifactId>atp-itf-core</artifactId>
+    <version>4.4.115</version>
+</dependency>
+```
+
+See the [releases page](https://github.com/Netcracker/qubership-testing-platform-itf-core-library/releases) for the
+latest version on either line.
+
 #### 2. Specify the required parameters in application.properties
 ```properties
 ##======================DataBase configurations=======================
