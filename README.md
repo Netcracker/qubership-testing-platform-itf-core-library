@@ -124,4 +124,21 @@ hazelcast.address=${HAZELCAST_ADDRESS}
 
 ##==================Integration with Spring Cloud======================
 eureka.client.serviceUrl.defaultZone=${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+
+##======================Feign clients (BV, Datasets) configurations=======================
+feign.atp.bv.name=${FEIGN_ATP_BV_NAME}
+feign.atp.bv.url=${FEIGN_ATP_BV_URL}
+feign.atp.bv.route=${FEIGN_ATP_BV_ROUTE}
+feign.atp.datasets.name=${FEIGN_ATP_DATASETS_NAME}
+feign.atp.datasets.url=${FEIGN_ATP_DATASETS_URL}
+feign.atp.datasets.route=${FEIGN_ATP_DATASETS_ROUTE}
+```
+
+None of the six `feign.atp.*` properties has a default. They become required as soon as this library's
+`org.qubership.automation.itf.core.util.feign` package is component-scanned, which autowires every Feign client it
+declares. A context missing one of these properties fails at startup with the placeholder left unresolved in the
+target URL rather than a message naming the property, for example:
+
+```text
+java.net.URISyntaxException: Illegal character in authority at index 8: http://${feign.atp.bv.url}
 ```
