@@ -206,7 +206,9 @@ public class TcContext extends JsonStorable {
     /**
      * Compute duration of the context execution.
      *
-     * @return computed duration as Date object. In case endTime or startTime are null, return current system Date
+     * @return Date - computed duration.
+     *     In case startTime is null, return zero duration;
+     *     Otherwise, in case endTime is null, System.currentTimeMillis() is used in calculations.
      */
     @Transient
     @JsonIgnore
@@ -214,8 +216,13 @@ public class TcContext extends JsonStorable {
         /* @JsonIgnore annotation is added in order to avoid strange exceptions
         while object serialization in ReportWorker#run
             Exception was NullPointerException at TcContext["duration"] */
-        return new Date(endTime == null || startTime == null
-                ? System.currentTimeMillis() : endTime.getTime() - startTime.getTime());
+        if (startTime == null) {
+            return new Date(0);
+        } else if (endTime == null) {
+            return new Date(System.currentTimeMillis() - startTime.getTime());
+        } else {
+            return new Date(endTime.getTime() - startTime.getTime());
+        }
     }
 
     /**
