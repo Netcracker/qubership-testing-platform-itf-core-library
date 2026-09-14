@@ -89,7 +89,6 @@ class OperationParsingRuleObjectManagerTest {
     @Test
     void create_WithParentOperation_ShouldCreateParsingRule() {
         // given
-        OperationParsingRule newRule = mock(OperationParsingRule.class);
         when(repository.save(any(OperationParsingRule.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // when
@@ -99,6 +98,7 @@ class OperationParsingRuleObjectManagerTest {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(parentOperation, result.getParent());
         verify(repository).save(any(OperationParsingRule.class));
+        verify(parentOperation).addParsingRule(result);
     }
 
     @Test
