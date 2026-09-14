@@ -82,3 +82,17 @@ hazelcast.address=${HAZELCAST_ADDRESS}
 ##==================Integration with Spring Cloud======================
 eureka.client.serviceUrl.defaultZone=${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
 ```
+#### 3. Make sure the library's Spring beans are component-scanned
+
+The library ships `@Component`/`@Service` beans (for example `CoreObjectManager`, `ApplicationConfig`) that your
+application's own Spring context has to construct. Spring Boot's default component scan covers the package of your
+`@SpringBootApplication` class and its sub-packages, so no extra step is needed when that package already contains
+or sits above `org.qubership.automation.itf.core`. Otherwise, add the package explicitly:
+
+```java
+@SpringBootApplication(scanBasePackages = {"your.own.package", "org.qubership.automation.itf.core"})
+```
+
+Skipping this does not fail at startup: entry points such as `CoreObjectManager.getInstance()` and
+`ApplicationConfig.getEnv()` throw `IllegalStateException` naming this requirement the first time your application
+calls into the library.

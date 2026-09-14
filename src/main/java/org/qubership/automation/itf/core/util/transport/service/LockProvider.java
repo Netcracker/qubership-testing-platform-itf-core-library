@@ -33,7 +33,7 @@ import com.google.common.cache.RemovalListener;
 public enum LockProvider {
     INSTANCE;
     private final int timeout = setTimeout(Integer.parseInt(
-            ApplicationConfig.env.getProperty(LOCK_PROVIDER_PROCESS_TIMEOUT, "25000")), 25000);
+            ApplicationConfig.getEnv().getProperty(LOCK_PROVIDER_PROCESS_TIMEOUT, "25000")), 25000);
     private LoadingCache<String, WeakValue> locks = CacheBuilder.newBuilder()
             .expireAfterWrite(timeout, MILLISECONDS)
             .removalListener((RemovalListener<String, WeakValue>) notification -> {
