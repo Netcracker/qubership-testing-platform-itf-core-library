@@ -30,7 +30,6 @@ import org.qubership.automation.itf.core.model.common.Storable;
 import org.qubership.automation.itf.core.model.jpa.message.parser.ParsingRule;
 import org.qubership.automation.itf.core.util.constants.Match;
 import org.qubership.automation.itf.core.util.helper.PropertyHelper;
-import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
 import org.qubership.automation.itf.core.util.provider.ParsingRuleProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,16 +59,20 @@ public abstract class ParsingRuleObjectManager<K extends ParsingRuleProvider, T 
         return null;
     }
 
+    /**
+     * Always throws: no parsing rule type has a (Storable, Map) constructor, so {@link
+     * AbstractObjectManager#create(Storable, String, Map)} can never build one. Use {@link
+     * #create(Storable)} instead.
+     */
     @Override
     public T create(Storable parent, String type, Map parameters) {
         if (!(parent instanceof ParsingRuleProvider)) {
             throw new IllegalArgumentException(String.format("Can't add parsing rule to '%s', "
                     + " because object is not parsing rule provider!", parent));
         }
-        T parsingRule = super.create(parent, type, parameters);
-        parsingRule.setParsingType(ParsingRuleType.XPATH);
-        parsingRule.setExpression(".");//default value
-        return parsingRule;
+        throw new UnsupportedOperationException(String.format(
+                "%s has no constructor accepting parameters; create(parent, type, parameters) is not "
+                        + "supported for parsing rules, use create(parent) instead", myType.getSimpleName()));
     }
 
     public Collection<T> getByProjectId(BigInteger projectId) {
