@@ -35,11 +35,13 @@ import org.qubership.automation.itf.core.util.constants.Etc;
 import org.qubership.automation.itf.core.util.engine.TemplateEngineFactory;
 import org.qubership.automation.itf.core.util.services.CoreServices;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ConditionParameter implements Serializable {
     @Serial
     private static final long serialVersionUID = 20250303L;
