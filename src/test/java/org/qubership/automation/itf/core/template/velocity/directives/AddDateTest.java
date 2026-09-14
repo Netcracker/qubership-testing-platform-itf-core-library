@@ -18,6 +18,8 @@ package org.qubership.automation.itf.core.template.velocity.directives;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -26,12 +28,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.directive.Directive;
@@ -39,6 +41,8 @@ import org.apache.velocity.runtime.parser.node.Node;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -111,106 +115,6 @@ class AddDateTest {
     private String addMinutes(String date, int minutes) {
         LocalDateTime dt = LocalDateTime.parse(date, DEFAULT_FORMATTER);
         return DEFAULT_FORMATTER.format(dt.plusMinutes(minutes));
-    }
-
-    // ==================== determineCalendarFieldByAddedTime TESTS ====================
-
-    @Test
-    void determineCalendarFieldByAddedTime_WithDayUnit_ShouldReturnCalendarDate() throws Exception {
-        // when
-        int result = invokeDetermineCalendarFieldByAddedTime("5d");
-        // then
-        assertEquals(java.util.Calendar.DATE, result);
-    }
-
-    @Test
-    void determineCalendarFieldByAddedTime_WithDayUnitUppercase_ShouldReturnCalendarDate() throws Exception {
-        // when
-        int result = invokeDetermineCalendarFieldByAddedTime("5D");
-        // then
-        assertEquals(java.util.Calendar.DATE, result);
-    }
-
-    @Test
-    void determineCalendarFieldByAddedTime_WithHourUnit_ShouldReturnCalendarHour() throws Exception {
-        // when
-        int result = invokeDetermineCalendarFieldByAddedTime("3h");
-        // then
-        assertEquals(java.util.Calendar.HOUR, result);
-    }
-
-    @Test
-    void determineCalendarFieldByAddedTime_WithHourUnitUppercase_ShouldReturnCalendarHour() throws Exception {
-        // when
-        int result = invokeDetermineCalendarFieldByAddedTime("3H");
-        // then
-        assertEquals(java.util.Calendar.HOUR, result);
-    }
-
-    @Test
-    void determineCalendarFieldByAddedTime_WithMinuteUnit_ShouldReturnCalendarMinute() throws Exception {
-        // when
-        int result = invokeDetermineCalendarFieldByAddedTime("15m");
-        // then
-        assertEquals(java.util.Calendar.MINUTE, result);
-    }
-
-    @Test
-    void determineCalendarFieldByAddedTime_WithMinuteUnitUppercase_ShouldReturnCalendarMinute() throws Exception {
-        // when
-        int result = invokeDetermineCalendarFieldByAddedTime("15M");
-        // then
-        assertEquals(java.util.Calendar.MINUTE, result);
-    }
-
-    @Test
-    void determineCalendarFieldByAddedTime_WithUnknownUnit_ShouldReturnZero() throws Exception {
-        // when
-        int result = invokeDetermineCalendarFieldByAddedTime("5x");
-        // then
-        assertEquals(0, result);
-    }
-
-    @Test
-    void determineCalendarFieldByAddedTime_WithNegativeValue_ShouldStillDetectUnit() throws Exception {
-        // when
-        int result = invokeDetermineCalendarFieldByAddedTime("-2d");
-        // then
-        assertEquals(java.util.Calendar.DATE, result);
-    }
-
-    // ==================== determineTimeUnitByCalendarField TESTS ====================
-
-    @Test
-    void determineTimeUnitByCalendarField_WithCalendarDate_ShouldReturnDay() throws Exception {
-        // when
-        String result = invokeDetermineTimeUnitByCalendarField(java.util.Calendar.DATE);
-        // then
-        assertEquals("d", result);
-    }
-
-    @Test
-    void determineTimeUnitByCalendarField_WithCalendarHour_ShouldReturnHour() throws Exception {
-        // when
-        String result = invokeDetermineTimeUnitByCalendarField(java.util.Calendar.HOUR);
-        // then
-        assertEquals("h", result);
-    }
-
-    @Test
-    void determineTimeUnitByCalendarField_WithCalendarMinute_ShouldReturnMinute() throws Exception {
-        // when
-        String result = invokeDetermineTimeUnitByCalendarField(java.util.Calendar.MINUTE);
-        // then
-        assertEquals("m", result);
-    }
-
-    @Test
-    void determineTimeUnitByCalendarField_WithUnknownField_ShouldReturnEmpty() throws Exception {
-        // when
-        String result = invokeDetermineTimeUnitByCalendarField(999);
-        // then
-        assertEquals(StringUtils.EMPTY, result);
     }
 
     // ==================== addTimeToData TESTS (via reflection) ====================
@@ -294,16 +198,95 @@ class AddDateTest {
     }
 
     @Test
-    void addTimeToData_WithInvalidUnit_ShouldNotChangeDate() throws Exception {
+    void addTimeToData_WithUnrecognizedUnit_ShouldThrowNamingAcceptedUnits() {
         // given
         java.util.Date date = java.util.Date.from(Instant.from(DEFAULT_FORMATTER.parse(DEFAULT_DATE)));
-        String addedTime = "5x";
+
+        // when
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> invokeAddTimeToData(date, "5x", DEFAULT_FORMATTER));
+
+        // then
+        assertTrue(ex.getMessage().contains("5x"));
+        assertTrue(ex.getMessage().contains("day"));
+        assertTrue(ex.getMessage().contains("hour"));
+        assertTrue(ex.getMessage().contains("min"));
+    }
+
+    @Test
+    void addTimeToData_WithNumberButNoUnit_ShouldThrow() {
+        // given
+        java.util.Date date = java.util.Date.from(Instant.from(DEFAULT_FORMATTER.parse(DEFAULT_DATE)));
+
+        // when & then
+        assertThrows(IllegalArgumentException.class, () -> invokeAddTimeToData(date, "5", DEFAULT_FORMATTER));
+    }
+
+    @Test
+    void addTimeToData_WithUnitButNoNumber_ShouldThrow() {
+        // given
+        java.util.Date date = java.util.Date.from(Instant.from(DEFAULT_FORMATTER.parse(DEFAULT_DATE)));
+
+        // when & then
+        assertThrows(IllegalArgumentException.class, () -> invokeAddTimeToData(date, "days", DEFAULT_FORMATTER));
+    }
+
+    // ==================== expanded unit-spelling TESTS ====================
+
+    @ParameterizedTest
+    @ValueSource(strings = {"5d", "5D", "5day", "5Day", "5DAY", "5days", "5Days", "5DAYS",
+            "5 d", "5 D", "5 day", "5 Day", "5 DAY", "5 days", "5 Days", "5 DAYS"})
+    void addTimeToData_WithAnyDaySpelling_ShouldIncreaseDateByFiveDays(String addedTime) throws Exception {
+        // given
+        java.util.Date date = java.util.Date.from(Instant.from(DEFAULT_FORMATTER.parse(DEFAULT_DATE)));
 
         // when
         String result = invokeAddTimeToData(date, addedTime, DEFAULT_FORMATTER);
 
         // then
-        assertEquals(DEFAULT_DATE, result);
+        assertEquals(addDays(DEFAULT_DATE, 5), result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"3h", "3H", "3hour", "3Hour", "3HOUR", "3hours", "3Hours", "3HOURS",
+            "3 h", "3 H", "3 hour", "3 Hour", "3 HOUR", "3 hours", "3 Hours", "3 HOURS"})
+    void addTimeToData_WithAnyHourSpelling_ShouldIncreaseDateByThreeHours(String addedTime) throws Exception {
+        // given
+        java.util.Date date = java.util.Date.from(Instant.from(DEFAULT_FORMATTER.parse(DEFAULT_DATE)));
+
+        // when
+        String result = invokeAddTimeToData(date, addedTime, DEFAULT_FORMATTER);
+
+        // then
+        assertEquals(addHours(DEFAULT_DATE, 3), result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"15m", "15M", "15min", "15Min", "15MIN", "15mins", "15Mins", "15MINS",
+            "15minute", "15Minute", "15MINUTE", "15minutes", "15Minutes", "15MINUTES",
+            "15 m", "15 M", "15 min", "15 Min", "15 MIN", "15 mins", "15 Mins", "15 MINS",
+            "15 minute", "15 Minute", "15 MINUTE", "15 minutes", "15 Minutes", "15 MINUTES"})
+    void addTimeToData_WithAnyMinuteSpelling_ShouldIncreaseDateByFifteenMinutes(String addedTime) throws Exception {
+        // given
+        java.util.Date date = java.util.Date.from(Instant.from(DEFAULT_FORMATTER.parse(DEFAULT_DATE)));
+
+        // when
+        String result = invokeAddTimeToData(date, addedTime, DEFAULT_FORMATTER);
+
+        // then
+        assertEquals(addMinutes(DEFAULT_DATE, 15), result);
+    }
+
+    @Test
+    void addTimeToData_WithNegativeValueAndWordUnit_ShouldDecreaseDate() throws Exception {
+        // given
+        java.util.Date date = java.util.Date.from(Instant.from(DEFAULT_FORMATTER.parse(DEFAULT_DATE)));
+
+        // when
+        String result = invokeAddTimeToData(date, "-3 days", DEFAULT_FORMATTER);
+
+        // then
+        assertEquals(addDays(DEFAULT_DATE, -3), result);
     }
 
     @Test
@@ -333,29 +316,21 @@ class AddDateTest {
         assertEquals("2024-05-26 12:00:00.123Z", result);
     }
 
-    // Helper method to invoke private addTimeToData
+    // Helper method to invoke private addTimeToData, unwrapping the reflection wrapper so callers
+    // can assert on the real exception addTimeToData throws.
     private String invokeAddTimeToData(java.util.Date date, String addedTime, DateTimeFormatter formatter)
             throws Exception {
         java.lang.reflect.Method method = AddDate.class.getDeclaredMethod(
                 "addTimeToData", java.util.Date.class, String.class, DateTimeFormatter.class);
         method.setAccessible(true);
-        return (String) method.invoke(directive, date, addedTime, formatter);
-    }
-
-    // Helper method to invoke private determineTimeUnitByCalendarField
-    private String invokeDetermineTimeUnitByCalendarField(int timeUnit) throws Exception {
-        java.lang.reflect.Method method = AddDate.class.getDeclaredMethod(
-                "determineTimeUnitByCalendarField", int.class);
-        method.setAccessible(true);
-        return (String) method.invoke(directive, timeUnit);
-    }
-
-    // Helper method to invoke private determineCalendarFieldByAddedTime
-    private int invokeDetermineCalendarFieldByAddedTime(String addedTime) throws Exception {
-        java.lang.reflect.Method method = AddDate.class.getDeclaredMethod(
-                "determineCalendarFieldByAddedTime", String.class);
-        method.setAccessible(true);
-        return (int) method.invoke(directive, addedTime);
+        try {
+            return (String) method.invoke(directive, date, addedTime, formatter);
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof RuntimeException runtimeException) {
+                throw runtimeException;
+            }
+            throw e;
+        }
     }
 
     // ==================== getDate TESTS (via reflection) ====================
