@@ -159,7 +159,11 @@ public class TransportConfiguration extends EciConfiguration implements Intercep
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns every trigger configuration, across every server in {@code projectId}, whose inbound
+     * transport configuration is this one.
+     *
+     * @param projectId the project whose servers to search
+     * @return the matching trigger configurations
      */
     @JsonIgnore
     public Collection<TriggerConfiguration> getTriggers(BigInteger projectId) {
@@ -198,7 +202,10 @@ public class TransportConfiguration extends EciConfiguration implements Intercep
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns this transport's registered endpoint prefix.
+     *
+     * @return the endpoint prefix, or {@code ""} when this transport is not currently registered,
+     *     or reporting its prefix fails
      */
     public String getEndpointPrefix() {
         try {

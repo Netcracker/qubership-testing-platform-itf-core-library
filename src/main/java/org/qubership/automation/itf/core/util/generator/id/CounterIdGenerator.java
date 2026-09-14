@@ -28,7 +28,12 @@ public class CounterIdGenerator implements IdGeneratorInterface {
     private static volatile Map<Class<? extends Storable>, BigInteger> idMapStorage = Maps.newHashMap();
 
     /**
-     * TODO: Add JavaDoc.
+     * Starts {@code clazz}'s counter at zero when it has none yet. When a counter already exists,
+     * raises it to {@code id}'s numeric part if that is greater, so a later {@link #getId(Class)}
+     * for {@code clazz} does not collide with {@code id}.
+     *
+     * @param id an existing id for {@code clazz}, prefixed the way {@link PrefixGenerator} prefixes it
+     * @param clazz the class whose counter to update
      */
     public void setStartFrom(Object id, Class<? extends Storable> clazz) {
         BigInteger bigInteger = new BigInteger(PrefixGenerator.removePrefix(id).toString());

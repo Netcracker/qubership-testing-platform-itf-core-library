@@ -32,7 +32,7 @@ public class FailTimeOut {
     /**
      * Get project settings 'Fail timeout' and 'Fail timeout timeunit' and calculate timeout in msecs.
      *
-     * @return {@link long} Fail timeout value in milliseconds
+     * @return Fail timeout value in milliseconds
      */
     public static long getTimeout(BigInteger projectId) {
         try {

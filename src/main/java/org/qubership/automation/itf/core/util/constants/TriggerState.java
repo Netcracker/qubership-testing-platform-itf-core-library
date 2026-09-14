@@ -50,7 +50,11 @@ public enum TriggerState {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the constant whose display state or name matches {@code state}, case-insensitively.
+     * Used by Jackson to deserialize a {@link TriggerState} from its {@link #getState()} form.
+     *
+     * @param state the display state or name to match
+     * @return the matching constant, or {@code null} when none matches
      */
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static TriggerState fromString(@JsonProperty("triggerState") String state) {

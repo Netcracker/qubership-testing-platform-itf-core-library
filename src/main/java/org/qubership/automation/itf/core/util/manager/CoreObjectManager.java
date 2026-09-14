@@ -46,7 +46,12 @@ public class CoreObjectManager {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns {@code clazz}'s {@link ObjectManager}, cast to its more specific type {@code toCast}.
+     *
+     * @param clazz the managed class to look up the manager for
+     * @param toCast the manager's expected, more specific type
+     * @return {@code clazz}'s manager, as a {@code T}
+     * @throws IllegalArgumentException if {@code clazz}'s manager is not an instance of {@code toCast}
      */
     @SuppressWarnings("unchecked")//this is really typesafe, I perform check isAssignableFrom
     public <U extends Storable, T extends ObjectManager<U>> T getSpecialManager(Class<U> clazz, Class<T> toCast) {

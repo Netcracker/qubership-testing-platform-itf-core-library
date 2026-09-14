@@ -66,7 +66,14 @@ public abstract class AbstractConfig {
     protected Properties properties = new Properties();
 
     /**
-     * TODO: Add JavaDoc.
+     * Loads {@code properties} from a configuration file, when {@code withLoading} is set.
+     *
+     * @param withLoading when {@code false}, leaves {@link #properties} empty and {@code fileName}
+     *     unused
+     * @param fileName default path to the configuration file; overridden by the
+     *     {@code config.file} system property when that is set. Read first as a filesystem path,
+     *     then, if that fails, as a classpath resource. Either way, the system properties are
+     *     merged in afterward, taking precedence over the file's own values
      */
     public AbstractConfig(boolean withLoading, String fileName) {
         if (withLoading) {

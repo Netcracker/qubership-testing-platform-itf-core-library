@@ -47,7 +47,8 @@ public class StringPrefixFactory implements IPrefixFactory {
     private final Map<Class<? extends Storable>, String> prefixStorage = Maps.newLinkedHashMap();
 
     /**
-     * TODO: Add JavaDoc.
+     * Populates the fixed id-prefix table this factory serves from, one entry per {@link Storable}
+     * subtype it knows about, plus a catch-all entry for {@link Storable} itself.
      */
     public StringPrefixFactory() {
         prefixStorage.put(System.class, "SY_");

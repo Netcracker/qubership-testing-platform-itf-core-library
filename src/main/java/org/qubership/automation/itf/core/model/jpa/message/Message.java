@@ -98,7 +98,11 @@ public class Message extends AbstractStorable implements Serializable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Fills in {@code connectionProperties} without discarding this message's existing, non-empty
+     * connection properties: an existing empty-string value is overwritten, an existing key with any
+     * other value is left alone, and a key this message does not have yet is added.
+     *
+     * @param connectionProperties the properties to fill in
      */
     public void fillConnectionProperties(Map<String, Object> connectionProperties) {
         for (Map.Entry<String, Object> entry : connectionProperties.entrySet()) {
@@ -197,7 +201,8 @@ public class Message extends AbstractStorable implements Serializable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * The transport-specific properties this message carries, such as those produced by
+     * {@link #connection2TransportProperties(Map)}.
      */
     public Map<String, String> getTransportProperties() {
         return transportProperties;
@@ -216,7 +221,10 @@ public class Message extends AbstractStorable implements Serializable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Replaces this message's {@link #getTransportProperties()} with {@code connectionProperties},
+     * converted to strings.
+     *
+     * @param connectionProperties the connection properties to convert and store
      */
     public void connection2TransportProperties(Map<String, Object> connectionProperties) {
         this.transportProperties.clear();

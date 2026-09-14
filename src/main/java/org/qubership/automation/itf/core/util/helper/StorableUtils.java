@@ -27,7 +27,12 @@ import org.qubership.automation.itf.core.model.common.Storable;
 public class StorableUtils {
 
     /**
-     * TODO: Add JavaDoc.
+     * Checks whether {@code collection} holds a {@link Storable} whose {@link Storable#getID()}
+     * equals {@code id}.
+     *
+     * @param collection the storables to search
+     * @param id the id to look for
+     * @return {@code false} when {@code id} is {@code null} or no element's id equals it
      */
     public static boolean containsId(Collection<Storable> collection, Object id) {
         if (id == null) {
@@ -42,7 +47,12 @@ public class StorableUtils {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Replaces {@code to}'s entries with {@code from}'s, in place. Does nothing when {@code to} and
+     * {@code from} are the same map instance; otherwise clears {@code to} and, when {@code from} is
+     * not {@code null}, copies every entry of {@code from} into it.
+     *
+     * @param to the map to overwrite
+     * @param from the entries to copy in, or {@code null} to leave {@code to} empty
      */
     public static <T, U> void fillMap(@Nonnull Map<T, U> to, @Nullable Map<? extends T, ? extends U> from) {
         if (to == from) {
@@ -55,7 +65,12 @@ public class StorableUtils {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Replaces {@code to}'s elements with {@code from}'s, in place. Does nothing when {@code to} and
+     * {@code from} are the same collection instance; otherwise clears {@code to} and, when
+     * {@code from} is not {@code null}, adds every element of {@code from} to it.
+     *
+     * @param to the collection to overwrite
+     * @param from the elements to copy in, or {@code null} to leave {@code to} empty
      */
     public static <T> void fillCollection(@Nonnull Collection<T> to, @Nullable Collection<? extends T> from) {
         if (to == from) {

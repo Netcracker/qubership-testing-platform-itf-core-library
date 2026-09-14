@@ -40,7 +40,10 @@ public class UsageInfo {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns {@link #getReferer()}'s ancestor path, root first, computing and caching it on first
+     * call.
+     *
+     * @return the cached path
      */
     public Storable[] getPath() {
         if (path == null) {

@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 public @interface Async {
 
     /**
-     * TODO: Add JavaDoc.
+     * Whether the annotated type actually runs asynchronously.
      */
     boolean value() default true;
 

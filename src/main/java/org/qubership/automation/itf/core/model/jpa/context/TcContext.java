@@ -133,7 +133,8 @@ public class TcContext extends JsonStorable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates a context named after its creation time, with {@link #getStartTime()} set to that
+     * same instant.
      */
     public TcContext() {
         super();

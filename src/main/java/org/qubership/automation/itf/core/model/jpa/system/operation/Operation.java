@@ -200,7 +200,8 @@ public class Operation extends AbstractStorable
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * {@inheritDoc} The simplified parent {@link System} also gets this operation's
+     * {@link #getTransport()} added to its transports, when this operation has one.
      */
     public Storable returnSimpleParent() {
         Storable system = super.returnSimpleParent();

@@ -36,7 +36,11 @@ public class OperationTemplateObjectManager extends TemplateObjectManager<Operat
     private final OperationTemplateRepository operationTemplateRepository;
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates a manager for {@link OperationTemplate}.
+     *
+     * @param operationTemplateRepository backs this manager's {@link OperationTemplate} queries
+     * @param stepRepository passed through to {@link TemplateObjectManager}
+     * @param otcRepository passed through to {@link TemplateObjectManager}
      */
     public OperationTemplateObjectManager(OperationTemplateRepository operationTemplateRepository,
                                           StepRepository stepRepository,

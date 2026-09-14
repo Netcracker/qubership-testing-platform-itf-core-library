@@ -54,7 +54,13 @@ public class ContentHelper {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Sets {@code message}'s content from the provider registered for {@code parsingRuleType}, when
+     * the message has none yet and that provider supports it. Does nothing otherwise.
+     *
+     * @param message the message to set content on
+     * @param parsingRuleType the key a provider was registered under with
+     *     {@link #registerProvider(String, MessageContentProvider)}
+     * @throws ContentException if the provider fails to produce the content
      */
     public void trySetContent(Message message, String parsingRuleType) throws ContentException {
         if (message.getContent() == null) {
@@ -66,7 +72,12 @@ public class ContentHelper {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Checks whether {@code message} already has content, and that content's type parameter is
+     * {@code requestedContentType} or a subtype of it.
+     *
+     * @param requestedContentType the content type to check for
+     * @param message the message whose content to check
+     * @return {@code false} when {@code message} has no content yet
      */
     public boolean tryForContentType(Class<?> requestedContentType, Message message) {
         return message.getContent() != null

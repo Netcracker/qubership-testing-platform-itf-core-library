@@ -37,7 +37,13 @@ import jakarta.persistence.EntityManagerFactory;
 public class ReportHibernateConfiguration {
 
     /**
-     * TODO: Add JavaDoc.
+     * Builds the entity manager factory for {@code org.qubership.automation.itf.core.model.jpa},
+     * excluding its {@code history} sub-package, with DDL generation turned off.
+     *
+     * @param dataSource the database to connect the entity manager factory to
+     * @param jpaProperties Hibernate/JPA properties; {@code hibernate.hbm2ddl.auto} is overridden
+     *     to {@code "none"}
+     * @return the configured {@link LocalContainerEntityManagerFactoryBean}
      */
     @Bean(name = "entityManagerFactory")
     public FactoryBean<EntityManagerFactory>
@@ -63,7 +69,12 @@ public class ReportHibernateConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * The transaction manager for {@code entityManagerFactory}.
+     *
+     * @param entityManagerFactory the entity manager factory to manage transactions for, typically
+     *     {@link #getCustomLocalContainerEntityManagerFactoryBean(DataSource, Properties)}'s result
+     * @return the configured {@link JpaTransactionManager}
+     * @throws Exception if {@code entityManagerFactory}'s object cannot be obtained
      */
     @Bean(name = "transactionManager")
     @DependsOnDatabaseInitialization

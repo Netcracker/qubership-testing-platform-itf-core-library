@@ -35,7 +35,9 @@ public class ReportAdapterStorage {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Instantiates every {@link ReportAdapter} subtype found on the classpath, through its no-arg
+     * constructor, and adds it to {@link #getAdapters()}. An adapter that fails to instantiate is
+     * logged and skipped.
      */
     public void init() {
         for (Class<? extends ReportAdapter> clazz : Reflection.getReflections().getSubTypesOf(ReportAdapter.class)) {
@@ -52,7 +54,7 @@ public class ReportAdapterStorage {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Terminates every adapter {@link #init()} registered.
      */
     public void terminateAll() {
         for (ReportAdapter adapter : STORAGE) {

@@ -27,7 +27,10 @@ public enum Match {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the constant whose name or display text matches {@code string}, case-insensitively.
+     *
+     * @param string the name or display text to match
+     * @return the matching constant, or {@code null} when none matches
      */
     public static Match fromString(String string) {
         for (Match m : values()) {

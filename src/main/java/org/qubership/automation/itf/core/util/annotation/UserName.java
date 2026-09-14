@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 public @interface UserName {
 
     /**
-     * TODO: Add JavaDoc.
+     * The display name shown to a user in place of the annotated type's simple name.
      */
     String value();
 }

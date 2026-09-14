@@ -35,7 +35,23 @@ public class PropertyHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyHelper.class);
 
     /**
-     * TODO: Add JavaDoc.
+     * Reads {@code property} from {@code object} through its JavaBean getter and compares it
+     * against {@code er} the way {@code match} specifies: equal, not equal, or, for {@link Match#IN},
+     * whether the property (a single value, an array, a {@link Collection}, or a {@link Map}'s keys)
+     * contains every element of {@code er}, treating a non-{@link Collection} {@code er} as a
+     * single-element set.
+     *
+     * @param object the bean to read {@code property} from
+     * @param property the JavaBean property name to read
+     * @param match how to compare the property's value against {@code er}
+     * @param er the value, or collection of values, to compare against
+     * @return whether the property meets {@code match} against {@code er}; {@code false} for an
+     *     unrecognized {@code match}
+     * @throws IllegalAccessException if the property's getter is not accessible
+     * @throws NoSuchMethodException declared by this signature; not thrown by this implementation,
+     *     which throws {@link NullPointerException} instead when {@code property} names no readable
+     *     JavaBean property
+     * @throws InvocationTargetException if the property's getter throws
      */
     public static boolean meetsMatch(Object object, String property, Match match, Object er)
             throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
@@ -73,7 +89,14 @@ public class PropertyHelper {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Checks {@code object} against every {@code (property, match, expected)} triple in
+     * {@code properties} using {@link #meetsMatch(Object, String, Match, Object)}, stopping at the
+     * first one that does not meet. A triple whose check throws counts as not met, and is logged
+     * rather than propagated.
+     *
+     * @param object the bean to check
+     * @param properties the property checks {@code object} must all meet
+     * @return whether {@code object} meets every triple in {@code properties}
      */
     public static boolean meetsAllProperties(Object object, Triple<String, Match, ?>[] properties) {
         boolean meets;
