@@ -46,7 +46,10 @@ public abstract class AbstractBaseTransportImpl<T extends Transport> implements 
     private final List<String> mandatoryProperties;
 
     /**
-     * TODO: Add JavaDoc.
+     * Wraps {@code transport}, reading its type name, {@link View} and {@link UserName} annotations,
+     * and {@link org.qubership.automation.itf.core.util.annotation.Parameter}-annotated properties.
+     *
+     * @param transport the transport implementation to wrap
      */
     public AbstractBaseTransportImpl(T transport) {
         this.transport = transport;

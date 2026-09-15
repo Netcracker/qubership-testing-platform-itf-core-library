@@ -44,7 +44,12 @@ public class BySingleParamKeyDefinition extends AbstractStorable implements KeyD
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Evaluates {@link #getExpression()} against {@code context} and returns the result as a string,
+     * trimmed when it is itself a string.
+     *
+     * @param context the context to evaluate the expression against
+     * @return the trimmed string value, {@code null} when the expression evaluates to {@code null},
+     *     or {@link Object#toString()} of a non-string result
      */
     public String defineKey(InstanceContext context) {
         Object parameter = context.get(expression);

@@ -92,7 +92,10 @@ public class XmlContentProvider implements MessageContentProvider<Element> {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Checks whether {@code message} has text whose trimmed form starts with {@code "<"}.
+     *
+     * @param message the message to check
+     * @return {@code false} when {@code message} or its text is {@code null}
      */
     public boolean supports(Message message) {
         //really, Google says it is the fastest way to check XML or not

@@ -72,7 +72,7 @@ public @interface Parameter {
     boolean isDynamic() default false;
 
     /**
-     * TODO: Add JavaDoc.
+     * Whether the property's value has been redefined, rather than left at its configured default.
      */
     boolean isRedefined() default false;
 
@@ -87,12 +87,15 @@ public @interface Parameter {
     boolean userSettings() default false;
 
     /**
-     * TODO: Add JavaDoc.
+     * Position of this parameter relative to the others in its group when they are displayed;
+     * a lower value sorts first.
      */
     int order() default 1;
 
     /**
-     * TODO: Add JavaDoc.
+     * The {@link org.qubership.automation.itf.core.util.eds.service.EdsContentType} value that
+     * scopes this parameter's file picker to a directory of that content type, for a parameter
+     * whose value names a file; empty when the parameter is not file-valued.
      */
     String fileDirectoryType() default "";
 

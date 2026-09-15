@@ -48,7 +48,32 @@ public class PropertyDescriptor implements Serializable {
     private final String validatePattern;
 
     /**
-     * TODO: Add JavaDoc.
+     * Describes one {@link org.qubership.automation.itf.core.util.annotation.Parameter}-annotated
+     * property, as extracted by {@link Extractor#extractProperties}.
+     *
+     * @param shortName the property's short name
+     * @param longName the property's display name
+     * @param typeName the property field's declared type name
+     * @param description the property's description, shown in the UI
+     * @param optional whether the property may be left unset
+     * @param forTemplate whether the property may be configured on a template
+     * @param fromServer whether the property may be configured only from the environment
+     * @param forServer whether the property may be configured on a server
+     * @param forTrigger whether the property may be configured on a trigger
+     * @param select whether {@code options} lists the property's fixed set of valid values
+     * @param options the property's fixed set of valid values, or {@code null} when {@code select}
+     *     is {@code false}
+     * @param dynamic whether the property's value is processed by the template engine
+     * @param redefined whether the property's value has been redefined, rather than left at its
+     *     configured default
+     * @param loadTemplate whether the property loads a template by id
+     * @param userSettings whether the property is created from user configuration such as environment
+     *     variables
+     * @param order the property's relative position among others in its group when displayed
+     * @param fileDirectoryType the {@link org.qubership.automation.itf.core.util.eds.service.EdsContentType}
+     *     value that scopes a file-valued property's file picker, or empty when not file-valued
+     * @param uiCategory the property's display category in the UI
+     * @param validatePattern the expression used to validate the property's value in the UI
      */
     public PropertyDescriptor(String shortName, String longName, String typeName, String description, boolean optional,
                               boolean forTemplate, boolean fromServer, boolean forServer, boolean forTrigger,
@@ -110,14 +135,20 @@ public class PropertyDescriptor implements Serializable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Whether the property may be configured on a trigger.
      */
     public boolean isForTrigger() {
         return forTrigger;
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Converts {@code value} to this property's declared type ({@link #getTypeName()}), treating
+     * {@code java.io.File} as a string.
+     *
+     * @param value the string to convert
+     * @return the converted value
+     * @throws IllegalStateException wrapping a {@link ClassNotFoundException} if the declared type
+     *     cannot be resolved
      */
     public Object convert(String value) {
         try {

@@ -50,7 +50,14 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Reads {@code field}'s value from {@code owner}, bypassing Java language access checks for the
+     * duration of the call and restoring the field's original accessibility afterward.
+     *
+     * @param field the field to read; forced accessible for this call
+     * @param owner the instance to read it from
+     * @return the field's value
+     * @throws RuntimeException wrapping an {@link IllegalAccessException} if the field still cannot
+     *     be read once made accessible
      */
     public static Object get(Field field, Object owner) {
         boolean accessible = field.isAccessible();
@@ -65,7 +72,12 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns {@code clazz}'s own declared fields that carry {@code annotationClass}. Inherited
+     * fields are not included.
+     *
+     * @param clazz the class whose declared fields to scan
+     * @param annotationClass the annotation to look for
+     * @return the matching fields, in {@link Class#getDeclaredFields()} order; empty when none match
      */
     public static List<Field> getFieldsAnnotatedBy(Class clazz, Class<? extends Annotation> annotationClass) {
         Field[] declaredFields = clazz.getDeclaredFields();
@@ -79,14 +91,29 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Looks up the field named {@code name} on {@code clazz} (or an ancestor) and sets it on
+     * {@code owner}, as {@link #setFieldValue(Field, Object, Object)} does.
+     *
+     * @param clazz the class to start looking for the field on
+     * @param name the field's name
+     * @param owner the instance to set it on
+     * @param value the value to assign
+     * @throws NullPointerException if {@code clazz} declares no field named {@code name}, directly
+     *     or through a superclass
      */
     public static void setFieldValue(Class<?> clazz, String name, Object owner, Object value) {
         setFieldValue(ReflectionUtils.findField(clazz, name), owner, value);
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Sets {@code field}'s value on {@code owner}, bypassing Java language access checks for the
+     * duration of the call and restoring the field's original accessibility afterward.
+     *
+     * @param field the field to write; forced accessible for this call
+     * @param owner the instance to set it on
+     * @param value the value to assign
+     * @throws RuntimeException wrapping an {@link IllegalAccessException} if the field still cannot
+     *     be set once made accessible
      */
     public static void setFieldValue(Field field, Object owner, Object value) {
         boolean accessible = field.isAccessible();
@@ -101,7 +128,12 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Converts {@code object} to its string form through the {@link PropertyEditor} registered for
+     * its class in {@link PropertyEditorManager}.
+     *
+     * @param object the value to convert
+     * @return the converted string, or {@code ""} when {@code object} is {@code null}
+     * @throws NullPointerException if no {@link PropertyEditor} is registered for {@code object}'s class
      */
     public static String convertToString(Object object) {
         if (object != null) {
@@ -114,7 +146,11 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Joins {@code object}'s entries into one string, one {@code key=value} pair per line.
+     *
+     * @param object a {@link Map} to render, or {@code null}
+     * @return the joined entries, or {@code ""} when {@code object} is {@code null}
+     * @throws ClassCastException if {@code object} is not a {@link Map}
      */
     public static String fromMap(Object object) {
         if (object != null) {
@@ -128,14 +164,25 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Joins {@code collection}'s elements into one string, one element per line, skipping
+     * {@code null} elements.
+     *
+     * @param collection an {@link Iterable} to render
+     * @return the joined elements
+     * @throws ClassCastException if {@code collection} is not an {@link Iterable}
      */
     public static String fromCollection(Object collection) {
         return Joiner.on('\n').skipNulls().join((Iterable<?>) collection);
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Converts {@code text} to {@code targetType} through the {@link PropertyEditor} registered for
+     * that type in {@link PropertyEditorManager}.
+     *
+     * @param targetType the type to convert to
+     * @param text the string to convert
+     * @return the converted value, or {@code null} when {@code text} is {@code null} or empty
+     * @throws NullPointerException if no {@link PropertyEditor} is registered for {@code targetType}
      */
     @SuppressWarnings("unchecked")
     public static <T> T convertFromString(Class<T> targetType, String text) {
@@ -148,7 +195,13 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Splits {@code values} on newlines into an array of {@code targetType}, converting each line
+     * with {@link #convertFromString(Class, String)}. Empty lines and lines that are only whitespace
+     * are skipped, and each kept line is trimmed before conversion.
+     *
+     * @param targetType the array's component type
+     * @param values the newline-separated values to convert
+     * @return the converted array, or {@code null} when {@code values} is {@code null} or empty
      */
     public static <T> T[] toArray(Class<T> targetType, String values) {
         if (!Strings.isNullOrEmpty(values)) {
@@ -164,7 +217,13 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Parses {@code text} as newline-separated {@code key=value} lines into a map. A line with no
+     * {@code =} is skipped. A key that appears on more than one line maps to a {@link List} of every
+     * value seen for it, in the order the lines appear; a key that appears once maps to that single
+     * string value.
+     *
+     * @param text the newline-separated {@code key=value} text to parse
+     * @return the parsed map, or {@code null} when {@code text} is {@code null} or empty
      */
     public static Map<String, Object> toStringMap(String text) {
         if (!Strings.isNullOrEmpty(text)) {
@@ -195,7 +254,13 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Splits {@code value} on newlines or semicolons into a list of {@code targetType}, converting
+     * each element with {@link #convertFromString(Class, String)}. Empty elements are skipped, and
+     * each kept element is trimmed before conversion.
+     *
+     * @param targetType the element type to convert to
+     * @param value the newline- or semicolon-separated values to convert
+     * @return the converted elements, or {@code null} when {@code value} is {@code null} or empty
      */
     public static Collection toCollection(final Class<?> targetType, String value) {
         if (!Strings.isNullOrEmpty(value)) {
@@ -210,7 +275,15 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Converts {@code value} to {@code targetClass}, picking the conversion by {@code targetClass}'s
+     * shape: {@link #toCollection(Class, String)} for a {@link Collection}, {@link #toStringMap(String)}
+     * for a {@link Map}, {@link #toArray(Class, String)} for an array, a direct parse for
+     * {@code String}, {@code Integer}, or {@code Boolean}, and {@link #convertFromString(Class, String)}
+     * for everything else.
+     *
+     * @param targetClass the type to convert to
+     * @param value the string to convert; treated as {@code ""} when {@code null}
+     * @return the converted value
      */
     public static Object detectAndConvertFromString(Class targetClass, String value) {
         value = Strings.nullToEmpty(value);
@@ -234,14 +307,25 @@ public final class Reflection {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Converts {@code value} to {@code field}'s declared type, as
+     * {@link #detectAndConvertFromString(Class, String)} does.
+     *
+     * @param field the field whose type to convert to
+     * @param value the string to convert
+     * @return the converted value
      */
     public static Object detectAndConvertFromString(Field field, String value) {
         return detectAndConvertFromString(field.getType(), value);
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Converts {@code object} to its string form, picking the conversion by {@code object}'s
+     * runtime shape: {@link #fromCollection(Object)} for a {@link Collection}, {@link #fromMap(Object)}
+     * for a {@link Map}, {@link #fromArray(Object)} for an array, and {@link #convertToString(Object)}
+     * for everything else.
+     *
+     * @param object the value to convert
+     * @return the converted string, or {@code ""} when {@code object} is {@code null}
      */
     public static String detectAndConvertToString(Object object) {
         if (object == null) {

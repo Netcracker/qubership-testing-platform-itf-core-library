@@ -74,7 +74,10 @@ public abstract class AbstractTemplate<T extends TemplateProvider>
     private T parent;
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates a template named {@code "New Template"} under {@code parent}, and adds it to
+     * {@code parent}'s templates. Does nothing when {@code parent} is {@code null}.
+     *
+     * @param parent the template provider to attach this template to
      */
     public AbstractTemplate(T parent) {
         if (parent != null) {

@@ -56,7 +56,11 @@ public class ItfGridFsRepository {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Deletes every stored file named {@code fileName} whose metadata matches {@code metadataParams}.
+     *
+     * @param metadataParams metadata a stored file's {@code metadata} document must match on every
+     *     key, to be deleted
+     * @param fileName the file name to match
      */
     public void delete(Map<String, Object> metadataParams, String fileName) {
         GridFSFindIterable gridFsFiles = gridFsTemplate.find(createQuery(metadataParams)

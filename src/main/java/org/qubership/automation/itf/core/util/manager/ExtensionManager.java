@@ -49,7 +49,13 @@ public class ExtensionManager implements Serializable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Makes {@code object} {@link Extendable}, wrapping it in a CGLIB proxy that adds the
+     * {@link Extendable} methods and delegates everything else to {@code object}. Returns
+     * {@code object} unchanged when it already is {@link Extendable}.
+     *
+     * @param object the object to make extendable
+     * @return {@code object}, or a proxy around it that also implements {@link Extendable}
+     * @throws ExtensionException if the proxy cannot be created
      */
     public <T> T createExtendable(T object) throws ExtensionException {
         if (!(object instanceof Extendable)) {
@@ -64,7 +70,13 @@ public class ExtensionManager implements Serializable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates an instance of {@code clazz} that is {@link Extendable}: a CGLIB-enhanced instance
+     * when {@code clazz} itself does not implement {@link Extendable}, or a plain instance built
+     * from its no-arg constructor when it already does.
+     *
+     * @param clazz the class to instantiate
+     * @return a new instance of {@code clazz} (or an {@link Extendable} enhancement of it)
+     * @throws ExtensionException if the instance cannot be created
      */
     public <T> T createExtendable(Class<T> clazz) throws ExtensionException {
         if (!Extendable.class.isAssignableFrom(clazz)) {
@@ -84,7 +96,11 @@ public class ExtensionManager implements Serializable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Attaches {@code extension} to {@code object}, when both are non-{@code null} and
+     * {@code object} is {@link Extendable}. Logs a warning and does nothing otherwise.
+     *
+     * @param object the object to extend
+     * @param extension the extension to attach
      */
     @SuppressWarnings("unchecked")
     public void extend(Object object, Extension extension) {
@@ -100,7 +116,13 @@ public class ExtensionManager implements Serializable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns {@code object}'s extension of type {@code extensionClass}, creating and attaching one
+     * from its no-arg constructor when {@code object} does not have it yet.
+     *
+     * @param object the object to get the extension from; must be {@link Extendable} to have one
+     * @param extensionClass the extension type to get or create
+     * @return the extension, or {@code null} when {@code object} is not {@link Extendable}, or the
+     *     extension could not be created
      */
     public <T extends Extension> T getExtension(Object object, Class<T> extensionClass) {
         if (object instanceof Extendable extendable) {

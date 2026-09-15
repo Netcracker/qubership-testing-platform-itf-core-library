@@ -36,7 +36,12 @@ public class ServerTriggerSyncRequest {
     private String sessionId;
 
     /**
-     * TODO: Add JavaDoc.
+     * Requests that a server deactivate and reactivate the given triggers, on behalf of {@code user}.
+     *
+     * @param triggerIdToDeactivate triggers to deactivate
+     * @param triggerIdToReactivate triggers to reactivate
+     * @param user the user the request is made on behalf of
+     * @param sessionId the request's session id
      */
     public ServerTriggerSyncRequest(List<TriggerSample> triggerIdToDeactivate,
                                     List<TriggerSample> triggerIdToReactivate, StubUser user, String sessionId) {
@@ -47,7 +52,8 @@ public class ServerTriggerSyncRequest {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates an empty request: no triggers to deactivate or reactivate, no user, and an empty
+     * session id.
      */
     public ServerTriggerSyncRequest() {
         this.triggerIdToDeactivate = new ArrayList<>();
@@ -57,7 +63,11 @@ public class ServerTriggerSyncRequest {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Folds {@code requestToMergeWith}'s triggers into this request's lists, and fills this
+     * request's {@code user} and {@code sessionId} from it when this request does not have one of
+     * its own yet.
+     *
+     * @param requestToMergeWith the request to merge into this one
      */
     public void merge(ServerTriggerSyncRequest requestToMergeWith) {
         this.triggerIdToDeactivate.addAll(requestToMergeWith.getTriggerIdToDeactivate());

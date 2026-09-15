@@ -65,7 +65,10 @@ public abstract class AbstractContainerInstance extends AbstractInstance {
     public abstract void setStepContainer(StepContainer container);
 
     /**
-     * TODO: Add JavaDoc.
+     * Names this instance after its {@link #getStepContainer()}.
+     *
+     * @return {@code "Instance: [<step container name>]"}, or {@code ""} when
+     *     {@link #getStepContainer()} is {@code null}
      */
     public String toString() {
         if (getStepContainer() != null) {

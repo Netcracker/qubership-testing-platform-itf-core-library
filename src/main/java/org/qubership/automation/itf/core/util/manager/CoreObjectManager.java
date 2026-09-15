@@ -30,11 +30,11 @@ public class CoreObjectManager {
     }
 
     public static CoreObjectManagerService getInstance() {
-        return staticCoreObjectManagerService;
+        return requireInitialized();
     }
 
     public ManagerFactory getManagerFactory() {
-        return staticCoreObjectManagerService.getManagerFactory();
+        return requireInitialized().getManagerFactory();
     }
 
     public static <U extends Storable> ObjectManager<U> managerFor(Class<U> clazz) {
@@ -42,20 +42,36 @@ public class CoreObjectManager {
     }
 
     public <U extends Storable> ObjectManager<U> getManager(Class<U> clazz) {
-        return staticCoreObjectManagerService.getManager(clazz);
+        return requireInitialized().getManager(clazz);
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns {@code clazz}'s {@link ObjectManager}, cast to its more specific type {@code toCast}.
+     *
+     * @param clazz the managed class to look up the manager for
+     * @param toCast the manager's expected, more specific type
+     * @return {@code clazz}'s manager, as a {@code T}
+     * @throws IllegalArgumentException if {@code clazz}'s manager is not an instance of {@code toCast}
      */
     @SuppressWarnings("unchecked")//this is really typesafe, I perform check isAssignableFrom
     public <U extends Storable, T extends ObjectManager<U>> T getSpecialManager(Class<U> clazz, Class<T> toCast) {
-        ObjectManager<U> manager = staticCoreObjectManagerService.getManager(clazz);
+        ObjectManager<U> manager = requireInitialized().getManager(clazz);
         if (toCast.isAssignableFrom(manager.getClass())) {
             return (T) manager;
         } else {
             throw new IllegalArgumentException("Object manager %s is not of type %s".formatted(
                     manager, toCast.getName()));
         }
+    }
+
+    private static CoreObjectManagerService requireInitialized() {
+        if (staticCoreObjectManagerService == null) {
+            throw new IllegalStateException("CoreObjectManager is not initialized: the Spring bean "
+                    + CoreObjectManager.class.getName() + " was never constructed. Add "
+                    + "\"org.qubership.automation.itf.core\" to your application's @ComponentScan (or "
+                    + "@SpringBootApplication scanBasePackages) so its @Component/@Service beans, "
+                    + "including this one, enter your application context.");
+        }
+        return staticCoreObjectManagerService;
     }
 }

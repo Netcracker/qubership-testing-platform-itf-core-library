@@ -24,12 +24,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 /**
- * TODO: Add JavaDoc.
+ * Supplies the default value for the annotated field when none is configured.
  */
 public @interface DefaultValue {
 
     /**
-     * TODO: Add JavaDoc.
+     * The default value, as its string representation.
      */
     String value();
 }

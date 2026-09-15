@@ -43,7 +43,12 @@ public class OriginalCopyMap {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Records {@code copy} as the copy of {@code originalId}, within the copy/move request
+     * identified by {@code key}.
+     *
+     * @param key the copy/move request's session id
+     * @param originalId id of the {@link Storable} that was copied
+     * @param copy the resulting copy
      */
     public void put(Object key, Object originalId, Storable copy) {
         cache.computeIfAbsent(key, k -> Maps.newHashMap()).put(originalId, copy);

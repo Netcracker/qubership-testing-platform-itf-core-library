@@ -18,7 +18,6 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,7 +34,6 @@ import org.qubership.automation.itf.core.util.constants.Match;
 import org.qubership.automation.itf.core.util.converter.IdConverter;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.qubership.automation.itf.core.util.helper.PropertyHelper;
-import org.qubership.automation.itf.core.util.parser.ParsingRuleType;
 import org.springframework.transaction.TransactionDefinition;
 
 @ExtendWith(MockitoExtension.class)
@@ -91,7 +89,6 @@ class OperationParsingRuleObjectManagerTest {
     @Test
     void create_WithParentOperation_ShouldCreateParsingRule() {
         // given
-        OperationParsingRule newRule = mock(OperationParsingRule.class);
         when(repository.save(any(OperationParsingRule.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // when
@@ -101,6 +98,7 @@ class OperationParsingRuleObjectManagerTest {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(parentOperation, result.getParent());
         verify(repository).save(any(OperationParsingRule.class));
+        verify(parentOperation).addParsingRule(result);
     }
 
     @Test
@@ -120,23 +118,15 @@ class OperationParsingRuleObjectManagerTest {
     // ==================== create (with type and parameters) TESTS ====================
 
     @Test
-    @Disabled("Production code throws java.lang.NoSuchMethodException "
-            + "because there is no constructor with 3rd parameter as 'Map parameters'. "
-            + "Should be fixed by adding proper check in constructor.")
-    void create_WithTypeAndParameters_ShouldCreateParsingRule() {
+    void create_WithTypeAndParameters_ShouldThrowInsteadOfCreatingGarbage() {
         // given
         Map<String, Object> parameters = new HashMap<>();
-        OperationParsingRule newRule = mock(OperationParsingRule.class);
-        when(repository.save(any(OperationParsingRule.class))).thenReturn(newRule);
 
-        // when
-        OperationParsingRule result = manager.create(parentOperation, RULE_NAME, parameters);
-
-        // then
-        Assertions.assertNotNull(result);
-        verify(newRule).setParsingType(ParsingRuleType.XPATH);
-        verify(newRule).setExpression(".");
-        verify(repository).save(newRule);
+        // when & then
+        UnsupportedOperationException ex = Assertions.assertThrows(UnsupportedOperationException.class,
+                () -> manager.create(parentOperation, RULE_NAME, parameters));
+        Assertions.assertTrue(ex.getMessage().contains("create(parent) instead"));
+        verify(repository, never()).save(any());
     }
 
     @Test

@@ -57,7 +57,12 @@ public class InstanceContext extends JsonStorable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates a new {@link InstanceContext} holding {@code tc} under {@link TcContext#TC} and
+     * {@code sp} under {@link SpContext#SP}.
+     *
+     * @param tc the transaction context to bind as {@link #tc()}
+     * @param sp the step context to bind as {@link #sp()}
+     * @return the new instance context
      */
     public static InstanceContext from(TcContext tc, SpContext sp) {
         InstanceContext context = new InstanceContext();

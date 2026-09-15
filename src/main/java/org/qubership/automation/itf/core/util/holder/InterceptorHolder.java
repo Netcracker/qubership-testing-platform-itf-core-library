@@ -60,7 +60,8 @@ public class InterceptorHolder {
      * Fill Holder with interceptor modules registered.
      */
     public void fillInterceptorHolder() {
-        String interceptorFolderPath = ApplicationConfig.env.getProperty(InstanceSettingsConstants.INTERCEPTORS_FOLDER);
+        String interceptorFolderPath =
+                ApplicationConfig.getEnv().getProperty(InstanceSettingsConstants.INTERCEPTORS_FOLDER);
         if (!StringUtils.isEmpty(interceptorFolderPath)) {
             File interceptorsFolder = new File(interceptorFolderPath);
             File[] interceptorFiles = interceptorsFolder.listFiles();

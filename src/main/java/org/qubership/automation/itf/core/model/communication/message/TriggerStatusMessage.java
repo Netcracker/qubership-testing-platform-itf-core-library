@@ -38,7 +38,15 @@ public class TriggerStatusMessage {
     private String sessionId;
 
     /**
-     * TODO: Add JavaDoc.
+     * Reports {@code status} for the object identified by {@code objectType} and {@code id}, on
+     * behalf of {@code user}. {@code isSuccess} starts {@code false}.
+     *
+     * @param objectType the kind of object {@code id} identifies
+     * @param id the object's id
+     * @param status the status to report
+     * @param description a human-readable description of the status
+     * @param user the user the message is made on behalf of
+     * @param sessionId the message's session id
      */
     public TriggerStatusMessage(ObjectType objectType, BigInteger id, String status, String description,
                                 StubUser user, String sessionId) {

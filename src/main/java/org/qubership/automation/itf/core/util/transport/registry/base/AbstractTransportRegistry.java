@@ -61,7 +61,12 @@ public abstract class AbstractTransportRegistry implements TransportRegistry {
     public abstract void init() throws ExportException;
 
     /**
-     * TODO: Add JavaDoc.
+     * Registers {@code accessTransport} through {@link #protectedRegister(AccessTransport)},
+     * tracking its state as {@link TransportState#REGISTERING} then {@link TransportState#REGISTERED}.
+     * A failure is logged rather than propagated, and leaves the transport's state at
+     * {@link TransportState#REGISTERING}.
+     *
+     * @param accessTransport the transport to register
      */
     public void register(AccessTransport accessTransport) {
         String transportName = "";
@@ -78,12 +83,21 @@ public abstract class AbstractTransportRegistry implements TransportRegistry {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Performs the registry-specific part of registering {@code accessTransport}, called by
+     * {@link #register(AccessTransport)} between marking the transport
+     * {@link TransportState#REGISTERING} and {@link TransportState#REGISTERED}.
+     *
+     * @param accessTransport the transport being registered
+     * @throws TransportException if registration fails
      */
     protected abstract void protectedRegister(AccessTransport accessTransport) throws TransportException;
 
     /**
-     * TODO: Add JavaDoc.
+     * Unregisters the transport named {@code typeName} through
+     * {@link #protectedUnregister(String)}, and marks it {@link TransportState#UNDEPLOYED}.
+     *
+     * @param typeName the registered transport's type name
+     * @throws RemoteException if the registry-specific unregistration fails
      */
     public void unregister(String typeName) throws RemoteException {
         protectedUnregister(typeName);
@@ -186,14 +200,20 @@ public abstract class AbstractTransportRegistry implements TransportRegistry {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the live state map every registered transport's state is tracked in, keyed by type
+     * name. Changes to the returned map are reflected in the registry.
+     *
+     * @return the registry's transport-state map
      */
     public Map<String, TransportState> getStates() {
         return states;
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the transport named {@code typeName}'s tracked state.
+     *
+     * @param typeName the transport's type name
+     * @return the tracked state, or {@link TransportState#NOT_READY} when {@code typeName} has none
      */
     public TransportState getState(String typeName) {
         TransportState state = states.get(typeName);

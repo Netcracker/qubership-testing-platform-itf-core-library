@@ -33,7 +33,12 @@ public class CallChainStepIterator extends AbstractStepIterator {
     public static final Logger LOGGER = LoggerFactory.getLogger(CallChainStepIterator.class);
 
     /**
-     * TODO: Add JavaDoc.
+     * Iterates {@code callChain}'s steps, skipping a disabled step, a {@link SituationStep} with no
+     * situation, a {@link EmbeddedStep} with no chain, and a {@code null} step (which Hibernate can
+     * leave behind when a step is deleted from an unsaved call chain).
+     *
+     * @param callChain the call chain whose steps to iterate
+     * @param parent the instance the iterated steps belong to
      */
     public CallChainStepIterator(CallChain callChain, AbstractContainerInstance parent) {
         List<Step> steps = Lists.newArrayList();

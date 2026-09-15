@@ -251,7 +251,10 @@ public class IntegrationStep extends AbstractStep {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns this step's message exchange pattern.
+     *
+     * @return {@link #getOperation()}'s {@link Operation#getMep()}, or
+     *     {@link Mep#OUTBOUND_REQUEST_ASYNCHRONOUS} when this step has no operation
      */
     public Mep getMep() {
         if (operation != null) {

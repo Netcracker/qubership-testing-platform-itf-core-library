@@ -54,7 +54,9 @@ public class CommonInterceptor extends AbstractStorable implements Storable, Int
     private List<ApplicabilityParams> applicabilityParams = Lists.newArrayList();
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns this interceptor's first parameter set.
+     *
+     * @return the first element of {@link #getInterceptorParams()}, or {@code null} when it is empty
      */
     @JsonIgnore
     public InterceptorParams getParameters() {
@@ -72,7 +74,14 @@ public class CommonInterceptor extends AbstractStorable implements Storable, Int
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Checks whether this interceptor applies to the given environment and system.
+     *
+     * @param environmentId the environment to check
+     * @param systemId the system to check
+     * @return {@code true} when {@link #getApplicabilityParams()} is empty, or one of its entries
+     *     names {@code environmentId} (with no system restriction, or with {@code systemId} too);
+     *     {@code false} otherwise, including as soon as an entry names neither an environment nor a
+     *     system
      */
     public boolean isApplicable(String environmentId, String systemId) {
         if (applicabilityParams.isEmpty()) {
@@ -102,7 +111,12 @@ public class CommonInterceptor extends AbstractStorable implements Storable, Int
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Validates this interceptor's configuration by delegating to its implementation class,
+     * resolved by {@link #getTypeName()}.
+     *
+     * @return the validation result
+     * @throws InvocationTargetException wrapping a {@link ClassNotFoundException} if
+     *     {@link #getTypeName()} names no known interceptor implementation
      */
     public String validate() throws InvocationTargetException {
         try {

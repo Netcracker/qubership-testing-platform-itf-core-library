@@ -36,7 +36,12 @@ public class Extractor {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Builds a {@link PropertyDescriptor} for every {@link Parameter}-annotated field of {@code object},
+     * including fields inherited from a {@link PropertyProvider} superclass.
+     *
+     * @param object the object whose {@link Parameter}-annotated fields describe its properties
+     * @return one descriptor per annotated field, carrying that field's {@link Options} and
+     *     {@link DefaultValue} where present
      */
     public static List<PropertyDescriptor> extractProperties(PropertyProvider object) {
         Set<Field> fieldSet = getFields(object.getClass());
@@ -62,7 +67,11 @@ public class Extractor {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the short name of every descriptor in {@code properties} that is not optional.
+     *
+     * @param properties descriptors to filter
+     * @return the {@link PropertyDescriptor#getShortName()} of each descriptor for which
+     *     {@link PropertyDescriptor#isOptional()} is {@code false}
      */
     public static List<String> extractMandatory(List<PropertyDescriptor> properties) {
         List<String> mandatoryProperties = Lists.newArrayListWithCapacity(properties.size());
@@ -75,7 +84,14 @@ public class Extractor {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Checks that every name in {@code mandatoryProperties} is present in {@code properties} with a
+     * non-empty value.
+     *
+     * @param mandatoryProperties short names that {@code properties} must supply, typically
+     *     {@link #extractMandatory(List)}'s result
+     * @param properties the property values to check, keyed by short name
+     * @return an empty string when every mandatory property is present and non-empty; otherwise one
+     *     sentence per missing or empty property, concatenated
      */
     public static String checkMandatoryProperties(List<String> mandatoryProperties, Map<String, Object> properties) {
         StringBuilder error = new StringBuilder();

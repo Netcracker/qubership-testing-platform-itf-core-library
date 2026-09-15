@@ -39,13 +39,56 @@ mvn -P github clean install
 ### Connecting in Spring Boot application
 #### 1. Add dependency into a service
 
+Two release lines are published, depending on the Spring Boot version the consuming service targets.
+
+**Spring Boot 3.5.14 or later** (the current `main` branch): published to GitHub Packages, starting at `5.0.0`.
+
 ```xml
 <dependency>
     <groupId>org.qubership.atp</groupId>
     <artifactId>atp-itf-core</artifactId>
-    <version>4.4.106-SNAPSHOT</version>
+    <version>5.0.1</version>
 </dependency>
 ```
+
+GitHub Packages requires authentication for every read, including a public repository. Add the repository:
+
+```xml
+<repositories>
+    <repository>
+        <id>github</id>
+        <url>https://maven.pkg.github.com/Netcracker/qubership-testing-platform-itf-core-library</url>
+    </repository>
+</repositories>
+```
+
+and a matching server entry with a GitHub personal access token that has the `read:packages` scope:
+
+```xml
+<!-- ~/.m2/settings.xml -->
+<servers>
+    <server>
+        <id>github</id>
+        <username>YOUR_GITHUB_USERNAME</username>
+        <password>YOUR_GITHUB_TOKEN</password>
+    </server>
+</servers>
+```
+
+**Spring Boot versions before 3.5.14**: published to Maven Central, which Maven resolves against with no extra
+repository configuration. `4.4.115` is the last release on this line.
+
+```xml
+<dependency>
+    <groupId>org.qubership.atp</groupId>
+    <artifactId>atp-itf-core</artifactId>
+    <version>4.4.115</version>
+</dependency>
+```
+
+See the [releases page](https://github.com/Netcracker/qubership-testing-platform-itf-core-library/releases) for the
+latest version on either line.
+
 #### 2. Specify the required parameters in application.properties
 ```properties
 ##======================DataBase configurations=======================
@@ -81,4 +124,35 @@ hazelcast.address=${HAZELCAST_ADDRESS}
 
 ##==================Integration with Spring Cloud======================
 eureka.client.serviceUrl.defaultZone=${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+
+##======================Feign clients (BV, Datasets) configurations=======================
+feign.atp.bv.name=${FEIGN_ATP_BV_NAME}
+feign.atp.bv.url=${FEIGN_ATP_BV_URL}
+feign.atp.bv.route=${FEIGN_ATP_BV_ROUTE}
+feign.atp.datasets.name=${FEIGN_ATP_DATASETS_NAME}
+feign.atp.datasets.url=${FEIGN_ATP_DATASETS_URL}
+feign.atp.datasets.route=${FEIGN_ATP_DATASETS_ROUTE}
 ```
+
+None of the six `feign.atp.*` properties has a default. They become required as soon as this library's
+`org.qubership.automation.itf.core.util.feign` package is component-scanned, which autowires every Feign client it
+declares. A context missing one of these properties fails at startup with the placeholder left unresolved in the
+target URL rather than a message naming the property, for example:
+
+```text
+java.net.URISyntaxException: Illegal character in authority at index 8: http://${feign.atp.bv.url}
+```
+#### 3. Make sure the library's Spring beans are component-scanned
+
+The library ships `@Component`/`@Service` beans (for example `CoreObjectManager`, `ApplicationConfig`) that your
+application's own Spring context has to construct. Spring Boot's default component scan covers the package of your
+`@SpringBootApplication` class and its sub-packages, so no extra step is needed when that package already contains
+or sits above `org.qubership.automation.itf.core`. Otherwise, add the package explicitly:
+
+```java
+@SpringBootApplication(scanBasePackages = {"your.own.package", "org.qubership.automation.itf.core"})
+```
+
+Skipping this does not fail at startup: entry points such as `CoreObjectManager.getInstance()` and
+`ApplicationConfig.getEnv()` throw `IllegalStateException` naming this requirement the first time your application
+calls into the library.

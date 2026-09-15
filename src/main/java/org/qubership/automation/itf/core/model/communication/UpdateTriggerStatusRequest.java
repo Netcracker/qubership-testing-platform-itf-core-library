@@ -32,7 +32,11 @@ public class UpdateTriggerStatusRequest {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Requests that the trigger identified by {@code id} be updated to {@code status}.
+     *
+     * @param id the trigger's id
+     * @param status the status to update it to
+     * @param description a human-readable description of the status
      */
     public UpdateTriggerStatusRequest(BigInteger id, String status, String description) {
         this.id = id;

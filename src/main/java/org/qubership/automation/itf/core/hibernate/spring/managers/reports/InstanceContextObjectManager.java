@@ -30,6 +30,7 @@ import org.qubership.automation.itf.core.hibernate.spring.managers.base.Abstract
 import org.qubership.automation.itf.core.hibernate.spring.managers.custom.MonitoringManager;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.reports.InstanceContextRepository;
 import org.qubership.automation.itf.core.model.jpa.context.InstanceContext;
+import org.qubership.automation.itf.core.model.jpa.context.TcContext;
 import org.qubership.automation.itf.core.model.jpa.context.TcContextBriefInfo;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
 import org.springframework.stereotype.Service;
@@ -114,7 +115,11 @@ public class InstanceContextObjectManager extends AbstractObjectManager<Instance
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the message tree rows recorded under the {@link TcContext} identified by {@code id}.
+     *
+     * @param id the {@link TcContext}'s id; a blank id returns an empty list
+     * @param partNum the partition to query, or {@code null} for the default partition
+     * @return the message tree rows, or an empty list when {@code id} is blank
      */
     public List<Object[]> getTreeMessagesFromTcContext(String id, Integer partNum) {
         if (!StringUtils.isBlank(id)) {
@@ -192,14 +197,23 @@ public class InstanceContextObjectManager extends AbstractObjectManager<Instance
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the validation results recorded for the step instance context {@code spContextId}.
+     *
+     * @param spContextId the step instance context's id
+     * @param partNum the partition to query, or {@code null} for the default partition
+     * @return the recorded validation results
      */
     public String getValidationResults(Object spContextId, Integer partNum) {
         return instanceContextRepository.getValidationResults(toBigInt(spContextId), partNum);
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the situation id of every step instance recorded under the {@link TcContext}
+     * identified by {@code tcContextId} that has one, keyed by step instance id.
+     *
+     * @param tcContextId the {@link TcContext}'s id
+     * @param partNum the partition to query, or {@code null} for the default partition
+     * @return situation id, keyed by step instance id
      */
     public HashMap<String, String> getTcContextStepsSituations(String tcContextId, Integer partNum) {
         List<Object[]> situations = instanceContextRepository.getTcContextStepsSituations(toBigInt(tcContextId),

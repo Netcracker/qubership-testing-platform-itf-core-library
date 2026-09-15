@@ -43,7 +43,10 @@ public class StoreDelegateFactory {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates a new {@link StoreInformationDelegate} instance of the configured delegate class.
+     *
+     * @return a new delegate instance, or {@code null} if the delegate class could not be resolved
+     *     at construction, or could not be instantiated
      */
     public StoreInformationDelegate newDelegate() {
         try {

@@ -187,7 +187,12 @@ public class Folder<T extends Storable> extends AbstractConfiguration<String, St
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns this folder, typed as a {@code Folder<S>}, when its {@link #getGenericType()} is
+     * exactly {@code objectType}.
+     *
+     * @param objectType the generic type to check this folder against
+     * @return this folder cast to {@code Folder<S>}, or {@link Optional#absent()} when
+     *     {@link #getGenericType()} is not {@code objectType}
      */
     @Nonnull
     public <S extends Storable> Optional<Folder<S>> of(@Nonnull Class<S> objectType) {

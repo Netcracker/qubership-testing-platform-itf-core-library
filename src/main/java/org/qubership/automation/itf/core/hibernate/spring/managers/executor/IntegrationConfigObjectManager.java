@@ -68,7 +68,7 @@ public class IntegrationConfigObjectManager
             return;
         }
         for (PropertyDescriptor property : propertyDescriptors) {
-            String propertyValue = ApplicationConfig.env.getProperty(property.getShortName(), "");
+            String propertyValue = ApplicationConfig.getEnv().getProperty(property.getShortName(), "");
             if (StringUtils.isNotEmpty(propertyValue)) {
                 config.put(property.getShortName(), propertyValue);
             }

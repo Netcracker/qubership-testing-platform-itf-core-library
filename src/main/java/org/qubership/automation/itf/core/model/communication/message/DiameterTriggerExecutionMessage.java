@@ -33,7 +33,13 @@ public class DiameterTriggerExecutionMessage extends TriggerExecutionMessage {
     private Object tcContextId;
 
     /**
-     * TODO: Add JavaDoc.
+     * Carries an inbound Diameter {@code message} to the transport and context it belongs to.
+     *
+     * @param message the message to deliver
+     * @param transportId identifies the transport to deliver to
+     * @param tcContextId identifies the {@link org.qubership.automation.itf.core.model.jpa.context.TcContext}
+     *     the message belongs to
+     * @param sessionId the transport session id
      */
     public DiameterTriggerExecutionMessage(Message message, Object transportId, Object tcContextId, String sessionId) {
         super(message, sessionId);

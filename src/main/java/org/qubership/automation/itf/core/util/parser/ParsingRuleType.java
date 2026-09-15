@@ -261,7 +261,11 @@ public enum ParsingRuleType {
     public abstract MessageParameter parse(Message message, ParsingRule parsingRule);
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the constant whose {@link #toString()} matches {@code value}, case-insensitively.
+     *
+     * @param value the display name to match
+     * @return the matching constant
+     * @throws IllegalArgumentException if no constant matches
      */
     public static ParsingRuleType from(String value) {
         for (ParsingRuleType type : values()) {

@@ -44,6 +44,9 @@ public class SpringLiquibaseConfiguration {
         if (liquibaseProperties.getContexts() != null && !liquibaseProperties.getContexts().isEmpty()) {
             springLiquibase.setContexts(String.join(",", liquibaseProperties.getContexts()));
         }
+        if (liquibaseProperties.getLabelFilter() != null && !liquibaseProperties.getLabelFilter().isEmpty()) {
+            springLiquibase.setLabels(String.join(",", liquibaseProperties.getLabelFilter()));
+        }
         springLiquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
         springLiquibase.setDropFirst(liquibaseProperties.isDropFirst());
         springLiquibase.setShouldRun(liquibaseProperties.isEnabled());

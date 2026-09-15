@@ -445,6 +445,6 @@ public class ItfLogger implements Logger {
         //TODO: Implement the getting project ID from UI (for ITF configuration platform).
         // We can provide it from outside as method parameter or
         // as configuration common properties for all projects (get it as current project id below)
-        return level.toString().equals(ApplicationConfig.env.getProperty(LOG_LEVEL,"INFO").toUpperCase());
+        return level.toString().equals(ApplicationConfig.getEnv().getProperty(LOG_LEVEL, "INFO").toUpperCase());
     }
 }

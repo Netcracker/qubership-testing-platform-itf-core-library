@@ -190,7 +190,32 @@ public class TcContextBriefInfoObjectManager extends AbstractObjectManager<TcCon
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns one page of {@link TcContextBriefInfo}, filtered by every non-empty criterion given
+     * and sorted by {@code sortProperty} (defaulting to {@code ID} when blank; {@code "initiator"}
+     * and {@code "environment"} are mapped to the underlying {@code ininame} and {@code envname}
+     * columns).
+     *
+     * @param pageSize the page size
+     * @param pageIndex the page index; treated as {@code 0} when {@code -1}
+     * @param search unused
+     * @param name filters on a case-insensitive substring of the context name
+     * @param initiator filters on a case-insensitive substring of the initiator name
+     * @param status filters on a case-insensitive substring of the status
+     * @param environment filters on a case-insensitive substring of the environment name
+     * @param stDate filters on the start time, compared per {@code startDateCondition}
+     * @param startDateCondition {@code "more"}/{@code ">"}, {@code "less"}/{@code "<"}, or
+     *     {@code "equals"}/{@code "="} (the default) against {@code stDate}
+     * @param finDate filters on the end time, compared per {@code finishDateCondition}
+     * @param finishDateCondition {@code "more"}/{@code ">"}, {@code "less"}/{@code "<"}, or
+     *     {@code "equals"}/{@code "="} (the default) against {@code finDate}
+     * @param duration filters on the duration, compared per {@code durationCondition}
+     * @param durationCondition {@code "more"}/{@code ">"} or {@code "less"}/{@code "<"} against
+     *     {@code duration}
+     * @param client filters on a case-insensitive substring of the client name
+     * @param sortProperty the property to sort by
+     * @param sortOrder {@code true} for descending, {@code false} for ascending
+     * @param projectId filters on the exact project id
+     * @return the matching page
      */
     public static Page<TcContextBriefInfo> getPageByFilter(int pageSize,
                                                            int pageIndex,
@@ -236,7 +261,11 @@ public class TcContextBriefInfoObjectManager extends AbstractObjectManager<TcCon
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns every {@link TcContextBriefInfo} matching the given criteria, sorted the way
+     * {@link #getPageByFilter} sorts, but unpaged.
+     *
+     * @return the matching contexts, sorted
+     * @see #getPageByFilter for what each filter and sort parameter matches
      */
     public static Iterable<TcContextBriefInfo> getReportByFilter(String name,
                                                                  String initiator,
@@ -281,7 +310,16 @@ public class TcContextBriefInfoObjectManager extends AbstractObjectManager<TcCon
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns every {@link TcContextBriefInfo} whose initiator and environment names contain the
+     * given substrings (case-insensitively), whose status matches when given, and whose end time is
+     * at or after {@code minStartDate} and whose start time is at or before {@code maxStartDate}.
+     *
+     * @param initiator filters on a case-insensitive substring of the initiator name
+     * @param status filters on a case-insensitive substring of the status, when not blank
+     * @param environment filters on a case-insensitive substring of the environment name
+     * @param minStartDate the earliest end time to include
+     * @param maxStartDate the latest start time to include
+     * @return the matching contexts, unsorted
      */
     public static Iterable<TcContextBriefInfo> simpleSearch(String initiator, String status, String environment,
                                                             Date minStartDate, Date maxStartDate) {
@@ -302,7 +340,13 @@ public class TcContextBriefInfoObjectManager extends AbstractObjectManager<TcCon
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns every {@link TcContextBriefInfo} matching the given criteria, unsorted and unpaged.
+     * Used only to build the result set for a bulk delete: an empty predicate (every criterion
+     * absent) returns an empty result rather than every context, so a filterless call cannot delete
+     * everything by accident.
+     *
+     * @return the matching contexts, or an empty list when every criterion is absent
+     * @see #getPageByFilter for what each filter parameter matches
      */
     public static Iterable<TcContextBriefInfo> findByFilter(String name,
                                                             String initiator,
@@ -334,7 +378,9 @@ public class TcContextBriefInfoObjectManager extends AbstractObjectManager<TcCon
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns every {@link TcContextBriefInfo} whose status is not {@link Status#IN_PROGRESS}.
+     *
+     * @return the matching contexts, unsorted
      */
     public static Iterable<TcContextBriefInfo> findNotRunning() {
         QTcContextBriefInfo contextInfo = QTcContextBriefInfo.tcContextBriefInfo;

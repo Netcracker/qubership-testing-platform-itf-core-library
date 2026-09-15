@@ -32,7 +32,10 @@ public enum SystemMode {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the constant whose name or display text matches {@code str}, case-insensitively.
+     *
+     * @param str the name or display text to match
+     * @return the matching constant, or {@code null} when none matches
      */
     public static SystemMode fromString(String str) {
         for (SystemMode mode : values()) {

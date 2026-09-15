@@ -36,7 +36,14 @@ public class CommonTriggerExecutionMessage extends TriggerExecutionMessage {
     private StorableDescriptor triggerConfigurationDescriptor;
 
     /**
-     * TODO: Add JavaDoc.
+     * Carries an inbound {@code message} to the trigger of type {@code typeName} identified by
+     * {@code triggerConfigurationDescriptor}.
+     *
+     * @param typeName the transport type name to route {@code message} to
+     * @param message the message to deliver
+     * @param triggerConfigurationDescriptor identifies the trigger configuration to deliver to
+     * @param sessionId the transport session id
+     * @param brokerMessageSelectorValue the broker message selector value this message is tagged with
      */
     public CommonTriggerExecutionMessage(String typeName, Message message,
                                          StorableDescriptor triggerConfigurationDescriptor,

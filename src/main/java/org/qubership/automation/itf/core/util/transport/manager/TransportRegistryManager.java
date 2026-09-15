@@ -57,7 +57,10 @@ public class TransportRegistryManager implements TransportManager {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Wraps and registers every transport in {@code transports} with the registry. A transport that
+     * fails to register is logged and skipped; the rest are still attempted.
+     *
+     * @param transports the transports to register
      */
     public void registerTransports(Set<Transport> transports) {
         for (Transport transport : transports) {
@@ -79,7 +82,10 @@ public class TransportRegistryManager implements TransportManager {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Unregisters the transport named {@code typeName} from the registry.
+     *
+     * @param typeName the registered transport's type name
+     * @throws TransportException wrapping a {@link RemoteException} if the registry cannot be reached
      */
     public void unregister(String typeName) throws TransportException {
         try {

@@ -90,7 +90,11 @@ public abstract class AbstractStep extends AbstractStorable implements Step {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Normalizes {@code unitName} to a valid {@link TimeUnit} name.
+     *
+     * @param unitName the name to check, matched against {@link TimeUnit#valueOf(String)}
+     * @return {@code unitName} as {@link TimeUnit#toString()} spells it, or {@code null} when it is
+     *     blank or not a {@link TimeUnit} name
      */
     public static String checkUnit(String unitName) {
         if (StringUtils.isBlank(unitName)) {
@@ -106,7 +110,11 @@ public abstract class AbstractStep extends AbstractStorable implements Step {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Parses {@code unitName} as a {@link TimeUnit}.
+     *
+     * @param unitName the name to parse, matched against {@link TimeUnit#valueOf(String)}
+     * @return the parsed {@link TimeUnit}, or {@code null} when {@code unitName} is blank or not a
+     *     {@link TimeUnit} name
      */
     public static TimeUnit convertToTimeUnit(String unitName) {
         if (StringUtils.isBlank(unitName)) {
