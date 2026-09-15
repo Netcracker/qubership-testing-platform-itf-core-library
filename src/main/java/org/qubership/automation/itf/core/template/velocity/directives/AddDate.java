@@ -23,6 +23,10 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.context.InternalContextAdapter;
@@ -32,6 +36,19 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
 
+/**
+ * Adds a day/hour/minute offset to the date rendered as its first argument, one offset per extra
+ * argument: {@code #add_date($date, '5d')}, {@code #add_date($date, '-1 hour', '30 min')}.
+ *
+ * <p>Each offset argument is a signed integer followed by a unit, matched case-insensitively and
+ * with or without a space between the two: {@code d}/{@code day}/{@code days} for
+ * {@link Calendar#DATE}, {@code h}/{@code hour}/{@code hours} for {@link Calendar#HOUR}, and
+ * {@code m}/{@code min}/{@code mins}/{@code minute}/{@code minutes} for {@link Calendar#MINUTE}.
+ * A blank offset argument leaves the date unchanged; any other offset outside this shape throws
+ * {@link IllegalArgumentException} naming the accepted units, rather than a
+ * {@link NumberFormatException} that names neither the directive nor the accepted units, or a
+ * silent no-op.</p>
+ */
 public class AddDate extends Directive {
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"; // 24-hour format
     private static final DateTimeFormatter defaultDateTimeFormatter = DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)
@@ -41,9 +58,10 @@ public class AddDate extends Directive {
     private static final DateTimeFormatter longDateTimeFormatter = DateTimeFormatter.ofPattern(LONG_DATE_FORMAT)
             .withZone(ZoneId.systemDefault());
 
-    private static final String DAY = "d";
-    private static final String HOUR = "h";
-    private static final String MINUTE = "m";
+    private static final Pattern ADDED_TIME_PATTERN = Pattern.compile("\\s*([+-]?\\d+)\\s*([a-zA-Z]+)\\s*");
+    private static final Set<String> DAY_UNITS = Set.of("d", "day", "days");
+    private static final Set<String> HOUR_UNITS = Set.of("h", "hour", "hours");
+    private static final Set<String> MINUTE_UNITS = Set.of("m", "min", "mins", "minute", "minutes");
 
     @Override
     public String getName() {
@@ -98,35 +116,33 @@ public class AddDate extends Directive {
     private String addTimeToData(Date date, String addedTime, DateTimeFormatter currentFormatter) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        int timeUnit = determineCalendarFieldByAddedTime(addedTime);
-        if (timeUnit != 0) {
-            String d = addedTime.replace(determineTimeUnitByCalendarField(timeUnit), StringUtils.EMPTY);
-            calendar.add(timeUnit, Integer.parseInt(d));
+        if (StringUtils.isNotBlank(addedTime)) {
+            Matcher matcher = ADDED_TIME_PATTERN.matcher(addedTime);
+            if (!matcher.matches()) {
+                throw new IllegalArgumentException(invalidOffsetMessage(addedTime));
+            }
+            int amount = Integer.parseInt(matcher.group(1));
+            int calendarField = determineCalendarField(matcher.group(2), addedTime);
+            calendar.add(calendarField, amount);
         }
         return currentFormatter.format(calendar.getTime().toInstant());
     }
 
-    private int determineCalendarFieldByAddedTime(String addedTime) {
-        if (addedTime.toLowerCase().contains(DAY)) {
+    private int determineCalendarField(String unit, String originalOffset) {
+        String normalizedUnit = unit.toLowerCase(Locale.ROOT);
+        if (DAY_UNITS.contains(normalizedUnit)) {
             return Calendar.DATE;
-        } else if (addedTime.toLowerCase().contains(HOUR)) {
+        } else if (HOUR_UNITS.contains(normalizedUnit)) {
             return Calendar.HOUR;
-        } else if (addedTime.toLowerCase().contains(MINUTE)) {
+        } else if (MINUTE_UNITS.contains(normalizedUnit)) {
             return Calendar.MINUTE;
         }
-        return 0;
+        throw new IllegalArgumentException(invalidOffsetMessage(originalOffset));
     }
 
-    private String determineTimeUnitByCalendarField(int timeUnit) {
-        switch (timeUnit) {
-            case Calendar.DATE :
-                return DAY;
-            case Calendar.HOUR :
-                return HOUR;
-            case Calendar.MINUTE :
-                return MINUTE;
-            default:
-                return StringUtils.EMPTY;
-        }
+    private static String invalidOffsetMessage(String offset) {
+        return "Directive '#add_date': offset '" + offset + "' is not a number followed by a recognized unit "
+                + "(d/day/days, h/hour/hours, m/min/mins/minute/minutes; case-insensitive; a space before "
+                + "the unit is optional)";
     }
 }
