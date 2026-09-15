@@ -64,21 +64,26 @@ public abstract class AbstractTransportRegistry implements TransportRegistry {
      * Registers {@code accessTransport} through {@link #protectedRegister(AccessTransport)},
      * tracking its state as {@link TransportState#REGISTERING} then {@link TransportState#REGISTERED}.
      * A failure is logged rather than propagated, and leaves the transport's state at
-     * {@link TransportState#REGISTERING}.
+     * {@link TransportState#UNDEPLOYED} once its type name is known.
      *
      * @param accessTransport the transport to register
      */
     public void register(AccessTransport accessTransport) {
         String transportName = "";
+        String typeName = null;
         try {
             transportName = accessTransport.getUserName();
-            states.put(accessTransport.getTypeName(), TransportState.REGISTERING);
+            typeName = accessTransport.getTypeName();
+            states.put(typeName, TransportState.REGISTERING);
             protectedRegister(accessTransport);
-            transportTypes.put(accessTransport.getTypeName(), transportName);
-            states.put(accessTransport.getTypeName(), TransportState.REGISTERED);
+            transportTypes.put(typeName, transportName);
+            states.put(typeName, TransportState.REGISTERED);
             LOGGER.info("Transport {} registered", transportName);
         } catch (TransportException | RemoteException e) {
             LOGGER.error("Transport didn't registered " + transportName, e);
+            if (typeName != null) {
+                states.put(typeName, TransportState.UNDEPLOYED);
+            }
         }
     }
 
@@ -155,7 +160,7 @@ public abstract class AbstractTransportRegistry implements TransportRegistry {
             try {
                 transports.put(s, protectedFind(s));
             } catch (RemoteException e) {
-                LOGGER.error("NoDeployedTransportException", e);
+                LOGGER.error("Failed to find transport '{}'", s, e);
             }
         });
         return Collections.unmodifiableMap(transports);

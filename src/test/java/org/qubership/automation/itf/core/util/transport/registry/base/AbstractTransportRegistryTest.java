@@ -17,6 +17,7 @@
 package org.qubership.automation.itf.core.util.transport.registry.base;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -30,6 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
+import org.qubership.automation.itf.core.util.constants.TransportState;
 import org.qubership.automation.itf.core.util.exception.ExportException;
 import org.qubership.automation.itf.core.util.exception.TransportException;
 import org.qubership.automation.itf.core.util.transport.access.AccessTransport;
@@ -74,6 +76,34 @@ class AbstractTransportRegistryTest {
         }
     }
 
+    /** A registry whose {@code protectedRegister} always fails, for {@link TestRegistry}'s success path. */
+    private static final class FailingRegistry extends AbstractTransportRegistry {
+        @Override
+        public void init() throws ExportException {
+            // not exercised by these tests
+        }
+
+        @Override
+        protected void protectedRegister(AccessTransport accessTransport) throws TransportException {
+            throw new TransportException("transport jar is not on the classpath");
+        }
+
+        @Override
+        protected void protectedUnregister(String typeName) throws RemoteException {
+            // not exercised by these tests
+        }
+
+        @Override
+        protected AccessTransport protectedFind(String typeName) throws RemoteException {
+            return null;
+        }
+
+        @Override
+        public void destroy() {
+            // not exercised by these tests
+        }
+    }
+
     private static AccessTransport transportNamed(String typeName) throws RemoteException {
         AccessTransport transport = mock(AccessTransport.class);
         when(transport.getTypeName()).thenReturn(typeName);
@@ -90,6 +120,24 @@ class AbstractTransportRegistryTest {
 
         registry.unregister("http");
         assertNull(registry.getTransportTypes().get("http"));
+    }
+
+    /**
+     * Regression test for ERR-05: a failed registration used to leave the transport's state at
+     * {@link TransportState#REGISTERING} forever, since the catch block in {@code register}
+     * corrected neither the state nor {@code transportTypes}. The state now moves to
+     * {@link TransportState#UNDEPLOYED}, and the type is never added to {@code transportTypes}, so
+     * a caller reading {@link AbstractTransportRegistry#getTransportTypes()} doesn't see a
+     * transport that never finished registering.
+     */
+    @Test
+    void registerLeavesFailedTransportUndeployedAndOutOfTransportTypes() throws Exception {
+        FailingRegistry registry = new FailingRegistry();
+
+        registry.register(transportNamed("broken"));
+
+        assertEquals(TransportState.UNDEPLOYED, registry.getState("broken"));
+        assertFalse(registry.getTransportTypes().containsKey("broken"));
     }
 
     /**
