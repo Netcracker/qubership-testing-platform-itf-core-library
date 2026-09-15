@@ -194,6 +194,9 @@ public class System extends AbstractEciConfigurable
 
     /**
      * Define operation via Operation Definition.
+     *
+     * @throws OperationDefinitionException if no operation key definition is configured, the key
+     *     it defines is empty, no operation matches that key, or defining the key itself fails
      */
     public Operation defineOperation(InstanceContext context)
             throws OperationDefinitionException {
@@ -214,8 +217,11 @@ public class System extends AbstractEciConfigurable
                 return operation;
             }
             throw new OperationDefinitionException("No operation definition found for key [%s]".formatted(key));
+        } catch (OperationDefinitionException e) {
+            throw e;
         } catch (Exception e) {
-            throw new OperationDefinitionException("Cannot process operation definition", e);
+            throw new OperationDefinitionException("Cannot process operation definition for system "
+                    + getName(), e);
         }
     }
 
