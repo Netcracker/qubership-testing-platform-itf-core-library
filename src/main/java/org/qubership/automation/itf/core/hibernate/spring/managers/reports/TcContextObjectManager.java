@@ -45,7 +45,10 @@ public class TcContextObjectManager extends AbstractObjectManager<TcContext, TcC
     private final TcContextBriefInfoRepository tcContextBriefInfoRepository;
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates a manager for {@link TcContext}.
+     *
+     * @param repository backs this manager's {@link TcContext} queries
+     * @param tcContextBriefInfoRepository backs {@link #deleteById(String, Integer)}
      */
     public TcContextObjectManager(TcContextRepository repository,
                                   TcContextBriefInfoRepository tcContextBriefInfoRepository) {
@@ -106,7 +109,11 @@ public class TcContextObjectManager extends AbstractObjectManager<TcContext, TcC
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Deletes the {@link TcContext} identified by {@code id}. Does nothing when {@code id} is blank.
+     *
+     * @param id the {@link TcContext}'s id
+     * @param partNum the partition to delete from, or {@code null} to delete without restricting by
+     *     partition
      */
     public void deleteById(String id, Integer partNum) {
         if (!StringUtils.isBlank(id)) {

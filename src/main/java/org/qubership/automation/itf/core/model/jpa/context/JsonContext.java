@@ -66,7 +66,13 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates a new {@code clazz} instance from its no-arg constructor and sets its JSON string.
+     *
+     * @param jsonString the JSON to set on the new instance
+     * @param clazz the {@link JsonStorable} type to instantiate
+     * @return the new, populated instance
+     * @throws ParseException if {@code jsonString} is not well-formed JSON
+     * @throws NoSuchMethodException if {@code clazz} has no no-arg constructor
      */
     public static <T extends JsonStorable> T fromJson(String jsonString, Class<T> clazz)
             throws ParseException, IllegalAccessException, InstantiationException, NoSuchMethodException,
@@ -86,7 +92,12 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Reads {@code key} through {@link #get(Object)} and casts it to {@code castTo}.
+     *
+     * @param key the key to read; supports the dotted, indexed ({@code "a[0]"}), and keyed
+     *     ({@code "a[\"b\"]"}) path syntax {@link #get(Object)} does
+     * @param castTo the type to cast the value to
+     * @return the value cast to {@code castTo}, or {@code null} when absent or not a {@code castTo}
      */
     public <T> T get(String key, Class<T> castTo) {
         try {
@@ -294,7 +305,12 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Deep-merges {@code from} into this context, the way {@link #mergeMap} merges with
+     * {@code addNewOnly} {@code false}: an existing scalar value is replaced, an existing map or
+     * list is merged recursively rather than replaced. Does nothing when {@code from} is
+     * {@code null} or empty.
+     *
+     * @param from the map to merge in
      */
     public void merge(Map from) {
         if (from == null || from.isEmpty()) {
@@ -335,7 +351,15 @@ public class JsonContext extends JSONObject implements IJsonContext, Extendable 
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Deep-merges {@code from} into {@code to}, key by key: where both sides hold a map or both hold
+     * a list for a key, merges them recursively; otherwise sets {@code to}'s value from
+     * {@code from}, either unconditionally or, when {@code addNewOnly} is {@code true}, only where
+     * {@code to} does not already have the key ({@link #putIfAbsent} states the full recursive rule).
+     *
+     * @param to the map to merge into, modified in place
+     * @param from the map to merge from
+     * @param addNewOnly {@code true} to leave every value already in {@code to} untouched, adding
+     *     only what {@code from} has that {@code to} does not
      */
     public void mergeMap(Map to, Map from, boolean addNewOnly) {
         for (Object o : from.entrySet()) {

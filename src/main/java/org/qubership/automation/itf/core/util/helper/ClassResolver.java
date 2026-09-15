@@ -34,7 +34,13 @@ public class ClassResolver {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the non-abstract subtypes of {@code clazz}, keyed by class name, with each value the
+     * subtype's {@link UserName} or, absent that, its simple name. Cached per {@code clazz} after
+     * the first non-empty result.
+     *
+     * @param clazz the interface or class whose subtypes to resolve
+     * @return a map from subtype class name to display name; empty when {@code clazz} has no
+     *     non-abstract subtype
      */
     public Map<String, String> resolveByInterface(Class clazz) {
         Map<String, String> classNameWithUserName = classNameWithUserNameCache.get(clazz.getName());

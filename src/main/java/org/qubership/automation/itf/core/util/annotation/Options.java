@@ -26,12 +26,13 @@ import java.lang.annotation.Target;
 public @interface Options {
 
     /**
-     * TODO: Add JavaDoc.
+     * The fixed set of values the annotated field may be set to.
      */
     String[] value() default {};
 
     /**
-     * TODO: Add JavaDoc.
+     * Name of the adapter that supplies the field's valid values, used instead of a static
+     * {@link #value()} list.
      */
     String adapter() default "";
 

@@ -58,7 +58,11 @@ public class ItfGridFsConfiguration {
 
 
     /**
-     * TODO: Add JavaDoc.
+     * The template this library's GridFS-backed storage reads and writes files through.
+     *
+     * @param mongoDatabaseFactory the database to store files in
+     * @param mappingMongoConverter converts file metadata to and from its stored document form
+     * @return a new {@link GridFsTemplate} over {@code mongoDatabaseFactory}
      */
     @Bean
     public GridFsTemplate gridFsTemplate(MongoDatabaseFactory mongoDatabaseFactory,
@@ -69,7 +73,12 @@ public class ItfGridFsConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Connects to the configured MongoDB instance (see {@link #getUri()}) and exposes the
+     * configured {@link #database} through a {@link MongoDatabaseFactory}, with command and
+     * connection-pool metrics reported to {@code meterRegistry}.
+     *
+     * @param meterRegistry where connection and command metrics are reported
+     * @return a database factory backed by the configured MongoDB connection
      */
     @Bean
     public MongoDatabaseFactory mongoDatabaseFactory(MeterRegistry meterRegistry) {
@@ -87,7 +96,11 @@ public class ItfGridFsConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Resolves {@code DBRef}s encountered while mapping stored documents, against
+     * {@code mongoDatabaseFactory}'s database.
+     *
+     * @param mongoDatabaseFactory the database to resolve references against
+     * @return a new {@link DefaultDbRefResolver} over {@code mongoDatabaseFactory}
      */
     @Bean
     public DbRefResolver dbRefResolver(MongoDatabaseFactory mongoDatabaseFactory) {
@@ -95,7 +108,12 @@ public class ItfGridFsConfiguration {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * The converter {@link #gridFsTemplate(MongoDatabaseFactory, MappingMongoConverter)} uses to map
+     * file metadata to and from its stored document form, with the default simple-type handling and
+     * {@code dbRefResolver} for any {@code DBRef} it encounters.
+     *
+     * @param dbRefResolver resolves {@code DBRef}s the converter encounters
+     * @return a new {@link MappingMongoConverter} with default mapping context settings
      */
     @Bean
     public MappingMongoConverter mappingMongoConverter(DbRefResolver dbRefResolver) {

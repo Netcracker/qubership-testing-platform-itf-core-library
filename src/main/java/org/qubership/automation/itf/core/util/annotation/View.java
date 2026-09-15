@@ -25,12 +25,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface View {
     /**
-     * TODO: Add JavaDoc.
+     * Name of the UI directive that renders the annotated transport.
      */
     String directive();
 
     /**
-     * TODO: Add JavaDoc.
+     * Name of the UI view template that the {@link #directive()} renders.
      */
     String view();
 }

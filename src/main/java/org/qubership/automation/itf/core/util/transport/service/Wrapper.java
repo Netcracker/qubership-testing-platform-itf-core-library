@@ -30,7 +30,14 @@ public class Wrapper {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Looks up {@code transport}'s {@link AccessTransport} in {@code transportRegistry} and sets it
+     * as {@code transport}'s remote.
+     *
+     * @param transport the transport to wrap
+     * @param transportRegistry the registry to look {@code transport} up in, by its class name
+     * @return the found {@link AccessTransport}
+     * @throws ExportException wrapping a {@link NoDeployedTransportException} or a
+     *     {@link RemoteException} if the lookup fails
      */
     public static AccessTransport wrap(Transport transport, TransportRegistry transportRegistry)
             throws ExportException {

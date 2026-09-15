@@ -69,7 +69,18 @@ public class PropertiesConverter {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Converts {@code configuration}'s raw string values into a {@link ConnectionProperties} typed
+     * against the {@link PropertyDescriptor}s that transport {@code typeName} exports, resolving any
+     * template expression in a map-typed value against {@code instanceContext} first.
+     *
+     * @param instanceContext context to resolve template expressions against; a fresh, empty
+     *     {@link JsonContext} is used when {@code null}
+     * @param typeName the transport type whose exported properties describe {@code configuration}
+     * @param configuration raw property values, keyed by property name; a key with no matching
+     *     exported property, or an empty value, is skipped
+     * @return the typed, converted properties
+     * @throws IllegalStateException if {@code typeName} exports no properties
+     * @throws TransportException declared by this signature; not thrown by this implementation
      */
     public static ConnectionProperties convert(InstanceContext instanceContext,
                                                String typeName,

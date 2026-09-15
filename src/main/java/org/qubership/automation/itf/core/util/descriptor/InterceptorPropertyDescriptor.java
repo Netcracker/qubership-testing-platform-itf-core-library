@@ -34,7 +34,14 @@ public class InterceptorPropertyDescriptor implements Serializable {
     private final boolean optional;
 
     /**
-     * TODO: Add JavaDoc.
+     * Describes a single-value interceptor property, with no fixed set of options.
+     *
+     * @param name the property's short name
+     * @param longname the property's display name
+     * @param description the property's description, shown in the UI
+     * @param inputType the UI input type to render the property with
+     * @param value the property's current value
+     * @param optional whether the property may be left unset
      */
     public InterceptorPropertyDescriptor(String name, String longname, String description,
                                          InterceptorConstants inputType, String value, boolean optional) {
@@ -48,7 +55,15 @@ public class InterceptorPropertyDescriptor implements Serializable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Describes an interceptor property restricted to a fixed set of options.
+     *
+     * @param name the property's short name
+     * @param longname the property's display name
+     * @param description the property's description, shown in the UI
+     * @param inputType the UI input type to render the property with
+     * @param options the values the property may be set to
+     * @param value the property's current value
+     * @param optional whether the property may be left unset
      */
     public InterceptorPropertyDescriptor(String name, String longname, String description,
                                          InterceptorConstants inputType, String[] options, String value,

@@ -29,7 +29,12 @@ import org.qubership.automation.itf.core.util.exception.ContentException;
 public class JsonContentProvider implements MessageContentProvider<JSONObject> {
 
     /**
-     * TODO: Add JavaDoc.
+     * Parses the message body as JSON. An array is wrapped in an object under the key
+     * {@code "array"}, so the result is always a {@link JSONObject}. Call only on a message
+     * {@link #supports(Message)} accepts; a top-level JSON value that is not an object or an array
+     * makes this throw {@link ClassCastException} instead of {@link ContentException}.
+     *
+     * @throws ContentException if the message text is not well-formed JSON
      */
     public Content<JSONObject> provide(Message message) throws ContentException {
         try {
@@ -41,7 +46,12 @@ public class JsonContentProvider implements MessageContentProvider<JSONObject> {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Checks whether {@code message}'s trimmed text looks like a JSON object or array: it is
+     * non-blank, and starts with {@code "{"} and ends with {@code "}"}, or starts with
+     * {@code "["}, or ends with {@code "]"}.
+     *
+     * @param message the message to check; {@code null} is treated as unsupported
+     * @return whether {@link #provide(Message)} should be called for {@code message}
      */
     public boolean supports(Message message) {
         if (message == null || StringUtils.isBlank(message.getText())) {

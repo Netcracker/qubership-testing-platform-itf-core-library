@@ -64,7 +64,12 @@ public class TriggerStateManager {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Computes {@code environment}'s aggregate inbound trigger state from every inbound transport
+     * configuration of every system in it, and stores the result on {@code environment} when it
+     * differs from what is already stored there.
+     *
+     * @param environment the environment to compute and update the state for
+     * @return the computed aggregate state
      */
     public TriggerState getInboundTriggersState(Environment environment) {
         Set<TriggerState> triggerStates = Sets.newHashSetWithExpectedSize(5);

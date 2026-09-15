@@ -72,7 +72,12 @@ public class MonitorManager {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the monitor object associated with {@code key}, creating one if none exists yet or the
+     * previous one has expired from idleness.
+     *
+     * @param key the key to get the monitor for
+     * @return the monitor to synchronize on and wait/notify through
+     * @throws RuntimeException wrapping an {@link ExecutionException} if the monitor cannot be created
      */
     public Object get(String key) {
         try {

@@ -22,13 +22,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * TODO: Add JavaDoc.
+ * Marks a type as applicable only to the named transports.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ApplyToTransport {
     /**
-     * TODO: Add JavaDoc.
+     * Short names of the transports the annotated type applies to.
      */
     String[] transports();
 }

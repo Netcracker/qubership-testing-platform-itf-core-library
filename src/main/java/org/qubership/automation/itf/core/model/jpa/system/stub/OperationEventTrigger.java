@@ -50,7 +50,10 @@ public class OperationEventTrigger extends EventTriggerImpl {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates a trigger under {@code parent}, and adds it to {@code parent}'s operation event
+     * triggers.
+     *
+     * @param parent the situation to attach this trigger to
      */
     public OperationEventTrigger(Situation parent) {
         super(TYPE);

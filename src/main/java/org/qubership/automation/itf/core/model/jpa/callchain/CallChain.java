@@ -64,7 +64,10 @@ public class CallChain extends AbstractTestCase {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Creates a call chain under {@code parent}, and adds it to {@code parent}'s call chains.
+     *
+     * @param parent a {@link StubContainer}, or a {@link Folder} of {@link CallChain}
+     * @throws RuntimeException if {@code parent} is neither
      */
     public CallChain(Storable parent) {
         this();
@@ -85,7 +88,10 @@ public class CallChain extends AbstractTestCase {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Appends a new {@link SituationStep} for {@code situation} to this call chain.
+     *
+     * @param situation the situation the new step invokes
+     * @return the created step
      */
     public SituationStep addStep(Situation situation) {
         SituationStep situationStep =

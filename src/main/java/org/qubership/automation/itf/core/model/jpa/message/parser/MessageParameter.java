@@ -45,7 +45,11 @@ public class MessageParameter extends AbstractStorable {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Starts building a {@link MessageParameter} named {@code paramName}.
+     *
+     * @param paramName the parameter's name
+     * @param rule unused
+     * @return a new {@link Builder}, with no value, not multiple, and not autosaved
      */
     public static Builder build(String paramName, ParsingRule rule) {
         Builder builder = new Builder();
@@ -104,7 +108,9 @@ public class MessageParameter extends AbstractStorable {
         }
 
         /**
-         * TODO: Add JavaDoc.
+         * Sets whether the built parameter is autosaved.
+         *
+         * @return this builder
          */
         public Builder setAutosave(boolean autosave) {
             this.autosave = autosave;
@@ -112,7 +118,9 @@ public class MessageParameter extends AbstractStorable {
         }
 
         /**
-         * TODO: Add JavaDoc.
+         * Discards any value added so far and sets {@code singleValue} as the only one.
+         *
+         * @return this builder
          */
         public Builder singleValue(String singleValue) {
             multipleValue.clear();
@@ -126,7 +134,9 @@ public class MessageParameter extends AbstractStorable {
         }
 
         /**
-         * TODO: Add JavaDoc.
+         * Sets whether the built parameter holds multiple values.
+         *
+         * @return this builder
          */
         public Builder multiple(boolean multiple) {
             this.multiple = multiple;
@@ -134,7 +144,9 @@ public class MessageParameter extends AbstractStorable {
         }
 
         /**
-         * TODO: Add JavaDoc.
+         * Builds the {@link MessageParameter} from this builder's current state.
+         *
+         * @return the new parameter
          */
         public MessageParameter get() {
             MessageParameter parameter = new MessageParameter();

@@ -34,7 +34,13 @@ public abstract class TriggerStateResponse {
     private String sessionId;
 
     /**
-     * TODO: Add JavaDoc.
+     * Reports the trigger states {@code states} collects, keyed by trigger id, on behalf of
+     * {@code user}.
+     *
+     * @param states trigger states, keyed by trigger id
+     * @param errorMessage an error to report, or {@code null} when there is none
+     * @param user the user the response is made on behalf of
+     * @param sessionId the response's session id
      */
     public TriggerStateResponse(Map<BigInteger, TriggerState> states, String errorMessage,
                                 StubUser user, String sessionId) {
@@ -45,7 +51,11 @@ public abstract class TriggerStateResponse {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Folds {@code responseToMergeWith}'s trigger states into this response's map, concatenates its
+     * error message onto this response's, and fills this response's {@code user} and
+     * {@code sessionId} from it when this response does not have one of its own yet.
+     *
+     * @param responseToMergeWith the response to merge into this one
      */
     public void merge(TriggerStateResponse responseToMergeWith) {
         this.getStates().putAll(responseToMergeWith.getStates());

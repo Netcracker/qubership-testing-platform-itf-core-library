@@ -51,7 +51,10 @@ public class PrefixGenerator {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Sets the singleton {@link IPrefixFactory} from {@code instance}, the first time this is
+     * called. A later call is a no-op: the singleton, once set, is never replaced.
+     *
+     * @param instance supplies the {@link IPrefixFactory} to use; evaluated at most once
      */
     public static void init(Supplier<IPrefixFactory> instance) {
         if (INSTANCE == null) {

@@ -26,7 +26,10 @@ public class BuildInfoConfig extends AbstractConfig {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns the singleton {@link BuildInfoConfig}, loading {@value #CONFIG_FILENAME} the first
+     * time this is called.
+     *
+     * @return the loaded singleton
      */
     public static BuildInfoConfig getConfig() {
         if (config == null) {
