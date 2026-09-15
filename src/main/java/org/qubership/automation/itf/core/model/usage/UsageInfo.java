@@ -40,7 +40,10 @@ public class UsageInfo {
     }
 
     /**
-     * TODO: Add JavaDoc.
+     * Returns {@link #getReferer()}'s ancestor path, root first, computing and caching it on first
+     * call.
+     *
+     * @return the cached path
      */
     public Storable[] getPath() {
         if (path == null) {
@@ -48,7 +51,7 @@ public class UsageInfo {
             Storable parent = referer.getParent();
             while (parent != null) {
                 path.add(parent);
-                parent = referer.getParent();
+                parent = parent.getParent();
             }
             this.path = new Storable[path.size()];
             this.path = Lists.reverse(path).toArray(this.path);
