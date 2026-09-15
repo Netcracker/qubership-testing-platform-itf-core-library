@@ -41,7 +41,7 @@ import jakarta.persistence.Entity;
         property = "id", scope = SituationEventTrigger.class)
 public class SituationEventTrigger extends EventTriggerImpl {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913051L;
     public static final String TYPE = "Situation Event Trigger";
     private Situation situation;
     private On on;

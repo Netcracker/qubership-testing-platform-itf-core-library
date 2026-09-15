@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.system.stub;
 
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,9 @@ import org.qubership.automation.itf.core.util.constants.TriggerState;
 import org.qubership.automation.itf.core.util.helper.StorableUtils;
 
 public abstract class EventTriggerImpl extends AbstractStorable implements EventTrigger {
+
+    @Serial
+    private static final long serialVersionUID = 20260913091L;
 
     private TriggerState state = TriggerState.INACTIVE;
     private List<ConditionParameter> conditionParameters = new ArrayList<>();

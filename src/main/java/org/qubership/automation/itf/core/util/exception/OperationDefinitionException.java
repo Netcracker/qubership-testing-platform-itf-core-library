@@ -16,7 +16,12 @@
 
 package org.qubership.automation.itf.core.util.exception;
 
+import java.io.Serial;
+
 public class OperationDefinitionException extends CoreException {
+
+    @Serial
+    private static final long serialVersionUID = 20260913107L;
 
     public OperationDefinitionException(String message) {
         super(message);

@@ -35,7 +35,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FastResponseCondition implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20250303L;
+    private static final long serialVersionUID = 20260913065L;
 
     String operationDefinitionKey;
     List<ConditionParameter> conditionParameters;

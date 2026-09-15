@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.common;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class LabeledStorable extends AbstractStorable implements Labeled {
+    @Serial
+    private static final long serialVersionUID = 20260913092L;
+
     private List<String> labels = new ArrayList<>(1);
 
     public void fillLabels(List<String> labels) {

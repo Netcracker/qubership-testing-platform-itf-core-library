@@ -66,7 +66,7 @@ import lombok.Setter;
 public class Operation extends AbstractStorable
         implements ParsingRuleProvider, KeyDefinitionProvider, TemplateProvider {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913048L;
 
     private TransportConfiguration transport;
     private String operationDefinitionKey;

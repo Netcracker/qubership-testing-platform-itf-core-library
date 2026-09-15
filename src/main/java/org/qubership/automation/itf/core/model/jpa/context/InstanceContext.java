@@ -37,7 +37,7 @@ import jakarta.persistence.Entity;
 @JsonFilter("reportWorkerFilter_InstanceContext")
 public class InstanceContext extends JsonStorable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913012L;
 
     private BigInteger projectId;
     private UUID projectUuid;

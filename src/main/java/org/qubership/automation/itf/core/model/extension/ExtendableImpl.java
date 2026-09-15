@@ -32,7 +32,7 @@ import com.google.gson.JsonParser;
 
 public class ExtendableImpl extends AbstractStorable implements Extendable, Serializable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913007L;
     private static final Gson GSON = new Gson();
     private final Set<Extension> extensions = Sets.newHashSetWithExpectedSize(5);
 

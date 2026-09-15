@@ -22,7 +22,7 @@ import org.springframework.context.ApplicationEvent;
 
 public class HttpClientReadyEvent extends ApplicationEvent {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913074L;
 
     /**
      * Create a new {@code HttpClientReadyEvent}.

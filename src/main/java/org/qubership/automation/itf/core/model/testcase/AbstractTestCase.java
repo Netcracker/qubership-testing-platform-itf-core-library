@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.testcase;
 
+import java.io.Serial;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +39,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 public abstract class AbstractTestCase extends LabeledStorable implements TestCase {
+    @Serial
+    private static final long serialVersionUID = 20260913088L;
+
     protected List<Step> steps = Lists.newLinkedList();
     @JsonIgnore
     private Set<String> compatibleDataSetLists = Sets.newHashSetWithExpectedSize(10);

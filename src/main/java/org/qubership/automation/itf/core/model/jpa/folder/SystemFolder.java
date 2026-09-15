@@ -30,7 +30,7 @@ import jakarta.persistence.Entity;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SystemFolder extends Folder<System> {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913027L;
     public static final Class<System> TYPE = System.class;
 
     public SystemFolder() {

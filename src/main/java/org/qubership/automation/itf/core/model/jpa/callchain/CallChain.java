@@ -53,7 +53,7 @@ import jakarta.persistence.Entity;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = CallChain.class)
 public class CallChain extends AbstractTestCase {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913011L;
 
     private Set<String> keys = Sets.newHashSet();
     private Map<String, String> bvCases = Maps.newHashMap();

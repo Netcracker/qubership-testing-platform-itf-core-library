@@ -30,7 +30,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FastResponseConfig implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20250303L;
+    private static final long serialVersionUID = 20260913066L;
 
     private String projectUuid;
     private List<TransportConfig> transportConfigs;

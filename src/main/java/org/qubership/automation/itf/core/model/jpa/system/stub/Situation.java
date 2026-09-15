@@ -66,7 +66,7 @@ import lombok.Setter;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Situation.class)
 public class Situation extends LabeledStorable implements StepContainer, TriggerProvider, KeysRegeneratable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913050L;
 
     @JsonSerialize(contentAs = IntegrationStep.class)
     @JsonDeserialize(contentAs = IntegrationStep.class)

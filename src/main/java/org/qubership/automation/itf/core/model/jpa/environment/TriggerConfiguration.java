@@ -46,7 +46,7 @@ import lombok.Setter;
                   scope = TriggerConfiguration.class)
 public class TriggerConfiguration extends Configuration {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913021L;
 
     private TriggerState state;
 

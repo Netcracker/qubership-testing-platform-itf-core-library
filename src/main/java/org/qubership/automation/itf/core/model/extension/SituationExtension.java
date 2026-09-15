@@ -24,7 +24,7 @@ import java.util.List;
 public class SituationExtension implements Extension, Serializable {
 
     @Serial
-    private static final long serialVersionUID = 20241125L;
+    private static final long serialVersionUID = 20260913008L;
 
     private List<String> situationInstanceIds = new LinkedList<>();
 

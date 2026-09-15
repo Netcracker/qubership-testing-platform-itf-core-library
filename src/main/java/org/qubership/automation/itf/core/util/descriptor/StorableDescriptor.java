@@ -27,7 +27,7 @@ import jakarta.annotation.Nullable;
 
 public class StorableDescriptor implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913072L;
 
     private Object id;
     private String name;

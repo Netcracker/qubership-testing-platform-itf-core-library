@@ -38,7 +38,7 @@ import lombok.NoArgsConstructor;
         property = "id", scope = OperationTemplate.class)
 public class OperationTemplate extends AbstractTemplate<Operation> {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913039L;
 
     @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "Only Operation objects are here")
     public OperationTemplate(Storable parent) {

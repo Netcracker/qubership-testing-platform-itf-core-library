@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TemplateInterceptor extends CommonInterceptor {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913034L;
 
     @JsonBackReference
     public void setParent(Template parent) {

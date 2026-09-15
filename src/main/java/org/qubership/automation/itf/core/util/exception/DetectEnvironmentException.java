@@ -16,7 +16,12 @@
 
 package org.qubership.automation.itf.core.util.exception;
 
+import java.io.Serial;
+
 public class DetectEnvironmentException extends CoreException {
+
+    @Serial
+    private static final long serialVersionUID = 20260913099L;
 
     public DetectEnvironmentException(String message) {
         super(message);

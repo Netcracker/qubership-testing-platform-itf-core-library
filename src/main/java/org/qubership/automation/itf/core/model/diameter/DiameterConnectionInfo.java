@@ -26,7 +26,7 @@ import lombok.Setter;
 @Setter
 public class DiameterConnectionInfo implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913006L;
 
     private String podName;
     private String channel;

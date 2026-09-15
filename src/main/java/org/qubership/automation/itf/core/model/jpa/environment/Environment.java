@@ -59,7 +59,7 @@ import jakarta.persistence.Entity;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Environment.class)
 public class Environment extends AbstractEciConfigurable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913018L;
 
     @JsonSerialize(using = StorablesMapSerializer.class)
     @JsonDeserialize(using = SystemServerMapDeserializer.class)

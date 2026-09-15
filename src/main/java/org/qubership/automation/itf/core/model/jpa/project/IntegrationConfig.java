@@ -41,7 +41,7 @@ import lombok.Setter;
         property = "id", scope = IntegrationConfig.class)
 public class IntegrationConfig extends Configuration {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913041L;
 
     private String toolName;
     private Map<String, String> properties = Maps.newHashMapWithExpectedSize(10);

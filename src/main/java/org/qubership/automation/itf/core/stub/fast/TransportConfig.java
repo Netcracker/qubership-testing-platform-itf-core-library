@@ -42,7 +42,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TransportConfig implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20250303L;
+    private static final long serialVersionUID = 20260913069L;
     private static final Logger log = LoggerFactory.getLogger(TransportConfig.class);
 
     private StubEndpointConfig.TransportTypes transportType;

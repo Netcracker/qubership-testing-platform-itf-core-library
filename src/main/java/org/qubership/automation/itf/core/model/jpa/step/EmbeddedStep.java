@@ -41,7 +41,7 @@ import jakarta.persistence.Entity;
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer", "handler"})
 public class EmbeddedStep extends AbstractCallChainStep {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913045L;
 
     @JsonProperty(value = "type")
     public static final String TYPE = "embeddedChainStep";

@@ -17,6 +17,7 @@
 package org.qubership.automation.itf.core.model.jpa.step;
 
 import java.beans.Transient;
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,6 +38,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
 public abstract class AbstractCallChainStep extends AbstractStep implements Step, KeysRegeneratable {
+
+    @Serial
+    private static final long serialVersionUID = 20260913080L;
 
     private Map<String, String> keysToRegenerate = Maps.newLinkedHashMap();
     private int conditionMaxAttempts;

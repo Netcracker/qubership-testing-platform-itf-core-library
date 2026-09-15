@@ -27,7 +27,7 @@ import com.google.common.collect.Lists;
 
 public class StepIterator extends AbstractStepIterator implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913076L;
 
     public StepIterator(List<Step> steps, AbstractContainerInstance parent) {
         setParent(parent);

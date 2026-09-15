@@ -27,7 +27,7 @@ import com.google.common.collect.Sets;
 
 public class CounterImpl extends AbstractStorable implements Counter {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913005L;
 
     private Set<Object> owners = Sets.newHashSet();
 

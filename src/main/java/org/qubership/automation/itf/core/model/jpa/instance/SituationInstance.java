@@ -40,7 +40,7 @@ import lombok.Setter;
 @JsonFilter("reportWorkerFilter_SituationInstance")
 public class SituationInstance extends AbstractContainerInstance {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913030L;
 
     @Getter
     @Setter

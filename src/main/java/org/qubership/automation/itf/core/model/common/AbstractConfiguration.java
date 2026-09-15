@@ -17,6 +17,7 @@
 package org.qubership.automation.itf.core.model.common;
 
 import java.beans.Transient;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -30,6 +31,9 @@ import com.google.common.collect.Maps;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public abstract class AbstractConfiguration<T, V> extends LabeledStorable implements Map<T, V> {
+    @Serial
+    private static final long serialVersionUID = 20260913081L;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractConfiguration.class);
 
     private Map<T, V> configuration = Maps.newHashMapWithExpectedSize(20);
