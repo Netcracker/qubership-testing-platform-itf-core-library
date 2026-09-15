@@ -28,6 +28,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.qubership.automation.itf.core.hibernate.spring.repositories.executor.SystemParsingRuleRepository;
 import org.qubership.automation.itf.core.model.common.Storable;
+import org.qubership.automation.itf.core.model.jpa.message.parser.ParsingRule;
 import org.qubership.automation.itf.core.model.jpa.message.parser.SystemParsingRule;
 import org.qubership.automation.itf.core.model.jpa.system.System;
 import org.qubership.automation.itf.core.util.constants.Match;
@@ -89,7 +90,6 @@ class SystemParsingRuleObjectManagerTest {
     @Test
     void create_WithParentSystem_ShouldCreateParsingRule() {
         // given
-        SystemParsingRule newRule = mock(SystemParsingRule.class);
         when(repository.save(any(SystemParsingRule.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // when
@@ -99,6 +99,7 @@ class SystemParsingRuleObjectManagerTest {
         Assertions.assertNotNull(result);
         Assertions.assertEquals(parentSystem, result.getParent());
         verify(repository).save(any(SystemParsingRule.class));
+        verify(parentSystem).addParsingRule((ParsingRule) result);
     }
 
     @Test
