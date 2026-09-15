@@ -62,7 +62,7 @@ public class CounterEngine {
     /**
      * Returns the singleton, building it lazily on first call.
      *
-     * @throws NullPointerException if {@link CoreObjectManager} has not been wired yet; the
+     * @throws IllegalStateException if {@link CoreObjectManager} has not been wired yet; the
      *     singleton stays unset so a later call can retry
      */
     public static CounterEngine getInstance() {

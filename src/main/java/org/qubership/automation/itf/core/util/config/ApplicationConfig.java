@@ -31,4 +31,18 @@ public class ApplicationConfig implements EnvironmentAware {
     public void setEnvironment(@Nonnull Environment environment) {
         env = environment;
     }
+
+    /**
+     * Returns {@link #env}, or throws if the Spring bean that sets it was never constructed.
+     */
+    public static Environment getEnv() {
+        if (env == null) {
+            throw new IllegalStateException("ApplicationConfig.env is not set: the Spring bean "
+                    + ApplicationConfig.class.getName() + " was never constructed. Add "
+                    + "\"org.qubership.automation.itf.core\" to your application's @ComponentScan (or "
+                    + "@SpringBootApplication scanBasePackages) so its @Component/@Service beans, "
+                    + "including this one, enter your application context.");
+        }
+        return env;
+    }
 }

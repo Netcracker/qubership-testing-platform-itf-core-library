@@ -82,12 +82,12 @@ class CounterEngineInitializationTest {
 
     @Test
     void getInstanceThrowsWhenCoreObjectManagerIsNotWiredYet() {
-        assertThrows(NullPointerException.class, CounterEngine::getInstance);
+        assertThrows(IllegalStateException.class, CounterEngine::getInstance);
     }
 
     @Test
     void aFailedGetInstanceLeavesTheSingletonUnset() throws Exception {
-        assertThrows(NullPointerException.class, CounterEngine::getInstance);
+        assertThrows(IllegalStateException.class, CounterEngine::getInstance);
 
         assertNull(instanceField.get(null));
     }
@@ -95,7 +95,7 @@ class CounterEngineInitializationTest {
     @Test
     @SuppressWarnings({"unchecked", "rawtypes"})
     void counterEngineCanStillInitializeAfterAFailedGetInstance() throws Exception {
-        assertThrows(NullPointerException.class, CounterEngine::getInstance);
+        assertThrows(IllegalStateException.class, CounterEngine::getInstance);
 
         CoreObjectManagerService service = mock(CoreObjectManagerService.class);
         ObjectManager<Counter> counterManager = mock(ObjectManager.class);

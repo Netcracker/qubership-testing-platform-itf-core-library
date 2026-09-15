@@ -64,7 +64,7 @@ import org.springframework.transaction.TransactionStatus;
  * through their actual static fields, via reflection, rather than through {@link
  * org.mockito.MockedStatic}: a {@code MockedStatic} only intercepts calls made from the thread
  * that created it, so a worker thread in the concurrency tests below would see the real,
- * unmocked classes and fail with a {@link NullPointerException} instead of exercising {@link
+ * unmocked classes and fail with an {@link IllegalStateException} instead of exercising {@link
  * CounterEngine}.</p>
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
