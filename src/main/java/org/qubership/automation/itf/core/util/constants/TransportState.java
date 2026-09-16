@@ -20,7 +20,12 @@ public enum TransportState {
 
     NOT_READY("Not Ready"), REGISTERING("Registering"), REGISTERED("Registered"),
     PUBLISHING_PROPERTIES("Publishing properties"), PUBLISHED_PROPERTIES("Published properties"),
-    APPLYING_CONFIGURATION("Applying configuration"), READY("Ready"), UNDEPLOYED("Undeployed");
+    APPLYING_CONFIGURATION("Applying configuration"), READY("Ready"),
+    /**
+     * Also set when a registration attempt fails, since there is no separate failure value and
+     * this still distinguishes an attempted, non-working transport from {@link #NOT_READY}.
+     */
+    UNDEPLOYED("Undeployed");
 
     private final String state;
 
