@@ -47,7 +47,7 @@ output instead. Each entry below states which one applies.
 
 Adds one or more day/hour/minute offsets to `$date` and renders the result.
 
-### Parameters
+### `#add_date` parameters
 
 | Parameter | Required | Description |
 | --- | --- | --- |
@@ -56,13 +56,13 @@ Adds one or more day/hour/minute offsets to `$date` and renders the result.
 
 The rendered date always uses `T` as the date/time separator, regardless of which separator `$date` used.
 
-### Errors
+### `#add_date` errors
 
 An offset that isn't a signed integer followed by one of the recognized units throws `IllegalArgumentException`
 naming the accepted units. If `$date` itself cannot be parsed, the failure is logged as an error and the directive
 renders nothing — it does not throw.
 
-### Example
+### `#add_date` example
 
 ```text
 #add_date($now, '5d')
@@ -81,7 +81,7 @@ renders nothing — it does not throw.
 
 Computes a hash, an HMAC, an AES-256 encryption, or a JWS signature over `$content`, depending on `$algorithm`.
 
-### Parameters
+### `#hashsum` parameters
 
 | Parameter | Required | Description |
 | --- | --- | --- |
@@ -89,22 +89,22 @@ Computes a hash, an HMAC, an AES-256 encryption, or a JWS signature over `$conte
 | `$content` | Yes | The text to hash, encrypt, or sign. |
 | `$encoding` | No | The charset `$content` is encoded with before processing. Defaults to `UTF-8`. |
 | `$key` | Required for `AES-256`, `RS256`, `RS512`, and `HMAC-xxx` | See below; the shape depends on `$algorithm`. |
-| `$encodeAsBase64` | No | Only affects `HMAC-xxx`. `"true"` renders the digest as Base64; anything else (including omitting it) renders lowercase hex. |
+| `$encodeAsBase64` | No | Only affects `HMAC-xxx`. `"true"` renders the digest as base64; anything else (including omitting it) renders lowercase hex. |
 
 For `AES-256`, `$key` must decode to exactly 32 bytes in `$encoding`; the initialization vector is a fixed 16
-zero bytes, not caller-supplied. For `RS256`/`RS512`, `$key` is a Base64-encoded PKCS8 RSA private key. For
+zero bytes, not caller-supplied. For `RS256`/`RS512`, `$key` is a base64-encoded PKCS8 RSA private key. For
 `HMAC-xxx`, `$key` is used directly as the HMAC key.
 
 A blank `$content` always renders an empty string, regardless of `$algorithm`.
 
-### Errors
+### `#hashsum` errors
 
 Zero arguments, or more than five, are logged as a warning and the directive renders nothing. An `$algorithm` that
 is not one of the recognized values (and does not start with `HMAC`) throws `IllegalArgumentException`. A wrong-size
 AES-256 key, an unsupported encoding, or a JWS/HMAC failure is also wrapped and thrown as
 `IllegalArgumentException`.
 
-### Example
+### `#hashsum` example
 
 ```text
 #hashsum($password)
@@ -123,7 +123,7 @@ Base64-decodes (UTF-8) each argument independently and appends the results in or
 a `content, encoding` pair like [`#decodeUrl`](#decodeurl): every argument is decoded the same way. A blank
 argument contributes an empty string; no arguments render nothing.
 
-### Example
+### `#decode_base64` example
 
 ```text
 #decode_base64($token)
@@ -139,19 +139,19 @@ argument contributes an empty string; no arguments render nothing.
 Reads the payload out of a compact JWS string in `$content` and renders it as text. The signature is **not**
 verified — there is no key parameter.
 
-### Parameters
+### `#decode_hashsum` parameters
 
 | Parameter | Required | Description |
 | --- | --- | --- |
 | `$algorithm` | Yes | `RS256` or `RS512`, matched case-insensitively. No other value is accepted. |
 | `$content` | Yes | A compact JWS string (`header.payload.signature`). |
 
-### Errors
+### `#decode_hashsum` errors
 
 Any argument count other than 2, a `null` argument, an unrecognized `$algorithm`, or a `$content` that isn't a
 parseable JWS all throw `IllegalArgumentException`.
 
-### Example
+### `#decode_hashsum` example
 
 ```text
 #decode_hashsum('RS256', $signedToken)
@@ -165,21 +165,21 @@ parseable JWS all throw `IllegalArgumentException`.
 ```
 
 Decodes `$content` the way the SAML HTTP-Redirect binding encodes a `SAMLRequest`/`SAMLResponse` query parameter:
-URL-decode, then Base64-decode, then raw-inflate (no zlib header). `$encoding` defaults to `UTF-8`.
+URL-decode, then base64-decode, then raw-inflate (no zlib header). `$encoding` defaults to `UTF-8`.
 
 The inflated size is capped at 16 MiB by default, overridable with the JVM system property
 `itf.decode_saml.max.decoded.size.bytes`. The cap exists because the compression ratio of the input is chosen by
 whoever sent the original message; without it, decompressing a hostile message can exhaust the heap before this
 directive gets a chance to check the result.
 
-### Errors
+### `#decode_saml` errors
 
 An argument count other than 1 or 2 is logged as an error, and the directive writes the literal text
 `#decode_saml:incorrect parameters` into the output — it does not throw. Exceeding the size cap throws
 `IllegalArgumentException`. Any other I/O failure during decoding is wrapped and thrown as an unchecked
 `RuntimeException`.
 
-### Example
+### `#decode_saml` example
 
 ```text
 #decode_saml($samlResponseParam)
@@ -199,13 +199,13 @@ the JDK's URL codec with Japanese encodings.
 
 A blank `$content` renders an empty string.
 
-### Errors
+### `#decodeUrl` errors
 
 An argument count other than 2 is logged as an error, and the error message itself is written into the output. An
 unsupported `$encoding` is logged as an error (only when the directive is running inside a real Velocity render)
 and, again, the error message is written into the output. Neither case throws.
 
-### Example
+### `#decodeUrl` example
 
 ```text
 #decodeUrl($queryParam, 'UTF-8')
@@ -222,7 +222,7 @@ Base64-encodes (UTF-8) each argument independently and appends the results in or
 encoding counterpart of [`#decode_base64`](#decode_base64), with the same one-argument-at-a-time behavior. A blank
 argument contributes an empty string; no arguments render nothing.
 
-### Example
+### `#encode_base64` example
 
 ```text
 #encode_base64($secret)
@@ -236,16 +236,16 @@ argument contributes an empty string; no arguments render nothing.
 ```
 
 Encodes `$content` the way the SAML HTTP-Redirect binding encodes a `SAMLRequest`/`SAMLResponse` query parameter:
-raw-deflate (no zlib header), then Base64-encode, then URL-encode. `$encoding` defaults to `UTF-8`. This is the
+raw-deflate (no zlib header), then base64-encode, then URL-encode. `$encoding` defaults to `UTF-8`. This is the
 inverse of [`#decode_saml`](#decode_saml).
 
-### Errors
+### `#encode_saml` errors
 
 An argument count other than 1 or 2 is logged as an error, and the directive writes the literal text
 `#encode_saml:incorrect parameters` into the output — it does not throw. Any I/O failure during encoding is wrapped
 and thrown as an unchecked `RuntimeException`.
 
-### Example
+### `#encode_saml` example
 
 ```text
 #encode_saml($samlRequestXml)
@@ -264,7 +264,7 @@ argument count or an unsupported encoding is logged and the message is written i
 
 A blank `$content` renders an empty string.
 
-### Example
+### `#encodeUrl` example
 
 ```text
 #encodeUrl($redirectTarget, 'UTF-8')
@@ -281,7 +281,7 @@ XML 1.0-escapes (`&`, `<`, `>`, `'`, `"`) each argument and appends the results 
 same one-argument-at-a-time shape as [`#decode_base64`](#decode_base64). A `null`-valued argument contributes an
 empty string; a literally missing child node is logged as a warning and contributes nothing.
 
-### Example
+### `#escape_xml` example
 
 ```text
 #escape_xml($userInput)
@@ -296,7 +296,7 @@ empty string; a literally missing child node is logged as a warning and contribu
 Renders a random UUID (`UUID.randomUUID()`) — a different one on every call. Takes no arguments; any that are
 passed are ignored.
 
-### Example
+### `#generateUUID` example
 
 ```text
 #generateUUID()
@@ -312,12 +312,12 @@ passed are ignored.
 Parses `$json` once, evaluates each `$pathN` as a [JsonPath](https://github.com/json-path/JsonPath) expression
 against it, and appends the string form of each result in order, with no separator. At least one path is required.
 
-### Errors
+### `#json_path` errors
 
 Fewer than 2 total arguments throws `IllegalArgumentException`. An invalid `$json` string or an invalid JsonPath
 expression propagates as JsonPath's own runtime exception — this directive does not catch it.
 
-### Example
+### `#json_path` example
 
 ```text
 #json_path($responseBody, '$.data.id')
@@ -344,11 +344,11 @@ Serializes `$obj` to a JSON string. How depends on its runtime type:
 literal text `true` (case-insensitive) is truthy, and anything else — including a typo — is silently treated as
 `false`.
 
-### Errors
+### `#toJson` errors
 
 Calling `#toJson` with no arguments throws `IllegalArgumentException`.
 
-### Example
+### `#toJson` example
 
 ```text
 #toJson($responseMap)
@@ -365,13 +365,13 @@ Applies an [ICU4J](https://unicode-org.github.io/icu/userguide/transforms/genera
 `$fromTo` is a transliterator ID such as `Halfwidth-Fullwidth` or `Fullwidth-Halfwidth`; any ID ICU4J recognizes is
 accepted.
 
-### Errors
+### `#transliterate` errors
 
 An argument count other than 2 is logged as an error and the directive renders nothing (it returns `false`, unlike
 every other directive on this page, which return `true` regardless of outcome). An unrecognized `$fromTo` ID, or
 any other transliteration failure, is caught, logged, and the literal text `#err` is written instead of throwing.
 
-### Example
+### `#transliterate` example
 
 ```text
 #transliterate($fullWidthText, 'Fullwidth-Halfwidth')
