@@ -58,7 +58,7 @@ public abstract class AbstractProjectSettingsService implements IProjectSettings
                     + "settings in cache for project {}", projectId);
             return null;
         } catch (Exception e) {
-            log.warn("Error while getting project setting '{}' for project: {}", shortName, projectId);
+            log.error("Error while getting project setting '{}' for project: {}", shortName, projectId, e);
             return null;
         }
     }

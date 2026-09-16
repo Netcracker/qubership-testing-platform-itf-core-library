@@ -39,8 +39,11 @@ import org.qubership.automation.itf.core.model.jpa.project.StubProject;
 import org.qubership.automation.itf.core.util.db.TxExecutor;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManagerService;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionDefinition;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.google.common.base.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -85,6 +88,22 @@ class StubProjectObjectManagerTest {
     private MockedStatic<TxExecutor> txExecutorMock;
     private MockedStatic<CoreObjectManager> coreObjectManagerMock;
     private TransactionDefinition mockTxDef;
+
+    private ListAppender<ILoggingEvent> logAppender;
+    private ch.qos.logback.classic.Logger logger;
+
+    @BeforeEach
+    void setUpLogAppender() {
+        logAppender = new ListAppender<>();
+        logAppender.start();
+        logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(StubProjectObjectManager.class);
+        logger.addAppender(logAppender);
+    }
+
+    @AfterEach
+    void tearDownLogAppender() {
+        logger.detachAppender(logAppender);
+    }
 
     @BeforeEach
     void setUp() throws Exception {
@@ -409,14 +428,21 @@ class StubProjectObjectManagerTest {
     void getProjectSettingByShortName_WhenExceptionOccurs_ShouldReturnEmptyString() {
         // given
         String propertyShortName = "nonexistent";
+        RuntimeException dbError = new RuntimeException("Database error");
         when(stubProjectRepository.getProjectSetting(PROJECT_ID, propertyShortName))
-                .thenThrow(new RuntimeException("Database error"));
+                .thenThrow(dbError);
 
         // when
         String result = manager.getProjectSettingByShortName(PROJECT_ID, propertyShortName);
 
         // then
         Assertions.assertEquals("", result);
+        Assertions.assertTrue(logAppender.list.stream()
+                        .anyMatch(event -> event.getThrowableProxy() != null
+                                && dbError.getMessage().equals(event.getThrowableProxy().getMessage())
+                                && !event.getFormattedMessage().contains("{}")),
+                "the caught exception must be logged with its stack trace, and every placeholder in the message "
+                        + "must be filled in rather than left as a literal '{}'");
     }
 
     // ==================== getAllProjectSettingsByProjectId TESTS ====================
@@ -456,8 +482,9 @@ class StubProjectObjectManagerTest {
     @Test
     void getAllProjectSettingsByProjectId_WhenExceptionOccurs_ShouldReturnEmptyMap() {
         // given
+        RuntimeException dbError = new RuntimeException("Database error");
         when(stubProjectRepository.getAllProjectSettingsByProjectId(PROJECT_ID))
-                .thenThrow(new RuntimeException("Database error"));
+                .thenThrow(dbError);
 
         // when
         Map<String, String> result = manager.getAllProjectSettingsByProjectId(PROJECT_ID);
@@ -465,6 +492,12 @@ class StubProjectObjectManagerTest {
         // then
         Assertions.assertNotNull(result);
         Assertions.assertTrue(result.isEmpty());
+        Assertions.assertTrue(logAppender.list.stream()
+                        .anyMatch(event -> event.getThrowableProxy() != null
+                                && dbError.getMessage().equals(event.getThrowableProxy().getMessage())
+                                && !event.getFormattedMessage().contains("{}")),
+                "the caught exception must be logged with its stack trace, and every placeholder in the message "
+                        + "must be filled in rather than left as a literal '{}'");
     }
 
     @Test
