@@ -17,6 +17,8 @@ ITF Core Library contains packages:
   - Spring Beans Config Classes
 - org.qubership.automation.itf.core.template.velocity.directives
   - Apache Velocity Directives developed by ITF and included in ITF-Executor and in ITF-Stubs Services in-the-box
+  - See the [Velocity directives reference](docs/velocity-directives.md) for the full list, their parameters, and
+    their error behavior
 - org.qubership.automation.itf.core.message.parser
   - Parse messages by means of so-called 'Parsing Rules' of various types
 - org.qubership.automation.itf.core.stub.fast
