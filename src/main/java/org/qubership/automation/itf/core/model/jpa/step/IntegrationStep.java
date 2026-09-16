@@ -52,7 +52,7 @@ import jakarta.persistence.Entity;
         property = "id", scope = IntegrationStep.class)
 public class IntegrationStep extends AbstractStep {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913046L;
 
     @JsonProperty(value = "type")
     public static final String TYPE = "integrationStep";

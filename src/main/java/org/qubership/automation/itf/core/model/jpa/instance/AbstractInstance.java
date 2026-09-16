@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.instance;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,9 @@ import lombok.Setter;
         @JsonSubTypes.Type(value = StepInstance.class, name = "StepInstance")
 })
 public abstract class AbstractInstance extends ExtendableImpl {
+
+    @Serial
+    private static final long serialVersionUID = 20260913084L;
 
     private Status status;
     private Date startTime;

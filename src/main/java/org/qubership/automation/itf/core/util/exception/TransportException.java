@@ -16,7 +16,12 @@
 
 package org.qubership.automation.itf.core.util.exception;
 
+import java.io.Serial;
+
 public class TransportException extends CoreException {
+
+    @Serial
+    private static final long serialVersionUID = 20260913111L;
 
     public TransportException(String message) {
         super(message);

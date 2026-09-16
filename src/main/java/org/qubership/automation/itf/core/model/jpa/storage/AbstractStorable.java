@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.storage;
 
+import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.Collection;
@@ -49,6 +50,9 @@ import jakarta.persistence.PostUpdate;
 import jakarta.persistence.PreRemove;
 
 public abstract class AbstractStorable extends AbstractNamedImpl implements Storable {
+    @Serial
+    private static final long serialVersionUID = 20260913093L;
+
     protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractStorable.class);
     // Should be the same to ImportedDataCache#SIMPLE_PARENT_MARKER
     private static final String SIMPLE_PARENT_MARKER = "#SimpleParent#";

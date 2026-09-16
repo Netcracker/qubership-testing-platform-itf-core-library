@@ -35,7 +35,7 @@ import jakarta.persistence.Entity;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class LinkCollectorConfiguration extends Configuration {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913043L;
 
     public LinkCollectorConfiguration() {
     }

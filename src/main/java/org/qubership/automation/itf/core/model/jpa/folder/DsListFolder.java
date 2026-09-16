@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableList;
 
 public class DsListFolder extends Folder<DataSetListsSource> {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913023L;
     public static final Class<DataSetListsSource> TYPE = DataSetListsSource.class;
 
     public DsListFolder() {

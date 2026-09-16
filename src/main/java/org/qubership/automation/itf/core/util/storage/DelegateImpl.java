@@ -25,7 +25,7 @@ import com.google.common.collect.Maps;
 
 public class DelegateImpl implements StoreInformationDelegate<BigInteger, Integer>, Serializable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913079L;
 
     private BigInteger ID;
     private Integer version;

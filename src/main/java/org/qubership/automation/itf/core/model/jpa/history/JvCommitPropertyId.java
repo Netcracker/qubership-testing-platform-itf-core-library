@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class JvCommitPropertyId implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20241125L;
+    private static final long serialVersionUID = 20260913028L;
 
     @Column(name = "property_name", length = 191, nullable = false, updatable = false)
     private String propertyName;

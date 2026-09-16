@@ -34,7 +34,7 @@ import jakarta.persistence.Entity;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OutboundTemplateTransportConfiguration extends Configuration {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913053L;
 
     @JsonBackReference
     private Template parent;

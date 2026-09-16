@@ -46,7 +46,7 @@ import com.google.common.collect.Maps;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class JsonContext extends JSONObject implements IJsonContext, Extendable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913013L;
 
     private static final Splitter SPLITTER = Splitter.on('.');
     private static final Pattern ARRAY_PATTERN = Pattern.compile("(\\w+)\\s*\\[\\s*(\\d+)\\s*\\]");

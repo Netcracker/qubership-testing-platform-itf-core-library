@@ -26,7 +26,7 @@ import jakarta.persistence.Entity;
 @Entity
 public class UpgradeHistory extends AbstractStorable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913055L;
 
     private Timestamp upgradeDatetime;
 

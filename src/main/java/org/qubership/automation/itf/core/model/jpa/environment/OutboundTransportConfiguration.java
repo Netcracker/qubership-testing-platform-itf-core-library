@@ -43,7 +43,7 @@ import jakarta.persistence.Entity;
                   scope = OutboundTransportConfiguration.class)
 public class OutboundTransportConfiguration extends EciConfiguration implements EciConfigurable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913020L;
 
     private System system;
     //Need for QueryDSL

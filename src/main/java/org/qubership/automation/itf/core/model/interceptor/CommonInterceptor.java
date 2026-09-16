@@ -43,7 +43,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommonInterceptor extends AbstractStorable implements Storable, Interceptor {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913010L;
 
     private List<InterceptorParams> interceptorParams = Lists.newArrayList();
     private String typeName;

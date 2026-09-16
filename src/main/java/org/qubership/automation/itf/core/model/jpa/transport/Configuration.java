@@ -19,6 +19,7 @@ package org.qubership.automation.itf.core.model.jpa.transport;
 import static org.qubership.automation.itf.core.util.constants.PropertyConstants.FILE_DIRECTORY_PROJECT_UUID_GROUP_NUMBER;
 
 import java.beans.Transient;
+import java.io.Serial;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +39,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public abstract class Configuration extends AbstractStorable implements Map<String, String> {
+
+    @Serial
+    private static final long serialVersionUID = 20260913089L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
 

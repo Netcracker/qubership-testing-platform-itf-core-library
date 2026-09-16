@@ -72,7 +72,7 @@ import lombok.Setter;
 public class System extends AbstractEciConfigurable
         implements ParsingRuleProvider, KeyDefinitionProvider, TemplateProvider {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913052L;
 
     private Set<TransportConfiguration> transports = Sets.newHashSetWithExpectedSize(10);
     private Set<SystemParsingRule> systemParsingRules = Sets.newHashSetWithExpectedSize(20);

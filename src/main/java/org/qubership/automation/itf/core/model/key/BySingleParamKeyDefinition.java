@@ -23,7 +23,7 @@ import org.qubership.automation.itf.core.model.jpa.storage.AbstractStorable;
 
 public class BySingleParamKeyDefinition extends AbstractStorable implements KeyDefinition {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913057L;
 
     private String expression;
 

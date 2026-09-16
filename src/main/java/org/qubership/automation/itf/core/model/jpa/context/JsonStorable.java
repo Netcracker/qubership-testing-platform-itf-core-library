@@ -48,7 +48,7 @@ import jakarta.persistence.Entity;
 @Entity
 public class JsonStorable extends JsonContext implements Storable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913014L;
 
     private String name;
     private String prefix;

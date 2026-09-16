@@ -16,6 +16,7 @@
 
 package org.qubership.automation.itf.core.model.jpa.instance;
 
+import java.io.Serial;
 import java.util.List;
 
 import org.qubership.automation.itf.core.model.container.StepContainer;
@@ -31,6 +32,9 @@ import jakarta.persistence.Entity;
 
 @Entity
 public abstract class AbstractContainerInstance extends AbstractInstance {
+
+    @Serial
+    private static final long serialVersionUID = 20260913082L;
 
     private TcContext parentContext;
     private List<StepInstance> stepInstances = Lists.newArrayListWithExpectedSize(3);

@@ -29,7 +29,7 @@ import lombok.Setter;
 @Setter
 public class ActiveImportSession implements Serializable {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913073L;
 
     BigInteger itfProjectId;
 

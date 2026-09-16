@@ -16,7 +16,12 @@
 
 package org.qubership.automation.itf.core.util.exception;
 
+import java.io.Serial;
+
 public class NoDeployedTransportException extends TransportException {
+    @Serial
+    private static final long serialVersionUID = 20260913105L;
+
     public NoDeployedTransportException(String message) {
         super(message);
     }

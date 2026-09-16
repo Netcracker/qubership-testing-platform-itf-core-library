@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class SimpleParsingRule extends AbstractParsingRule {
     @Serial
-    private static final long serialVersionUID = 20240812L;
+    private static final long serialVersionUID = 20260913070L;
 
     public SimpleParsingRule() {
     }
