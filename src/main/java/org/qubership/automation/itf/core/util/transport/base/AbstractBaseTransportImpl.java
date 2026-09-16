@@ -23,7 +23,6 @@ import java.util.UUID;
 
 import jakarta.annotation.Nullable;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.qubership.automation.itf.core.model.jpa.message.Message;
 import org.qubership.automation.itf.core.util.annotation.UserName;
 import org.qubership.automation.itf.core.util.annotation.View;
@@ -81,8 +80,7 @@ public abstract class AbstractBaseTransportImpl<T extends Transport> implements 
         try {
             return transport.send(message, sessionId, projectUuid);
         } catch (Exception e) {
-            throw new RemoteException("Error sending data. Error Message: " + e.toString(),
-                    new Throwable(ExceptionUtils.getStackTrace(e)));
+            throw wrapAsRemoteException("sending", e);
         }
     }
 
@@ -91,8 +89,7 @@ public abstract class AbstractBaseTransportImpl<T extends Transport> implements 
         try {
             return transport.receive(sessionId);
         } catch (Exception e) {
-            throw new RemoteException("Error receiving data. Error Message: " + e.toString(),
-                    new Throwable(ExceptionUtils.getStackTrace(e)));
+            throw wrapAsRemoteException("receiving", e);
         }
     }
 
@@ -101,9 +98,21 @@ public abstract class AbstractBaseTransportImpl<T extends Transport> implements 
         try {
             return transport.sendReceiveSync(messageToSend, projectId);
         } catch (Exception e) {
-            throw new RemoteException("Error sending/receiving data. Error Message: " + e.toString(),
-                    new Throwable(ExceptionUtils.getStackTrace(e)));
+            throw wrapAsRemoteException("sending/receiving", e);
         }
+    }
+
+    /**
+     * Wraps a transport failure as a {@link RemoteException} carrying {@code cause} as its actual
+     * cause, so a caller can still classify the failure with {@code instanceof} or
+     * {@link Throwable#getCause()} rather than parsing the message.
+     *
+     * @param action what the transport was doing, for the message ("sending", "receiving", ...)
+     * @param cause the transport's original failure
+     * @return a {@link RemoteException} ready to throw
+     */
+    private RemoteException wrapAsRemoteException(String action, Exception cause) {
+        return new RemoteException("Error " + action + " data via " + typeName + ": " + cause.getMessage(), cause);
     }
 
     @Nullable
