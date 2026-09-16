@@ -240,6 +240,12 @@ public class Situation extends LabeledStorable implements StepContainer, Trigger
         return validateIncoming != null && validateIncoming != SituationLevelValidation.NO;
     }
 
+    /**
+     * {@inheritDoc} Also copies this situation's parent operation's transport onto the simplified
+     * operation this returns, and onto its simplified system parent, since the inherited
+     * implementation copies only the fields {@link Storable} declares and a transport is not one of
+     * them.
+     */
     @Override
     public Storable returnSimpleParent() {
         Storable operation = super.returnSimpleParent();

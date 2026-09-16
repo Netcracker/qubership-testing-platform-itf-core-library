@@ -139,6 +139,22 @@ public abstract class AbstractStorable extends AbstractNamedImpl implements Stor
         return parent;
     }
 
+    /**
+     * Copies {@code parent}'s class, id, name, natural id and version into a new instance, replaces
+     * the description with the marker {@link Storable#returnSimpleParent()} documents, and recurses
+     * into {@code parent}'s own simplified parent to rebuild the parent chain. Copying only the
+     * fields {@link Storable} declares means a subclass that adds fields of its own, such as the
+     * transport {@code Operation} and {@code Situation} carry, must override this method to copy
+     * those fields too.
+     *
+     * <p>Because {@link #equals(Object)} compares only the class and the id, the object this method
+     * returns equals {@code parent} and shares its hash code, even though its description is the
+     * marker rather than {@code parent}'s real one.</p>
+     *
+     * @return {@code null} when {@code parent} is {@code null}, or when a new instance of
+     *         {@code parent}'s class cannot be constructed through its no-arg constructor (logged as
+     *         an error)
+     */
     @Override
     public Storable returnSimpleParent() {
         if (parent != null) {
