@@ -114,6 +114,10 @@ public class JsonStorable extends JsonContext implements Storable {
         return parent;
     }
 
+    /**
+     * Always returns {@code null}: JsonStorable instances take no part in the export/import
+     * protocol {@link Storable#returnSimpleParent()} serves.
+     */
     @Override
     public Storable returnSimpleParent() {
         return null;

@@ -20,6 +20,7 @@ import static org.qubership.automation.itf.core.util.parser.ParsingRuleType.from
 
 import java.io.Serial;
 import java.math.BigInteger;
+import java.util.Objects;
 
 import org.jdom2.Element;
 import org.json.simple.JSONObject;
@@ -131,20 +132,23 @@ public abstract class AbstractParsingRule<T extends ParsingRuleProvider>
     /**
      * Overridden equals method.
      */
+    @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !this.getClass().equals(obj.getClass())) {
             return false;
         }
-        if (!this.getClass().equals(obj.getClass())) {
-            return false;
-        }
-        ParsingRule parsingRule = (ParsingRule)obj;
-        return (this.getID() != null || parsingRule.getID() != null) && this.getID() == parsingRule.getID()
-                && this.paramName.equals(parsingRule.getParamName());
+        ParsingRule parsingRule = (ParsingRule) obj;
+        return (this.getID() != null || parsingRule.getID() != null)
+                && Objects.equals(this.getID(), parsingRule.getID())
+                && Objects.equals(this.paramName, parsingRule.getParamName());
     }
 
+    @Override
     public int hashCode() {
-        return (this.getID() + paramName).hashCode();
+        return Objects.hash(getID(), paramName);
     }
 
     private String computeParsedExpression(InstanceContext context, boolean projectExpressionVarValue) {

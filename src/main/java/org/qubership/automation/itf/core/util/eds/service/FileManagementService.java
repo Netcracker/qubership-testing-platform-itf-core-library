@@ -22,7 +22,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.qubership.automation.itf.core.util.eds.model.FileInfo;
@@ -39,12 +41,20 @@ public class FileManagementService {
     private String rootFolder;
 
     /**
-     * Save files identified by filesInfo collection.
+     * Saves each file identified by filesInfo and returns the ones that were saved successfully.
+     *
+     * @return the {@link File} for every input whose save succeeded, in input order; a file whose save failed
+     *         is omitted rather than represented by a {@code null} entry.
      */
-    public void save(Collection<FileInfo> filesInfo) {
+    public List<File> save(Collection<FileInfo> filesInfo) {
+        List<File> savedFiles = new ArrayList<>(filesInfo.size());
         for (FileInfo fileInfo : filesInfo) {
-            save(fileInfo);
+            File savedFile = save(fileInfo);
+            if (savedFile != null) {
+                savedFiles.add(savedFile);
+            }
         }
+        return savedFiles;
     }
 
     /**
@@ -105,11 +115,16 @@ public class FileManagementService {
 
     /**
      * Creates file (and directory, if needed).
+     *
+     * @throws IOException if the directory does not exist and cannot be created.
      */
-    private File findOrCreateDirectoryWithFile(String directoryName, String fileName) {
+    private File findOrCreateDirectoryWithFile(String directoryName, String fileName) throws IOException {
         Path target = resolveWithinRoot(Path.of(directoryName), fileName);
         File directory = target.getParent().toFile();
-        if (!directory.exists() && !directory.mkdirs()) {
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
+                throw new IOException("Cannot create directory " + directoryName);
+            }
             log.info("Directory {} is created", directoryName);
         }
         return target.toFile();

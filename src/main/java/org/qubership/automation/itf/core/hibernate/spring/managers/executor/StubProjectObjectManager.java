@@ -152,8 +152,8 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
         try {
             return stubProjectRepository.getProjectSetting(projectId, propertyShortName);
         } catch (Exception e) {
-            log.warn("Error getting project setting from DB by projectId {} and property name '{}', root cause: {}",
-                    projectId, propertyShortName, (e.getCause() == null ? e : e.getCause()));
+            log.warn("Error getting project setting from DB by projectId {} and property name '{}'.",
+                    projectId, propertyShortName, e);
             return Strings.EMPTY;
         }
     }
@@ -168,8 +168,7 @@ public class StubProjectObjectManager extends AbstractObjectManager<StubProject,
                     stubProjectRepository.getAllProjectSettingsByProjectId(projectId);
             return formatProjectSettingsAsMap(arraysWithProjectSettingsShortNamesAndValues);
         } catch (Exception e) {
-            log.error("Error getting project settings from DB by projectId {}, root cause: {}", projectId,
-                    (e.getCause() == null ? e : e.getCause()));
+            log.error("Error getting project settings from DB by projectId {}.", projectId, e);
             return new HashMap<>();
         }
     }

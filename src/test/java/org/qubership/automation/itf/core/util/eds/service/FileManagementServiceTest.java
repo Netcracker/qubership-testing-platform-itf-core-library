@@ -31,8 +31,10 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +44,12 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.qubership.automation.itf.core.util.eds.model.FileInfo;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 
 @ExtendWith(MockitoExtension.class)
 class FileManagementServiceTest {
@@ -55,12 +62,24 @@ class FileManagementServiceTest {
 
     private FileManagementService service;
     private Path root;
+    private ListAppender<ILoggingEvent> logAppender;
+    private ch.qos.logback.classic.Logger serviceLogger;
 
     @BeforeEach
     void setUp(@TempDir Path tempDir) {
         service = new FileManagementService();
         root = tempDir.resolve("storage-root");
         ReflectionTestUtils.setField(service, "rootFolder", root.toString());
+
+        logAppender = new ListAppender<>();
+        logAppender.start();
+        serviceLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(FileManagementService.class);
+        serviceLogger.addAppender(logAppender);
+    }
+
+    @AfterEach
+    void tearDown() {
+        serviceLogger.detachAppender(logAppender);
     }
 
     // ==================== save(...) - legitimate paths ====================
@@ -185,6 +204,78 @@ class FileManagementServiceTest {
         assertNull(written);
     }
 
+    @Test
+    @DisplayName("Should return null and log the real failure, not a misleading 'is created' message, "
+            + "when the target directory cannot be created")
+    void save_returnsNull_andLogsTheRealError_whenDirectoryCannotBeCreated() throws IOException {
+        UUID project = UUID.randomUUID();
+        Files.createDirectories(root);
+        Files.createFile(root.resolve(WSDL_XSD));
+
+        File written = service.save(WSDL_XSD, project, "/sub", "schema.xsd", contentStream("payload"));
+
+        assertNull(written);
+        assertTrue(logAppender.list.stream().noneMatch(event -> event.getFormattedMessage().contains("is created")),
+                "a directory that failed to be created must not be logged as created");
+        assertTrue(logAppender.list.stream().anyMatch(event -> event.getLevel() == Level.ERROR
+                        && event.getFormattedMessage().contains("Error while saving file")),
+                "the real failure must be logged as an error");
+    }
+
+    @Test
+    @DisplayName("Should log that the directory was created only after it was actually created")
+    void save_logsDirectoryCreated_whenDirectoryIsActuallyCreated() {
+        UUID project = UUID.randomUUID();
+
+        File written = service.save(WSDL_XSD, project, "/sub", "schema.xsd", contentStream("payload"));
+
+        assertNotNull(written);
+        assertTrue(logAppender.list.stream().anyMatch(event -> event.getLevel() == Level.INFO
+                        && event.getFormattedMessage().contains("is created")),
+                "a directory that was actually created must be logged as created");
+    }
+
+    // ==================== save(Collection<FileInfo>) ====================
+
+    @Test
+    @DisplayName("Should return every file when all saves in the collection succeed")
+    void save_collection_returnsAllFiles_whenEverySaveSucceeds() {
+        UUID project = UUID.randomUUID();
+        FileInfo first = fileInfo(WSDL_XSD, project, "", "first.xsd", "one");
+        FileInfo second = fileInfo(WSDL_XSD, project, "", "second.xsd", "two");
+
+        List<File> saved = service.save(List.of(first, second));
+
+        assertEquals(2, saved.size());
+        assertTrue(saved.stream().allMatch(File::isFile));
+    }
+
+    @Test
+    @DisplayName("Should return only the files that were saved successfully, dropping the ones that failed "
+            + "instead of discarding the whole batch")
+    void save_collection_returnsOnlySuccessfulFiles_whenSomeSavesFail() {
+        UUID project = UUID.randomUUID();
+        FileInfo malicious = fileInfo(WSDL_XSD, project, "", "../../../../etc/escaped.txt", "pwned");
+        FileInfo valid = fileInfo(WSDL_XSD, project, "", "valid.xsd", "payload");
+
+        List<File> saved = service.save(List.of(malicious, valid));
+
+        assertEquals(1, saved.size());
+        assertEquals("valid.xsd", saved.get(0).getName());
+    }
+
+    @Test
+    @DisplayName("Should return an empty list, not a list of nulls, when every save in the collection fails")
+    void save_collection_returnsEmptyList_whenEverySaveFails() {
+        UUID project = UUID.randomUUID();
+        FileInfo malicious = fileInfo(WSDL_XSD, project, "", "../../../../etc/escaped.txt", "pwned");
+
+        List<File> saved = service.save(List.of(malicious));
+
+        assertNotNull(saved);
+        assertTrue(saved.isEmpty());
+    }
+
     // ==================== getDirectoryPath(...) ====================
 
     @Test
@@ -284,6 +375,16 @@ class FileManagementServiceTest {
 
     private InputStream contentStream(String content) {
         return new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private FileInfo fileInfo(String contentType, UUID project, String filePath, String fileName, String content) {
+        FileInfo fileInfo = new FileInfo();
+        fileInfo.setContentType(contentType);
+        fileInfo.setProjectUuid(project);
+        fileInfo.setFilePath(filePath);
+        fileInfo.setFileName(fileName);
+        fileInfo.setInputStream(contentStream(content));
+        return fileInfo;
     }
 
     /**

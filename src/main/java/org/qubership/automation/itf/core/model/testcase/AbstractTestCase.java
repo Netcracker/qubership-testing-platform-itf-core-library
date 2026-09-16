@@ -33,6 +33,8 @@ import org.qubership.automation.itf.core.model.jpa.step.Step;
 import org.qubership.automation.itf.core.util.annotation.RefCopy;
 import org.qubership.automation.itf.core.util.helper.StorableUtils;
 import org.qubership.automation.itf.core.util.manager.CoreObjectManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
@@ -41,6 +43,8 @@ import com.google.common.collect.Sets;
 public abstract class AbstractTestCase extends LabeledStorable implements TestCase {
     @Serial
     private static final long serialVersionUID = 20260913088L;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTestCase.class);
 
     protected List<Step> steps = Lists.newLinkedList();
     @JsonIgnore
@@ -59,13 +63,15 @@ public abstract class AbstractTestCase extends LabeledStorable implements TestCa
             try {
                 result.addAll(dsMan.getByNatureId(natureId, projectId));
             } catch (Throwable th) {
-                // Silently ignore now; may be thrown later
+                // Keep going so one bad natureId does not stop the rest from resolving; re-thrown below
+                // only if none of them did.
+                LOGGER.warn("Can't get DataSetList(s) by natureId '{}' for project '{}'.", natureId, projectId, th);
                 throwable = th;
             }
         }
         result.removeIf(Objects::isNull);  // Filter to process deleted/renamed DSLs, or unreachable Dataset Service
         if (result.isEmpty() && throwable != null) {
-            throw new RuntimeException(throwable.getMessage(), throwable.getCause());
+            throw new RuntimeException(throwable.getMessage(), throwable);
         }
         return result;
     }

@@ -356,8 +356,11 @@ public class TcContext extends JsonStorable {
 
     @Override
     public boolean equals(Object anObject) {
+        if (this == anObject) {
+            return true;
+        }
         if (anObject instanceof TcContext context) {
-            return this.getID().toString().equals(context.getID().toString());
+            return getID() != null && context.getID() != null && getID().equals(context.getID());
         }
         return false;
     }

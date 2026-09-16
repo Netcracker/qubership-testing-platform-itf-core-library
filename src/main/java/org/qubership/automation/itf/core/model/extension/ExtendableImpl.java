@@ -70,7 +70,8 @@ public class ExtendableImpl extends AbstractStorable implements Extendable, Seri
                 int idx = entry.getKey().indexOf("$$");
                 String className = idx > 1 ? entry.getKey().substring(0, idx) : entry.getKey();
                 try {
-                    Class<? extends Extension> clazz = Class.forName(className).asSubclass(Extension.class);
+                    Class<? extends Extension> clazz = Class.forName(className, false, getClass().getClassLoader())
+                            .asSubclass(Extension.class);
                     Extension extension = GSON.fromJson(entry.getValue(), clazz);
                     extensions.add(extension);
                 } catch (ClassNotFoundException e) {
