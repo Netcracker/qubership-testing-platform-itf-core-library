@@ -92,6 +92,7 @@ latest version on either line.
 #### 2. Specify the required parameters in application.properties
 ```properties
 ##======================DataBase configurations=======================
+atp.multi-tenancy.enabled=${ATP_MULTI_TENANCY_ENABLED:false}
 spring.datasource.url=${SPRING_DATASOURCE_URL}
 spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
 spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
@@ -133,6 +134,23 @@ feign.atp.datasets.name=${FEIGN_ATP_DATASETS_NAME}
 feign.atp.datasets.url=${FEIGN_ATP_DATASETS_URL}
 feign.atp.datasets.route=${FEIGN_ATP_DATASETS_ROUTE}
 ```
+
+`atp.multi-tenancy.enabled` has no default in this library. Leave it out of `application.properties` (not even the
+`:false` fallback the other properties use) and the `dataSource` bean above is never created, because
+`CommonHibernateConfiguration` declares it with `@ConditionalOnProperty(value = "atp.multi-tenancy.enabled",
+havingValue = "false")` and no `matchIfMissing`. The context then fails at startup naming an unrelated bean instead
+of the property:
+
+```text
+Error creating bean with name 'jdbcLockProvider' ... No qualifying bean of type 'javax.sql.DataSource' available
+```
+
+or, where Spring Boot's own `DataSourceAutoConfiguration` is also on the classpath, the context starts instead on
+Spring Boot's own `HikariDataSource`, silently skipping the `tcpKeepAlive`, `socketTimeout` and `maxLifetime`
+handling the `dataSource` bean above applies. Set the property to `false`, as shown above, for a single-tenant
+deployment that uses this library's own `dataSource` bean. For any other value, including `true`, this library
+creates no `DataSource` at all. Provide one another way, for example through the separate `atp-multitenancy` library
+that multi-tenant deployments already depend on.
 
 None of the six `feign.atp.*` properties has a default. They become required as soon as this library's
 `org.qubership.automation.itf.core.util.feign` package is component-scanned, which autowires every Feign client it
