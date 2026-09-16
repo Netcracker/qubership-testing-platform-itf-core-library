@@ -67,7 +67,8 @@ public class ImportedDataCache {
     private Storable getDeserializedEntity(JsonParser p, JsonNode treeNode, BigInteger entityId) {
         String clazz = treeNode.get("type").asText();
         try {
-            Class<? extends Storable> storableClass = Class.forName(clazz).asSubclass(Storable.class);
+            Class<? extends Storable> storableClass = Class.forName(clazz, false, getClass().getClassLoader())
+                    .asSubclass(Storable.class);
             return ((ObjectMapper) p.getCodec()).readValue(treeNode.toString(), storableClass);
         } catch (ClassNotFoundException | JsonProcessingException e) {
             LOGGER.warn("Class for type={} of entity with id={} was not found.", clazz, entityId);
