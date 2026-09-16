@@ -46,6 +46,24 @@ public interface Storable extends Named, Identified<BigInteger>, Prefixed, Optim
     @RefCopy
     Storable getParent();
 
+    /**
+     * Returns a copy of {@link #getParent()} for the export/import serialization protocol, not a
+     * substitute for the parent itself.
+     *
+     * <p>The returned object carries the parent's id and name, but its description is replaced by
+     * the fixed marker
+     * {@link org.qubership.automation.itf.core.util.ei.deserialize.ImportedDataCache#SIMPLE_PARENT_MARKER},
+     * which the export/import protocol uses to recognize a placeholder rather than the full object.
+     * It is a separate instance from the one {@link #getParent()} returns. Some implementations
+     * base {@code equals} and {@code hashCode} on the class and the id alone, in which case the
+     * returned object still equals the real parent and shares its hash code even though the
+     * description differs, so a {@code HashSet} or {@code List.contains} cannot tell them apart.
+     * Passing the returned object to {@link #store()} overwrites the parent's real description with
+     * the marker.</p>
+     *
+     * @return a copy of the parent for the export/import protocol; {@code null} when there is no
+     *         parent to simplify, or when an implementation takes no part in the protocol
+     */
     Storable returnSimpleParent();
 
     void setParent(Storable parent);
