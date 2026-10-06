@@ -262,6 +262,29 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <!-- Registers the generated source directories (openapi-generator and the querydsl annotation
+                     processor of maven-compiler-plugin) as source roots in the pom itself, so IDEs that import
+                     the module from the pom see the generated classes. -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>add-generated-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/src/main/java</source>
+                                <source>${project.build.directory}/generated-sources/querydsl</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
