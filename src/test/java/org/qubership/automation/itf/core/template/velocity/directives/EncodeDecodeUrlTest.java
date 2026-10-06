@@ -223,7 +223,7 @@ class EncodeDecodeUrlTest {
         assertEquals("Unsupported encoding [invalid-encoding] for encodeUrl directive", result);
     }
 
-    // ==================== DecodeUrl.render TESTS (требуют мокирования Velocity) ====================
+    // ==================== DecodeUrl.render TESTS (require Velocity mocks) ====================
 
     @Test
     void render_WithTwoChildren_ShouldRenderDecodedContent() throws Exception {

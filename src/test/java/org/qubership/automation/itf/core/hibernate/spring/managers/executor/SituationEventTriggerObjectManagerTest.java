@@ -65,7 +65,7 @@ class SituationEventTriggerObjectManagerTest {
         idConverterMock.close();
     }
 
-    // ==================== getTriggersBriefInfoBySystem TESTS (с логикой) ====================
+    // ==================== getTriggersBriefInfoBySystem TESTS ====================
 
     @Test
     void getTriggersBriefInfoBySystem_ShouldSeparateActiveAndInactiveTriggers() {

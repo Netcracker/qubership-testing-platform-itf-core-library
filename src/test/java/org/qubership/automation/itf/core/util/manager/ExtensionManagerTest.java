@@ -147,7 +147,7 @@ public class ExtensionManagerTest {
     @Test
     @DisplayName("Should throw ExtensionException when object has no default constructor")
     void testCreateExtendable_WithObjectNoDefaultConstructor_ShouldThrowException() {
-        // Given - класс без конструктора по умолчанию
+        // Given - class without default constructor
         class NoDefaultConstructor {
             private final String value;
             public NoDefaultConstructor(String value) {
@@ -213,7 +213,7 @@ public class ExtensionManagerTest {
         // Given
         SituationInstance proxy = extensionManager.createExtendable(SituationInstance.class);
 
-        // Создаем тестовое расширение для демонстрации
+        // Create test extension for demonstration purposes
         class TestExtension implements Extension {
             private String data = "test";
             public String getData() { return data; }
@@ -519,7 +519,7 @@ public class ExtensionManagerTest {
     @Test
     @DisplayName("Should handle ExtensionException wrapping")
     void testExtensionException_Wrapping() {
-        // Given - класс без конструктора по умолчанию
+        // Given - class without default constructor
         class NoDefaultConstructor {
             @SuppressWarnings("unused")
             public NoDefaultConstructor(String value) {}

@@ -70,7 +70,7 @@ class InboundTransportConfigurationObjectManagerTest {
         idConverterMock.close();
     }
 
-    // ==================== getChildByClass TESTS (метод с логикой) ====================
+    // ==================== getChildByClass TESTS ====================
 
     @Test
     void getChildByClass_WithTransportConfigurationClass_ShouldReturnTransport() {

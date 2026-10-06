@@ -511,7 +511,7 @@ class CallChainObjectManagerTest {
 
     @Test
     void getObjectsWithBvLinks_ShouldReturnEmptyList() {
-        // given - метод всегда возвращает пустой список согласно реализации
+        // given - the method always returns an empty list (current implementation)
 
         // when
         List<Object[]> result = manager.getObjectsWithBvLinks(PROJECT_ID);
@@ -538,7 +538,8 @@ class CallChainObjectManagerTest {
     void getReceiverSystemsFromCallChainSteps_ShouldThrowNotImplementedException() {
         NotImplementedException ex = Assertions.assertThrows(NotImplementedException.class,
                 () -> manager.getReceiverSystemsFromCallChainSteps(CALL_CHAIN_ID));
-        Assertions.assertTrue(ex.getMessage().contains("Method getReceiverSystemsFromCallChainSteps is not implemented"));
+        Assertions.assertTrue(ex.getMessage()
+                .contains("Method getReceiverSystemsFromCallChainSteps is not implemented"));
     }
 
     // ==================== getAllIdsAndNamesByProjectId TESTS ====================
@@ -591,7 +592,7 @@ class CallChainObjectManagerTest {
 
     @Test
     void afterDelete_ShouldNotThrowException() {
-        // when & then - метод не должен бросать исключение
+        // when & then - method shouldn't throw an exception
         Assertions.assertDoesNotThrow(() -> manager.afterDelete(callChain));
     }
 

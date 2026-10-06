@@ -159,8 +159,8 @@ class TransliterateTest {
         String result = invokeTransliterate(null, fromTo);
 
         // then
-        // ICU4J может вернуть пустую строку или выбросить исключение
-        // В любом случае, проверяем что не падает
+        // ICU4J can return empty string or throw.
+        // Let's check that the method doesn't throw.
         assertTrue(result == null || result.equals("#err") || result.isEmpty());
     }
 
@@ -274,7 +274,7 @@ class TransliterateTest {
 
         // then
         assertTrue(result);
-        // null превращается в "null" строку через String.valueOf(), затем транслитерируется
+        // null turns into "null" String via String.valueOf(), then transliterates
         verify(writer).append(anyString());
     }
 
