@@ -1,8 +1,10 @@
 {
-  "threshold": 29,
+  "threshold": 10,
+  "mode": "weak",
   "ignore": [
     "**/.github/**",
     "**/.qubership/**",
+    "**/target/**",
     "**/mapping/*.xml",
     "**/apispecs/**/*.yaml",
     "**/*/*.md",
