@@ -45,6 +45,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractLoader<T> implements Loader<T> {
 
+    public static final String CHILD_FIRST_PREFIXES_PROPERTY = "itf.loader.child-first-prefixes";
+    private static final List<String> DEFAULT_CHILD_FIRST_PREFIXES =
+            List.of("org.glassfish.hk2.", "org.jvnet.hk2.", "javax.inject.");
+
     protected static String LIB;
     protected static String PATH_PATTERN;
     @Getter
@@ -52,6 +56,27 @@ public abstract class AbstractLoader<T> implements Loader<T> {
     private ClassLoader libClassLoader;
 
     protected abstract Class<T> getGenericType();
+
+    /**
+     * Returns the class name prefixes that the library class loaders load from their own jars before the parent.
+     *
+     * <p>The default is HK2 and {@code javax.inject}, which a library such as {@code wlthint3client.jar} bundles and
+     * the application's HK2 3.x cannot replace. The system property {@value #CHILD_FIRST_PREFIXES_PROPERTY} replaces
+     * the default with a comma-separated list; an empty value turns child-first loading off.</p>
+     */
+    protected List<String> getChildFirstPrefixes() {
+        String configured = System.getProperty(CHILD_FIRST_PREFIXES_PROPERTY);
+        if (configured == null) {
+            return DEFAULT_CHILD_FIRST_PREFIXES;
+        }
+        List<String> prefixes = Lists.newArrayList();
+        for (String prefix : configured.split(",")) {
+            if (!StringUtils.isBlank(prefix)) {
+                prefixes.add(prefix.trim());
+            }
+        }
+        return prefixes;
+    }
 
     /**
      * Load project's transport\trigger libraries (and custom libs).
@@ -74,7 +99,7 @@ public abstract class AbstractLoader<T> implements Loader<T> {
                     libClassLoader = (ChildFirstURLClassLoader) loadLibClassLoader(
                             path + LIB + "/" + parseUrlName(urls[0]), path + LIB);
                 }
-                ChildFirstURLClassLoader classLoader = new ChildFirstURLClassLoader(urls, libClassLoader);
+                ChildFirstURLClassLoader classLoader = new ChildFirstURLClassLoader(urls, libClassLoader, getChildFirstPrefixes());
                 addClassesIntoClassLoaderHolder(find(classLoader), classLoader);
             }
         } catch (MalformedURLException e) {
@@ -126,7 +151,8 @@ public abstract class AbstractLoader<T> implements Loader<T> {
                 }
                 urls.addAll(Arrays.asList(LoaderHelper.getUrls(fileForLib)));
             }
-            return new ChildFirstURLClassLoader(LoaderHelper.toArray(urls), this.getClass().getClassLoader());
+            return new ChildFirstURLClassLoader(LoaderHelper.toArray(urls), this.getClass().getClassLoader(),
+                    getChildFirstPrefixes());
         }
         return libClassLoader;
     }
